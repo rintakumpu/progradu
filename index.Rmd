@@ -1,0 +1,54 @@
+---
+urlcolor: blue   
+linkcolor: blue
+citecolor: blue
+toccolor: blue
+output:
+  pdf_document:
+    toc: true
+    number_sections: true
+    toc_depth: 4
+citation_package: natbib
+lang: fi
+documentclass: book
+bibliography: [book.bib, packages.bib]
+fontsize: 12pt
+classoption: a4paper, twoside
+link-citations: yes
+github-repo: rintakumpu/progradu
+site: bookdown::bookdown_site
+---
+
+\setlength\parindent{24pt}
+\setlength\parskip{3pt}
+
+```{r setup, include=FALSE, cache=FALSE}
+#Knitr options
+knitr::opts_chunk$set(echo = FALSE, fig.width=3, fig.height=2.8, fig.show='hold', fig.align='center', warning = FALSE, cache = TRUE, cache.path = 'output/cache/', fig.path = 'output/figures/')
+
+# Used libraries
+library(knitr) # For creating PDF
+library(pander)
+library(bookdown)
+
+# Automatically create a bib database for R packages
+knitr::write_bib(c(
+  .packages(), 'bookdown', 'knitr', 'rmarkdown', 'pander'
+), 'packages.bib')
+```
+
+# Johdanto
+
+Lorem ipsum.
+
+## Notaatioista
+
+Lorem ipsum.
+
+## Suodin- ja siloitteluongelmat
+
+Lorem ipsum.
+
+## Suodin- ja siloitteluongelmien historiaa
+
+Lorem ipsum.

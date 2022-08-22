@@ -1,0 +1,12 @@
+# Monte Carlo -menetelmistä
+
+## Monte Carlo -menetelmien historiaa
+
+## Monte Carlo -approksimaatio
+
+## Tärkeytysotanta
+
+## Sekventiaalinen Monte Carlo
+
+
+
