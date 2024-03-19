@@ -7,16 +7,19 @@
   12pt,
   a4paper, twoside]{book}
 \usepackage{amsmath,amssymb}
-\usepackage{lmodern}
 \usepackage{iftex}
 \ifPDFTeX
   \usepackage[T1]{fontenc}
   \usepackage[utf8]{inputenc}
   \usepackage{textcomp} % provide euro and other symbols
 \else % if luatex or xetex
-  \usepackage{unicode-math}
+  \usepackage{unicode-math} % this also loads fontspec
   \defaultfontfeatures{Scale=MatchLowercase}
   \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
 \fi
 % Use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
@@ -35,17 +38,6 @@
   \KOMAoptions{parskip=half}}
 \makeatother
 \usepackage{xcolor}
-\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
-\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
-\hypersetup{
-  pdflang={fi},
-  colorlinks=true,
-  linkcolor={blue},
-  filecolor={Maroon},
-  citecolor={blue},
-  urlcolor={blue},
-  pdfcreator={LaTeX via pandoc}}
-\urlstyle{same} % disable monospaced font for URLs
 \usepackage{longtable,booktabs,array}
 \usepackage{calc} % for calculating minipage widths
 % Correct order of tables after \paragraph or \subparagraph
@@ -126,6 +118,17 @@
 \fi
 \usepackage[]{natbib}
 \bibliographystyle{plainnat}
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdflang={fi},
+  colorlinks=true,
+  linkcolor={blue},
+  filecolor={Maroon},
+  citecolor={blue},
+  urlcolor={blue},
+  pdfcreator={LaTeX via pandoc}}
 
 \author{}
 \date{\vspace{-2.5em}}
@@ -312,28 +315,28 @@ See Figure \ref{fig:nice-fig}.
 
 Don't miss Table \ref{tab:nice-tab}.
 
-\begin{longtable}[]{@{}rr@{}}
-\caption{Here is a nice table!}\tabularnewline
+\begin{table}
+
+\caption{\label{tab:nice-tab}Here is a nice table!}
+\centering
+\begin{tabular}[t]{rr}
 \toprule
-temperature & pressure \\
+temperature & pressure\\
 \midrule
-\endfirsthead
-\toprule
-temperature & pressure \\
-\midrule
-\endhead
-0 & 0.0002 \\
-20 & 0.0012 \\
-40 & 0.0060 \\
-60 & 0.0300 \\
-80 & 0.0900 \\
-100 & 0.2700 \\
-120 & 0.7500 \\
-140 & 1.8500 \\
-160 & 4.2000 \\
-180 & 8.8000 \\
+0 & 0.0002\\
+20 & 0.0012\\
+40 & 0.0060\\
+60 & 0.0300\\
+80 & 0.0900\\
+\addlinespace
+100 & 0.2700\\
+120 & 0.7500\\
+140 & 1.8500\\
+160 & 4.2000\\
+180 & 8.8000\\
 \bottomrule
-\end{longtable}
+\end{tabular}
+\end{table}
 
 \hypertarget{kalman-suotimen-ja-hiukassuotimen-eroista}{%
 \section{Kalman-suotimen ja hiukassuotimen eroista}\label{kalman-suotimen-ja-hiukassuotimen-eroista}}
@@ -378,6 +381,9 @@ Lorem ipsum
 
 Lorem ipsum
 
+\hypertarget{varianssin-estimointi}{%
+\section{Varianssin estimointi}\label{varianssin-estimointi}}
+
 \hypertarget{hiukkasiloittimet}{%
 \chapter{Hiukkasiloittimet}\label{hiukkasiloittimet}}
 
@@ -396,23 +402,8 @@ Lorem ipsum
 
 Lorem ipsum
 
-\hypertarget{aoa-menetelmistuxe4}{%
-\chapter{AoA-menetelmistä}\label{aoa-menetelmistuxe4}}
-
-\hypertarget{music-algoritmi}{%
-\section{MUSIC-algoritmi}\label{music-algoritmi}}
-
-Footnotes are put inside the square brackets after a caret \texttt{\^{}{[}{]}}. Like this one \footnote{This is a footnote.}.
-
-Citations. Reference items in your bibliography file(s) using \texttt{@key}.
-
-For example, we are using the \textbf{bookdown} package \citep{R-bookdown} (check out the last code chunk in index.Rmd to see how this citation key was added) in this sample book, which was built on top of R Markdown and \textbf{knitr} \citep{xie2015} (this citation was added manually in an external file book.bib).
-Note that the \texttt{.bib} files need to be listed in the index.Rmd with the YAML \texttt{bibliography} key.
-
-The RStudio Visual Markdown Editor can also make it easier to insert citations: \url{https://rstudio.github.io/visual-markdown-editing/\#/citations}
-
-\hypertarget{smc-menetelmuxe4t-sisuxe4tilapaikannuksessa}{%
-\chapter{SMC-menetelmät sisätilapaikannuksessa}\label{smc-menetelmuxe4t-sisuxe4tilapaikannuksessa}}
+\hypertarget{hiukassuodin-ja--siloitin-sisuxe4tilapaikannuksessa}{%
+\chapter{Hiukassuodin ja -siloitin sisätilapaikannuksessa}\label{hiukassuodin-ja--siloitin-sisuxe4tilapaikannuksessa}}
 
 \hypertarget{teknologian-kuvaus}{%
 \section{Teknologian kuvaus}\label{teknologian-kuvaus}}
@@ -439,20 +430,46 @@ and \(a\) and \(b\) denote the lengths of the \textbf{other} two sides, we have
 
 Read more here \url{https://bookdown.org/yihui/bookdown/markdown-extensions-by-bookdown.html}.
 
+\hypertarget{aoa-menetelmistuxe4}{%
+\section{AoA-menetelmistä}\label{aoa-menetelmistuxe4}}
+
+\hypertarget{music-algoritmi}{%
+\subsection{MUSIC-algoritmi}\label{music-algoritmi}}
+
+Footnotes are put inside the square brackets after a caret \texttt{\^{}{[}{]}}. Like this one \footnote{This is a footnote.}.
+
+Citations. Reference items in your bibliography file(s) using \texttt{@key}.
+
+For example, we are using the \textbf{bookdown} package \citep{R-bookdown} (check out the last code chunk in index.Rmd to see how this citation key was added) in this sample book, which was built on top of R Markdown and \textbf{knitr} \citep{xie2015} (this citation was added manually in an external file book.bib).
+Note that the \texttt{.bib} files need to be listed in the index.Rmd with the YAML \texttt{bibliography} key.
+
+The RStudio Visual Markdown Editor can also make it easier to insert citations: \url{https://rstudio.github.io/visual-markdown-editing/\#/citations}
+
 \hypertarget{datan-kuvaus}{%
 \section{Datan kuvaus}\label{datan-kuvaus}}
 
-\hypertarget{ongelman-kuvaus}{%
-\section{Ongelman kuvaus}\label{ongelman-kuvaus}}
+\hypertarget{ongelman-ja-mallien-kuvaus}{%
+\section{Ongelman ja mallien kuvaus}\label{ongelman-ja-mallien-kuvaus}}
 
-\hypertarget{uskottavuusmalli}{%
-\subsection{Uskottavuusmalli}\label{uskottavuusmalli}}
+\hypertarget{datan-valinta}{%
+\subsection{Datan valinta}\label{datan-valinta}}
+
+Convex hull goes here.
+
+\hypertarget{uskottavuusmallit}{%
+\subsection{Uskottavuusmallit}\label{uskottavuusmallit}}
 
 \hypertarget{dynaaminen-malli}{%
 \subsection{Dynaaminen malli}\label{dynaaminen-malli}}
 
 \hypertarget{algoritmien-toteutuksesta}{%
 \section{Algoritmien toteutuksesta}\label{algoritmien-toteutuksesta}}
+
+\hypertarget{karttasovitusalgoritmi}{%
+\section{Karttasovitusalgoritmi}\label{karttasovitusalgoritmi}}
+
+\hypertarget{reitinhakualgoritmi}{%
+\section{Reitinhakualgoritmi}\label{reitinhakualgoritmi}}
 
 \hypertarget{parametrien-valinnasta}{%
 \section{Parametrien valinnasta}\label{parametrien-valinnasta}}
@@ -464,12 +481,6 @@ Read more here \url{https://bookdown.org/yihui/bookdown/markdown-extensions-by-b
 \chapter{Lopuksi}\label{lopuksi}}
 
 Lorem ipsum
-
-\hypertarget{appendix-other-stuff--followed-by-a-chapter}{%
-\chapter{\texorpdfstring{(APPENDIX) Other stuff \{-\}\texttt{(followed\ by}\# A chapter`)}{(APPENDIX) Other stuff \{-\}(followed by\# A chapter`)}}\label{appendix-other-stuff--followed-by-a-chapter}}
-
-\hypertarget{appendix-other-stuff--followed-by-a-chapter-1}{%
-\section{\texorpdfstring{(APPENDIX) Other stuff \{-\}\texttt{(followed\ by}\# A chapter`)}{(APPENDIX) Other stuff \{-\}(followed by\# A chapter`)}}\label{appendix-other-stuff--followed-by-a-chapter-1}}
 
   \bibliography{book.bib,packages.bib}
 

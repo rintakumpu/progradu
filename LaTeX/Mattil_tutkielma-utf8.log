@@ -1,0 +1,817 @@
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2021.4.23)  9 MAY 2021 13:12
+entering extended mode
+ restricted \write18 enabled.
+ file:line:error style messages enabled.
+ %&-line parsing enabled.
+**Mattil_tutkielma-utf8.tex
+(./Mattil_tutkielma-utf8.tex
+LaTeX2e <2020-10-01> patch level 4
+L3 programming layer <2021-02-18>
+
+LaTeX Warning: File `Mattil_tutkielma-utf8.xmpdata' already exists on the syste
+m.
+               Not generating it from this source.
+
+
+(/usr/local/texlive/2021/texmf-dist/tex/latex/pdfmanagement-testphase/pdfmanage
+ment-testphase.sty
+Package: pdfmanagement-testphase 2021-03-17 v0.95c LaTeX PDF management testpha
+se bundle
+
+(/usr/local/texlive/2021/texmf-dist/tex/latex/pdfmanagement-testphase/pdfmanage
+ment-testphase.ltx
+File: pdfmanagement-testphase.ltx 2021-03-17 v0.95c PDF management code (testph
+ase)
+
+LaTeX3 Info: Defining command \DeclareDocumentMetadata with sig. 'm' on line
+(LaTeX3)     960.
+
+
+LaTeX3 Info: Defining command \AddToDocumentProperties with sig. 'O{\@currname
+(LaTeX3)     }mm' on line 970.
+
+
+LaTeX3 Info: Defining command \GetDocumentProperties with sig. 'm' on line
+(LaTeX3)     974.
+
+
+LaTeX3 Info: Defining command \ShowDocumentProperties with sig. '' on line
+(LaTeX3)     986.
+
+
+(/usr/local/texlive/2021/texmf-dist/tex/latex/l3experimental/l3bitset/l3bitset.
+sty
+Package: l3bitset 2021-02-18 L3 Experimental bitset support
+\l__bitset_internal_int=\count179
+))) (/usr/local/texlive/2021/texmf-dist/tex/latex/l3kernel/expl3.sty
+Package: expl3 2021-02-18 L3 programming layer (loader) 
+
+(/usr/local/texlive/2021/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
+File: l3backend-pdftex.def 2021-03-18 L3 backend support: PDF output (pdfTeX)
+\l__color_backend_stack_int=\count180
+\l__pdf_internal_box=\box47
+))
+(/usr/local/texlive/2021/texmf-dist/tex/latex/pdfmanagement-testphase/l3backend
+-testphase-pdftex.def
+File: l3backend-testphase-pdftex.def 2021-03-17 LaTeX PDF management testphase 
+bundle backend support:PDFoutput(pdfTeX)
+
+(/usr/local/texlive/2021/texmf-dist/tex/latex/pdfmanagement-testphase/l3ref-tmp
+.sty
+Package: l3ref-tmp 2020-10-09 L3 Experimental cross-referencing
+)
+\l__pdf_backend_tmpa_box=\box48
+\g__pdf_backend_resourceid_int=\count181
+\g__pdf_backend_name_int=\count182
+\g__pdf_backend_page_int=\count183
+\g__pdf_backend_EmbeddedFiles_int=\count184
+)
+
+LaTeX3 Info: Redefining command \DeclareDocumentMetadata with sig. 'm' on line
+(LaTeX3)     11.
+
+
+(/usr/local/texlive/2021/texmf-dist/tex/latex/pdfmanagement-testphase/pdfmanage
+ment-firstaid.sty
+Package: pdfmanagement-firstaid 2021-03-17 v0.95c LaTeX PDF management testphas
+e bundle / firstaid-patches
+
+Package pdfmanagement Info: loading pdfmanagement firstaid code for pgf
+
+)
+(/usr/local/texlive/2021/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2020/04/10 v1.4m Standard LaTeX document class
+(/usr/local/texlive/2021/texmf-dist/tex/latex/base/size12.clo
+File: size12.clo 2020/04/10 v1.4m Standard LaTeX file (size option)
+)
+\c@part=\count185
+\c@section=\count186
+\c@subsection=\count187
+\c@subsubsection=\count188
+\c@paragraph=\count189
+\c@subparagraph=\count190
+\c@figure=\count191
+\c@table=\count192
+\abovecaptionskip=\skip47
+\belowcaptionskip=\skip48
+\bibindent=\dimen138
+)
+(/usr/local/texlive/2021/texmf-dist/tex/generic/babel/babel.sty
+Package: babel 2021/03/24 3.56 The Babel package
+
+(/usr/local/texlive/2021/texmf-dist/tex/generic/babel/babel.def
+File: babel.def 2021/03/24 3.56 Babel common definitions
+\babel@savecnt=\count193
+\U@D=\dimen139
+\l@babelnohyphens=\language87
+
+(/usr/local/texlive/2021/texmf-dist/tex/generic/babel/txtbabel.def)
+\bbl@readstream=\read2
+)
+\bbl@dirlevel=\count194
+
+(/usr/local/texlive/2021/texmf-dist/tex/generic/babel-finnish/finnish.ldf
+Language: finnish 2021/02/06 v1.3s Finnish support from the babel system
+Package babel Info: Making " an active character on input line 85.
+))
+(/usr/local/texlive/2021/texmf-dist/tex/latex/base/fontenc.sty
+Package: fontenc 2020/08/10 v2.0s Standard LaTeX package
+)
+(/usr/local/texlive/2021/texmf-dist/tex/latex/base/inputenc.sty
+Package: inputenc 2020/08/01 v1.3d Input encoding file
+\inpenc@prehook=\toks15
+\inpenc@posthook=\toks16
+)
+(/usr/local/texlive/2021/texmf-dist/tex/latex/amscls/amsthm.sty
+Package: amsthm 2020/05/29 v2.20.6
+\thm@style=\toks17
+\thm@bodyfont=\toks18
+\thm@headfont=\toks19
+\thm@notefont=\toks20
+\thm@headpunct=\toks21
+\thm@preskip=\skip49
+\thm@postskip=\skip50
+\thm@headsep=\skip51
+\dth@everypar=\toks22
+)
+(/usr/local/texlive/2021/texmf-dist/tex/latex/amsmath/amsmath.sty
+Package: amsmath 2020/09/23 v2.17i AMS math features
+\@mathmargin=\skip52
+
+For additional information on amsmath, use the `?' option.
+(/usr/local/texlive/2021/texmf-dist/tex/latex/amsmath/amstext.sty
+Package: amstext 2000/06/29 v2.01 AMS text
+
+(/usr/local/texlive/2021/texmf-dist/tex/latex/amsmath/amsgen.sty
+File: amsgen.sty 1999/11/30 v2.0 generic functions
+\@emptytoks=\toks23
+\ex@=\dimen140
+))
+(/usr/local/texlive/2021/texmf-dist/tex/latex/amsmath/amsbsy.sty
+Package: amsbsy 1999/11/29 v1.2d Bold Symbols
+\pmbraise@=\dimen141
+)
+(/usr/local/texlive/2021/texmf-dist/tex/latex/amsmath/amsopn.sty
+Package: amsopn 2016/03/08 v2.02 operator names
+)
+\inf@bad=\count195
+LaTeX Info: Redefining \frac on input line 234.
+\uproot@=\count196
+\leftroot@=\count197
+LaTeX Info: Redefining \overline on input line 399.
+\classnum@=\count198
+\DOTSCASE@=\count199
+LaTeX Info: Redefining \ldots on input line 496.
+LaTeX Info: Redefining \dots on input line 499.
+LaTeX Info: Redefining \cdots on input line 620.
+\Mathstrutbox@=\box49
+\strutbox@=\box50
+\big@size=\dimen142
+LaTeX Font Info:    Redeclaring font encoding OML on input line 743.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 744.
+\macc@depth=\count266
+\c@MaxMatrixCols=\count267
+\dotsspace@=\muskip16
+\c@parentequation=\count268
+\dspbrk@lvl=\count269
+\tag@help=\toks24
+\row@=\count270
+\column@=\count271
+\maxfields@=\count272
+\andhelp@=\toks25
+\eqnshift@=\dimen143
+\alignsep@=\dimen144
+\tagshift@=\dimen145
+\tagwidth@=\dimen146
+\totwidth@=\dimen147
+\lineht@=\dimen148
+\@envbody=\toks26
+\multlinegap=\skip53
+\multlinetaggap=\skip54
+\mathdisplay@stack=\toks27
+LaTeX Info: Redefining \[ on input line 2923.
+LaTeX Info: Redefining \] on input line 2924.
+)
+(/usr/local/texlive/2021/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 2020/09/09 v1.2b Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/texlive/2021/texmf-dist/tex/latex/graphics/keyval.sty
+Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
+\KV@toks@=\toks28
+)
+(/usr/local/texlive/2021/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2020/08/30 v1.4c Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/texlive/2021/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 2016/01/03 v1.10 sin cos tan (DPC)
+)
+(/usr/local/texlive/2021/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: pdftex.def on input line 105.
+
+(/usr/local/texlive/2021/texmf-dist/tex/latex/graphics-def/pdftex.def
+File: pdftex.def 2020/10/05 v1.2a Graphics/color driver for pdftex
+))
+\Gin@req@height=\dimen149
+\Gin@req@width=\dimen150
+)
+(/usr/local/texlive/2021/texmf-dist/tex/latex/axessibility/axessibility.sty
+Package: axessibility 
+
+(/usr/local/texlive/2021/texmf-dist/tex/latex/amsfonts/amssymb.sty
+Package: amssymb 2013/01/14 v3.01 AMS font symbols
+
+(/usr/local/texlive/2021/texmf-dist/tex/latex/amsfonts/amsfonts.sty
+Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
+\symAMSa=\mathgroup4
+\symAMSb=\mathgroup5
+LaTeX Font Info:    Redeclaring math symbol \hbar on input line 98.
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
+))
+(/usr/local/texlive/2021/texmf-dist/tex/generic/xstring/xstring.sty
+(/usr/local/texlive/2021/texmf-dist/tex/generic/xstring/xstring.tex
+\integerpart=\count273
+\decimalpart=\count274
+)
+Package: xstring 2019/02/06 v1.83 String manipulations (CT)
+)
+(/usr/local/texlive/2021/texmf-dist/tex/latex/tagpdf/tagpdf.sty
+Package: tagpdf 2021/02/23 v0.80  A package to experiment with pdf tagging 
+
+(/usr/local/texlive/2021/texmf-dist/tex/latex/etoolbox/etoolbox.sty
+Package: etoolbox 2020/10/05 v2.5k e-TeX tools for LaTeX (JAW)
+\etb@tempcnta=\count275
+)
+\l__tag_loglevel_int=\count276
+
+(/usr/local/texlive/2021/texmf-dist/tex/latex/tagpdf/tagpdf-pdftex.def
+File: tagpdf-pdftex.def 2021/02/23 v0.80 tagpdf driver for pdftex
+)
+(/usr/local/texlive/2021/texmf-dist/tex/latex/tagpdf/tagpdf-checks-code.sty
+Package: tagpdf-checks-code 2021/02/23 v0.80 part of tagpdf - code related to c
+hecks and messages
+)
+(/usr/local/texlive/2021/texmf-dist/tex/latex/tagpdf/tagpdf-user.sty
+Package: tagpdf-user 2021/02/23 v0.80 tagpdf - user commands
+
+LaTeX3 Info: Defining command \tagpdfsetup with sig. 'm' on line 28.
+
+
+LaTeX3 Info: Defining command \tagmcifinTF with sig. 'mm' on line 82.
+
+
+LaTeX3 Info: Defining environment 'tagmcartifact' with sig. 'm' on line 90.
+
+
+LaTeX3 Info: Defining command \tagmcbegin with sig. 'm' on line 95.
+
+
+LaTeX3 Info: Defining command \tagmcend with sig. '' on line 101.
+
+
+LaTeX3 Info: Defining command \tagmcuse with sig. 'm' on line 106.
+
+
+LaTeX3 Info: Defining command \tagstructbegin with sig. 'm' on line 113.
+
+
+LaTeX3 Info: Defining command \tagstructend with sig. '' on line 118.
+
+
+LaTeX3 Info: Defining command \tagstructuse with sig. 'm' on line 123.
+
+
+LaTeX3 Info: Defining command \showtagpdfmcdata with sig.
+(LaTeX3)     'O{\__tag_tag_get_mc_abs_cnt: }' on line 135.
+
+
+LaTeX3 Info: Defining command \showtagpdfattributes with sig. '' on line 159.
+
+)
+(/usr/local/texlive/2021/texmf-dist/tex/latex/tagpdf/tagpdf-tree-code.sty
+Package: tagpdf-tree-code 2021/02/23 v0.80 part of tagpdf - code related to wri
+ting trees and dictionaries to the pdf
+\c@g__tag_parenttree_obj_int=\count277
+)
+(/usr/local/texlive/2021/texmf-dist/tex/latex/tagpdf/tagpdf-roles-code.sty
+Package: tagpdf-roles-code 2021/02/23 v0.80 part of tagpdf - code related to ro
+les and structure names
+)
+(/usr/local/texlive/2021/texmf-dist/tex/latex/tagpdf/tagpdf-attr-code.sty
+Package: tagpdf-attr-code 2021/02/23 v0.80 part of tagpdf - code related to att
+ributes and attribute classes
+)
+(/usr/local/texlive/2021/texmf-dist/tex/latex/tagpdf/tagpdf-mc-code-shared.sty
+Package: tagpdf-mc-code-shared 2021/02/23 v0.80 part of tagpdf - code related t
+o marking chunks - code shared by generic and luamode 
+\c@g__tag_MCID_abs_int=\count278
+\g__tag_MCID_tmp_bypage_int=\count279
+)
+(/usr/local/texlive/2021/texmf-dist/tex/latex/tagpdf/tagpdf-mc-code-generic.sty
+Package: tagpdf-mc-code-generic 2021/02/23 v0.80 part of tagpdf - code related 
+to marking chunks - generic mode
+) (/usr/local/texlive/2021/texmf-dist/tex/latex/tagpdf/tagpdf-struct-code.sty
+Package: tagpdf-struct-code 2021/02/23 v0.80 part of tagpdf - code related to s
+toring structure
+\c@g__tag_struct_abs_int=\count280
+)) (/usr/local/texlive/2021/texmf-dist/tex/latex/tagpdf/tagpdf-space-code.sty
+Package: tagpdf-space-code 2021/02/23 v0.80 part of tagpdf - code related to re
+al space chars
+)
+(/usr/local/texlive/2021/texmf-dist/tex/latex/base/fontenc.sty
+Package: fontenc 2020/08/10 v2.0s Standard LaTeX package
+)
+(/usr/local/texlive/2021/texmf-dist/tex/generic/pdftex/glyphtounicode.tex)
+\@mltext=\toks29
+\@mltexttmp=\toks30
+)
+(/usr/local/texlive/2021/texmf-dist/tex/latex/pdfx/pdfx.sty
+Package: pdfx 2019/02/27 v1.6.3 PDF/X and PDF/A support (CVR/HTH/RRM/PS)
+\pdfx@minorversion=\count281
+
+(/usr/local/texlive/2021/texmf-dist/tex/generic/iftex/iftex.sty
+Package: iftex 2020/03/06 v1.0d TeX engine tests
+)
+(/usr/local/texlive/2021/texmf-dist/tex/generic/iftex/ifpdf.sty
+Package: ifpdf 2019/10/25 v3.4 ifpdf legacy package. Use iftex instead.
+)
+(/usr/local/texlive/2021/texmf-dist/tex/generic/iftex/ifxetex.sty
+Package: ifxetex 2019/10/25 v0.7 ifxetex legacy package. Use iftex instead.
+)
+(/usr/local/texlive/2021/texmf-dist/tex/latex/base/everyshi-ltx.sty
+Package: everyshi-ltx 2020/08/17 v1.0a Emulation of the original everyshi packa
+ge
+with kernel methods
+)
+(/usr/local/texlive/2021/texmf-dist/tex/generic/iftex/ifluatex.sty
+Package: ifluatex 2019/10/25 v1.5 ifluatex legacy package. Use iftex instead.
+){/usr/local/texlive/2021/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
+(/usr/local/texlive/2021/texmf-dist/tex/latex/pdfx/l8u-penc.def
+File: l8u-penc.def 2017/06/23 v0.8 Custom LaTeX file, for UTF8 encoded letters 
+and symbols
+LaTeX Info: Composite with undeclared \b in encoding L8U on input line 278.
+)
+\pdfxsafeforxmp@toks=\toks31
+
+(/usr/local/texlive/2021/texmf-dist/tex/latex/xcolor/xcolor.sty
+Package: xcolor 2016/05/11 v2.12 LaTeX color extensions (UK)
+
+(/usr/local/texlive/2021/texmf-dist/tex/latex/graphics-cfg/color.cfg
+File: color.cfg 2016/01/02 v1.6 sample color configuration
+)
+Package xcolor Info: Driver file: pdftex.def on input line 225.
+Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1348.
+Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1352.
+Package xcolor Info: Model `RGB' extended on input line 1364.
+Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1366.
+Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1367.
+Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1368.
+Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1369.
+Package xcolor Info: Model `Gray' substituted by `gray' on input line 1370.
+Package xcolor Info: Model `wave' substituted by `hsb' on input line 1371.
+)
+(/usr/local/texlive/2021/texmf-dist/tex/latex/pdfmanagement-testphase/xcolor-pa
+tches-tmp-ltx.sty
+Package: xcolor-patches-tmp-ltx 2021-03-17 v0.95c patch xcolor for l3color
+)
+\pdfx@tmptoks=\toks32
+
+(/usr/local/texlive/2021/texmf-dist/tex/latex/hyperref/hyperref.sty
+Package: hyperref 2021-02-27 v7.00k Hypertext links for LaTeX
+
+(/usr/local/texlive/2021/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty
+Package: ltxcmds 2020-05-10 v1.25 LaTeX kernel commands for general use (HO)
+)
+(/usr/local/texlive/2021/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
+Package: pdftexcmds 2020-06-27 v0.33 Utility functions of pdfTeX for LuaTeX (HO
+)
+
+(/usr/local/texlive/2021/texmf-dist/tex/generic/infwarerr/infwarerr.sty
+Package: infwarerr 2019/12/03 v1.5 Providing info/warning/error messages (HO)
+)
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode found.
+)
+(/usr/local/texlive/2021/texmf-dist/tex/generic/kvsetkeys/kvsetkeys.sty
+Package: kvsetkeys 2019/12/15 v1.18 Key value parser (HO)
+)
+(/usr/local/texlive/2021/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty
+Package: kvdefinekeys 2019-12-19 v1.6 Define keys (HO)
+)
+(/usr/local/texlive/2021/texmf-dist/tex/generic/pdfescape/pdfescape.sty
+Package: pdfescape 2019/12/09 v1.15 Implements pdfTeX's escape features (HO)
+)
+(/usr/local/texlive/2021/texmf-dist/tex/latex/hycolor/hycolor.sty
+Package: hycolor 2020-01-27 v1.10 Color options for hyperref/bookmark (HO)
+)
+(/usr/local/texlive/2021/texmf-dist/tex/latex/letltxmacro/letltxmacro.sty
+Package: letltxmacro 2019/12/03 v1.6 Let assignment for LaTeX macros (HO)
+)
+(/usr/local/texlive/2021/texmf-dist/tex/latex/auxhook/auxhook.sty
+Package: auxhook 2019-12-17 v1.6 Hooks for auxiliary files (HO)
+
+
+Package auxhook Warning: Cannot patch \document,
+(auxhook)                using \AtBeginDocument instead.
+
+) (/usr/local/texlive/2021/texmf-dist/tex/latex/kvoptions/kvoptions.sty
+Package: kvoptions 2020-10-07 v3.14 Key value format for package options (HO)
+)
+\@linkdim=\dimen151
+\Hy@linkcounter=\count282
+\Hy@pagecounter=\count283
+
+(/usr/local/texlive/2021/texmf-dist/tex/latex/hyperref/pd1enc.def
+File: pd1enc.def 2021-02-27 v7.00k Hyperref: PDFDocEncoding definition (HO)
+)
+(/usr/local/texlive/2021/texmf-dist/tex/latex/hyperref/hyperref-langpatches.def
+File: hyperref-langpatches.def 2021-02-27 v7.00k Hyperref: patches for babel la
+nguages
+) (/usr/local/texlive/2021/texmf-dist/tex/generic/intcalc/intcalc.sty
+Package: intcalc 2019/12/15 v1.3 Expandable calculations with integers (HO)
+)
+(/usr/local/texlive/2021/texmf-dist/tex/generic/etexcmds/etexcmds.sty
+Package: etexcmds 2019/12/15 v1.7 Avoid name clashes with e-TeX commands (HO)
+)
+\Hy@SavedSpaceFactor=\count284
+
+(/usr/local/texlive/2021/texmf-dist/tex/latex/hyperref/puenc.def
+File: puenc.def 2021-02-27 v7.00k Hyperref: PDF Unicode definition (HO)
+)
+Package hyperref Info: Option `pdfa' set `true' on input line 4073.
+Package hyperref Info: Hyper figures OFF on input line 4192.
+Package hyperref Info: Link nesting OFF on input line 4197.
+Package hyperref Info: Hyper index ON on input line 4200.
+Package hyperref Info: Plain pages OFF on input line 4207.
+Package hyperref Info: Backreferencing OFF on input line 4212.
+Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
+Package hyperref Info: Bookmarks ON on input line 4445.
+\c@Hy@tempcnt=\count285
+
+(/usr/local/texlive/2021/texmf-dist/tex/latex/url/url.sty
+\Urlmuskip=\muskip17
+Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
+)
+LaTeX Info: Redefining \url on input line 4804.
+\XeTeXLinkMargin=\dimen152
+
+(/usr/local/texlive/2021/texmf-dist/tex/generic/bitset/bitset.sty
+Package: bitset 2019/12/09 v1.3 Handle bit-vector datatype (HO)
+
+(/usr/local/texlive/2021/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty
+Package: bigintcalc 2019/12/15 v1.5 Expandable calculations on big integers (HO
+)
+))
+\Fld@menulength=\count286
+\Field@Width=\dimen153
+\Fld@charsize=\dimen154
+Package hyperref Info: Hyper figures OFF on input line 6075.
+Package hyperref Info: Link nesting OFF on input line 6080.
+Package hyperref Info: Hyper index ON on input line 6083.
+Package hyperref Info: backreferencing OFF on input line 6090.
+Package hyperref Info: Link coloring OFF on input line 6095.
+Package hyperref Info: Link coloring with OCG OFF on input line 6100.
+Package hyperref Info: PDF/A mode ON on input line 6103.
+LaTeX Info: Redefining \ref on input line 6145.
+LaTeX Info: Redefining \pageref on input line 6149.
+
+(/usr/local/texlive/2021/texmf-dist/tex/latex/base/atbegshi-ltx.sty
+Package: atbegshi-ltx 2020/08/17 v1.0a Emulation of the original atbegshi packa
+ge
+with kernel methods
+)
+\Hy@abspage=\count287
+\c@Item=\count288
+\c@Hfootnote=\count289
+)
+Package hyperref Info: Driver (custom): hgeneric-testphase.
+
+(/usr/local/texlive/2021/texmf-dist/tex/latex/pdfmanagement-testphase/hgeneric-
+testphase.def
+File: hgeneric-testphase.def 2021-03-17 v0.95c generic Hyperref driver for the 
+LaTeX PDF management testphase bundle
+
+(/usr/local/texlive/2021/texmf-dist/tex/latex/pdfmanagement-testphase/hyperref-
+colorschemes.def)
+
+LaTeX3 Info: Redefining command \Acrobatmenu with sig. 'mm' on line 175.
+
+LaTeX Info: Redefining \href on input line 246.
+LaTeX Info: Redefining \url on input line 306.
+
+LaTeX3 Info: Defining command \__hyp_secondoftwowithopt:wnn with sig. 'omm' on
+(LaTeX3)     line 329.
+
+\l__hyp_tmpa_box=\box51
+\l__hyp_tmpa_int=\count290
+\l__hyp_dest_box=\box52
+
+LaTeX3 Info: Defining command \MakeFieldObject with sig. 'mm' on line 2337.
+
+\HyAnn@Count=\count291
+\Fld@listcount=\count292
+\Hy@SectionHShift=\skip55
+LaTeX Info: Redefining \Hy__hypSectionAnchor on input line 3374.
+)
+
+Package hyperref Warning: unknown key psdextra of module ’hyp / setup’ set
+(hyperref)                to ’’.
+
+
+(/usr/local/texlive/2021/texmf-dist/tex/generic/colorprofiles/colorprofiles.sty
+Package: colorprofiles 2018/11/01 v1.0.1 color profiles for PDF/X and PDF/A sup
+port
+
+(/usr/local/texlive/2021/texmf-dist/tex/generic/colorprofiles/colorprofiles.tex
+)) (/usr/local/texlive/2021/texmf-dist/tex/latex/pdfx/AdobeColorProfiles.tex)
+(/usr/local/texlive/2021/texmf-dist/tex/latex/pdfx/8bit.def
+File: 8bit.def 2008/03/30 v1.1d Input encoding file
+)
+** pdfx: Metadata file Mattil_tutkielma-utf8.xmpdata read successfully.
+(./Mattil_tutkielma-utf8.xmpdata)<<sRGB.icc>>
+(/usr/local/texlive/2021/texmf-dist/tex/latex/pdfx/8bit.def
+File: 8bit.def 2008/03/30 v1.1d Input encoding file
+)
+(/usr/local/texlive/2021/texmf-dist/tex/generic/stringenc/stringenc.sty
+Package: stringenc 2019/11/29 v1.12 Convert strings between diff. encodings (HO
+)
+)
+(/usr/local/texlive/2021/texmf-dist/tex/latex/pdfx/8bit.def
+File: 8bit.def 2008/03/30 v1.1d Input encoding file
+)
+(/usr/local/texlive/2021/texmf-dist/tex/generic/stringenc/se-utf8.def
+File: se-utf8.def 2019/11/29 v1.12 stringenc: UTF-8
+)
+(/usr/local/texlive/2021/texmf-dist/tex/latex/pdfx/8bit.def
+File: 8bit.def 2008/03/30 v1.1d Input encoding file
+)
+(/usr/local/texlive/2021/texmf-dist/tex/generic/pdftex/glyphtounicode.tex)
+(/usr/local/texlive/2021/texmf-dist/tex/latex/pdfx/glyphtounicode-cmr.tex)
+(/usr/local/texlive/2021/texmf-dist/tex/latex/pdfx/glyphtounicode-ntx.tex)
+(/usr/local/texlive/2021/texmf-dist/tex/latex/base/ifthen.sty
+Package: ifthen 2014/09/29 v1.1c Standard LaTeX ifthen package (DPC)
+)
+(/usr/local/texlive/2021/texmf-dist/tex/latex/xmpincl/xmpincl.sty
+Package: xmpincl 2008/05/10 v2.2 Include XMP data in pdflatex
+)
+(/usr/local/texlive/2021/texmf-dist/tex/latex/pdfx/8bit.def
+File: 8bit.def 2008/03/30 v1.1d Input encoding file
+)
+Using XMP template file: pdfa.xmp
+\xmpinclWrite=\write3
+\xmpinclRead=\read3
+\openout3 = `pdfa.xmpi'.
+
+<<pdfa.xmpi>>) (/usr/local/texlive/2021/texmf-dist/tex/latex/lipsum/lipsum.sty
+(/usr/local/texlive/2021/texmf-dist/tex/latex/l3packages/xparse/xparse.sty
+(/usr/local/texlive/2021/texmf-dist/tex/latex/l3packages/xparse/xparse-2020-10-
+01.sty
+(/usr/local/texlive/2021/texmf-dist/tex/latex/l3packages/xparse/xparse-generic.
+tex)))
+Package: lipsum 2021-03-03 v2.3 150 paragraphs of Lorem Ipsum dummy text
+ (/usr/local/texlive/2021/texmf-dist/tex/latex/lipsum/lipsum.ltd.tex
+File: lipsum.ltd.tex 2021-03-03 v2.3 The Lorem ipsum dummy text
+))
+(/usr/local/texlive/2021/texmf-dist/tex/latex/geometry/geometry.sty
+Package: geometry 2020/01/02 v5.9 Page Geometry
+
+(/usr/local/texlive/2021/texmf-dist/tex/generic/iftex/ifvtex.sty
+Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
+)
+\Gm@cnth=\count293
+\Gm@cntv=\count294
+\c@Gm@tempcnt=\count295
+\Gm@bindingoffset=\dimen155
+\Gm@wd@mp=\dimen156
+\Gm@odd@mp=\dimen157
+\Gm@even@mp=\dimen158
+\Gm@layoutwidth=\dimen159
+\Gm@layoutheight=\dimen160
+\Gm@layouthoffset=\dimen161
+\Gm@layoutvoffset=\dimen162
+\Gm@dimlist=\toks33
+)
+\c@theorem=\count296
+\c@lemma=\count297
+\c@corollary=\count298
+\c@definition=\count299
+\c@example=\count300
+\c@remark=\count301
+
+(/usr/local/texlive/2021/texmf-dist/tex/latex/bookmark/bookmark.sty
+Package: bookmark 2020-11-06 v1.29 PDF bookmarks (HO)
+
+(/usr/local/texlive/2021/texmf-dist/tex/latex/bookmark/bkm-pdftex.def
+File: bkm-pdftex.def 2020-11-06 v1.29 bookmark driver for pdfTeX (HO)
+\BKM@id=\count302
+))
+(./Mattil_tutkielma-utf8.aux)
+\openout1 = `Mattil_tutkielma-utf8.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 99.
+LaTeX Font Info:    ... okay on input line 99.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 99.
+LaTeX Font Info:    ... okay on input line 99.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 99.
+LaTeX Font Info:    ... okay on input line 99.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 99.
+LaTeX Font Info:    ... okay on input line 99.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 99.
+LaTeX Font Info:    ... okay on input line 99.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 99.
+LaTeX Font Info:    ... okay on input line 99.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 99.
+LaTeX Font Info:    ... okay on input line 99.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 99.
+LaTeX Font Info:    ... okay on input line 99.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 99.
+LaTeX Font Info:    ... okay on input line 99.
+
+(/usr/local/texlive/2021/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count303
+\scratchdimen=\dimen163
+\scratchbox=\box53
+\nofMPsegments=\count304
+\nofMParguments=\count305
+\everyMPshowfont=\toks34
+\MPscratchCnt=\count306
+\MPscratchDim=\dimen164
+\MPnumerator=\count307
+\makeMPintoPDFobject=\count308
+\everyMPtoPDFconversion=\toks35
+) (/usr/local/texlive/2021/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
+Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
+85.
+
+(/usr/local/texlive/2021/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
+e
+))
+Package hyperref Info: Link coloring OFF on input line 99.
+
+(/usr/local/texlive/2021/texmf-dist/tex/latex/hyperref/nameref.sty
+Package: nameref 2021-04-02 v2.47 Cross-referencing by name of section
+
+(/usr/local/texlive/2021/texmf-dist/tex/latex/refcount/refcount.sty
+Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
+)
+(/usr/local/texlive/2021/texmf-dist/tex/generic/gettitlestring/gettitlestring.s
+ty
+Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
+)
+\c@section@level=\count309
+)
+LaTeX Info: Redefining \ref on input line 99.
+LaTeX Info: Redefining \pageref on input line 99.
+LaTeX Info: Redefining \nameref on input line 99.
+
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+*geometry* verbose mode - [ preamble ] result:
+* driver: pdftex
+* paper: a4paper
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: twoside 
+* h-part:(L,W,R)=(85.35826pt, 426.79134pt, 85.35828pt)
+* v-part:(T,H,B)=(85.35826pt, 674.3303pt, 85.35828pt)
+* \paperwidth=597.50787pt
+* \paperheight=845.04684pt
+* \textwidth=426.79134pt
+* \textheight=674.3303pt
+* \oddsidemargin=13.08827pt
+* \evensidemargin=13.08829pt
+* \topmargin=-23.91173pt
+* \headheight=12.0pt
+* \headsep=25.0pt
+* \topskip=12.0pt
+* \footskip=30.0pt
+* \marginparwidth=85.0pt
+* \marginparsep=10.0pt
+* \columnsep=10.0pt
+* \skip\footins=10.8pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidetrue
+* \@mparswitchtrue
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+<UTU_logo_FI.jpeg, id=13, 373.74779pt x 151.19247pt>
+File: UTU_logo_FI.jpeg Graphic file (type jpg)
+<use UTU_logo_FI.jpeg>
+Package pdftex.def Info: UTU_logo_FI.jpeg  used on input line 104.
+(pdftex.def)             Requested size: 284.52756pt x 115.10817pt.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 125
+.
+(/usr/local/texlive/2021/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Trying to load font information for U+msb on input line 125
+.
+
+(/usr/local/texlive/2021/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+) [1
+
+ <./UTU_logo_FI.jpeg>] [2]
+Underfull \hbox (badness 10000) in paragraph at lines 151--161
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 151--161
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 151--161
+
+ []
+
+[3
+
+] [4
+
+]
+
+Package hyperref Warning: old toc file detected, not used; run LaTeX again.
+
+\tf@toc=\write4
+\openout4 = `Mattil_tutkielma-utf8.toc'.
+
+[5] [6
+
+]
+
+LaTeX Warning: Citation `NewtLeib' on page 1 undefined on input line 186.
+
+
+Overfull \hbox (2.50381pt too wide) in paragraph at lines 196--197
+\T1/cmr/m/n/12 Seuraavaksi esi-tel-l��n niin sa-not-tu \T1/cmr/m/it/12 Rie-man-
+nin hy-po-tee-si\T1/cmr/m/n/12 , jon-ka mu-kaan ns. $\OML/cmm/m/it/12 ^^P$\T1/c
+mr/m/n/12 -funktion
+ []
+
+
+LaTeX Warning: Citation `Riemann' on page 1 undefined on input line 197.
+
+
+LaTeX Warning: Reference `kuvatus1' on page 1 undefined on input line 220.
+
+<siivet.jpeg, id=54, 361.35pt x 224.84pt>
+File: siivet.jpeg Graphic file (type jpg)
+<use siivet.jpeg>
+Package pdftex.def Info: siivet.jpeg  used on input line 224.
+(pdftex.def)             Requested size: 192.0548pt x 119.50084pt.
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[1] [2 <./siivet.jpeg>] [3] [4] (./Mattil_tutkielma-utf8.aux)
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+ ) 
+Here is how much of TeX's memory you used:
+ 16371 strings out of 478994
+ 274611 string characters out of 5858184
+ 863406 words of memory out of 5000000
+ 33510 multiletter control sequences out of 15000+600000
+ 418746 words of font info for 66 fonts, out of 8000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 87i,8n,109p,576b,1034s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/local/texlive/2021/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}
+</usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><
+/usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></
+usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></us
+r/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/
+local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/loc
+al/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/loca
+l/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/
+texlive/2021/texmf-dist/fonts/type1/public/pdftex/dummy-space.pfb></usr/local/t
+exlive/2021/texmf-dist/fonts/type1/public/cm-super/sfbx1200.pfb></usr/local/tex
+live/2021/texmf-dist/fonts/type1/public/cm-super/sfbx1440.pfb></usr/local/texli
+ve/2021/texmf-dist/fonts/type1/public/cm-super/sfbx1728.pfb></usr/local/texlive
+/2021/texmf-dist/fonts/type1/public/cm-super/sfcc1200.pfb></usr/local/texlive/2
+021/texmf-dist/fonts/type1/public/cm-super/sfcc1440.pfb></usr/local/texlive/202
+1/texmf-dist/fonts/type1/public/cm-super/sfrm0700.pfb></usr/local/texlive/2021/
+texmf-dist/fonts/type1/public/cm-super/sfrm0800.pfb></usr/local/texlive/2021/te
+xmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb></usr/local/texlive/2021/texm
+f-dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/local/texlive/2021/texmf-
+dist/fonts/type1/public/cm-super/sfti1200.pfb>
+Output written on Mattil_tutkielma-utf8.pdf (10 pages, 432259 bytes).
+PDF statistics:
+ 198 PDF objects out of 1000 (max. 8388607)
+ 25 named destinations out of 1000 (max. 500000)
+ 119 words of extra memory for PDF output out of 10000 (max. 10000000)
+
