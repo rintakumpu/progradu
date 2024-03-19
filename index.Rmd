@@ -7,18 +7,17 @@ output:
   pdf_document:
     toc: true
     number_sections: true
-    toc_depth: 4
+    toc_depth: 3
 citation_package: natbib
 lang: fi
 documentclass: book
-bibliography: [book.bib, packages.bib]
+bibliography: [packages.bib]
 fontsize: 12pt
 classoption: a4paper, twoside
 link-citations: yes
 github-repo: rintakumpu/progradu
-site: bookdown::bookdown_site
 ---
-
+  
 \setlength\parindent{24pt}
 \setlength\parskip{3pt}
 
@@ -37,18 +36,75 @@ knitr::write_bib(c(
 ), 'packages.bib')
 ```
 
-# Johdanto
+\chapter{Johdanto}
 
-Lorem ipsum.
+SMC-menetelmät (sequential Monte Carlo -mentelmät) ovat joukko Monte Carlo -algoritmeja, joiden avulla voidaan ratkaista ns. suodinongelma, kun ongelma on epälineaarinen ja/tai ongelmaan liittyvä kohina ei noudata normaalijakaumaa. SMC-menetelmille on lukuisia sovellutuksia esimerkiksi Bayesilaisessa tilastotieteessä, fysiikassa ja robotiikassa.
 
-## Notaatioista
+Tämän tutkielman tavoitteena on esittää pääpiirteittäin SMC-menetelmien teoria sekä joitakin menetelmäperheeseen kuuluvia algoritmeja. Tutkielman ensimmäisessä alaluvussa kuvataan yleisellä tasolla sekä suodinongelma että sen ratkaisujen historiaa. Toisessa alaluvussa käsitellään joitakin Monte Carlo -menetelmiin liittyviä yleisiä tuloksia. Kolmannessa alaluvussa esitellään Bayesilainen viitekehys suodinongelmalle, jonka pohjalta neljännessä alaluvussa kuvataan SIR-algoritmina tunnettu SMC-menetelmä. Tutkielman lopussa tarkastellaan menetelmien käyttöä sisätilapaikannussovelluksessa.
 
-Lorem ipsum.
+Hiukassuodin- sekä hiukassiloitinalgoritmien osalta tutkielman esitykset seuraavat erityisesti Simo Särkän kirjaa \textit{Bayesian Filtering and Smoothing} (2013), Fredrik Gustafssonin artikkelia "Particle Filter Theory and Practice with Positioning Applications" (2010) sekä Olivier Cappén, Simon J. Godsillin ja Eric Moulines'n  artikkelia "An overview of existing methods and recent advances in sequential Monte Carlo" (2007). Hiukassuotimien varianssin estimointi seuraa artikkeleita TODO.
 
-## Suodin- ja siloitteluongelmat
+\section{Suodinongelma}
 
-Lorem ipsum.
+Stokastisten prosessien teoriassa suodinongelmaksi kutsutaan tilannetta, jossa halutaan muodostaa keskineliövirheen mielessä paras mahdollinen estimaatti jonkin järjestelmän tilan arvoille, kun ainoastaan osa tiloista voidaan havaita ja/tai havaintoihin liittyy kohinaa. Tavoitteena on toisin sanoen laskea jonkin prosessin posteriorijakauma kyseisten havaintojen perusteella. Ongelmaa havainnollistaa kaavio (\ref{mallikaavio}). 
 
-## Suodin- ja siloitteluongelmien historiaa
+\begin{equation}\label{mallikaavio}
+\begin{tikzcd}
+x_1 \arrow[d] \arrow[r] & x_2 \arrow[d] \arrow[r] & x_3 \arrow[d] \arrow[r] & \ldots & \makebox[\widthof{$ \text{havainnot}$}]{$\text{piilossa olevat tilat}$} \\
+y_1  & y_2  & y_3  & \ldots & \makebox[\widthof{$ \text{havainnot}$}]{$\text{havainnot}$}
+\end{tikzcd}
+\end{equation}
 
-Lorem ipsum.
+Tässä tutkielmassa keskitytään erityisesti epälineaarisen ns. Markovin piilomallin posteriorijakauman Bayesilaiseen ratkaisuun.  Ongelmassa tiedetään, miten havaitut muuttujat $y_k$ kytkeytyvät "piilossa oleviin" tilamuuttujiin $x_k$ sekä osataan sanoa jotain tilamuuttujien todennäköisyyksistä. Oletetaan myös, että piilossa oleville tiloille $X_k$ pätee Markov-ominaisuus, jolloin kutakin hetkeä seuraava tila $x_{k+1}$ riippuu menneistä tiloista $x_{1:k}$ ainoastaan tilan $x_k$ välityksellä. Lisäksi havaittu tila $y_k$ riippuu tiloista $x_{k}$ ainoastaan jonkin $x_k$:n funktion kautta. Kun aika-avaruus on diskreetti ja ajanhetkellä $k=\{1,\ldots,t\}$ piilossa olevan prosessin tilaa merkitään $x_k$ ja havaittua prosessia $y_k$, saadaan mallit
+
+\begin{align}
+&\label{malli-1} x_{k+1} = f(x_k, \nu_k),\\
+&\label{malli-2} y_{k} = h(x_k)+e_k.
+\end{align}
+
+Lisäksi tiedetään prosessin alkuhetken jakauma $x_0 \sim p_{x_{0}}$, tähän liittyvän kohinaprosessin jakauma $\nu_k \sim p_{\nu_{k}}$ sekä malliin $y_k$ liittyvä kohina $e_k \sim p_{e_k}$. Koska SMC-algoritmit pyrkivät ratkaisemaan juurikin epälineaarisen, ei-Gaussisen suodinongelman, voivat funktiot $f(\cdot)$ ja $h(\cdot)$ olla epälineaarisia eikä kohinan tarvitse olla normaalijakautunutta.
+
+Mallit voidaan esittää myös yleisemmässä jakaumamuodossa
+
+\begin{align}
+&\label{malli-3} x_{k+1} \sim p(x_{k+1}|x_k),\\
+&\label{malli-4} y_{k} \sim p(y_k|x_k).
+\end{align}
+
+Tutkielman teoriaosassa käytetään ensisijaisesti yhtälöiden (\ref{malli-3}) ja  (\ref{malli-4}) muotoilua. Empiirisessä osassa palataan yhtälöiden (\ref{malli-1}) ja (\ref{malli-2}) muotoiluun. 
+
+Suodinongelmaa lähellä on myös ns. tasoitusongelma (smoothing problem), jossa ollaan kiinnostuneita prosessin $x_k$ posteriorijakaumasta $p(x_k|y_k)$ jokaisena ajanhetkenä $\{1,\ldots,k\}$ ei ainoastaan haluttuna ajanhetkenä $k$. Tämä tutkielma keskittyy yksin suodinongelman ratkaisemiseen, mutta huomioitavaa on, että SMC-algoritmit näyttävät ratkaisevan tasoitusongelman ilmaiseksi. Tähän liittyy kuitenkin joidenkin mallien kohdalla mahdollista epätarkkuutta, joten tarvittaessa tasoitusongelma pitää ratkaista erikseen.
+
+\section{Notaatioista}
+
+Tässä tutkielmassa käytetään seuraavia notaatioita. TODO.
+
+\section{Suodin- ja siloitteluongelmien historiaa}
+
+Tämä alaluku esittää pääpiirteittään suodinongelmalle esitettyjen ratkaisujen historian. Lineaarisen suodinongelman osalta alaluku noudattaa Dan Crisanin artikkelia "The stochastic filtering problem: a brief historical account" (2014) sekä Mohinder S. Grewalin ja Angus P. Andrewsin artikkelia "Applications of Kalman Filtering in Aerospace 1960 to the Present" (2010). SMC-menetelmien osalta lähteenä toimii Cappé \&al (2007). 
+
+Suodinongelma nousi esille insinööritieteiden sekä sotateollisuuden käytännön ongelmista 2. maailmansodan aikana, vaikkakin suodinongelman diskreetin ajan ratkaisut juontavat jo Andrei N. Kolmogorovin 30-luvun artikkeleihin. Jatkuvan ajan tilanteessa ensimmäisen optimaalisen, kohinan sallivan suotimen esitti matemaatikko, kybernetiikan kehittäjä Norbert Wiener. Wiener-suotimena tunnettua ratkaisuaan varten Wiener muotoili seuraavat kolme ominaisuutta, jotka prosessin $X$ estimaatin $\hat{X}_t$ pitää toteuttaa. 
+
+\begin{enumerate}
+\vspace{\baselineskip}
+\item \textit{Kausaliteetti}: $X_t$ tulee estimoida käyttäen arvoja $Y_s$, missä $s \leq t$.
+\item \textit{Optimaalisuus}: $X_t$:n estimaatin $\hat{X}_t$ tulee minimoida keskineliövirhe $\mathbb{E}[(X-\hat{X}_t)^2]$.
+\item \textit{On-line -estimointi}: Estimaatin $\hat{X}_t$ tulee olla saatavissa minä hyvänsä ajanhetkenä $t$. 
+\vspace{\baselineskip}
+\end{enumerate}
+
+Wiener sovelsi ratkaisussaan stationaaristen prosessien spektriteoriaa. Tulokset julkaistiin salaisina Yhdysvaltojen asevoimien tutkimuksesta vastanneen National Defense Research Committeen (NDRC) raportissa vuonna 1942. Tutkimus tunnettiin sodan aikana lempinimellä "Keltainen vaara" sekä painopaperinsa värin että vaikeaselkoisuutensa vuoksi. Myöhemmin Wiener esitti tuloksensa julkisesti kirjassaan \textit{Extrapolation, Interpolation and Smoothing of Stationary Time Series} (1949). Wienerin alkuperäiset kolme perusperiaatetta päteveät edelleen kaikille suodinongelman ratkaisuille, myös SMC-menetelmille. 
+
+Kenties tärkein ja varmasti tunnetuin lineaariseen suodinongelman ratkaisu on Kalman-suodin. Suotimen kehittivät R.E. Kalman ja R.S. Bucy 1950- ja 60-lukujen taitteessa Yhdysvaltain kylmän sodan kilpavarustelutarpeisiin perustetussa Research Institute for Advanced Studies -tutkimuslaitoksessa (RIAS). Kalman-suodin on suodinongelman diskreetin ajan ratkaisu, kun taas Kalman-Bucy-suodin on jatkuvan ajan ratkaisu. Kohinan ollessa normaalijakautunutta on Kalman-suodin Wiener-suotimen tavoin lineaarisen suodinongelman optimaalinen ratkaisu. Wiener-suotimella ja Kalman-suotimella on kuitenkin erilaiset oletukset, minkä vuoksi erityisesti säätö- ja paikannussovelluksissa Kalman-suotimen käyttö on luontevampaa. Suotimien oletuksia ja oletusten välisiä eroja ei käsitellä tässä tutkielmassa, kuten ei käsitellä myöskään Kalman-suotimen formaalia yhteyttä SMC-menetelmiin.
+
+Kalman-suodinta voidaan soveltaa myös epälineaarisessa tapauksessa, kunhan suodinongelman funktiot $f(\cdot)$ ja $h(\cdot)$ ovat derivoituvia ja niihin liittyvä kohina oletetaan normaalijakautuneeksi. Tätä ratkaisua kutsutaan laajennetuksi Kalman-suotimeksi (extended Kalman filter, EKF). Suodin kehitettiin 60-luvulla NASA:n Apollo-ohjelman tarpeisiin, vaikkakin itse avaruusalusten laitteistot hyödynsivät lentoratojen laskennassa Kalman-suotimen perusversiota. Laajennetun Kalman-suotimen toimintaperiaate perustuu epälineaaristen funktioiden linearisointiin Taylorin kehitelmän avulla kulloisenkin estimaatin ympärillä. Laajennettu Kalman-suodin on erityisesti paikannussovellusten \textit{de facto} -suodinstandardi, mutta suodin ei kuitenkaan ole epälineaarisen ongelman optimaalinen estimaattori.
+
+Kalman-suotimesta on lisäksi olemassa lukuisia muita epälineaarisiin ongelmiin soveltuvia laajennuksia, muun muassa paikkaratkaisun Kalman-suodin (position Kalman filter, PKF), hajustamaton Kalman-suodin (unscented Kalman filter, UKF) ja tilastollisesti linearisoitu Kalman-suodin (statistically linearized Kalman filter, SLF). Kuitenkin jos prosessin $X$ mallia ei tunneta tarkasti tai kohinaa ei voida olettaa normaalijakautuneeksi, ovat sekventiaaliset Monte Carlo -menetelmät Kalman-suotimen johdannaisia parempia ratkaisuja. Vaikka tila-avaruuden dimensioiden kasvaessa kasvaa myös SMC-menetelmien vaatima laskentateho, ovat SMC-menetelmät aina sitä parempia mitä epälineaarisempia mallit ovat ja mitä kauempana normaalijakaumasta kohina on. Viimeisten vuosikymmenten aikana myös laskennan teho on kasvanut merkittävästi samalla kun laskennan hinta on vastaavasti romahtanut, mikä puoltaa Monte Carlo -menetelmien käyttöä entistä useammissa ongelmissa. 
+
+Joitakin suodinongelman rekursiivisia Monte Carlo -ratkaisuja löytyy jo 1950\textendash 70-luvuilta, erityisesti säätöteoriaan piiristä. Olennainen nykyalgoritmeihin periytynyt oivallus varhaisissa suodinalgoritmeissa oli tärkeytysotannan käyttö halutun jakaumaestimaatin laskennassa. Tärkeytysotanta-algoritmiin voidaan turvautua, kun emme pysty suoraan tekemään havaintoja jostakin jakaumasta $p$ ja teemme sen sijaan havaintoja jakaumasta $q$, joita painotamme niin, että tuloksena saadaan jakauman $p$ harhaton estimaatti. Algoritmi on kuvattu tarkemmin tutkielman alaluvussa 2.
+
+Tärkeysotantaa käyttävä suodinongelman ratkaiseva SIS-algoritmi (sequential importance sampling) ei kuitenkaan vielä 70-luvulla löytänyt suurta käytännön suosiota. Osin tämä johtui puutteellisesta laskentatehosta, mutta algoritmi kärsi myös otosten ehtymisenä (sample impoverishment) tunnetusta ongelmasta. Monissa ongelmissa SIS-algoritmia käytettäessä suuri osa painoista päätyy vain tietyille partikkeleille, jolloin vastaavasti suuri osa partikkeleista ei enää estimoi haluttua jakaumaa. Tähän ongelmaan palataan myöhemmin.
+
+Merkittävän ratkaisun ehtymisongelmaan esittivät Gordon, Salmond ja Smith artikkelissaan "Novel approach to nonlinear/non-Gaussian Bayesian state estimation" (1993). Artikkelin ratkaisu kulki nimellä "bootstrap filter", saapasremmisuodin. Saapasremmisuodin vältti ehtymisen uudellenotannalla, jossa matalapainoiset partikkelit korvattiin otoksilla korkeapainoisemmista partikkeleista. Ratkaisussa painot eivät myöskään riipu partikkelien aiemmista poluista vaan ainoastaan havaintojen uskottavuusfunktiosta. Vastaavaa ratkaisua käytetään tämän tutkielman uudemmassa SIR-algoritmissa (sampling importance resampling), jossa myös uudelleenotantaan sovelletaan tärkeytysotantaa. 
+
+SMC-menetelmissä stokastisen prosessin posteriorijakauman esittämiseen käytettyjä otoksia kutsutaan myös partikkeleiksi ja menetelmiä hiukassuotimiksi. Erityisesti myöhemmin esitettävää SIR-algoritmia kutsutaan usein hiukkassuotimeksi. Tässä tutkielmassa pyritään korostamaan suotimien yhteyttä Monte Carlo -algoritmeihin ja käytetään siksi yleisempää termiä SMC-menetelmät. Termiä hiukkassuodin käytti ensimmäisen kerran Del Moral artikkelissa "Nonlinear Filtering: Interacting Particle Resolution" (1996), SMC-menetelmät termiä Liu ja Chen artikkelissa "Sequential Monte Carlo Methods for Dynamic Systems" (1998). 

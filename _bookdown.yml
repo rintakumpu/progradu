@@ -1,3 +1,6 @@
+book_filename: "gradu.Rmd"
+delete_merged_file: true
+output_dir: "gradu"
 bookdown::pdf_book:
   includes:
     in_header: preamble.tex
@@ -7,5 +10,3 @@ bookdown::pdf_book:
   keep_tex: yes
   toc_depth: 3
 bookdown::epub_book: default
-
-

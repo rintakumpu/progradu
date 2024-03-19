@@ -1,12 +1,61 @@
-# Monte Carlo -menetelmistä
+\section{Monte Carlo -menetelmistä}
 
-## Monte Carlo -menetelmien historiaa
+Tässä alaluvussa kuvataan lyhyesti SMC-menetelmissä käytettävien Monte Carlo -menetelmien perusperiaate todennäköisyysjakauman estimoinnissa. Lisäksi esitetään tärkeytysotanta-algoritmi (importance sampling), jonka tarkoituksena on estimoida harhattomasti jakaumaa $p(x|y_{1:k})$, josta emme voi suoraan tehdä otoksia, mutta jota voimme approksimoida toisella jakaumalla $q$. Esitykset noudattavat Särkkää (2013).
 
-## Monte Carlo -approksimaatio
+\subsection{Monte Carlo -approksimaatio}
 
-## Tärkeytysotanta
+Bayesilaisessa päättelyssä ollaan yleisesti kiinnostuttu laskemaan johonkin posteriorijakaumaan $p$ liittyvää odotusarvoa
 
-## Sekventiaalinen Monte Carlo
+\begin{align}
+\mathbb{E}[g(x)|y_{1:k}]=\int g(x)p(x|y_{1:k})dx,
+\end{align}
 
+\noindent missä g on tila-avaruuden mielivaltainen funktio ja $p(x|y_{1:t})$ on havaintoihin $\{y_1,\ldots,y_k\}$ liittyvä $x$:n posterioritiheysjakauma. Odotusarvo on laskettavissa suljetussa muodossa vain harvoissa tapauksissa, suodinongelman kohdalla silloin, kun kyseessä on lineaarinen ja Gaussinen malli. Odotusarvoa voidaan kuitenkin approksimoida niin sanoituilla Monte Carlo -menetelmillä. Menetelmien perusperiaate on tehdä riippumattomia otoksia estimoitavasta jakaumasta ja laskea haluttu odotusarvo otosten avulla. Jos tehdään $N$ otosta jakaumasta $x^i\sim p(x|y_{1:t})$, missä $i=\{1,\ldots,N\}$ saadaan näiden otosten avulla laskettua odotusarvon estimaatti
 
+\begin{align}
+\mathbb{E}[g(x)|y_{1:k}]\simeq\frac{1}{N}\sum_{i=1}^N g(x^i).
+\end{align}
+
+Monte Carlo -estimaatti konvergoi keskeisen raja-arvolauseen nojalla ja sen estimointivirheen voidaan osoittaa olevan luokkaa $O(\frac{1}{\sqrt{N}})$ riippumatta tilamuuttujan $x$ dimensiosta. SMC-menetelmät hyödyntävät Monte Carlo -estimointia sekventiaalisesti, jolloin estimaatti lasketaan rekursiivisesti kullekin ajanhetkelle $k=\{1,\ldots, t\}$. Tähän palataan alaluvuissa 3 ja 4.
+
+\subsection{Tärkeytysotanta}
+
+Tilanteessa, jossa Monte Carlo -otoksia ei voida tehdä suoraan jakaumasta $p$, voidaan hyödyntää jakaumaa $p$ approksimoivaa tärkeytys- tai ehdotusjakaumaa $q(x|y_{1:k})$ sekä ns. tärkeytysotantaa. Oletetaan, että tunnetaan priorijakauma $p(x)$ ja on olemassa havaintomalli $p(y_{1:k}|x)$ sekä valittu ehdotusjakauma $q(x|y_{1:k})$, josta voidaan tehdä otoksia. Ehdotusjakaumalta edellytetään lisäksi, että sen kantaja on suurempi tai yhtä suuri kuin jakauman $p(x|y_{1:k})$ ja että se saa nollasta poikkeavia arvoja kaikkialla missä $p(x|y_{1:k})$ saa nollasta poikkeavia arvoja. Kirjoitetaan halutun posteriorijakauman odotusarvo integraalina 
+
+\begin{align}
+\int g(x)p(x|y_{1:k})dx=\int g(x)\frac{p(x|y_{1:k})}{q(x|y_{1:k})}q(x|y_{1:k})dx,
+\end{align}
+
+\noindent jolle voidaan muodostaa Monte Carlo -approksimaatio tekemällä $N$ otosta jakaumasta $x^i \sim q(x|y_{1:k})$.  
+
+Muodostetaan näin odotusarvo
+
+\begin{align}
+\mathbb{E}[g(x)|y_{1:k}]\simeq\frac{1}{N}\sum_{i=1}^N\frac{p(x^i|y_{1:k})}{q(x^i|y_{1:k})}g(x^i)=\sum_{i=1}^Nw^ig(x^i),
+\end{align}
+
+\noindent missä $g(x)$ on jokin estimoinnissa hyödyllinen, mielivaltainen funktio. Tutkielmassa käytetty notaatio $x_k^i$ viittaa ajanhetken $k$ partikkeliin $i$, missä $i=\{1,\ldots,N\}$. Tärkeytysotantaa kuvaa nyt algoritmi (\ref{tarkeytysotanta-algo}). Kun posteriorijakauman estimaatti muodostetaan kyseisellä algoritmilla voidaan tulos kirjoittaa
+
+\begin{align}
+\hat{p}(x|y_{1:k})=\sum_{i=1}^{N}w^i \delta(x-x^i),
+\end{align}
+
+\noindent missä $\delta(x)$ on Diracin deltafunktio.
+
+\begin{algorithm}[H]
+\label{tarkeytysotanta-algo}
+\DontPrintSemicolon
+\Begin{
+  \For{$i=1,2,\ldots,N$}{
+    \Begin{Otetaan $N$ otosta ehdotusjakaumasta $x^i \sim q(x|y_{1:k}).$}
+    \Begin{Lasketaan normalisoimattomat painot $w_*^i= p(y_{1:k}|x^i)p(x^i)/q(x^i|y_{1:k}).$ \newline ja normalisoidut painot $w^i=w_*^i/\sum_{j=1}^Nw_*^j$.}
+    \Begin{Estimoidaan $p$ laskemalla tiheydelle approksimaatio $\mathbb{E}[g(x)|y_{1:k}]\simeq\sum_{i=1}^Nw^ig(x^i)$.}
+    } 
+  }  
+\caption{Tärkeytysotanta}
+\end{algorithm}
+
+\subsection{Sekventiaalinen Monte Carlo}
+
+TODO/WTF?
 

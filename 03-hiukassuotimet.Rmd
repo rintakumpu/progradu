@@ -1,33 +1,198 @@
-# Hiukkassuotimet
+\chapter{Hiukassuotimet}
 
-Add an appendix as a special kind of un-numbered part: `# (APPENDIX) Other stuff {-}` (followed by `# A chapter`). Chapters in an appendix are prepended with letters instead of numbers.
+\section{Saapasremmisuodin}
 
-## Saapasremmisuodin
+\section{SIR-algoritmi}
 
-Lorem ipsum
+Tässä alaluvussa esitetään SMC-menetelmiin kuuluva SIR-algoritmi, epälineaarisen suodinongelman ratkaisemiseksi. Algoritmi on numeerinen toteutus alaluvussa 3 kuvatusta Bayesilaisesta suotimesta. Esitetty algoritmi perustuu Gustafssoniin (2010).
 
-## SIR-algoritmi
+Algoritmi alustetaan jakaumasta $x_1^i\sim p_{x_0}$ generoiduilla $N$-kappaleella partikkeleita. Jokaiselle partikkelille annetaan alustuksessa sama paino $w_{1|0}^i=1/N$. Algoritmi suoritetaan jokaiselle partikkelille $i=\{1,2,\ldots,N\}$ jokaisella ajanhetkellä $k=\{1,2,\ldots,t\}$.
 
-Lorem ipsum
+Seuraava toistetaan jokaiselle ajanhetkelle $k=\{1,2,\ldots,t\}$. Algoritmin ensimmäisessä vaiheessa päivitetään painot yhtälön (\ref{painopaivitys}) mukaan.
 
-### Interpolaatiosta
+\begin{align}\label{painopaivitys}
+w^i_{k|k}=\frac{1}{c_k}w^i_{k|k-1}p(y_k|x^i_k).
+\end{align}
 
-Lorem ipsum
+\noindent Tämä vastaa yllä esitetyn Bayes-suotimen päivitysvaihetta (\ref{bayes-paivitys}). Normalisointipaino $c_k$ lasketaan puolestaan yhtälöstä (\ref{normalisointi}), mikä vastaa Bayes-suotimen normalisointivakion laskemista (\ref{bayes-normalisointi}) ja asettaa painojen summaksi $\sum_{i=1}^Nw^i_{k|k}=1$.
 
-### Parametrien valinta
+\begin{align}\label{normalisointi}
+c_k=\sum_{i=1}^{N}w_{k|{k-1}}^ip(y_k|x_k^i).
+\end{align}
 
-Lorem ipsum
+\noindent Seuraavassa vaiheessa estimoidaan $p$ laskemalla tiheyden $p(x_{1:k}|y_{1:k})$ Monte Carlo -estimaatti yhtälön (\ref{p-estimaatti}) perusteella
 
-### Marginaalijakauma
+\begin{align}\label{p-estimaatti}
+\hat{p}(x_{1:k}|y_{1:k})=\sum_{i=1}^{N}w_{k|k}^i \delta(x_{1:k}-x_{1:k}^i).
+\end{align}
 
-Lorem ipsum
+Tämän jälkeen suoritetaan valinnainen uudelleenotanta. Uudelleenotanta voidaan tehdä jokaisella askeleella tai efektiivisen otoskoon perusteella alla kuvatun kynnysarvoehdon $\hat{N}_{eff}< N_{th}$ täyttessä, jolloin uudelleenotantaa kutsutaan adaptiiviseksi uudelleenotannaksi. Tällaista uudelleenotantaa hyödynnetään esitetyssä algoritmissa (\ref{sir}) . Uudelleenotantaa tarkastellaan lähemmin alaluvussa 4.1.2. 
+Lopuksi päivitetään aika (jos $k < t$), luodaan uudet ennusteet partikkeleille ehdotusjakaumasta (\ref{ehdotusjakauma})
 
-### Aikakompleksisuus
+\begin{align}\label{ehdotusjakauma}
+x_{k+1}^i\sim q(x_{k+1}|x_k^i,y_{k+1})
+\end{align}
 
-Lorem ipsum
+\noindent ja päivitetään partikkelien painot tärkeytysotannalla (\ref{tarkeytys}), sen mukaan kuinka todennäköisiä partikkelien ennusteet ovat 
 
-### Konvergenssituloksia
+\begin{align}\label{tarkeytys} w_{k+1|k}^i=w_{k|k}^i\frac{p(x_{k+1}^i|x_k^i)}{q(x_{k+1}^i|x_k^i,y_{k+1})}.
+\end{align}
 
-Lorem ipsum
+\noindent Vaiheet \ref{ehdotusjakauma} ja \ref{tarkeytys} vastaavat Bayes-suotimen aikapäivitystä (\ref{bayes-aikapaivitys}). 
 
-## Varianssin estimointi
+Alla käsitellään algoritmiin liittyvän uudelleenotantamenetelmän, partikkelien määrän ja ehdotusjakauman valinta. Lopuksi esiteetään algoritmin konvergenssia, marginaalijakaumaa sekä aikakompleksisuutta koskevia tuloksia.
+
+\begin{algorithm}[H]
+\label{sir}
+\DontPrintSemicolon
+\SetAlgoShortEnd
+\KwResult{Posteriorijakauman $p(x_{1:k}|y_{1:k})$ estimaatti.\;}
+\KwData{Havainnot $y_k$. Generoitu $x_1^i\sim p_{x_0}$ missä $i=\{1,\ldots,N\}$ ja jokainen partikkeli saa saman painon $w_{1|0}^i=1/N$.\;}
+\Begin{
+  \For{$k=\{1,2,\ldots,t\}$}{
+    \For{$i=\{1,2,\ldots,N\}$}{
+      \Begin{Päivitetään painot $w_{k|k}.$\;}
+      \Begin{Estimoidaan $p$ laskemalla tiheydelle approksimaatio $\hat{p}(x_{1:k}|y_{1:k})=\sum_{i=1}^{N}w_{k|k}^i \delta(x_{1:k}-x_{1:k}^i)$.\;}
+    }
+    \Begin{Lasketaan efektiivinen otoskoko $\hat{N}_{eff}$.\;}
+    \If{$\hat{N}_{eff}< N_{th}$}{\Begin{Otetaan uudet $N$ otosta palauttaen joukosta $\{x_{1:k}^i\}_{i=1}^N$, missä otoksen $i$ todennäköisyys on $w^i_{k|k}$.\;}
+    \Begin{Asetetaan painot $w^i_{k|k}=1/N$.\;}}
+    \If{$k < t$}{\Begin{Aikapäivitys. \newline Luodaan ennusteet partikkeleille ehdotusjakaumasta $x_{k+1}^i\sim q(x_{k+1}|x_k^i,y_{k+1})$, \newline päivitetään partikkelien painot tärkeytysotannalla.\;}}
+  }  
+}
+\caption{SIR}
+\end{algorithm}
+
+\subsection{Parametrien valinta}
+
+Ennen algoritmin suorittamista valitaan ehdotusjakauma $q(x_{k+1}|x_{1:k},y_{k+1})$, uudelleenotantamenetelmä sekä partikkelien määrä $N$. Ehdotusjakauman ja uudelleenotantamenetelmän valinnassa tärkeimpänä päämääränä on välttää otosten ehtymistä, kun taas partikkelien määrä säätelee kompromissia algoritmin suorituskyvyn ja tarkkuuden välillä.
+
+\subsubsection{Otoskoon $N$ valinta}
+
+Yleispätevää sääntöä otoskoon/partikkelien lukumäärän $N$ valinnalle on vaikeaa antaa, sillä vaadittava estimointitarkkuus riippuu usein käsillä olevasta ongelmasta. Gordon \&al. (1993) esittävät kuitenkin kolme tekijää, jotka vaikuttavat partikkelien lukumäärän valintaan
+
+a. tila-avaruuden ulottuvuuksien lukumäärä ${n_x}$,
+b. tyypillinen päällekäisyys priorin ja uskottavuuden välillä
+c. sekä tarvittava aika-askelten lukumäärä.
+
+Ensimmäisen tekijän vaikutus on selvä. Mitä useammassa ulottuvuudessa otantaa tarvitsee tehdä, sen korkeammaksi on $N$ asetettava, jotta jokainen ulottuvuus pystytään kattamaan. Tekijät (\textit{b}) ja (\textit{c}) puolestaan seuraavat uudelleenotannasta. Jos se osa tila-avaruutta, jossa uskottavuus $p(y_k|x_k)$ saa merkittäviä arvoja on pieni verrattuna siihen osaan, jossa priorijakauma $p(x_k|y_{1:k-1})$ saa merkittäviä arvoja, suuri osa partikkeleista saa pieniä painoja eikä näin valikoidu uudelleenotantaan. 
+
+Yleisesti ottaen $N$ kannattaa asettaa sellaiseksi, että se paitsi tuottaa riittävän tarkan estimaatin, on se käytettävissä olevan laskentatehon sekä vaadittavan laskentanopeuden kannalta järkevää. Tähän palataan tutkielman lopuksi empiirisessä paikannusesimerkissä.
+
+\subsubsection{Uudelleenotantamenetelmän valinta}
+
+Ilman uudelleenotantaa on mahdollista, että algoritmi alkaa kärsiä SIS-algoritmille ominaisesta otosten ehtymisestä. Toisin sanoen kaikki painot alkavat keskittyä vain muutamalle partikkelille eikä algoritmi enää approksimoi tehokkaasti haluttua jakaumaa. Uudelleenotanta tarjoaa osittaisen ratkaisun tähän ongelmaan, mutta hävittää samalla informaatiota ja siten lisää satunnaisotantaan liittyvää epävarmuutta. Yleisesti ottaen uudelleenotanta kannattaa aloittaa vasta siinä vaiheessa algoritmin suorittamista, kun siitä on otosten ehtymisen kannalta hyötyä, esimerkiksi efektiivisen otoskoon pudottua jonkin kynnysarvon alapuolelle (adaptiivinen uudelleenotanta). Efektiivinen otoskoko saadaan laskettua variaatiokertoimesta $c_\nu$ kaavalla
+
+\begin{align}\label{N-eff}
+N_{eff}= \frac{N}{1+c_\nu^2(w^i_{k|k})} = \frac{N}{1+\frac{\text{Var}(w^i_{k|k})}{(\mathbb{E}[w^i_{k|k}])^2}} =\frac{N}{1+N^2\text{Var}(w^i_{k|k})}.
+\end{align}
+
+Näin laskettu efektiivinen otoskoko maksimoituu ($N_{eff}=N$), kun kaikille painoille pätee $w^i_{k|k}=1/N$ ja minimoituu ($N_{eff}=1$), kun $w^i_{k|k}=1$ todennäköisyydellä $1/N$ ja $w^i_{k|k}=0$ todennäköisyydellä $(N-1)/N$. Normalisoitujen painojen avulla saadaan effektiiviselle otoskoolle ajanhetkellä $k$ laskennallinen approksimaatio
+
+\begin{align}\label{N-hat-eff}
+\hat{N}_{eff}=\frac{1}{\sum_{i=1}^N(w^i_{k|k})^2}.
+\end{align}
+
+Sekä määritelmälle ($\ref{N-eff}$) että ($\ref{N-hat-eff}$) pätee $1 \leq \hat{N}_{eff} \leq N$. Yläraja saavutetaan, kun jokaisen partikkelin paino on sama. Alarajalle päädytään, kun kaikki paino keskittyy yksittäiselle partikkelille. Tästä saadaan määriteltyä algoritmille SIR-uudelleenotantaehto $\hat{N}_{eff}< N_{th}$. Gustafsson (2010) esittää uudelleenotannan kynnysarvoksi esimerkiksi $\hat{N}_{th}=2N/3$. 
+
+Uudelleenotanta ei muuta approksimoitavan jakauma $p$ odotusarvoa, mutta se lisää jakauman Monte Carlo -varianssia. On kuitenkin olemassa esimerkiksi osittamiseen perustuvia uudelleenotantamenetelmiä, jotka pyrkivät minimoimaan varianssin lisäyksen. Varianssin pienennysmenetelmät jätetään tämän tutkielman ulkopuolelle.
+
+\subsubsection{Ehdotusjakauman valinta}
+
+Yksinkertaisin muoto ehdotusjakaumalle on $q(x_{1:k}|y_{1:k})$ eli jokaisella algoritmin suorituskerralla käydään läpi koko aikapolku $1:k$. Tämä ei kuitenkaan ole tarkoituksenmukaista, erityisesti jos kyseessä on reaaliaikainen sovellutus. Kirjoitetaan ehdotusjakauma muodossa
+
+\begin{align}\label{proposal-factorization}
+q(x_{1:k}|y_{1:k})=q(x_k|x_{1:k-1},y_{1:k})q(x_{1:k-1}|y_{1:k}).
+\end{align}
+
+Jos yhtälöstä (\ref{proposal-factorization}) poimitaan ehdotusjakaumaksi ainoastaan termi $q(x_k|x_{1:k-1},y_{1:k})$ voidaan tämä kirjoittaa edelleen Markov-ominaisuuden nojalla muotoon $q(x_k|x_{k-1},y_{k})$. Tämä on suodinongelman kannalta riittävää, koska olemme kiinnostuneita posteriorijakaumasta ja arvosta $x$ ainoastaan ajanhetkellä $k$ (tasoitusongelmassa tarvitsisimme koko polun $x_{1:k}$). Alla tarkastellaan edelleen Gustafssonia (2010) seuraten kahta ehdotusjakauman valintatapaa, prioriotantaa (prior sampling) sekä uskottavuusotantaa (likelihood sampling).
+
+Ennen ehdotusjakauman  tarkastelua määritellään mallille signaali-kohinasuhde uskottavuuden maksimin ja priorin maksimin välisenä suhteena
+
+\begin{align}\label{SNR}
+\text{SNR}\propto \frac{\text{max}_{x_k}p(y_k|x_k)}{\text{max}_{x_k}p(x_k|x_{k-1})}. 
+\end{align}
+
+\noindent Yhdistetään lisäksi ehdotusjakaumia varten yhtälöt (\ref{painopaivitys}) ja (\ref{normalisointi}), jolloin saadaan painojen päivitys muotoon
+
+\begin{align}\label{painopaivitys-propto}
+w^i_{k|k} \propto w^i_{k-1|k-1}\frac{p(y_k|x^i_k)p(x_k|x^{k-1})}{q(x_k|x^i_{k-1},y_k)}.
+\end{align}
+
+Kun suhde (\ref{SNR}) on matala, on prioriotanta luonnollinen valinta. Tässä käytetään ehdotusjakaumana tilavektorin ehdollista prioria eli
+
+\begin{align}\label{prioriotanta-q}
+q(x_k|x_{1:k-1},y_{k})=p(x_k|x^i_{k-1}).
+\end{align}
+
+\noindent Yhtälön (\ref{prioriotanta-q}) perusteella saadaan edelleen prioriotannan painoiksi
+
+\begin{align}\label{prioriotanta-w}
+w^i_{k|k} = w^i_{k|k-1}p(y_k|x^i_k) = w^i_{k-1|k-1}p(y_k|x^i_k).
+\end{align}
+
+Kun signaali-kohinasuhde on kohtalainen tai korkea, on parempi käyttää ehdotusjakaumana skaalattua uskottavuusfunktiota (\ref{uskottavuusotanta-q}). Tarkastellaan ensin tekijöihin jakoa
+
+\begin{align}\label{uskottavuusotanta-factorization}
+p(x_k|x^i_{k-1},y_k)=p(y_k|x_k)\frac{p(x_k|x^i_{k-1})}{p(y_k|x^i_{k-1})}.
+\end{align}
+
+\noindent Kun SNR on korkea ja uskottavuusfunktio on integroituva pätee $p(x_k|x^i_{k-1},y_{k}) \propto p(y_k|x_k)$, jolloin voidaan asettaa (\ref{uskottavuusotanta-q})
+
+\begin{align}\label{uskottavuusotanta-q}
+q(x_k|x^i_{k-1},y_{k}) \propto p(y_k|x_k).
+\end{align}
+
+\noindent Yhtälön (\ref{uskottavuusotanta-q}) perusteella saadaan edelleen uskottavuusotannan painoiksi (\ref{uskottavuusotanta-w}).
+
+\begin{align}\label{uskottavuusotanta-w}
+w^i_{k|k} = w^i_{k-1|k-1}p(x^i_k|x^i_{k-1}).
+\end{align}
+
+\subsection{Konvergenssituloksia}
+
+Alla esitetään kaksi SIR-algoritmiin liittyvää konvergenssitulosta. Se, kuinka hyvin esitetyllä algoritmilla arvioitu posterioritiheys $\hat{p}(x_{1:k}|y_{1:k})$ approksimoi todellista tiheysfunktiota $p(x_{1:k}|y_{1:k})$ sekä mikä on approksimaation keskineliövirhe. Tulokset noudattavat Crisanin ja Doucet'n artikkeleita "Convergence of Sequential Monte Carlo Methods" (2000) ja "A Survey of Convergence Results on Particle Filtering Methods for Practitioners" (2002).
+
+\textit{Konvergenssitulos 1}: Kun $N \rightarrow \infty$ algoritmille pätee $\forall k$ tulos (\ref{jakaumakonvergenssi}).
+
+\begin{align}\label{jakaumakonvergenssi}
+\hat{p}(x_{1:k}|y_{1:k}) \xrightarrow{a.s.} p(x_{1:k}|y_{1:k}).
+\end{align}
+
+\textit{Konvergenssitulos 2}: Keskineliövirheelle pätee asymptoottinen konvergenssi (\ref{MSE-konvergenssi}).
+
+\begin{align}\label{MSE-konvergenssi}
+\mathbb{E}(\hat{g}(x_k)-\mathbb{E}(g(x_k)))^2\leq\frac{p_k\norm{g(x_k)}}{N},
+\end{align}
+
+\noindent missä $g$ on mikä hyvänsä piilossa olevan tila-avaruuden rajoitettu Borel-mitallinen funktio ($g \in \mathcal{B}(\mathbb{R}^{n_x})$), $\norm{g(\cdot)}$ kyseisen funktion supremum-normi ja $p_k$ jokin äärellinen vakio, jolle pätee ajanhetkestä $k$ riippumatta $p_k=p<\infty$. Konvergenssituloksia ei tämän tutkielman puitteissa todisteta.
+
+\subsection{Marginaalijakauma}
+
+Edellä kuvattu algoritmi 1 tuottaa approksimaation koko prosessin posteriorijakaumalle $p(x_{1:k}|y_{1:k})$. Jos halutaan tietää ainoastaan posteriorijakauman $p(x_k|y_{1:k})$ estimaatti, voidaan käyttää yksinkertaisesti viimeisestä tilasta $x_k$ laskettua estimaattia 
+
+\begin{align}
+\hat{p}(x_{k}|y_{1:k})=\sum_{i=1}^{N}w_{k|k}^i \delta(x_{k}-x_{k}^i).
+\end{align}
+
+Toinen, tarkempi vaihtoehto on käyttää laskennassa tärkeytyspainoa
+
+\begin{align}\label{marginaalitarkeytys}
+w_{k+1|k}^i=\frac{\sum_{j=1}^{N}w_{k|k}^jp(x_{k+1}^i|x_k^j)}{q(x_{k+1}^i|x_k^i,y_{k+1})}
+\end{align}
+
+\noindent painon (\ref{tarkeytys}) sijaan. Tällöin jokaisella aikapäivitysaskeleella lasketaan painot kaikkien mahdollisten tila-aika-avaruuspolkujen yli. Samoin kuin uudelleenotanta tämä pienentää painojen varianssia.
+
+\subsection{Aikakompleksisuus}
+
+Algoritmin perusmuodon aikakompleksisuus on $\mathcal{O}(N)$. Uudelleenotantamenetelmän tai ehdotusjakauman valinta ei suoraan vaikuta aikakompleksisuuteen. Sen sijaan marginalisointi tärkeytyspainolla (\ref{marginaalitarkeytys}) lisää algoritmin aikakompleksisuutta $\mathcal{O}(N)\rightarrow\mathcal{O}(N^2)$, koska jokaisen partikkelin kohdalla painot lasketaan jokaisen tila-aika-avaruuspolun yli. On selvää, että erityisesti isoilla otoskoon $N$ arvoilla ei yllä esitetty marginalisointi enää ole mielekästä. 
+
+Tällaisia tilanteita varten algoritmista on olemassa $\mathcal{O}(N\text{log}(N))$ -versioita, jotka perustuvat esimerkiksi N:n kappaleen oppimiseen (N-body learning). Näiden algoritmien käsittely jää tämän tutkielman ulkopuolelle, mutta katsauksen algoritmeista ovat esittäneet esimerkiksi Klaas \&al. artikkelissa "Toward Practical $N^2$ Monte Carlo: the Marginal Particle Filter" (2012).
+
+\subsection{Interpolaatiosta}
+
+TODO/WTF?
+
+\section{Varianssin estimointi}
+
+TODO

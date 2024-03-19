@@ -1,13 +1,13 @@
-# Hiukkasiloittimet
+\chapter{Hiukassilottimet}
 
 Add an appendix as a special kind of un-numbered part: `# (APPENDIX) Other stuff {-}` (followed by `# A chapter`). Chapters in an appendix are prepended with letters instead of numbers.
 
-## Offline-algoritmit
+\section{Offline-algoritmit}
 
 Lorem ipsum
 
-### SIR-siloitin
+\subsection{SIR-siloitin}
 
-## Online-algoritmit
+\section{Online-algoritmit}
 
 Lorem ipsum

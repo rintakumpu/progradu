@@ -1,6 +1,185 @@
-# Hiukassuodin ja -siloitin sisätilapaikannuksessa
+\chapter{Hiukassuodin ja -siloitin sisätilapaikannuksessa}
 
-## Teknologian kuvaus
+Sisätilapaikannus tarkoittaa nimensä mukaisesti ihmisten tai esineiden automaattista paikantamista sisätiloissa. Koska GPS toimii sisätiloissa huonosti tai ei lainkaan, tarvitaan näihin ympäristöihin muita paikannusratkaisuja. Yleinen valinta ovat erilaiset Bluetooth-standardiin tai muuhun radioteknologiaan perustuvat lähetin-vastaanotinratkaisut. Turkulainen teknologia- ja analytiikkayritys Walkbase käyttää Bluetooth-sisätilapaikannusta erityisesti ruokakaupoissa sekä tavarataloissa asiakkaiden käyttäytymistä koskevan datan keräämiseen. Tyypillisessä asennusskenaariossa lähettimet (tagit) kiinnitetään ostoskärryihin sekä -koreihin ja paikantimet kiinnitetään liiketilan kattoripustuksiin. Markkinoilla on lukuisia sisätilapaikannusratkaisuja, mutta kustannussyistä Walkbase on kehittänyt oman laitteistoratkaisunsa, jonka tavoitteena on tarjota kaikissa ympäristöissä $95\%$ varmuudella alle metrin paikannustarkkuus.
+
+Esimerkissä käyteteään SMC-algoritmia Bluetooth-paikannussovelluksessa lähettimen sijainnin laskemiseen. Paikannukseen käytettävä data kerättiin toimistoympäristössä Bluetooth Low Energy (BLE) -lähettimen sekä kattoon sijoitettujen vastaanottimien avulla. Havainnot koostuvat vastaanottimien lähettimien signaalien perusteella laskemista, BLE5.1-standardin mukaisista signaalin tulokulmista eli AoA-havainnoista (angle of arrival). Lopuksi esimerkissä analysoidaan ja vertaillaan algoritmin eri versioiden suorituskykyä sekä suorituskyvyn että paikannustarkkuuden näkökulmasta. Vertailuarvona käytetään perinteistä triangulaatio-algoritmia.
+
+\section{Koeasetelma}
+
+Paikaunnusesimerkissä lähettimenä toimi 25 Bluetooth-paikannustagista koostuva Walkbase Foculator -testilaite (kuva \ref{fig:foculator}), vastaanottimena toimistoympäristöön asennetut neljä Walkbase XR-2 -vastaanotinta (kuva \ref{fig:xr2}). Jokainen vastaanotin sisältää kuusitoista antennia, joiden vastaanottamien lähetinsignaalien perusteella vastaanottimet laskevat signaalin tulokulman suhteessa vastaanottimeen. Tarkka tulokulmien laskemiseen käytetty algoritmi on paikantimen antennit toimittaneen Silicon Laboratories, Inc. -yrityksen liikesalaisuus, mutta perusperiaate on arvioida tulokulma mittaamalla eri antenneiden välistä vaihe-eroa ns. IQ-signaalin avulla.
+
+Esteettömässä ympäristössä koeasetelmassa käytetyn järjestelmän kulmavirhe on hyvin pieni ja paikannusongelma voidaan ratkaista riittävällä tarkkuudella suoraan  triangulaatio-algoritmilla. Tässäkin tilanteessa voi paikannusta parantaa suodattimen käytöllä, mutta jo triangulaatio-algoritmin perusversio tuottaa halutun tarkkuuden. Toimistoympäristö on kuitenkin haastava, sillä erityisesti näyttöruudut sekä heijastavat että estävät radiosignaaleja. Silicon Labs lupaa omalle AoA-järjestelmälleen vastaavassa toimisympäristössä (seitsemällä paikantimella) kulmavirheen välillä $3.7^\degree-5.7^\degree$. Tämä ei kuitenkaan riitä johdonmukaisesti haluttuun alle metrin paikannustarkkuuteen, joten AoA-paikannus toimistoympäristössä tarjoaa hyvän motivaation SMC-menetelmien käytölle.
+
+\begin{multicols}{2}
+\begin{figure}[H]
+\centering
+\includegraphics[width=7cm]{foculator}
+\caption{Walkbase Foculator}
+\label{fig:foculator}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=7cm]{xr_2}
+\caption{Walkbase XR-2}
+\label{fig:xr2}
+\end{figure}
+\end{multicols}
+
+Data on kuvattu tarkemmin alaluvussa 5.2. Koeympäristön pohjapiirustus on esitetty kuvassa \ref{fig:pohjapiirustus}. Piirustuksessa XR-2-paikantimet on kuvattu punaisilla numeroiduilla ympyröillä. Foculator-testilaitteen sijainti on kuvattu sinisellä ympyrällä. Toimistoympäristön pohjapiirustus on kuvattu harmaalla niin, että piirustuksesta erottuvat toimiston väliseinät.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=12cm]{office_map}
+\caption{Koeasetelman pohjapiirustus}
+\label{fig:pohjapiirustus}
+\end{figure}
+
+\noindent Toimisto valittiin testiympäristöksi, koska siellä testaaminen on helpompaa ja halvempaa kuin aidossa kauppaympäristössä. Lisäksi toimistossa hyvin toimiva järjestelmä todennäköisesti toimii sellaisenaan vähemmän esteisessä kauppaympäristössä. 
+
+Dataa kerättiin sekä liikkuvalla että paikallaan olevalla testilaitteella. Paikallaan oleva testilaite asetettiin pöydälle 1.5 metrin korkeudelle. Liikkuvassa tapauksessa testilaite kiinnitettiin robottiin, joka oli ohjelmoitu seuraamaan haluttua liikerataa vastaavia lattiamerkintöjä ennalta määrätyllä vakionopeudella. Yksinkertaisuuden vuoksi tässä tutkielmassa tarkastellaan ainoastaan ongelmaa, jossa testilaite on paikoillaan. Esitetyt mallit soveltuvat kuitenkin myös liikkuvalle laitteelle. Data kerättiin yöaikaan, jolloin toimiston käyttöaste oli alhainen. Tällä minimoitiin radiosignaalien tielle osuvien ihmisten vaikutus signaaleihin. Maan pinnan kaarevuus on otettu huomioon koeasetelmassa pisteiden välisiä etäisyyksiä laskettaessa.
+
+\section{Datan kuvaus}
+
+Riippuen päällä olevien paikannustagien lukumäärästä sekä kulmaestimaattien luomiseen käytetystä laskentamenetelmästä tuottaa testilaite noin $60$ havaintoa sekunnissa jokaista vastaanotinta kohden. Koetta varten käytettiin yhden minuutin aikana kertyneitä havaintoja. Havaintoja on datassa yhteensä $N_{obs}=15018$ kappaletta. Havaintojen aikaleimat on tallennettu sekunnin tuhannesosan tarkkuudella. Jokainen havainto koostuu taulukossa \ref{tab:muuttujat} kuvatuista muuttujista.
+
+\def\arraystretch{1.25} 
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+Muuttuja & Kuvaus & Esimerkkiarvo\\
+\hline
+ts & havainnon aikaleima & 21:38:20.998+00\\
+locator\_mac & vastaanottimen MAC-osoite & b8:27:eb:66:0d:2a\\
+azimuth\_angle & atsimuuttikulma $\theta$ (astetta) & 102.7\\
+converted\_azimuth & napapohjoisesta laskettu kulma $\Phi$ (astetta) & 34\\
+\makecell[tl]{snr\_ss} & \makecell[tl]{antennikohtaisten signaali-kohinasuhteiden\\neliösumma} & \makecell[tl]{6996.473}\\
+rssi & signaalin vahvuus (dBm) & -81\\
+distance & arvioitu etäisyys lähettimeen (m) & 13.5\\
+\makecell[tl]{opposite\_angle} & \makecell[tl]{vastakkainen kulma\\ (lähetin-vastaanotin) $\Phi^\prime$ (radiaania)} & \makecell[tl]{3.735}\\
+lat & vastaanottimen sijainti (leveyspiiri) & 60.448265\\
+lon & vastaanottimen sijainti (pituuspiirit) & 22.294823\\
+bearing & suuntimakulma $\eta$ (astetta) & 34\\
+height & vastaanottimen korkeus (m) & 2.22 \\
+\hline
+\end{tabular}
+\caption{Havaintomuuttujat}
+\label{tab:muuttujat}
+\end{table}
+
+Etäisyys on estimoitu signaalin vahvuudesta käyttäen valmistajan omaa  propagaatiomallia. Etäisyyttä tai signaalin vahvuutta ei käytetä paikantamiseen, joten tämän mallin käsittely jätetään tutkielman ulkopuolelle. Munoz (2009) luku 2 sisältää yleiskatsauksen propagaatiomalleista.
+
+Atsimuuttikulma $\phi$ lasketaan aina vastaanottimen tietyltä sivulta, joten se vastaa napapohjoista ainoastaan siinä tapauksessa, että vastaanottimen kyseinen sivu on asetettu kohtisuoraan napapohjoiseen nähden. Käytännön syistä tämä ei ole aina mahdollista eikä vaihe-erojen mittaamisen kannalta edes suotavaa. Tämän vuoksi jokaiselle vastaanottimelle on tietokantaan tallennettu oma suuntimakulma $\eta$. Kokeessa käytetään napapohjoisesta laskettuja kulmia $\Phi$, jotka lasketaan jokaiselle havainnolle havainnon vastaanottimen suuntimakulman avulla
+
+\begin{align}
+\Phi=(\theta + \eta+360^\degree) \mod360^\degree.
+\end{align}
+
+Suuntimakulma $\Phi$ kertoo vastaanottimen ja lähettimen välisen kulman. Koska triangulaatiossa tarvitaan päinvastaista kulmaa, lasketaan lisäksi yhtälöllä (\ref{vastakkainen-kulma}) suuntimakulman perusteella lähettimen ja vastaanottimen välinen kulma $\Phi^\prime$. Samalla asteissa oleva kulma muunnetaan radiaaneiksi triangulaatiota varten.
+
+\begin{align}\label{vastakkainen-kulma}
+\Phi^\prime=\frac{\pi}{180^\degree}(\Phi+180^\degree \mod360^\degree).
+\end{align}
+
+Lisäksi havainnot sisältävät antennikohtaisista SNR-arvoista lasketun neliösumman, jota käytetään erityisesti triangulaatiossa vahvimpien havaintojen valitsemiseen. Havaintomuuttujien ohella koetilanteessa tallennettiin Foculator-testilaitteen todellinen sijainti sekunnin tarkkuudella. Tallennettu sijainti perustuu koeympäristön lattiaan pohjapiirrustusten sekä laser-mittausten avulla tehtyihin merkintöihin. Näin saadut testimuuttujat on kuvattu taulukossa (\ref{tab:testimuuttujat}). Kun testilaite on paikoillaan, ovat nämä havainnot luonnollisesti samat jokaiselle ajanhetkelle.
+
+\def\arraystretch{1.25} 
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+Muuttuja & Kuvaus & Esimerkkiarvo\\
+\hline
+foculator\_ts & aikaleima & 21:38:20+00\\
+foculator\_lat & testilaitteen sijainti (leveyspiiri) & 60.44819 \\
+foculator\_lon & testilaitteen sijainti (pituuspiiri) & 22.29493 \\
+\hline
+\end{tabular}
+\caption{Testimuuttujat}
+\label{tab:testimuuttujat}
+\end{table}
+
+\noindent Testimuuttujia käytetään paikannusalgoritmien paikannusvirheen laskemisessa.
+
+\section{Ongelman kuvaus}
+
+Tarkoituksena on estimoida testilaitteen/robotin sijainti sekunnin tarkkuudella. Merkitään estimoitavaa tilasarjaa $x_{1:k}=\{x_1,\ldots,x_k\}$. Lisäksi merkitään $x_0$ testilaitteen lähtösijaintia. Jokainen tilasarjan havainto koostuu suuntimakulmasta sekä pituus- että leveyskoordinaateista $(x_k^x, x_k^y)$. Määritellään tilalle testilaitteen/robotin kulkua kuvaava vektorisuunnistukseen (dead reckoning) perustuva malli (\ref{tilamalli-liikkuva})
+
+\begin{align}\label{tilamalli-liikkuva}
+x_{k+1}=f(x_k, \nu_k)=x_k+D_k \begin{bmatrix} \cos\psi_k \\ \sin\psi_k \end{bmatrix}+\nu_k,
+\end{align}
+
+\noindent missä $D_k$ on testilaitteen/robotin ajanhetkenä $k$ kulkema matka ja $\psi_k$ testilaitteen/robotin atsimuutti/suuntimakulma kyseisenä ajanhetkenä. $\nu_k$ on kohinaa, joka syntyy mittausvirheestä ja jolle voidaan olettaa $\sim \mathcal{N}(\mu_x,\,\sigma_x^{2})$. Kun laite on paikallaan, yksinkertaistuu malli muotoon $x_{k+1}=f(x_k)=\text{id}(x_k)=x_k$, missä $\text{id}(\cdot)$ on identiteettifunktio.
+
+Vastaavasti $y_{1:k}=\{y_1,\ldots,y_k\}$ kuvaa paikantimien ja lähettimien välillä laskettuja kulmahavaintoja. Näin ollen jokainen havainto koostuu (maksimissaan) paikantimien määrää vastaavasta neljästä kulmasta. Havainnot lasketaan sekunnin tarkkuudella, mutta todellinen havaintotarkkuus on tiheämpi. Tästä syystä jokaisen sekunnin sensorihavainnot $\{s_k^1,\ldots,s_k^4\}$ muodostetaan keskiarvona kaikista kyseisen sekunnin aikana tapahtuvista paikannin-lähetinparien kulmahavainnoista 
+
+\begin{align}
+y_k=\begin{bmatrix} \frac{1}{n}\sum_{j=1}^ns^1_{k_j}\\   \vdots \\ \frac{1}{n}\sum_{j=1}^ns^4_{k_j} \end{bmatrix}.
+\end{align}
+
+\noindent Lisäksi tunnetaan sensoreihin $\{s^1,\ldots,s^4\}$ liittyvät pituus- ja leveyskoordinaatit $(\lambda, \phi)$
+
+\begin{align}
+u=\begin{bmatrix} \lambda^1 & \phi^1 \\   \vdots & \vdots \\ \lambda^4 & \phi^4 \end{bmatrix}.
+\end{align}
+
+Määritellään havainnoille malli
+
+\begin{align}\label{havaintomalli}
+y_k=h(x_k, u)+e_k=\text{atan2}(\begin{bmatrix}\phi^1-x_k^y\\ \vdots \\ \phi^4-x_k^y\end{bmatrix}, \begin{bmatrix}\lambda^1-x_k^x\\ \vdots \\ \lambda^4-x_k^x\end{bmatrix})+e_k,
+\end{align}
+
+\noindent missä 
+
+\begin{align}\label{atan2}
+\displaystyle \operatorname{atan2}(y,x)={\begin{cases}\arctan({\frac {y}{x}})&{\text{jos }}>0,\\\arctan({\frac {y}{x}})+\pi &{\text{jos }}<0{\text{ ja }}y\geq 0,\\\arctan({\frac {y}{x}})-\pi & {\text{jos }}>0{\text{ ja }}<0,\\+{\frac {\pi }{2}}&{\text{jos }}x=0{\text{ ja }}>0,\\-{\frac {\pi }{2}}&{\text{jos }}x=0{\text{ ja }}<0,\\{\text{ei määritelty}}&{\text{jos }}x=0{\text{ ja }}y=0\end{cases}}
+\end{align}
+
+\noindent ja kohina noudattaa moniulotteista normaalijakaumaa $e_k\sim\mathcal{N}(0,{\Sigma})$. 
+
+Kovarianssimatriisin estimaattina käytetään kunakin ajanhetkenä $k$ antennikohtaisista havainnoista estimoituja otosvariansseja $\text{diag}(\hat{\sigma}^1_k,\ldots,\hat{\sigma}^4_k)^2=\text{diag}(\frac{1}{n-1}\sum_{i=1}^n(s_i^1-\bar{s})^2,\ldots,\sum_{i=1}^n(s_i^4-\bar{s})^2)$. Määrittelemätön $\text{atan2}$-tapaus, jossa $x=0$ ja $y=0$ on käytetyllä mittaustarkkuudella käytännössä mahdoton. Jos tapaus halutaan välttää, voidaan nolla-arvot tarpeen vaatiessa korvata joillakin hyvin lähellä nollaa olevalla arvolla. Saadaan uskottavuusfunktioksi
+
+\begin{align}
+p(y_k|x_k)\propto\prod_{j=1}^4\exp\left\{-\frac{\norm{h(x^j_k,u)-y^j_k}^2}{2(\hat{\sigma}_i^j)^2}\right\},
+\end{align}
+
+\noindent missä $j=\{1,2,3,4\}$ vastaa nyt kutakin XR-2-vastaanotinta.
+
+Kumpikaan funktiosta $h(\cdot)$ ja $f(\cdot)$ ei ole lineaarinen, joten SIR-algoritmi on sopiva valinta ongelman ratkaisemiseksi. Koetuloksia arvioidaan ensisijaisesti paikannusvirheen avulla. Paikannusvirhe $e_k$ lasketaan jokaisen ajanhetken $k$ posteriorijakaumaestimaatista $\hat{p}_k$ painotettuna keskiarvona
+
+\begin{align}
+\epsilon_k = \sum_{i=1}^Nw^k_i d(x^i_k, y_k),
+\end{align}.
+
+\noindent missä $w_i^k$ on ajanketken $k$ partikkelien normalisoitu paino ja $d(x^i_k,y_k)$ partikkelien ja testilaitteen todellisen sijainnin välisen etäisyyden laskeva funktio.
+
+\section{Algoritmin toteutuksesta}
+
+Koeasetelmassa käytetty SMC-algoritmi on toteuttu R-kielellä. Algoritmin toteutus on pääosin vektorisoitu ja tehokas. For-silmukkaa on käytetty ainoastaan ajanhetkien läpikäyntiin. Koska tämän silmukan muuntaminen vektorisoituun muotoon ei ole mahdollista, voidaan toteutusta pitää näiltä osin hyvin optimoituna. Algoritmin rungon datan käsittely on toteutettu suorituskyvyltään hyvällä `data.table`-kirjastolla. Uskottavuusfunktiossa on käytetty hitaampia `dpylr`-kirjaston `tibble`-taulukkoja. Toteutustapa on valittu koodin ymmärrettävyyden parantamiseksi ja on edelleen riittävän nopea koeasetalman tarpeisiin. Koodin profilointi paljastaa, että suurin yksittäinen osa algoritmin ajasta kuluu `tibble`-taulukkojen käsittelyssä, joten suorituskykyä on tarpeen vaatiessa mahdollista myös parantaa.
+
+Koska algoritmin uskottavuudet sekä painot ovat hyvin pieniä, on laskentatarkkuusongelmien välttämiseksi toteutuksessa käytetty logaritmoituja painoja ja uskottavuusfunktiota. Tämä ei vaikuta lainkaan itse algoritmin toimintaan, mutta estää numeeristen ongelmien syntymisen. Tilanteessa, jossa tietyn paikantimen ja kaikkien partikkelien välinen uskottavuus on nolla, päätyvät kaikki painot nolliksi eikä algoritmi enää toimi. Tällaisessa tilanteessa uskottavuusfunktion R-toteutus kutsuu itseään rekursiivisesti uudelleen niin, että kyseinen paikannin on tiputettu havainnoista.
+
+Paikannusvirheen laskemisessa on etäisyysfunktiona $d(\cdot)$ käytetty `raster`-kirjaston `pointDistance()`-funktiota. Koodissa on korostettu tiiviyden sijaan luettavuutta ja koodi on kommentoitu kattavasti. SMC-algoritmifunktion sekä uskottavuusfunktion R-koodit löytyvät osoitteesta https://github.com/rintakumpu/luk, mistä löytyy myös asetelmassa käytetty data csv-muodossa sekä kokeen muun koodin sisältävä R Markdown -notebook.
+
+\section{Parametrien valinta}
+
+Priorijakaumana $p_{x_0}$ käytettiin kahta toisistaan riippumatonta otosta tasajakaumista, joista toinen vastasi leveys- ja toinen pituusasteita. Jakaumien alkupisteet valittiin niin, että ne vastasivat pienimpiä paikantimien leveys- ja pituusasteista. Vastaavasti päätepisteet valittiin niin, että ne vastasivat suurimpia paikantimien leveys- ja pituusasteita. 
+
+\begin{align}
+&p_{x_{0_{\text{lon}}}}\sim\mathcal{U}(\min{\lambda},\max{\lambda}),\\
+&p_{x_{0_{\text{lat}}}}\sim\mathcal{U}(\min{\phi},\max{\phi}).
+\end{align}
+
+\noindent Koska järjestelmän on tarkoitus toimia ainoastaan paikantimien muodostaman suorakaiteen sisäpuolella, ovat valitut jakaumien päätepisteet riittävät. Kummastakin jakaumasta otettiin $\sqrt{N}$ otosta, jolloin $N$ partikkelia $x^i_0$ saatiin näiden otosten permutaatioina.
+
+Paikannus suoritettiin yhteensä 17 kertaa. Ensimmäisessä vaiheessa tarkasteltiin partikkelien määrän $N$ vaikutusta paikannuskeskivirheeseen ilman uudelleenotantaa sekä priori- että uskottavuusotannalla. Seuraavassa vaiheessa valittiin ehdotusjakauma edellisen vaiheen tulosten perusteella ja tarkasteltiin tilannetta sekä adaptiivisella että jokaisella iteraatiolla suoritettavalla uudelleenotannalla.
+
+Kaikkien tulosten vertailukohtana käytettiin Pierlot \&al. artikkelissa "A New Three Object Triangulation Algorithm Based on the Power Center of Three Circles" (2011) esittämää ToTal-triangulaatioalgoritmia. Triangulaatio-algoritmia ei käsitellä tässä tarkemmin, mutta se on esitetty algoritmissa $\ref{total}$. Algoritmia varten valittiin kunakin ajanhetkenä $k$ ne kolme paikanninta ja kulmahavaintoa, joiden SNR-arvo oli korkein. 
+
+Algoritmit ajettiin RStudion versiossa 1.4.1106 R-ohjelmointikielen versiolla 4.0.4. Tietokoneena käytettiin vuoden 2017 mallia olevaa MacBook Pro -kannettavaa, jossa oli 3.1 Ghz Quad-Core i7 -prosessori sekä 16 gigatavua 2133 Mhz LPDDR3 -muistia. Suoritusnopeuden mittaamiseen käytettiin `microbenchmark`-kirjastoa. Jokainen algoritmi toistettiin kymmenen kertaa ja suoritusnopeus laskettiin näiden toistojen aritmeettisena keskiarvona.
+
+\section{Teknologian kuvaus}
 
 Here is an equation.
 
@@ -11,21 +190,11 @@ Here is an equation.
 
 You may refer to using `\@ref(eq:binom)`, like see Equation \@ref(eq:binom).
 
-## Koeasetelma
+\subsection{Kalibraatioalgoritmi}
 
-Labeled theorems can be referenced in text using `\@ref(thm:tri)`, for example, check out this smart theorem \@ref(thm:tri).
+\section{AoA-menetelmistä}
 
-::: {.theorem #tri}
-For a right triangle, if $c$ denotes the *length* of the hypotenuse
-and $a$ and $b$ denote the lengths of the **other** two sides, we have
-$$a^2 + b^2 = c^2$$
-:::
-
-Read more here <https://bookdown.org/yihui/bookdown/markdown-extensions-by-bookdown.html>.
-
-## AoA-menetelmistä
-
-### MUSIC-algoritmi
+\subsection{MUSIC-algoritmi}
 
 Footnotes are put inside the square brackets after a caret `^[]`. Like this one ^[This is a footnote.]. 
 
