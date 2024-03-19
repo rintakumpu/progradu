@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2022.5.26)  19 MAR 2024 18:13
+This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2022.5.26)  19 MAR 2024 22:12
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -348,14 +348,7 @@ LaTeX Font Info:    Trying to load font information for T1+lmr on input line 11
 2.
 (/usr/local/texlive/2022/texmf-dist/tex/latex/lm/t1lmr.fd
 File: t1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-)) (/usr/local/texlive/2022/texmf-dist/tex/latex/base/inputenc.sty
-Package: inputenc 2021/02/14 v1.3d Input encoding file
-\inpenc@prehook=\toks27
-\inpenc@posthook=\toks28
-
-Package inputenc Warning: inputenc package ignored with utf8 based engines.
-
-) (/usr/local/texlive/2022/texmf-dist/tex/latex/tools/xspace.sty
+)) (/usr/local/texlive/2022/texmf-dist/tex/latex/tools/xspace.sty
 Package: xspace 2014/10/28 v1.13 Space after command names (DPC,MH)
 ) (/usr/local/texlive/2022/texmf-dist/tex/latex/tikz-cd/tikz-cd.sty
 Package: tikz-cd 2021/05/04 v1.0 Commutative diagrams with TikZ
@@ -364,7 +357,7 @@ local/texlive/2022/texmf-dist/tex/latex/pgf/basiclayer/pgf.sty (/usr/local/texl
 ive/2022/texmf-dist/tex/latex/pgf/utilities/pgfrcs.sty
 (/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/utilities/pgfutil-common.te
 x
-\pgfutil@everybye=\toks29
+\pgfutil@everybye=\toks27
 \pgfutil@tempdima=\dimen174
 \pgfutil@tempdimb=\dimen175
 
@@ -382,12 +375,12 @@ local/texlive/2022/texmf-dist/tex/latex/pgf/systemlayer/pgfsys.sty
 (/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/systemlayer/pgfsys.code.tex
 Package: pgfsys 2021/05/15 v3.1.9a (3.1.9a)
 (/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex
-\pgfkeys@pathtoks=\toks30
-\pgfkeys@temptoks=\toks31
+\pgfkeys@pathtoks=\toks28
+\pgfkeys@temptoks=\toks29
 
 (/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/utilities/pgfkeysfiltered.c
 ode.tex
-\pgfkeys@tmptoks=\toks32
+\pgfkeys@tmptoks=\toks30
 ))
 \pgf@x=\dimen176
 \pgf@y=\dimen177
@@ -405,9 +398,9 @@ ode.tex
 \c@pgf@countb=\count307
 \c@pgf@countc=\count308
 \c@pgf@countd=\count309
-\t@pgf@toka=\toks33
-\t@pgf@tokb=\toks34
-\t@pgf@tokc=\toks35
+\t@pgf@toka=\toks31
+\t@pgf@tokb=\toks32
+\t@pgf@tokc=\toks33
 \pgf@sys@id@count=\count310
 (/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/systemlayer/pgf.cfg
 File: pgf.cfg 2021/05/15 v3.1.9a (3.1.9a)
@@ -447,9 +440,9 @@ local/texlive/2022/texmf-dist/tex/generic/pgf/math/pgfmathutil.code.tex)
 \pgfmath@dimen=\dimen186
 \pgfmath@count=\count314
 \pgfmath@box=\box63
-\pgfmath@toks=\toks36
-\pgfmath@stack@operand=\toks37
-\pgfmath@stack@operation=\toks38
+\pgfmath@toks=\toks34
+\pgfmath@stack@operand=\toks35
+\pgfmath@stack@operation=\toks36
 )
 (/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.code.
 tex
@@ -599,8 +592,8 @@ Package: pgffor 2021/05/15 v3.1.9a (3.1.9a)
 (/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex)
 \pgffor@iter=\dimen269
 \pgffor@skip=\dimen270
-\pgffor@stack=\toks39
-\pgffor@toks=\toks40
+\pgffor@stack=\toks37
+\pgffor@toks=\toks38
 ))
 (/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/frontendlayer/tikz/tikz.cod
 e.tex
@@ -695,7 +688,7 @@ Package pict2e Info: Driver file for pict2e: p2e-xetex.def on input line 114.
 (/usr/local/texlive/2022/texmf-dist/tex/latex/pict2e/p2e-xetex.def
 File: p2e-xetex.def 2016/02/05 v0.1u Driver-dependant file (RN,HjG,JT)
 )
-\pIIe@GRAPH=\toks41
+\pIIe@GRAPH=\toks39
 \@arclen=\dimen292
 \@arcrad=\dimen293
 \pIIe@tempdima=\dimen294
@@ -707,26 +700,26 @@ File: p2e-xetex.def 2016/02/05 v0.1u Driver-dependant file (RN,HjG,JT)
 ) (/usr/local/texlive/2022/texmf-dist/tex/latex/float/float.sty
 Package: float 2001/11/08 v1.3d Float enhancements (AL)
 \c@float@type=\count329
-\float@exts=\toks42
+\float@exts=\toks40
 \float@box=\box74
-\@float@everytoks=\toks43
+\@float@everytoks=\toks41
 \@floatcapt=\box75
 ) (/usr/local/texlive/2022/texmf-dist/tex/latex/makecell/makecell.sty
 Package: makecell 2009/08/03 V0.1e Managing of Tab Column Heads and Cells
 \rotheadsize=\dimen300
 \c@nlinenum=\count330
-\TeXr@lab=\toks44
+\TeXr@lab=\toks42
 ) (/usr/local/texlive/2022/texmf-dist/tex/latex/amscls/amsthm.sty
 Package: amsthm 2020/05/29 v2.20.6
-\thm@style=\toks45
-\thm@bodyfont=\toks46
-\thm@headfont=\toks47
-\thm@notefont=\toks48
-\thm@headpunct=\toks49
+\thm@style=\toks43
+\thm@bodyfont=\toks44
+\thm@headfont=\toks45
+\thm@notefont=\toks46
+\thm@headpunct=\toks47
 \thm@preskip=\skip62
 \thm@postskip=\skip63
 \thm@headsep=\skip64
-\dth@everypar=\toks50
+\dth@everypar=\toks48
 ) (/usr/local/texlive/2022/texmf-dist/tex/latex/algorithm2e/algorithm2e.sty
 Invalid UTF-8 byte or sequence at line 284 replaced by U+FFFD.
 Invalid UTF-8 byte or sequence at line 299 replaced by U+FFFD.
@@ -878,7 +871,7 @@ Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
 \Gm@layoutheight=\dimen322
 \Gm@layouthoffset=\dimen323
 \Gm@layoutvoffset=\dimen324
-\Gm@dimlist=\toks51
+\Gm@dimlist=\toks49
 ) (/usr/local/texlive/2022/texmf-dist/tex/latex/natbib/natbib.sty
 Package: natbib 2010/09/13 8.31b (PWD, AO)
 \bibhang=\skip86
@@ -1308,33 +1301,24 @@ u-vas-sa Bluetooth-
 
 
 ]
-LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 5
-0.
+LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 4
+9.
 (/usr/local/texlive/2022/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <12> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 50.
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 49.
 )
 \tf@toc=\write5
 \openout5 = `gradu.toc'.
 
 [2]
 \bbl@ensure@finnish {Luku} 1.
-
-Underfull \hbox (badness 3635) in paragraph at lines 222--223
-[]\T1/lmr/m/n/12 Hiukassuodin- se-kä hiu-kas-si-loi-ti-nal-go-rit-mien osal-ta 
-tut-kiel-man esi-tyk-set
- []
-
-Missing character: There is no … ("2026) in font ecrm1200!
-Missing character: There is no … ("2026) in font ecrm1200!
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
 [3
 
 ]
+Missing character: There is no … ("2026) in font ecrm1200!
+Missing character: There is no … ("2026) in font ecrm1200!
 Missing character: There is no ∶ ("2236) in font ecrm0800!
 Missing character: There is no … ("2026) in font ecrm1200!
 Missing character: There is no 𝜈 ("1D708) in font ecrm1200!
@@ -1350,47 +1334,44 @@ Missing character: There is no ∼ ("223C) in font ecrm1200!
 Missing character: There is no ∼ ("223C) in font ecrm1200!
 Missing character: There is no ∼ ("223C) in font ecrm1200!
 Missing character: There is no ∼ ("223C) in font ecrm1200!
-Missing character: There is no … ("2026) in font ecrm1200!
 [4]
+Missing character: There is no … ("2026) in font ecrm1200!
 Missing character: There is no ̂ ("302) in font ecrm1200!
 Missing character: There is no ≤ ("2264) in font ecrm1200!
 Missing character: There is no ̂ ("302) in font ecrm1200!
 Missing character: There is no − ("2212) in font ecrm1200!
 Missing character: There is no ̂ ("302) in font ecrm1200!
 Missing character: There is no ̂ ("302) in font ecrm1200!
+[5]
 Missing character: There is no ⋅ ("22C5) in font ecrm1200!
 Missing character: There is no ⋅ ("22C5) in font ecrm1200!
 
-Underfull \hbox (badness 1953) in paragraph at lines 277--278
+Underfull \hbox (badness 1953) in paragraph at lines 300--301
 \T1/lmr/m/n/12 suotimen toi-min-ta-pe-ri-aa-te pe-rus-tuu epä-li-ne-aa-ris-ten 
 funk-tioi-den li-nea-ri-soin-tiin
  []
 
 
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-[5]
-Underfull \hbox (badness 1377) in paragraph at lines 281--282
+Underfull \hbox (badness 1377) in paragraph at lines 304--305
 []\T1/lmr/m/n/12 Joitakin suo-di-non-gel-man re-kur-sii-vi-sia Mon-te Car-lo -r
 atkaisuja löy-tyy jo
  []
 
 
-Underfull \hbox (badness 4492) in paragraph at lines 281--282
+Underfull \hbox (badness 4492) in paragraph at lines 304--305
 \T1/lmr/m/n/12 ha-lu-tun ja-kau-maes-ti-maa-tin las-ken-nas-sa. Tärkeytysotanta
 -algoritmiin voi-daan
- []
-
-
-Underfull \hbox (badness 3547) in paragraph at lines 287--288
-[]\T1/lmr/m/n/12 SMC-menetelmissä sto-kas-ti-sen pro-ses-sin pos-te-rio-ri-ja-k
-au-man esit-tä-mi-seen
  []
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 [6]
+Underfull \hbox (badness 3547) in paragraph at lines 310--311
+[]\T1/lmr/m/n/12 SMC-menetelmissä sto-kas-ti-sen pro-ses-sin pos-te-rio-ri-ja-k
+au-man esit-tä-mi-seen
+ []
+
 Missing character: There is no ∶ ("2236) in font ecrm0800!
 Missing character: There is no ∶ ("2236) in font ecrm0800!
 Missing character: There is no ∫ ("222B) in font ecrm1200!
@@ -1409,13 +1390,13 @@ Missing character: There is no ∑ ("2211) in font ecrm1200!
 Missing character: There is no ∶ ("2236) in font ecrm0800!
 Missing character: There is no ≃ ("2243) in font ecrm1200!
 Missing character: There is no ∑ ("2211) in font ecrm1200!
-Missing character: There is no … ("2026) in font ecrm1200!
-Missing character: There is no ∶ ("2236) in font ecrm0800!
-Missing character: There is no ∶ ("2236) in font ecrm0800!
-Missing character: There is no ∶ ("2236) in font ecrm0800!
-Missing character: There is no ∶ ("2236) in font ecrm0800!
-Missing character: There is no ∶ ("2236) in font ecrm0800!
 [7]
+Missing character: There is no … ("2026) in font ecrm1200!
+Missing character: There is no ∶ ("2236) in font ecrm0800!
+Missing character: There is no ∶ ("2236) in font ecrm0800!
+Missing character: There is no ∶ ("2236) in font ecrm0800!
+Missing character: There is no ∶ ("2236) in font ecrm0800!
+Missing character: There is no ∶ ("2236) in font ecrm0800!
 Missing character: There is no ∫ ("222B) in font ecrm1200!
 Missing character: There is no ∶ ("2236) in font ecrm0800!
 Missing character: There is no ∫ ("222B) in font ecrm1200!
@@ -1466,8 +1447,8 @@ Missing character: There is no ∗ ("2217) in font ecrm0800!
 Missing character: There is no ∶ ("2236) in font ecrm0800!
 Missing character: There is no ≃ ("2243) in font ecrm1200!
 Missing character: There is no ∑ ("2211) in font ecrm1200!
-Missing character: There is no ∶ ("2236) in font ecrm0800!
 [8]
+Missing character: There is no ∶ ("2236) in font ecrm0800!
 Missing character: There is no ̂ ("302) in font ecrm1200!
 Missing character: There is no ∶ ("2236) in font ecrm0800!
 Missing character: There is no … ("2026) in font ecrm1200!
@@ -1501,10 +1482,9 @@ Missing character: There is no ∶ ("2236) in font ecrm0800!
 Missing character: There is no ∶ ("2236) in font ecrm0800!
 Missing character: There is no ∫ ("222B) in font ecrm1200!
 Missing character: There is no ∶ ("2236) in font ecrm0800!
+[9]
 Missing character: There is no ∶ ("2236) in font ecrm0800!
-File: output/figures/nice-fig-1.pdf Graphic file (type pdf)
-<use output/figures/nice-fig-1.pdf>
-[9] [10]
+[10]
 \bbl@ensure@finnish {Luku} 2.
 Missing character: There is no ∼ ("223C) in font ecrm1200!
 Missing character: There is no … ("2026) in font ecrm1200!
@@ -1606,13 +1586,13 @@ Missing character: There is no ∶ ("2236) in font ecrm0800!
 Missing character: There is no − ("2212) in font ecrm0800!
 Missing character: There is no ∶ ("2236) in font ecrm0800!
 
-Underfull \hbox (badness 10000) in paragraph at lines 534--535
+Underfull \hbox (badness 10000) in paragraph at lines 517--518
 []\T1/lmr/m/n/12 Jos yh-tä-lös-tä ([][]2.8[][]) poi-mi-taan eh-do-tus-ja-kau-ma
 k-si ai-noas-taan ter-mi
  []
 
 
-Underfull \hbox (badness 1789) in paragraph at lines 534--535
+Underfull \hbox (badness 1789) in paragraph at lines 517--518
 $\OML/lmm/m/it/12 q\T1/latinmodern-math.otf(1)/m/n/12 (\OML/lmm/m/it/12 x[]\T1/
 latinmodern-math.otf(1)/m/n/12 |\OML/lmm/m/it/12 x[]\T1/latinmodern-math.otf(1)
 /m/n/12 , \OML/lmm/m/it/12 y[]\T1/latinmodern-math.otf(1)/m/n/12 )$ \T1/lmr/m/n
@@ -1727,7 +1707,7 @@ Missing character: There is no ∑ ("2211) in font ecrm1200!
 [16]
 Missing character: There is no → ("2192) in font ecrm1200!
 
-Underfull \hbox (badness 3769) in paragraph at lines 614--615
+Underfull \hbox (badness 3769) in paragraph at lines 597--598
 \T1/lmr/m/n/12 mar-gi-na-li-soin-ti tär-key-tys-pai-nol-la ([][]2.19[][]) li-sä
 ä al-go-rit-min ai-ka-komplek-si-suut-ta
  []
@@ -1741,7 +1721,7 @@ Underfull \hbox (badness 3769) in paragraph at lines 614--615
 ]
 \bbl@ensure@finnish {Luku} 4.
 
-Underfull \hbox (badness 1708) in paragraph at lines 642--643
+Underfull \hbox (badness 1708) in paragraph at lines 625--626
 \T1/lmr/m/n/12 Sisätilapaikannus tar-koit-taa ni-men-sä mu-kai-ses-ti ih-mis-te
 n tai esi-nei-den au-to-
  []
@@ -1764,7 +1744,7 @@ Missing character: There is no 𝛷 ("1D6F7) in font ecrm1200!
 Missing character: There is no ′ ("2032) in font ecrm0800!
 Missing character: There is no 𝜂 ("1D702) in font ecrm1200!
 
-Overfull \hbox (18.33588pt too wide) in paragraph at lines 688--706
+Overfull \hbox (18.33588pt too wide) in paragraph at lines 671--689
  [][] 
  []
 
@@ -1810,7 +1790,7 @@ Missing character: There is no 𝜇 ("1D707) in font ecrm1200!
 Missing character: There is no 𝜎 ("1D70E) in font ecrm1200!
 Missing character: There is no ⋅ ("22C5) in font ecrm1200!
 
-Underfull \hbox (badness 1365) in paragraph at lines 752--753
+Underfull \hbox (badness 1365) in paragraph at lines 735--736
 \T1/lmr/m/n/12 teen/robotin at-si-muut-ti/suuntimakulma ky-sei-se-nä ajan-het-k
 e-nä. $[]$ on ko-hi-naa,
  []
@@ -1911,14 +1891,14 @@ Missing character: There is no ∑ ("2211) in font ecrm1200!
 [26]
 Missing character: There is no ⋅ ("22C5) in font ecrm1200!
 
-Underfull \hbox (badness 1205) in paragraph at lines 802--803
+Underfull \hbox (badness 1205) in paragraph at lines 785--786
 []\T1/lmr/m/n/12 Paikannusvirheen las-ke-mi-ses-sa on etäi-syys-funk-tio-na $\O
 ML/lmm/m/it/12 d\T1/latinmodern-math.otf(1)/m/n/12 ()$ \T1/lmr/m/n/12 käy-tet-t
 y \T1/lmtt/m/n/12 raster\T1/lmr/m/n/12 -
  []
 
 
-Underfull \hbox (badness 1038) in paragraph at lines 802--803
+Underfull \hbox (badness 1038) in paragraph at lines 785--786
 \T1/lmr/m/n/12 kirjaston \T1/lmtt/m/n/12 pointDistance()\T1/lmr/m/n/12 -funktio
 ta. Koo-dis-sa on ko-ros-tet-tu tii-viy-den si-jaan
  []
@@ -1937,16 +1917,16 @@ Missing character: There is no 𝜙 ("1D719) in font ecrm1200!
 Missing character: There is no 𝜙 ("1D719) in font ecrm1200!
 [27]
 
-LaTeX Warning: Reference `total' on page 28 undefined on input line 817.
+LaTeX Warning: Reference `total' on page 28 undefined on input line 800.
 
 
-Underfull \hbox (badness 2772) in paragraph at lines 819--820
+Underfull \hbox (badness 2772) in paragraph at lines 802--803
 \T1/lmr/m/n/12 4.0.4. Tie-to-ko-nee-na käy-tet-tiin vuo-den 2017 mal-lia ole-va
 a Mac-Book Pro -
  []
 
 
-Underfull \hbox (badness 1845) in paragraph at lines 819--820
+Underfull \hbox (badness 1845) in paragraph at lines 802--803
 \T1/lmr/m/n/12 kirjastoa. Jo-kai-nen al-go-rit-mi tois-tet-tiin kym-me-nen ker-
 taa ja suo-ri-tus-no-peus
  []
@@ -1954,17 +1934,13 @@ taa ja suo-ri-tus-no-peus
 Missing character: There is no − ("2212) in font ecrm1200!
 Missing character: There is no − ("2212) in font ecrm0800!
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 838.
+(Font)              <10> on input line 821.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 838.
+(Font)              <7> on input line 821.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 838.
+(Font)              <5> on input line 821.
 
-Package natbib Warning: Citation `xie2015' on page 28 undefined on input line 8
-42.
-
-
-Underfull \vbox (badness 1142) has occurred while \output is active []
+Underfull \vbox (badness 2277) has occurred while \output is active []
 
 [28] [29] [30
 
@@ -1975,14 +1951,10 @@ Excluding 'comment' comment. [31] [32
 ]
 \bbl@ensure@finnish {Luku} 6.
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <24.88> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 906.
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 887.
 (./gradu.bbl [33] [34
 
-])
-
-Package natbib Warning: There were undefined citations.
-
-[35] (./gradu.aux)
+]) [35] (./gradu.aux)
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
@@ -1991,10 +1963,10 @@ LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 35661 strings out of 476179
- 709256 string characters out of 5809544
- 1128827 words of memory out of 5000000
- 55753 multiletter control sequences out of 15000+600000
+ 35621 strings out of 476179
+ 708196 string characters out of 5809544
+ 1127960 words of memory out of 5000000
+ 55719 multiletter control sequences out of 15000+600000
  537098 words of font info for 102 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  98i,20n,120p,1002b,1031s stack positions out of 10000i,1000n,20000p,200000b,200000s

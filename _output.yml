@@ -6,6 +6,6 @@ bookdown::pdf_book:
   citation_package: natbib
   keep_tex: yes
   toc_depth: 3
+  csl: american-medical-association.csl
+  link-citations: yes
 bookdown::epub_book: default
-
-

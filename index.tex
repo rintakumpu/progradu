@@ -213,7 +213,7 @@ Matematiikan ja tilastotieteen laitos\newline
 \setlength\parindent{24pt}
 \setlength\parskip{3pt}
 
-\chapter{johdanto}
+\chapter{Johdanto}
 
 SMC-menetelmät (sequential Monte Carlo -mentelmät) ovat joukko Monte Carlo -algoritmeja, joiden avulla voidaan ratkaista ns. suodinongelma, kun ongelma on epälineaarinen ja/tai ongelmaan liittyvä kohina ei noudata normaalijakaumaa. SMC-menetelmille on lukuisia sovellutuksia esimerkiksi Bayesilaisessa tilastotieteessä, fysiikassa ja robotiikassa.
 
@@ -221,7 +221,7 @@ Tämän tutkielman tavoitteena on esittää pääpiirteittäin SMC-menetelmien t
 
 Hiukassuodin- sekä hiukassiloitinalgoritmien osalta tutkielman esitykset seuraavat erityisesti Simo Särkän kirjaa \textit{Bayesian Filtering and Smoothing} (2013), Fredrik Gustafssonin artikkelia ``Particle Filter Theory and Practice with Positioning Applications'' (2010) sekä Olivier Cappén, Simon J. Godsillin ja Eric Moulines'n artikkelia ``An overview of existing methods and recent advances in sequential Monte Carlo'' (2007). Hiukassuotimien varianssin estimointi seuraa artikkeleita TODO.
 
-\subsection{Suodinongelma}
+\section{Suodinongelma}
 
 Stokastisten prosessien teoriassa suodinongelmaksi kutsutaan tilannetta, jossa halutaan muodostaa keskineliövirheen mielessä paras mahdollinen estimaatti jonkin järjestelmän tilan arvoille, kun ainoastaan osa tiloista voidaan havaita ja/tai havaintoihin liittyy kohinaa. Tavoitteena on toisin sanoen laskea jonkin prosessin posteriorijakauma kyseisten havaintojen perusteella. Ongelmaa havainnollistaa kaavio (\ref{mallikaavio}).
 
@@ -252,11 +252,13 @@ Tutkielman teoriaosassa käytetään ensisijaisesti yhtälöiden (\ref{malli-3})
 
 Suodinongelmaa lähellä on myös ns. tasoitusongelma (smoothing problem), jossa ollaan kiinnostuneita prosessin \(x_k\) posteriorijakaumasta \(p(x_k|y_k)\) jokaisena ajanhetkenä \(\{1,\ldots,k\}\) ei ainoastaan haluttuna ajanhetkenä \(k\). Tämä tutkielma keskittyy yksin suodinongelman ratkaisemiseen, mutta huomioitavaa on, että SMC-algoritmit näyttävät ratkaisevan tasoitusongelman ilmaiseksi. Tähän liittyy kuitenkin joidenkin mallien kohdalla mahdollista epätarkkuutta, joten tarvittaessa tasoitusongelma pitää ratkaista erikseen.
 
-\subsection{Notaatioista}
+\section{Notaatioista}
 
-Tässä tutkielmassa käytetään seuraavia notaatioita. TODO.
+Tässä tutkielmassa käytetään seuraavia notaatioita. me vektoria pienella kursiivilla kirjaimella (esim. x) ja matriisia isolla kursiivilla kirjaimella (esim. C). Taulukossa XXX esitetään keskeisimmät lyhenteet ja symbolit.
 
-\subsection{Suodin- ja siloitteluongelmien historiaa}
+TODO. TAULUKKO TÄHÄN.
+
+\section{Suodin- ja siloitteluongelmien historiaa}
 
 Tämä alaluku esittää pääpiirteittään suodinongelmalle esitettyjen ratkaisujen historian. Lineaarisen suodinongelman osalta alaluku noudattaa Dan Crisanin artikkelia ``The stochastic filtering problem: a brief historical account'' (2014) sekä Mohinder S. Grewalin ja Angus P. Andrewsin artikkelia ``Applications of Kalman Filtering in Aerospace 1960 to the Present'' (2010). SMC-menetelmien osalta lähteenä toimii Cappé \&al (2007).
 

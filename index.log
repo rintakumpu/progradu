@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2022.5.26)  19 MAR 2024 18:06
+This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2022.5.26)  19 MAR 2024 19:47
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -998,7 +998,7 @@ File: bkm-dvipdfm.def 2020-11-06 v1.29 bookmark driver for dvipdfm (HO)
 Package: xurl 2022/01/09 v 0.10 modify URL breaks
 )
 Package hyperref Info: Option `colorlinks' set `true' on input line 132.
-(./index.aux)
+No file index.aux.
 \openout1 = `index.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 137.
@@ -1229,6 +1229,9 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 LaTeX Info: Redefining \ref on input line 137.
 LaTeX Info: Redefining \pageref on input line 137.
 LaTeX Info: Redefining \nameref on input line 137.
+
+Package hyperref Warning: Rerun to get /PageLabels entry.
+
 File: ./images//UTU_logo_FI.jpeg Graphic file (type bmp)
 <./images//UTU_logo_FI.jpeg>
 Package microtype Info: Character `029' is missing
@@ -1304,7 +1307,7 @@ u-vas-sa Bluetooth-
 
 ] [4
 
-] (./index.toc)
+]
 \tf@toc=\write5
 \openout5 = `index.toc'.
 
@@ -1320,6 +1323,9 @@ Underfull \hbox (badness 3635) in paragraph at lines 222--223
 []\T1/lmr/m/n/12 Hiukassuodin- se-kä hiu-kas-si-loi-ti-nal-go-rit-mien osal-ta 
 tut-kiel-man esi-tyk-set
  []
+
+
+LaTeX Warning: Reference `mallikaavio' on page 3 undefined on input line 226.
 
 Missing character: There is no … ("2026) in font ecrm1200!
 Missing character: There is no … ("2026) in font ecrm1200!
@@ -1342,60 +1348,29 @@ Missing character: There is no ∼ ("223C) in font ecrm1200!
 Missing character: There is no ∼ ("223C) in font ecrm1200!
 Missing character: There is no ∼ ("223C) in font ecrm1200!
 Missing character: There is no ∼ ("223C) in font ecrm1200!
+
+LaTeX Warning: Reference `malli-3' on page 4 undefined on input line 251.
+
+
+LaTeX Warning: Reference `malli-4' on page 4 undefined on input line 251.
+
+
+LaTeX Warning: Reference `malli-1' on page 4 undefined on input line 251.
+
+
+LaTeX Warning: Reference `malli-2' on page 4 undefined on input line 251.
+
 Missing character: There is no … ("2026) in font ecrm1200!
-[4]
-Missing character: There is no ̂ ("302) in font ecrm1200!
-Missing character: There is no ≤ ("2264) in font ecrm1200!
-Missing character: There is no ̂ ("302) in font ecrm1200!
-Missing character: There is no − ("2212) in font ecrm1200!
-Missing character: There is no ̂ ("302) in font ecrm1200!
-Missing character: There is no ̂ ("302) in font ecrm1200!
-Missing character: There is no ⋅ ("22C5) in font ecrm1200!
-Missing character: There is no ⋅ ("22C5) in font ecrm1200!
-
-Underfull \hbox (badness 1953) in paragraph at lines 277--278
-\T1/lmr/m/n/12 suotimen toi-min-ta-pe-ri-aa-te pe-rus-tuu epä-li-ne-aa-ris-ten 
-funk-tioi-den li-nea-ri-soin-tiin
- []
-
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-[5]
-Underfull \hbox (badness 1377) in paragraph at lines 281--282
-[]\T1/lmr/m/n/12 Joitakin suo-di-non-gel-man re-kur-sii-vi-sia Mon-te Car-lo -r
-atkaisuja löy-tyy jo
- []
-
-
-Underfull \hbox (badness 4492) in paragraph at lines 281--282
-\T1/lmr/m/n/12 ha-lu-tun ja-kau-maes-ti-maa-tin las-ken-nas-sa. Tärkeytysotanta
--algoritmiin voi-daan
- []
-
-
-Underfull \hbox (badness 3547) in paragraph at lines 287--288
-[]\T1/lmr/m/n/12 SMC-menetelmissä sto-kas-ti-sen pro-ses-sin pos-te-rio-ri-ja-k
-au-man esit-tä-mi-seen
- []
-
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-[6]
-No file index.bbl.
-[7] (./index.aux)
-
-LaTeX Font Warning: Some font shapes were not available, defaults substituted.
-
- ) 
+! Text line contains an invalid character.
+l.257 ...aavia notaatioita. me vektoria pienell^^?
+                                                  a kursiivilla kirjaimella ...
+ 
 Here is how much of TeX's memory you used:
- 35265 strings out of 476179
- 701106 string characters out of 5809544
- 1126234 words of memory out of 5000000
- 55407 multiletter control sequences out of 15000+600000
- 511008 words of font info for 67 fonts, out of 8000000 for 9000
+ 35257 strings out of 476179
+ 701050 string characters out of 5809544
+ 1118902 words of memory out of 5000000
+ 55406 multiletter control sequences out of 15000+600000
+ 514023 words of font info for 68 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 98i,18n,120p,1002b,1031s stack positions out of 10000i,1000n,20000p,200000b,200000s
-
-Output written on index.pdf (11 pages).
+ 98i,18n,120p,1002b,1033s stack positions out of 10000i,1000n,20000p,200000b,200000s
+Output written on index.pdf (7 pages).

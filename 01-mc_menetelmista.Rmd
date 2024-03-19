@@ -54,8 +54,3 @@ Muodostetaan näin odotusarvo
   }  
 \caption{Tärkeytysotanta}
 \end{algorithm}
-
-\subsection{Sekventiaalinen Monte Carlo}
-
-TODO/WTF?
-

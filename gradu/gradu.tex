@@ -76,7 +76,6 @@
 \def\languageshorthands#1{}
 \usepackage{booktabs}
 \usepackage[T1]{fontenc}
-\usepackage[utf8]{inputenc}
 \usepackage{color}
 \usepackage{xspace}
 \usepackage{tikz-cd}
@@ -106,6 +105,7 @@
     left=30mm,
     top=30mm,
     }
+\usepackage[numbers]{natbib}
 \newcommand{\tekija}{{Lasse Rintakumpu}}
 \newcommand{\titteli}{{}} 
 \newcommand{\otsikko}{{Hiukassuodin- ja hiukassiloitinalgoritmit sekä niiden soveltaminen AoA-menetelmään perustuvassa Bluetooth-sisätilapaikannuksessa}} 
@@ -219,7 +219,34 @@ SMC-menetelmät (sequential Monte Carlo -mentelmät) ovat joukko Monte Carlo -al
 
 Tämän tutkielman tavoitteena on esittää pääpiirteittäin SMC-menetelmien teoria sekä joitakin menetelmäperheeseen kuuluvia algoritmeja. Tutkielman ensimmäisessä alaluvussa kuvataan yleisellä tasolla sekä suodinongelma että sen ratkaisujen historiaa. Toisessa alaluvussa käsitellään joitakin Monte Carlo -menetelmiin liittyviä yleisiä tuloksia. Kolmannessa alaluvussa esitellään Bayesilainen viitekehys suodinongelmalle, jonka pohjalta neljännessä alaluvussa kuvataan SIR-algoritmina tunnettu SMC-menetelmä. Tutkielman lopussa tarkastellaan menetelmien käyttöä sisätilapaikannussovelluksessa.
 
-Hiukassuodin- sekä hiukassiloitinalgoritmien osalta tutkielman esitykset seuraavat erityisesti Simo Särkän kirjaa \textit{Bayesian Filtering and Smoothing} (2013), Fredrik Gustafssonin artikkelia ``Particle Filter Theory and Practice with Positioning Applications'' (2010) sekä Olivier Cappén, Simon J. Godsillin ja Eric Moulines'n artikkelia ``An overview of existing methods and recent advances in sequential Monte Carlo'' (2007). Hiukassuotimien varianssin estimointi seuraa artikkeleita TODO.
+Hiukassuodin- sekä hiukassiloitinalgoritmien osalta tutkielman esitykset seuraavat erityisesti Simo Särkän kirjaa \textit{Bayesian Filtering and Smoothing} (2013) \citep{sarkka-2013}, Fredrik Gustafssonin artikkelia ``Particle Filter Theory and Practice with Positioning Applications'' (2010) \citep{gustafsson-2010} sekä Olivier Cappén, Simon J. Godsillin ja Eric Moulines'n artikkelia ``An overview of existing methods and recent advances in sequential Monte Carlo'' (2007). Hiukassuotimien varianssin estimointi seuraa artikkeleita TODO.
+
+\section{Notaatioista}
+
+Tässä tutkielmassa käytetään seuraavia notaatioita. me vektoria pienelläa kursiivilla kirjaimella (esim. x) ja matriisia isolla kursiivilla kirjaimella (esim. C). Taulukossa \ref{tab:lyhenteet-ja-symbolit} esitetään keskeisimmät lyhenteet ja symbolit.
+
+\begin{table}
+
+\caption{\label{tab:lyhenteet-ja-symbolit}Lyhenteet ja symbolit}
+\centering
+\begin{tabular}[t]{rr}
+\toprule
+temperature & pressure\\
+\midrule
+0 & 0.0002\\
+20 & 0.0012\\
+40 & 0.0060\\
+60 & 0.0300\\
+80 & 0.0900\\
+\addlinespace
+100 & 0.2700\\
+120 & 0.7500\\
+140 & 1.8500\\
+160 & 4.2000\\
+180 & 8.8000\\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \section{Suodinongelma}
 
@@ -251,10 +278,6 @@ Mallit voidaan esittää myös yleisemmässä jakaumamuodossa
 Tutkielman teoriaosassa käytetään ensisijaisesti yhtälöiden (\ref{malli-3}) ja (\ref{malli-4}) muotoilua. Empiirisessä osassa palataan yhtälöiden (\ref{malli-1}) ja (\ref{malli-2}) muotoiluun.
 
 Suodinongelmaa lähellä on myös ns. tasoitusongelma (smoothing problem), jossa ollaan kiinnostuneita prosessin \(x_k\) posteriorijakaumasta \(p(x_k|y_k)\) jokaisena ajanhetkenä \(\{1,\ldots,k\}\) ei ainoastaan haluttuna ajanhetkenä \(k\). Tämä tutkielma keskittyy yksin suodinongelman ratkaisemiseen, mutta huomioitavaa on, että SMC-algoritmit näyttävät ratkaisevan tasoitusongelman ilmaiseksi. Tähän liittyy kuitenkin joidenkin mallien kohdalla mahdollista epätarkkuutta, joten tarvittaessa tasoitusongelma pitää ratkaista erikseen.
-
-\section{Notaatioista}
-
-Tässä tutkielmassa käytetään seuraavia notaatioita. TODO.
 
 \section{Suodin- ja siloitteluongelmien historiaa}
 
@@ -372,46 +395,6 @@ p(x_{k+1}|y_{1:k})=\int_{\mathbb{R}^{n_x}}p(x_{k+1}|x_k)p(x_k|y_{1:k})\mathop{dx
 \end{align}
 
 \noindent Rekursion avulla voimme laskea jakauman \(p(x_k|y_{1:k})\) estimaatti käymällä rekursion läpi \(k\) kertaa.
-
-\section{Bayesilainen siloitin}
-
-TODO
-
-See Figure \ref{fig:nice-fig}.
-
-\begin{figure}
-
-{\centering \includegraphics[width=0.8\linewidth]{output/figures/nice-fig-1} 
-
-}
-
-\caption{Here is a nice figure!}\label{fig:nice-fig}
-\end{figure}
-
-Don't miss Table \ref{tab:nice-tab}.
-
-\begin{table}
-
-\caption{\label{tab:nice-tab}Here is a nice table!}
-\centering
-\begin{tabular}[t]{rr}
-\toprule
-temperature & pressure\\
-\midrule
-0 & 0.0002\\
-20 & 0.0012\\
-40 & 0.0060\\
-60 & 0.0300\\
-80 & 0.0900\\
-\addlinespace
-100 & 0.2700\\
-120 & 0.7500\\
-140 & 1.8500\\
-160 & 4.2000\\
-180 & 8.8000\\
-\bottomrule
-\end{tabular}
-\end{table}
 
 \section{Kalman-suotimen ja hiukassuotimen eroista}
 
@@ -839,7 +822,7 @@ Footnotes are put inside the square brackets after a caret \texttt{\^{}{[}{]}}. 
 
 Citations. Reference items in your bibliography file(s) using \texttt{@key}.
 
-For example, we are using the \textbf{bookdown} package \citep{R-bookdown} (check out the last code chunk in index.Rmd to see how this citation key was added) in this sample book, which was built on top of R Markdown and \textbf{knitr} \citep{xie2015} (this citation was added manually in an external file book.bib).
+For example, we are using the \textbf{bookdown} package check out the last code chunk in index.Rmd to see how this citation key was added) in this sample book, which was built on top of R Markdown and
 Note that the \texttt{.bib} files need to be listed in the index.Rmd with the YAML \texttt{bibliography} key.
 
 The RStudio Visual Markdown Editor can also make it easier to insert citations: \url{https://rstudio.github.io/visual-markdown-editing/\#/citations}
@@ -894,17 +877,15 @@ Tutkielmassa on lisäksi tarkasteltu miten eri valinnat vaikuttavat algoritmin s
 \bibitem{Gordon1993} Gordon, N.J., Salmond, D.H., Smith A.F.M. 1993. Novel approach to
 nonlinear/non-Gaussian Bayesian state estimation. \textit{IEE Proc. F, Radar Signal Process}, Vol 140, No 2, 107\textendash 113.
 \bibitem{Grewal2010} Grewal, M.S., Andrews, A.P. 2010. Applications of Kalman Filtering in Aerospace 1960 to the Present [Historical Perspectives]. \textit{IEEE Control Systems Magazine}, Vol 30, No 3, 69\textendash 78.
-\bibitem{Gustafsson2010} Gustafsson, F. 2010. Particle filter theory and practice with positioning applications. \textit{IEEE Aerospace and Electronic Systems Magazine}, Vol 25, No 7, 53\textendash 82.
 \bibitem{LiuChen1998} Liu, J., Chen, R. 1998. Sequential Monte Carlo Methods for Dynamic Systems. \textit{Journal of the American Statistical Association}, Vol 93, No 443, 1032\textendash 1044.
 \bibitem{Munoz2009} Munoz, D., Enriquez-Caldera, R., Vargas, C., Bouchereau Lara, F. 2009. \textit{Position Location Techniques and Applications}. Elsevier.
 \bibitem{Pierlot2011} Pierlot, V., Urbin-Choffray M., Van Droogenbroeck, M. 2011. A New Three Object Triangulation Algorithm Based on the Power Center of Three Circles. \textit{Research and Education in Robotics - EUROBOT 2011}, 248\textendash 262. Springer.
-\bibitem{Sarkka2013} Särkkä, S. 2013. \textit{Bayesian Filtering and Smoothing}. Cambridge University Press.
 \end{thebibliography}
 \end{comment}
 
 \hypertarget{liite-other-stuff--followed-by-a-chapter}{%
 \chapter{\texorpdfstring{(Liite) Other stuff \{-\}\texttt{(followed\ by}\# A chapter`)}{(Liite) Other stuff \{-\}(followed by\# A chapter`)}}\label{liite-other-stuff--followed-by-a-chapter}}
 
-  \bibliography{packages.bib}
+  \bibliography{packages.bib,lahteet.bib}
 
 \end{document}
