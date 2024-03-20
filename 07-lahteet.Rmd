@@ -1,19 +1,9 @@
-`r if (knitr::is_html_output()) '
-# Lähteet {-}
-'`
-
 \begin{comment}
 \begin{thebibliography}{99}
-\bibitem{Cappe2007} Cappé, O., Godsill, S. J., Moulines, E., 2007. An Overview of Existing Methods and Recent Advances in Sequential Monte Carlo. \textit{Proceedings of the IEEE}, Vol 95, No 5, 899\textendash 924.
-\bibitem{Crisan2014} Crisan, D. 2014. The stochastic filtering problem: A brief historical account. \textit{Journal of Applied Probability}, Vol 51(A), 13\textendash 22.
+
 \bibitem{Crisan2000} Crisan, D., Doucet, A. 2000. \textit{Convergence of Sequential Monte Carlo Methods}. 
 \bibitem{Crisan2002} Crisan, D., Doucet, A. 2002. A survey of convergence results on particle filtering methods for practitioners. \textit{IEEE Transactions on Signal Processing}, Vol 50, No 3, 736\textendash 746.
 \bibitem{Davidson2010} Davidson, P., Collin J., Takala J. 2010, Application of particle filters for indoor positioning using floor plans. \textit{2010 Ubiquitous Positioning Indoor Navigation and Location Based Service}, 1\textendash 4.
-\bibitem{DelMoral1996} Del Moral, P. 1997. Nonlinear filtering: Interacting particle resolution. \textit{Markov Processes and Related Fields}, Vol 2, No 4, 555\textendash 580.
-\bibitem{Gordon1993} Gordon, N.J., Salmond, D.H., Smith A.F.M. 1993. Novel approach to
-nonlinear/non-Gaussian Bayesian state estimation. \textit{IEE Proc. F, Radar Signal Process}, Vol 140, No 2, 107\textendash 113.
-\bibitem{Grewal2010} Grewal, M.S., Andrews, A.P. 2010. Applications of Kalman Filtering in Aerospace 1960 to the Present [Historical Perspectives]. \textit{IEEE Control Systems Magazine}, Vol 30, No 3, 69\textendash 78.
-\bibitem{LiuChen1998} Liu, J., Chen, R. 1998. Sequential Monte Carlo Methods for Dynamic Systems. \textit{Journal of the American Statistical Association}, Vol 93, No 443, 1032\textendash 1044.
 \bibitem{Munoz2009} Munoz, D., Enriquez-Caldera, R., Vargas, C., Bouchereau Lara, F. 2009. \textit{Position Location Techniques and Applications}. Elsevier.
 \bibitem{Pierlot2011} Pierlot, V., Urbin-Choffray M., Van Droogenbroeck, M. 2011. A New Three Object Triangulation Algorithm Based on the Power Center of Three Circles. \textit{Research and Education in Robotics - EUROBOT 2011}, 248\textendash 262. Springer.
 \end{thebibliography}
