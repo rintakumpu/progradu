@@ -1,3 +1,4 @@
 bookdown
 knitr
 pander
+kableExtra

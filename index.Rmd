@@ -25,6 +25,7 @@ knitr::opts_chunk$set(echo = FALSE, fig.width=3, fig.height=2.8, fig.show='hold'
 
 # Used libraries
 library(knitr) # For creating PDF
+library(kableExtra)
 library(pander)
 library(bookdown)
 
@@ -38,18 +39,21 @@ knitr::write_bib(c(
 
 Hiukassuotimet ovat joukko Monte Carlo -algoritmeja, joiden avulla voidaan ratkaista ns. suodinongelma, kun ongelma on epälineaarinen ja/tai ongelmaan liittyvä kohina ei noudata normaalijakaumaa. Hiukassuotimille on lukuisia sovellutuksia esimerkiksi Bayesilaisessa tilastotieteessä, fysiikassa ja robotiikassa.
 
-Tämän tutkielman tavoitteena on esittää hiukassuotimien teoria sekä joitakin menetelmäperheeseen kuuluvia algoritmeja. Tutkielman ensimmäisessä luvussa kuvataan yleisellä tasolla sekä suodinongelma että sen ratkaisujen historiaa ja esitetään joitakin Monte Carlo -menetelmiin liittyviä yleisiä tuloksia sekä Bayesilainen viitekehys suodinongelmalle. Toisessa luvussa kuvataan kaksi hiukassuodinalgoritmia, saapasremmisuodin sekä SIR-algoritmi ja perehdytään hiukassuotimen varianssin estimointiin. Kolmannessa luvussa tarkastellaan suodinongelmaan läheisesti liittyvää siloitteluongelma ja esitetään hiukassiloitinalgoritmeja tämän ongelman ratkaisemiseksi. Neljäs luku keskittyy hiukassuotimen käyttöön AoA/Bluetooth-teknologiaan perustuvassa sisätilapaikannussovelluksessa.
+Tämän tutkielman tavoitteena on esittää hiukassuotimien teoria sekä joitakin menetelmäperheeseen kuuluvia algoritmeja. Tutkielman ensimmäisessä luvussa kuvataan yleisellä tasolla sekä suodinongelma että sen ratkaisujen historiaa ja esitetään joitakin Monte Carlo -menetelmiin liittyviä yleisiä tuloksia sekä Bayesilainen viitekehys suodinongelmalle. Toisessa luvussa kuvataan kaksi hiukassuodinalgoritmia, saapasremmisuodin sekä SIR-algoritmi ja perehdytään hiukassuotimen varianssin estimointiin. Kolmannessa luvussa tarkastellaan suodinongelmaan läheisesti liittyvää siloitteluongelma ja esitetään hiukassiloitinalgoritmeja tämän ongelman ratkaisemiseksi. Neljäs luku keskittyy hiukassuotimen käyttöön empiirisessä AoA/Bluetooth-teknologiaan perustuvassa sisätilapaikannussovelluksessa. Tässä luvussa esitetään myös hiukassuodinalgoritmit radiosignaalin tulokulman arviointiin sekä radiovastaanottimen kalibrointiin. Lisäksi käsitellään lyhyesti sisätilapaikannuksessa hyödynnettävää karttasovitusalgoritmia.
 
 Hiukassuodin- sekä hiukassiloitinalgoritmien osalta tutkielman esitykset seuraavat erityisesti Simo Särkän kirjaa \textit{Bayesian Filtering and Smoothing} (2013) [@sarkka-2013], Fredrik Gustafssonin artikkelia "Particle Filter Theory and Practice with Positioning Applications" (2010) [@gustafsson-2010] sekä Olivier Cappén, Simon J. Godsillin ja Eric Moulines'n  artikkelia "An overview of existing methods and recent advances in sequential Monte Carlo" (2007) [@cappe-2007]. Hiukassuotimien varianssin estimointi seuraa artikkeleita TODO.
 
 \section{Notaatioista}
 
-Tässä tutkielmassa käytetään seuraavia notaatioita. me vektoria pienelläa kursiivilla kirjaimella (esim. x) ja matriisia isolla kursiivilla kirjaimella (esim. C). Taulukossa \@ref(tab:lyhenteet-ja-symbolit) esitetään keskeisimmät lyhenteet ja symbolit.
+Tässä tutkielmassa käytetään seuraavia notaatioita. Vektoreita merkitään pienellä kirjaimella, esimerkiksi $z$. Hiukassuotimen hiukkaset sisältäviä vektoreita merkitään $x_k^i$, missä alaindeksi viittaa ajanhetkeen $k, k=\{1,\ldots,T\}$ ja yläindeksi partikkeliin $i$, missä $i=\{1,\ldots,N\}$. Ajanhetkien $k, k=\{1,\ldots,T\}$ havainnot sisältäviä vektoreita merkitään $\{y_1,\ldots,y_k\}$. Lähtökohtaisesti kaikki tutkielmassa esitetyt muuttujat ovat ylä- ja alaindeksejä lukuunottamattavektoreita. Skalaareihin pyritään viittaamaan isoilla kirjaimilla, esimerkiksi $Z$. Milloin tämä ei ole mahdollista, selviää muuttujan skalaariarvoisuus asiayhtedestä. Prosesseihin viitataan alaindeksoidulla isolla kirjaimella, esimerkiksi $X_k$. Matriiseja merkitään isolla lihavoidulla kirjaimella, esimerkiksi $\mathbf{X}$ ja funktiota TODO. Taulukossa \@ref(tab:lyhenteet-ja-symbolit) esitetään tutkielman keskeisimmät lyhenteet ja symbolit.
 
 ```{r lyhenteet-ja-symbolit, tidy=FALSE}
-knitr::kable(
-  head(pressure, 10), caption = 'Lyhenteet ja symbolit',
-  booktabs = TRUE
+lyhsym <- as.data.frame(matrix(ncol=2,nrow=1))
+colnames(lyhsym) <- c("Lyhenne tai symboli", "Selitys")
+lyhsym[1,] <- linebreak(c("SMC", "\\textit{Sequential Monte Carlo}, \nsekventiaalinen Monte Carlo -menetelmä, \nsynonyymi hiukassuotimelle"))
+kableExtra::kbl(
+  lyhsym, caption = 'Lyhenteet ja symbolit', format="latex",
+  booktabs = TRUE, escape = FALSE
 )
 ```
 
@@ -71,7 +75,7 @@ Tässä tutkielmassa keskitytään erityisesti epälineaarisen, ns. Markovin pii
 &\label{malli-2} y_{k} = h(x_k)+e_k.
 \end{align}
 
-Lisäksi tiedetään prosessin alkuhetken jakauma $x_0 \sim p_{x_{0}}$, tähän liittyvän kohinaprosessin jakauma $\nu_k \sim p_{\nu_{k}}$ sekä malliin $y_k$ liittyvä kohina $e_k \sim p_{e_k}$. Koska SMC-algoritmit pyrkivät ratkaisemaan juurikin epälineaarisen, ei-Gaussisen suodinongelman, voivat funktiot $f(\cdot)$ ja $h(\cdot)$ olla epälineaarisia eikä kohinan tarvitse olla normaalijakautunutta.
+Lisäksi tiedetään prosessin alkuhetken jakauma $x_0 \sim p_{x_{0}}$, tähän liittyvän kohinaprosessin jakauma $\nu_k \sim p_{\nu_{k}}$ sekä malliin $y_k$ liittyvä kohina $e_k \sim p_{e_k}$. Koska hiukassuodinalgoritmit pyrkivät ratkaisemaan juurikin epälineaarisen, ei-Gaussisen suodinongelman, voivat funktiot $f(\cdot)$ ja $h(\cdot)$ olla epälineaarisia eikä kohinan tarvitse olla normaalijakautunutta.
 
 Mallit voidaan esittää myös yleisemmässä jakaumamuodossa
 
@@ -82,7 +86,14 @@ Mallit voidaan esittää myös yleisemmässä jakaumamuodossa
 
 Tutkielman teoriaosassa käytetään ensisijaisesti yhtälöiden (\ref{malli-3}) ja  (\ref{malli-4}) muotoilua. Empiirisessä osassa palataan yhtälöiden (\ref{malli-1}) ja (\ref{malli-2}) muotoiluun. 
 
-Suodinongelmaa lähellä on myös ns. siloitteluongelma (smoothing problem), jossa ollaan kiinnostuneita prosessin $x_k$ posteriorijakaumasta $p(x_k|y_k)$ jokaisena ajanhetkenä $\{1,\ldots,k\}$ ei ainoastaan haluttuna ajanhetkenä $k$. Hiukassuodinalgoritmit näyttävät ratkaisevan siloitteluongelman ilmaiseksi, mutta tähän liittyy kuitenkin joidenkin mallien kohdalla mahdollista epätarkkuutta, joten tarvittaessa tasoitusongelma pitää ratkaista erikseen. Tähän ongelmaan palataan tutkielman luvussa 3.
+Suodinongelmaa lähellä on myös ns. siloitteluongelma (*smoothing problem*), jossa ollaan kiinnostuneita prosessin $x_k$ posteriorijakaumasta $p(x_k|y_k)$ jokaisena ajanhetkenä $\{1,\ldots,k\}$ ei ainoastaan haluttuna ajanhetkenä $k$. Hiukassuodinalgoritmit näyttävät ratkaisevan siloitteluongelman ilmaiseksi, mutta tähän liittyy kuitenkin joidenkin mallien kohdalla mahdollista epätarkkuutta, joten tarvittaessa tasoitusongelma pitää ratkaista erikseen. Tähän ongelmaan palataan tutkielman luvussa 3. Kuva \ref{fig:suodin_vs_siloitin} selittää suodin- ja siloitteluongelmien eron.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=9cm]{suodin_vs_siloitin_cropped}
+\caption{Suodin- ja siloitteluongelma}
+\label{fig:suodin_vs_siloitin}
+\end{figure}
 
 \section{Suodin- ja siloitteluongelmien historiaa}
 
@@ -104,12 +115,12 @@ Kenties tärkein ja varmasti tunnetuin lineaariseen suodinongelman ratkaisu on K
 
 Kalman-suodinta voidaan soveltaa myös epälineaarisessa tapauksessa, kunhan suodinongelman funktiot $f(\cdot)$ ja $h(\cdot)$ ovat derivoituvia ja niihin liittyvä kohina oletetaan normaalijakautuneeksi. Tätä ratkaisua kutsutaan laajennetuksi Kalman-suotimeksi (extended Kalman filter, EKF). Suodin kehitettiin 60-luvulla NASA:n Apollo-ohjelman tarpeisiin, vaikkakin itse avaruusalusten laitteistot hyödynsivät lentoratojen laskennassa Kalman-suotimen perusversiota. Laajennetun Kalman-suotimen toimintaperiaate perustuu epälineaaristen funktioiden linearisointiin Taylorin kehitelmän avulla kulloisenkin estimaatin ympärillä. Laajennettu Kalman-suodin on erityisesti paikannussovellusten \textit{de facto} -suodinstandardi, mutta suodin ei kuitenkaan ole epälineaarisen ongelman optimaalinen estimaattori.
 
-Kalman-suotimesta on lisäksi olemassa lukuisia muita epälineaarisiin ongelmiin soveltuvia laajennuksia, muun muassa paikkaratkaisun Kalman-suodin (position Kalman filter, PKF), hajustamaton Kalman-suodin (unscented Kalman filter, UKF) sekä tilastollisesti linearisoitu Kalman-suodin (statistically linearized Kalman filter, SLF). Kuitenkin jos prosessin $X$ mallia ei tunneta tarkasti tai kohinaa ei voida olettaa normaalijakautuneeksi, ovat hiukassuotimet eli sekventiaaliset Monte Carlo -menetelmät Kalman-suotimen johdannaisia parempia ratkaisuja. Vaikka tila-avaruuden dimensioiden kasvaessa kasvaa myös hiukassuotimien vaatima laskentateho, ovat hiukassuotimet aina sitä parempia mitä epälineaarisempia mallit ovat ja mitä kauempana normaalijakaumasta kohina on. Viimeisten vuosikymmenten aikana myös laskennan teho on kasvanut merkittävästi samalla kun laskennan hinta on vastaavasti romahtanut, mikä puoltaa Monte Carlo -menetelmien käyttöä entistä useammissa ongelmissa. 
+Kalman-suotimesta on lisäksi olemassa lukuisia muita epälineaarisiin ongelmiin soveltuvia laajennuksia, muun muassa paikkaratkaisun Kalman-suodin (*position Kalman filter*, PKF), hajustamaton Kalman-suodin (*unscented Kalman filter*, UKF) sekä tilastollisesti linearisoitu Kalman-suodin (*statistically linearized Kalman filter*, SLF). Kuitenkin jos prosessin $X$ mallia ei tunneta tarkasti tai kohinaa ei voida olettaa normaalijakautuneeksi, ovat hiukassuotimet eli sekventiaaliset Monte Carlo -menetelmät Kalman-suotimen johdannaisia parempia ratkaisuja. Vaikka tila-avaruuden dimensioiden kasvaessa kasvaa myös hiukassuotimien vaatima laskentateho, ovat hiukassuotimet aina sitä parempia mitä epälineaarisempia mallit ovat ja mitä kauempana normaalijakaumasta kohina on. Viimeisten vuosikymmenten aikana myös laskennan teho on kasvanut merkittävästi samalla kun laskennan hinta on vastaavasti romahtanut, mikä puoltaa Monte Carlo -menetelmien käyttöä entistä useammissa ongelmissa. 
 
 Joitakin suodinongelman rekursiivisia Monte Carlo -ratkaisuja löytyy jo 1950\textendash 70-luvuilta, erityisesti säätöteoriaan piiristä. Olennainen nykyalgoritmeihin periytynyt oivallus varhaisissa suodinalgoritmeissa oli tärkeytysotannan käyttö halutun jakaumaestimaatin laskennassa. Tärkeytysotanta-algoritmiin voidaan turvautua, kun emme pysty suoraan tekemään havaintoja jostakin jakaumasta $p$ ja teemme sen sijaan havaintoja jakaumasta $q$, jota painotamme niin, että tuloksena saadaan jakauman $p$ harhaton estimaatti. Algoritmi on kuvattu tarkemmin tutkielman alaluvussa 2.
 
 Tärkeytysotantaa käyttävä suodinongelman ratkaiseva SIS-algoritmi (sequential importance sampling) ei kuitenkaan vielä 70-luvulla löytänyt suurta käytännön suosiota. Osin tämä johtui puutteellisesta laskentatehosta, mutta algoritmi kärsi myös otosten ehtymisenä (sample impoverishment) tunnetusta ongelmasta. Monissa ongelmissa SIS-algoritmia käytettäessä suuri osa painoista päätyy vain tietyille partikkeleille, jolloin vastaavasti suuri osa partikkeleista ei enää estimoi haluttua jakaumaa. Tähän ongelmaan palataan myöhemmin.
 
-Merkittävän ratkaisun ehtymisongelmaan esittivät Gordon, Salmond ja Smith artikkelissaan "Novel approach to nonlinear/non-Gaussian Bayesian state estimation" (1993). [@Gordon-1993] Artikkelin ratkaisu kulki nimellä "bootstrap filter", saapasremmisuodin. Saapasremmisuodin vältti ehtymisen uudellenotannalla, jossa matalapainoiset partikkelit korvattiin otoksilla korkeapainoisemmista partikkeleista. Ratkaisussa painot eivät myöskään riippuneet partikkelien aiemmista poluista vaan ainoastaan havaintojen uskottavuusfunktiosta. Vastaavaa ratkaisua käytetään tämän tutkielman uudemmassa SIR-algoritmissa (sampling importance resampling), jossa myös uudelleenotantaan sovelletaan tärkeytysotantaa. 
+Merkittävän ratkaisun ehtymisongelmaan esittivät Gordon, Salmond ja Smith artikkelissaan "Novel approach to nonlinear/non-Gaussian Bayesian state estimation" (1993). [@Gordon-1993] Artikkelin ratkaisu kulki nimellä *bootstrap filter*, saapasremmisuodin. Saapasremmisuodin vältti ehtymisen uudellenotannalla, jossa matalapainoiset partikkelit korvattiin otoksilla korkeapainoisemmista partikkeleista. Ratkaisussa painot eivät myöskään riippuneet partikkelien aiemmista poluista vaan ainoastaan havaintojen uskottavuusfunktiosta. Vastaavaa ratkaisua käytetään tämän tutkielman uudemmassa SIR-algoritmissa (*sampling importance resampling*), jossa myös uudelleenotantaan sovelletaan tärkeytysotantaa. 
 
 Sekventiaalisissa Monte Carlo -menetelmissä stokastisen prosessin posteriorijakauman esittämiseen käytettyjä otoksia kutsutaan myös partikkeleiksi ja menetelmiä siten hiukassuotimiksi. Erityisesti myöhemmin esitettävää SIR-algoritmia kutsutaan usein hiukkassuotimeksi. Termiä hiukkassuodin käytti ensimmäisen kerran Del Moral artikkelissa "Nonlinear Filtering: Interacting Particle Resolution" (1996) [@DelMoral-1996], SMC-menetelmät termiä Liu ja Chen artikkelissa "Sequential Monte Carlo Methods for Dynamic Systems" (1998) [@Liu-1998]. Tässä tutkielmassa käytetään yleisemmin käytettyä termiä hiukassuotimet.
