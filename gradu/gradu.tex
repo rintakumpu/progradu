@@ -235,6 +235,7 @@ Tässä tutkielmassa käytetään seuraavia notaatioita. Vektoreita merkitään 
 \toprule
 Lyhenne tai symboli & Selitys\\
 \midrule
+RTSS & \textit{Rauch-Turn-Striebel smoother}, Rauch-Turn-Striebel-siloitin\\
 SMC & \makecell[l]{\textit{Sequential Monte Carlo}, \\sekventiaalinen Monte Carlo -menetelmä, \\synonyymi hiukassuotimelle}\\
 \bottomrule
 \end{tabular}
@@ -302,7 +303,7 @@ Kalman-suotimesta on lisäksi olemassa lukuisia muita epälineaarisiin ongelmiin
 
 Joitakin suodinongelman rekursiivisia Monte Carlo -ratkaisuja löytyy jo 1950\textendash 70-luvuilta, erityisesti säätöteoriaan piiristä. Olennainen nykyalgoritmeihin periytynyt oivallus varhaisissa suodinalgoritmeissa oli tärkeytysotannan käyttö halutun jakaumaestimaatin laskennassa. Tärkeytysotanta-algoritmiin voidaan turvautua, kun emme pysty suoraan tekemään havaintoja jostakin jakaumasta \(p\) ja teemme sen sijaan havaintoja jakaumasta \(q\), jota painotamme niin, että tuloksena saadaan jakauman \(p\) harhaton estimaatti. Algoritmi on kuvattu tarkemmin tutkielman alaluvussa 2.
 
-Tärkeytysotantaa käyttävä suodinongelman ratkaiseva SIS-algoritmi (sequential importance sampling) ei kuitenkaan vielä 70-luvulla löytänyt suurta käytännön suosiota. Osin tämä johtui puutteellisesta laskentatehosta, mutta algoritmi kärsi myös otosten ehtymisenä (sample impoverishment) tunnetusta ongelmasta. Monissa ongelmissa SIS-algoritmia käytettäessä suuri osa painoista päätyy vain tietyille partikkeleille, jolloin vastaavasti suuri osa partikkeleista ei enää estimoi haluttua jakaumaa. Tähän ongelmaan palataan myöhemmin.
+Tärkeytysotantaa käyttävä suodinongelman ratkaiseva SIS-algoritmi (\emph{sequential importance sampling}) ei kuitenkaan vielä 70-luvulla löytänyt suurta käytännön suosiota. Osin tämä johtui puutteellisesta laskentatehosta, mutta algoritmi kärsi myös otosten ehtymisenä (\emph{sample impoverishment}) tunnetusta ongelmasta. Monissa ongelmissa SIS-algoritmia käytettäessä suuri osa painoista päätyy vain tietyille partikkeleille, jolloin vastaavasti suuri osa partikkeleista ei enää estimoi haluttua jakaumaa. Tähän ongelmaan palataan myöhemmin.
 
 Merkittävän ratkaisun ehtymisongelmaan esittivät Gordon, Salmond ja Smith artikkelissaan ``Novel approach to nonlinear/non-Gaussian Bayesian state estimation'' (1993). \citep{Gordon-1993} Artikkelin ratkaisu kulki nimellä \emph{bootstrap filter}, saapasremmisuodin. Saapasremmisuodin vältti ehtymisen uudellenotannalla, jossa matalapainoiset partikkelit korvattiin otoksilla korkeapainoisemmista partikkeleista. Ratkaisussa painot eivät myöskään riippuneet partikkelien aiemmista poluista vaan ainoastaan havaintojen uskottavuusfunktiosta. Vastaavaa ratkaisua käytetään tämän tutkielman uudemmassa SIR-algoritmissa (\emph{sampling importance resampling}), jossa myös uudelleenotantaan sovelletaan tärkeytysotantaa.
 
@@ -440,13 +441,9 @@ Esitetty algoritmi on ns. Kalman-suodin, joka selkeästi toimii suodinongelman r
 
 \chapter{Hiukassuotimet}
 
-\section{Saapasremmisuodin}
-
-\section{SIS-algoritmi}
-
 \section{SIR-algoritmi}
 
-Tässä alaluvussa esitetään SMC-menetelmiin kuuluva SIR-algoritmi, epälineaarisen suodinongelman ratkaisemiseksi. Algoritmi on numeerinen toteutus alaluvussa 3 kuvatusta Bayesilaisesta suotimesta. Esitetty algoritmi perustuu Gustafssoniin (2010).
+Tässä alaluvussa esitetään SMC-menetelmiin kuuluva SIR-algoritmi, epälineaarisen suodinongelman ratkaisemiseksi. Algoritmi on numeerinen toteutus alaluvussa 3 kuvatusta Bayesilaisesta suotimesta. Esitetty algoritmi perustuu Gustafssoniin (2010). Ilman uudelleenotantavaihetta kyseessä olisi SIS-algoritmi.
 
 Algoritmi alustetaan jakaumasta \(x_1^i\sim p_{x_0}\) generoiduilla \(N\)-kappaleella partikkeleita. Jokaiselle partikkelille annetaan alustuksessa sama paino \(w_{1|0}^i=1/N\). Algoritmi suoritetaan jokaiselle partikkelille \(i=\{1,2,\ldots,N\}\) jokaisella ajanhetkellä \(k=\{1,2,\ldots,t\}\).
 
@@ -638,25 +635,62 @@ Algoritmin perusmuodon aikakompleksisuus on \(\mathcal{O}(N)\). Uudelleenotantam
 
 Tällaisia tilanteita varten algoritmista on olemassa \(\mathcal{O}(N\text{log}(N))\) -versioita, jotka perustuvat esimerkiksi N:n kappaleen oppimiseen (N-body learning). Näiden algoritmien käsittely jää tämän tutkielman ulkopuolelle, mutta katsauksen algoritmeista ovat esittäneet esimerkiksi Klaas \&al.~artikkelissa ``Toward Practical \(N^2\) Monte Carlo: the Marginal Particle Filter'' (2012).
 
-§
+\section{Saapasremmisuodin}
+
+Saapasremmisuodin \ref{saapasremmisuodin} eli \emph{bootsrtrap filter} on SIR-algoritmin muunnelma, jossa tärkeytysotannan (kts. \ref{tarkeytysotanta-algo}) käytetään dynaamista mallia \(p(x_k|x_{k-1})\).
+
+\begin{algorithm}[H]
+\label{saapasremmisuodin}
+\DontPrintSemicolon
+\SetAlgoShortEnd
+\KwResult{Posteriorijakauman $p(x_{1:k}|y_{1:k})$ estimaatti.\;}
+\KwData{Havainnot $y_k$. Generoitu $x_1^i\sim p_{x_0}$ missä $i=\{1,\ldots,N\}$ ja jokainen partikkeli saa saman painon $w_{1|0}^i=1/N$.\;}
+\Begin{
+  \For{$k=\{1,2,\ldots,t\}$}{
+    \For{$i=\{1,2,\ldots,N\}$}{
+      \Begin{Luodaan uudet estimaatit dynaamisesta mallista $x_{k}^i\sim p(x_{k}|x_{k-1}^i)$.;}
+      \Begin{Päivitetään hiukkasten painot $w_k^i$ uskottavuusfunktion $p(y_k|x_k^i)$ mukaan.}
+      \Begin{Estimoidaan $p$ laskemalla tiheydelle approksimaatio $\hat{p}(x_{1:k}|y_{1:k})=\sum_{i=1}^{N}w_{k|k}^i \delta(x_{1:k}-x_{1:k}^i)$.}
+    }
+    \If{$k < t$}{\Begin{Aikapäivitys. Suoritetaan uudelleenotanta kuten SIR-algoritmissa \ref{sir}.\;}}
+  }  
+}
+\caption{Saapasremmisuodin}
+\end{algorithm}
+
+Saapasremmisuodin on edellä esitettyä SIR-algoritmia yksinkertaisempi toteuttaa, mutta epäinformatiivisen tärkeytysjakauman vuoksi algoritmi saattaa vaatia SIR-algoritmia suuremman määrän hiukkasia. Saapasremmisuodin esitetään tässä sen historiallisen tärkeyden vuoksi, sillä kyseessä oli ensimmäinen uudelleenotataantaa hyödyntävä hiukassuodinalgoritmi. Suotimen käytännön toteutukseen palataan luvussa 4.
 
 \section{Varianssin estimointi}
 
-Varianssin estimoinnissa ollaan kiinnostuneita XXX. Yksinkertaisin tapa estimoida hiukassuodinalgoritmin varianssia on yksinkertaisesti *** Monte Carlo -varianssi *** todistus. Monte Carlo -varianssin laskeminen on kuitenkin laskennallisesti tehotonta, sillä se edellyttää algoritmin ajamista useita, todennäköisesti kymmeniä kertoja. Monissa käytännön sovelluksissa jo yhden hiukassuodinalgoritmin ajaminen vaatii runsaasti laskentatehoa, jolloin Monte Carlo -varianssin laskeminen ei ole mahdollista. Varianssia ei luonnollisesti voi myöskään laskea analyyttisesti. Varianssin estimointiin on kuitenkin viime vuosina kehitetty muutamia algoritmeja, jotka mahdollistavat varianssin estimoinnin aikakompleksisuudella TODO.
+Hiukassuotimen varianssin estimoinnissa ollaan kiinnostuneita XXX. Yksinkertaisin tapa estimoida hiukassuodinalgoritmin varianssia on yksinkertaisesti *** Monte Carlo -varianssi *** todistus. Monte Carlo -varianssin laskeminen on kuitenkin laskennallisesti tehotonta, sillä se edellyttää algoritmin ajamista useita, todennäköisesti kymmeniä kertoja. Monissa käytännön sovelluksissa jo yhden hiukassuodinalgoritmin ajaminen vaatii runsaasti laskentatehoa, jolloin Monte Carlo -varianssin laskeminen ei ole mahdollista. Varianssia ei luonnollisesti voi myöskään laskea analyyttisesti. Varianssin estimointiin on kuitenkin viime vuosina kehitetty muutamia algoritmeja, jotka mahdollistavat varianssin estimoinnin aikakompleksisuudella TODO.
 
 \chapter{Hiukassilottimet}
 
-Hiukassiloittimissa blahblah. Tässä luvussa käsiteltävät algoritmit jaetaan kahteen pääkategoriaan, offline-algoritmeihin, joita sovelletaan XXX sekä online-algoritmeihin, jotka ajetaan yhdessä hiukassuodinalgoritmin kanssa. Käytännössä online-algoritmit vaativat XXX.
+Tässä luvussa käsitellään suodinongelmaan läheisesti liittyvän hiukassiloittimen ratkaisemista ns. hiukassiloitinalgoritmien avulla. Kuten hiukassuotimien kohdalla, myös tässä luvussa esitetään ongelma ensin yleisessä Bayesilaisessa muodossa, jonka jälkeen siirrytään käsittelemään hiukkasmenetelmiin pohjautuvia siloitinalgoritmeja. Luvussa käsiteltävät algoritmit jaetaan kahteen pääkategoriaan, offline-algoritmeihin, joita sovelletaan hiukassuodinalgoritmin ajon jälkeen sekä online-algoritmeihin, jotka suoritetaan yhdessä hiukassuodinalgoritmin kanssa. Siloitinongelman esittely seuraa Särkkää (2013) \citep{sarkka-2013}, algoritmien käsittely pohjautuu TODO.
+
+\section{Bayesilainen siloitin}
+
+Bayesilaisen siloittimen tarkoitus on laskea tilan \(x_k\) marginaaliposteriorijakauma \(p(x_k|y_{1:T}\) ajanhetkellä \(k\), kun käytössä on havaintoja ajanhetkeen \(T\) asti, missä \(T>k\). Ero Bayesilaiseen suotimeen (kts. LUKULINKKI) on siinä, että suodinongelmassa havaintoja on saatavilla ainoastaan ajanhetkeen \(k\) asti, kun taas siloitinongelmassa myös tulevat havainnot ovat saatavilla. Ajassa taaksepäin etenevät rekursiiviset yhtälöt ongelman ratkaisemiseksi voidaan esittää muodossa
+
+\begin{align}\label{siloitin-prediktiivinen}
+p(x_{k+1}|y_{1:k})=\int_{\mathbb{R}^{n_x}}p(x_{k+1}|x_k)p(x_k|y_{1:k})\mathop{dx_k}.
+\end{align}
+
+\begin{align}\label{siloitin-ratkaisu}
+p(x_k|y_{1:T}) = p(x_k|y_{1:k}) \int \frac{p(x_{k+1}|x_k)p(x_{k+1}|y_{1:T})}{p(x_{k+1}|y_{1:k})} \mathop{dx_{k+1}}.
+\end{align},
+
+missä \(p(x_k|y_{1:k})\) on suodintiheys ajanhetkellä \(k\) ja \(p(x_{k+1}|y_{1:k})\) prediktiivinen jakauma ajanhetkelle \(k+1\). Kuten suodinongelman kohdalla, voidaan ongelma ratkaista suljetussa muodossa, kun mallit ovat LUVUNTODO tavoin lineaarisia. Tällöin kyseessä on Rauch-Turn-Striebel-siloitin (RTSS), josta käytetään myös nimitystä Kalman-siloitin. Samoin, kuten Kalman-suotimen kohdalla, ongelma voidaan tiettyjen ehtojen vallitessa linearisoida. Näitä linearisoituja suodattimia ei käsitellä tässä tutkielmassa. Hiukassuotimen tavoin hiukassiloitin ratkaisee ongelman mille hyvänsä epälineaariselle mallille.
 
 \section{Offline-algoritmit}
 
-Lorem ipsum
+Lorem ipsum.
 
 \subsection{SIR-siloitin}
 
 \section{Online-algoritmit}
 
-Lorem ipsum
+Käytännössä online-algoritmit vaativat viipeen. Viipeen valinta XXX. optimaalinen.
 
 \chapter{Hiukassuodin ja -siloitin sisätilapaikannuksessa}
 

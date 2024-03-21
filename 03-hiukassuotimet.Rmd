@@ -1,12 +1,8 @@
 \chapter{Hiukassuotimet}
 
-\section{Saapasremmisuodin}
-
-\section{SIS-algoritmi}
-
 \section{SIR-algoritmi}
 
-Tässä alaluvussa esitetään SMC-menetelmiin kuuluva SIR-algoritmi, epälineaarisen suodinongelman ratkaisemiseksi. Algoritmi on numeerinen toteutus alaluvussa 3 kuvatusta Bayesilaisesta suotimesta. Esitetty algoritmi perustuu Gustafssoniin (2010).
+Tässä alaluvussa esitetään SMC-menetelmiin kuuluva SIR-algoritmi, epälineaarisen suodinongelman ratkaisemiseksi. Algoritmi on numeerinen toteutus alaluvussa 3 kuvatusta Bayesilaisesta suotimesta. Esitetty algoritmi perustuu Gustafssoniin (2010). Ilman uudelleenotantavaihetta kyseessä olisi SIS-algoritmi.
 
 Algoritmi alustetaan jakaumasta $x_1^i\sim p_{x_0}$ generoiduilla $N$-kappaleella partikkeleita. Jokaiselle partikkelille annetaan alustuksessa sama paino $w_{1|0}^i=1/N$. Algoritmi suoritetaan jokaiselle partikkelille $i=\{1,2,\ldots,N\}$ jokaisella ajanhetkellä $k=\{1,2,\ldots,t\}$.
 
@@ -191,7 +187,32 @@ Algoritmin perusmuodon aikakompleksisuus on $\mathcal{O}(N)$. Uudelleenotantamen
 
 Tällaisia tilanteita varten algoritmista on olemassa $\mathcal{O}(N\text{log}(N))$ -versioita, jotka perustuvat esimerkiksi N:n kappaleen oppimiseen (N-body learning). Näiden algoritmien käsittely jää tämän tutkielman ulkopuolelle, mutta katsauksen algoritmeista ovat esittäneet esimerkiksi Klaas \&al. artikkelissa "Toward Practical $N^2$ Monte Carlo: the Marginal Particle Filter" (2012).
 
-§\section{Varianssin estimointi}
+\section{Saapasremmisuodin}
 
-Varianssin estimoinnissa ollaan kiinnostuneita XXX. Yksinkertaisin tapa estimoida hiukassuodinalgoritmin varianssia on yksinkertaisesti *** Monte Carlo -varianssi *** todistus. Monte Carlo -varianssin laskeminen on kuitenkin laskennallisesti tehotonta, sillä se edellyttää algoritmin ajamista useita, todennäköisesti kymmeniä kertoja. Monissa käytännön sovelluksissa jo yhden hiukassuodinalgoritmin ajaminen vaatii runsaasti laskentatehoa, jolloin Monte Carlo -varianssin laskeminen ei ole mahdollista. Varianssia ei luonnollisesti voi myöskään laskea analyyttisesti. Varianssin estimointiin on kuitenkin viime vuosina kehitetty muutamia algoritmeja, jotka mahdollistavat varianssin estimoinnin aikakompleksisuudella TODO.
+Saapasremmisuodin \ref{saapasremmisuodin} eli *bootsrtrap filter* on SIR-algoritmin muunnelma, jossa tärkeytysotannan (kts. \ref{tarkeytysotanta-algo}) käytetään dynaamista mallia $p(x_k|x_{k-1})$. 
+
+\begin{algorithm}[H]
+\label{saapasremmisuodin}
+\DontPrintSemicolon
+\SetAlgoShortEnd
+\KwResult{Posteriorijakauman $p(x_{1:k}|y_{1:k})$ estimaatti.\;}
+\KwData{Havainnot $y_k$. Generoitu $x_1^i\sim p_{x_0}$ missä $i=\{1,\ldots,N\}$ ja jokainen partikkeli saa saman painon $w_{1|0}^i=1/N$.\;}
+\Begin{
+  \For{$k=\{1,2,\ldots,t\}$}{
+    \For{$i=\{1,2,\ldots,N\}$}{
+      \Begin{Luodaan uudet estimaatit dynaamisesta mallista $x_{k}^i\sim p(x_{k}|x_{k-1}^i)$.;}
+      \Begin{Päivitetään hiukkasten painot $w_k^i$ uskottavuusfunktion $p(y_k|x_k^i)$ mukaan.}
+      \Begin{Estimoidaan $p$ laskemalla tiheydelle approksimaatio $\hat{p}(x_{1:k}|y_{1:k})=\sum_{i=1}^{N}w_{k|k}^i \delta(x_{1:k}-x_{1:k}^i)$.}
+    }
+    \If{$k < t$}{\Begin{Aikapäivitys. Suoritetaan uudelleenotanta kuten SIR-algoritmissa \ref{sir}.\;}}
+  }  
+}
+\caption{Saapasremmisuodin}
+\end{algorithm}
+
+Saapasremmisuodin on edellä esitettyä SIR-algoritmia yksinkertaisempi toteuttaa, mutta epäinformatiivisen tärkeytysjakauman vuoksi algoritmi saattaa vaatia SIR-algoritmia suuremman määrän hiukkasia. Saapasremmisuodin esitetään tässä sen historiallisen tärkeyden vuoksi, sillä kyseessä oli ensimmäinen uudelleenotataantaa hyödyntävä hiukassuodinalgoritmi. Suotimen käytännön toteutukseen palataan luvussa 4. 
+
+\section{Varianssin estimointi}
+
+Hiukassuotimen varianssin estimoinnissa ollaan kiinnostuneita XXX. Yksinkertaisin tapa estimoida hiukassuodinalgoritmin varianssia on yksinkertaisesti *** Monte Carlo -varianssi *** todistus. Monte Carlo -varianssin laskeminen on kuitenkin laskennallisesti tehotonta, sillä se edellyttää algoritmin ajamista useita, todennäköisesti kymmeniä kertoja. Monissa käytännön sovelluksissa jo yhden hiukassuodinalgoritmin ajaminen vaatii runsaasti laskentatehoa, jolloin Monte Carlo -varianssin laskeminen ei ole mahdollista. Varianssia ei luonnollisesti voi myöskään laskea analyyttisesti. Varianssin estimointiin on kuitenkin viime vuosina kehitetty muutamia algoritmeja, jotka mahdollistavat varianssin estimoinnin aikakompleksisuudella TODO.
 
