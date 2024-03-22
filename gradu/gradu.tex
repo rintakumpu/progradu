@@ -237,6 +237,7 @@ Lyhenne tai symboli & Selitys\\
 \midrule
 RTSS & \textit{Rauch-Turn-Striebel smoother}, Rauch-Turn-Striebel-siloitin\\
 SMC & \makecell[l]{\textit{Sequential Monte Carlo}, \\sekventiaalinen Monte Carlo -menetelmä, \\synonyymi hiukassuotimelle}\\
+BS-PS & \textit{Backwards simulation particle smoother}\\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -666,7 +667,7 @@ Hiukassuotimen varianssin estimoinnissa ollaan kiinnostuneita XXX. Yksinkertaisi
 
 \chapter{Hiukassilottimet}
 
-Tässä luvussa käsitellään suodinongelmaan läheisesti liittyvän hiukassiloittimen ratkaisemista ns. hiukassiloitinalgoritmien avulla. Kuten hiukassuotimien kohdalla, myös tässä luvussa esitetään ongelma ensin yleisessä Bayesilaisessa muodossa, jonka jälkeen siirrytään käsittelemään hiukkasmenetelmiin pohjautuvia siloitinalgoritmeja. Luvussa käsiteltävät algoritmit jaetaan kahteen pääkategoriaan, offline-algoritmeihin, joita sovelletaan hiukassuodinalgoritmin ajon jälkeen sekä online-algoritmeihin, jotka suoritetaan yhdessä hiukassuodinalgoritmin kanssa. Siloitinongelman esittely seuraa Särkkää (2013) \citep{sarkka-2013}, algoritmien käsittely pohjautuu TODO.
+Tässä luvussa käsitellään suodinongelmaan läheisesti liittyvän hiukassiloittimen ratkaisemista ns. hiukassiloitinalgoritmien avulla. Kuten hiukassuotimien kohdalla, myös tässä luvussa esitetään ongelma ensin yleisessä Bayesilaisessa muodossa, jonka jälkeen siirrytään käsittelemään hiukkasmenetelmiin pohjautuvia siloitinalgoritmeja. Luvussa käsiteltävät algoritmit jaetaan kahteen pääkategoriaan, offline-algoritmeihin, joita sovelletaan hiukassuodinalgoritmin ajon jälkeen sekä online-algoritmeihin, jotka suoritetaan yhdessä hiukassuodinalgoritmin kanssa. Siloitinongelman esittely seuraa Särkkää (2013) \citep{sarkka-2013}. Algoritmien käsittely pohjautuu SIR-, BSPS- ja TODO-siloittimien osalta niin ikään Särkkään (2013) \citep{sarkka-2013}. TODO MUUT.
 
 \section{Bayesilainen siloitin}
 
@@ -684,19 +685,98 @@ missä \(p(x_k|y_{1:k})\) on suodintiheys ajanhetkellä \(k\) ja \(p(x_{k+1}|y_{
 
 \section{Offline-algoritmit}
 
-Lorem ipsum.
+Offline-siloittimet estimoivat siloitintiheyttä ajanhetkellä \(k<T\), kun havaintodata on käytössä koko ajanjaksolta \(1 \ldots T\). Oheiset algoritmit siis olettavat, että kaikki mahdollinen tuleva data on jo niiden käytössä. Ohessa käsitellään lyhyesti muutamaa ehdottua offline-hiukassiloitinalgoritmia.
 
 \subsection{SIR-siloitin}
 
+SÄRKKÄ2013, KITAGAWA1996, DOUCET2000. Kuten aiemmin mainittua, näyttävät hiukassuodinalgoritmit, erityisesti SIR-algoritmi \ref{sir}, ratkaisevan siloitteluongelman ilmaiseksi, kunhan tallennamme ajanhetkellä \(k\) koko otoshistorian \(x_{0:k}^i\). Tällöin voimme estimoida täyttä siloitteluposteriorijakaumaa seuraavasti:
+
+\begin{align}\label{siloitin-posteriori}
+p(x_{0:T}|y_{1:T}) \approx \sum_{i=1}^N w_T^i \delta (x_{0:T}-x_{0:T}^i),
+\end{align}.
+
+Nyt ajanhetken \(k\) siloitinjakauma saadaan laskettua
+
+\begin{align}\label{siloitin-posteriori-k}
+p(x_{k}|y_{1:T}) \approx \sum_{i=1}^N w_T^i \delta (x_{k}-x_{k}^i),
+\end{align},
+
+missä \(x^i_k\) on \(x^i_{0:T}\):n \(k\):s elementti. Koska uudelleenotanta hävittää otoshistorian, pitää uudelleenotanta suorittaa koko otoshistoriasta \(x_{0:k}^i = (x_{0:k-1}^i, x_{k}^i)\) pelkän ajanhetken \(k\) otoksen \(x_{k}^i\) sijaan. Koska nyt koko otoshistoria pitää tallentaa, vaatii SIR-siloitin \(NkT\) muistia pelkän \(N\) sijaan. Vastaavasti myös uudelleenotannan aikakompleksisuus kasvaa. \citep{kitagawa-1996}
+
+SIR-siloittimen suurin ongelma on kuitenkin sen tuottamien estimaattien hyvyys. Kun ajanhetkien määrä kasvaa, johtaa koko otoshistorian uudelleenotanta kaiken painon kasautumiseen historian tietyille otoksille, jolloin SIR-siloittimen tuottamat estimaatit eivät enää estimoi haluttua (siloittelu)posteriorijakaumaa. \citep{kitagawa-1996}
+
+\subsection{BS-PS-siloitin}
+
+\emph{Backward-simulation particle smoother} (BS-PS) eli taaksepäin simuloiva hiukassiloitin estimoi paremmin hiukassuotimen tulosten perusteella siloitinjakaumaa. Tässä algoritmissa hiukkasten historia simuloidaan ajanhetkestä \(T\) taaksepäin ajanhetkeen 0:
+
+\begin{algorithm}[H]
+\label{BSPS}
+\DontPrintSemicolon
+\SetAlgoShortEnd
+\KwResult{Posteriorisiloitinjakauman $p(x_{k}|y_{1:T})$ estimaatti.\;}
+\KwData{Suodinjakaumia edustavat hiukkaset ja näihin liittyvät painot ${w_k^i, x_k^i}$, missä $i=1,\ldots,N$ ja $k=1,\ldots,T$\;}
+\Begin{
+  \Begin{Valitaan $\tilde{x}_T=x_T^i$\;}
+  \For{$k=\{T-1,\ldots,0\}$}{
+    \Begin{Lasketaan uudet painot \newline $w^i_{k|k+1} \propto w_k^i p(\tilde{x}_{k+1}|x_k^i)$\;}
+    \Begin{Valitaan $\tilde{x}_{k} = x_k^i$ todennäköisyydellä $w^i_{k|k+1}$.\;}
+  }  
+}
+\caption{Taaksepäin simuloiva hiukassiloitin}
+\end{algorithm}
+
+Nyt siloittelujakaumaa voidaan estimoida seuraavasti:
+
+\begin{align}\label{siloitin-BSPS}
+p(x_{0:T}|y_{1:T}) \approx \frac{1}{S} \sum_{i=1}^N \delta (x_{0:T}-\tilde{x}_{0:T}^j),
+\end{align},
+
+missä \(S, j=1,\ldots,S\) on algoritmin \ref{BSPS} toistokertojen määrä. Koska \(\tilde{x}_{0:T}^j\) pitää sisällään kaikki otospolut, saadaan marginaalijakauma ajanhetkellä \(k\) yhtälöstä \ref{siloitin-BSPS} yksinkertaisesti valitsemalla sen \(k\):net elementit. Sekä algoritmin aikakompleksisuus että muistivaade on \(\mathcal{O}(STN)\).
+
+\subsection{Uudelleenpainottava hiukassiloitin}
+
+KUNCH 1998 DOUCET 2000. Uudelleenpainottavassa hiukassiloittimessa (tunnetaan myös nimellä marginaalihiukassiloitin) siloitinjakaumaa estimoidaan käyttämällä SIR-hiukassuodattmista (\ref{sir}) saatuja hiukkasia, mutta ne painotetaan uudelleen käyttäen dataa ajanhetkestä \(T\) alkaen, edeten ajassa taaksepäin.
+
+\begin{algorithm}[H]
+\label{rwps}
+\DontPrintSemicolon
+\SetAlgoShortEnd
+\KwResult{Posteriorisiloitinjakauman $p(x_{k}|y_{1:T})$ estimaatti.\;}
+\KwData{Suodinjakaumia edustavat hiukkaset ja näihin liittyvät painot ${w_k^i, x_k^i}$, missä $i=1,\ldots,N$ ja $k=1,\ldots,T$\;}
+\Begin{
+  \Begin{Asetetaan $w_{T|T}^i = w_T^i$, jokaiselle $i=1,\ldots,N$;}
+  \For{$k=\{T-1,\ldots,0\}$}{
+    \Begin{Lasketaan uudet painot \newline $w^i_{k|T} = \sum_j w_{k+1|T}^j  \frac{w_k^i p(x_{k+1}^j|x_k^i)}{\sum_l w_k^l p(x_{k+1}^j|x_k^l)}$\;}
+  }  
+}
+\caption{Uudelleenpainottava hiukassiloitin}
+\end{algorithm}
+
+,
+
+jolloin halutun siloitinjakauma estimaatti ajanhetkellä \(k\) saadaan painotettuna keskiarvona \(p(x_k|y_{1:T}) \approx \sum_i w_{k|t}^i \delta (x_k-x_k^i)\). Algoritmin aikakompleksisuus on \(\mathcal{O}(N^2)\).
+
 \section{Online-algoritmit}
 
-Käytännössä online-algoritmit vaativat viipeen. Viipeen valinta XXX. optimaalinen.
+Koska XXX saatavilla ajettaessa. Online-siloittimet ratkaisevat nyt siloitinongelman niin, että saatavilla on dataa ajanhetkeen \(k+L \le T\) asti, missä \(L\) on dataan lisätty \(L\):n ajanhetken viive. Viipeen valinta XXX optimaalinen. Nämä algoritmit voidaan jakaa kiinteän viipeen siloittimiin ja adaptiivisen viipeen siloittimiin.
+
+\subsection{Kiinteän viipeen siloitin}
+
+\subsection{Adaptiivisen viipeen siloitin}
 
 \chapter{Hiukassuodin ja -siloitin sisätilapaikannuksessa}
 
 Sisätilapaikannus tarkoittaa nimensä mukaisesti ihmisten tai esineiden automaattista paikantamista sisätiloissa. Koska GPS toimii sisätiloissa huonosti tai ei lainkaan, tarvitaan näihin ympäristöihin muita paikannusratkaisuja. Yleinen valinta ovat erilaiset Bluetooth-standardiin tai muuhun radioteknologiaan perustuvat lähetin-vastaanotinratkaisut. Turkulainen teknologia- ja analytiikkayritys Walkbase käyttää Bluetooth-sisätilapaikannusta erityisesti ruokakaupoissa sekä tavarataloissa asiakkaiden käyttäytymistä koskevan datan keräämiseen. Tyypillisessä asennusskenaariossa lähettimet (tagit) kiinnitetään ostoskärryihin sekä -koreihin ja paikantimet kiinnitetään liiketilan kattoripustuksiin. Markkinoilla on lukuisia sisätilapaikannusratkaisuja, mutta kustannussyistä Walkbase on kehittänyt oman laitteistoratkaisunsa, jonka tavoitteena on tarjota kaikissa ympäristöissä \(95\%\) varmuudella alle metrin paikannustarkkuus.
 
 Esimerkissä käyteteään SMC-algoritmia Bluetooth-paikannussovelluksessa lähettimen sijainnin laskemiseen. Paikannukseen käytettävä data kerättiin toimistoympäristössä Bluetooth Low Energy (BLE) -lähettimen sekä kattoon sijoitettujen vastaanottimien avulla. Havainnot koostuvat vastaanottimien lähettimien signaalien perusteella laskemista, BLE5.1-standardin mukaisista signaalin tulokulmista eli AoA-havainnoista (angle of arrival). Lopuksi esimerkissä analysoidaan ja vertaillaan algoritmin eri versioiden suorituskykyä sekä suorituskyvyn että paikannustarkkuuden näkökulmasta. Vertailuarvona käytetään perinteistä triangulaatio-algoritmia.
+
+\section{Teknologian kuvaus}
+
+\subsection{AoA-menetelmistä}
+
+\subsubsection{MUSIC-algoritmi}
+
+\subsection{Kalibraatioalgoritmi}
 
 \section{Koeasetelma}
 
@@ -796,7 +876,7 @@ foculator\_lon & testilaitteen sijainti (pituuspiiri) & 22.29493 \\
 
 \noindent Testimuuttujia käytetään paikannusalgoritmien paikannusvirheen laskemisessa.
 
-\section{Ongelman kuvaus}
+\section{Ongelman ja mallien kuvaus}
 
 Tarkoituksena on estimoida testilaitteen/robotin sijainti sekunnin tarkkuudella. Merkitään estimoitavaa tilasarjaa \(x_{1:k}=\{x_1,\ldots,x_k\}\). Lisäksi merkitään \(x_0\) testilaitteen lähtösijaintia. Jokainen tilasarjan havainto koostuu suuntimakulmasta sekä pituus- että leveyskoordinaateista \((x_k^x, x_k^y)\). Määritellään tilalle testilaitteen/robotin kulkua kuvaava vektorisuunnistukseen (dead reckoning) perustuva malli (\ref{tilamalli-liikkuva})
 
@@ -848,6 +928,26 @@ Kumpikaan funktiosta \(h(\cdot)\) ja \(f(\cdot)\) ei ole lineaarinen, joten SIR-
 
 \noindent missä \(w_i^k\) on ajanketken \(k\) partikkelien normalisoitu paino ja \(d(x^i_k,y_k)\) partikkelien ja testilaitteen todellisen sijainnin välisen etäisyyden laskeva funktio.
 
+\hypertarget{datan-valinta}{%
+\subsection{Datan valinta}\label{datan-valinta}}
+
+Convex hull goes here.
+
+\hypertarget{uskottavuusmallit}{%
+\subsection{Uskottavuusmallit}\label{uskottavuusmallit}}
+
+\hypertarget{dynaaminen-malli}{%
+\subsection{Dynaaminen malli}\label{dynaaminen-malli}}
+
+\hypertarget{karttasovitusalgoritmi}{%
+\subsection{Karttasovitusalgoritmi}\label{karttasovitusalgoritmi}}
+
+\hypertarget{reitinhakualgoritmi}{%
+\subsection{Reitinhakualgoritmi}\label{reitinhakualgoritmi}}
+
+\hypertarget{siloittelualgoritmit}{%
+\subsection{Siloittelualgoritmit}\label{siloittelualgoritmit}}
+
 \section{Algoritmin toteutuksesta}
 
 Koeasetelmassa käytetty SMC-algoritmi on toteuttu R-kielellä. Algoritmin toteutus on pääosin vektorisoitu ja tehokas. For-silmukkaa on käytetty ainoastaan ajanhetkien läpikäyntiin. Koska tämän silmukan muuntaminen vektorisoituun muotoon ei ole mahdollista, voidaan toteutusta pitää näiltä osin hyvin optimoituna. Algoritmin rungon datan käsittely on toteutettu suorituskyvyltään hyvällä \texttt{data.table}-kirjastolla. Uskottavuusfunktiossa on käytetty hitaampia \texttt{dpylr}-kirjaston \texttt{tibble}-taulukkoja. Toteutustapa on valittu koodin ymmärrettävyyden parantamiseksi ja on edelleen riittävän nopea koeasetalman tarpeisiin. Koodin profilointi paljastaa, että suurin yksittäinen osa algoritmin ajasta kuluu \texttt{tibble}-taulukkojen käsittelyssä, joten suorituskykyä on tarpeen vaatiessa mahdollista myös parantaa.
@@ -869,67 +969,104 @@ Priorijakaumana \(p_{x_0}\) käytettiin kahta toisistaan riippumatonta otosta ta
 
 Paikannus suoritettiin yhteensä 17 kertaa. Ensimmäisessä vaiheessa tarkasteltiin partikkelien määrän \(N\) vaikutusta paikannuskeskivirheeseen ilman uudelleenotantaa sekä priori- että uskottavuusotannalla. Seuraavassa vaiheessa valittiin ehdotusjakauma edellisen vaiheen tulosten perusteella ja tarkasteltiin tilannetta sekä adaptiivisella että jokaisella iteraatiolla suoritettavalla uudelleenotannalla.
 
-Kaikkien tulosten vertailukohtana käytettiin Pierlot \&al.~artikkelissa ``A New Three Object Triangulation Algorithm Based on the Power Center of Three Circles'' (2011) esittämää ToTal-triangulaatioalgoritmia. Triangulaatio-algoritmia ei käsitellä tässä tarkemmin, mutta se on esitetty algoritmissa REFERENSSI TOTALIIN. Algoritmia varten valittiin kunakin ajanhetkenä \(k\) ne kolme paikanninta ja kulmahavaintoa, joiden SNR-arvo oli korkein.
+Kaikkien tulosten vertailukohtana käytettiin Pierlot \&al.~artikkelissa ``A New Three Object Triangulation Algorithm Based on the Power Center of Three Circles'' (2011) esittämää ToTal-triangulaatioalgoritmia. Triangulaatio-algoritmia ei käsitellä tässä tarkemmin, mutta se on esitetty algoritmissa \(\ref{total}\). Algoritmia varten valittiin kunakin ajanhetkenä \(k\) ne kolme paikanninta ja kulmahavaintoa, joiden SNR-arvo oli korkein.
 
 Algoritmit ajettiin RStudion versiossa 1.4.1106 R-ohjelmointikielen versiolla 4.0.4. Tietokoneena käytettiin vuoden 2017 mallia olevaa MacBook Pro -kannettavaa, jossa oli 3.1 Ghz Quad-Core i7 -prosessori sekä 16 gigatavua 2133 Mhz LPDDR3 -muistia. Suoritusnopeuden mittaamiseen käytettiin \texttt{microbenchmark}-kirjastoa. Jokainen algoritmi toistettiin kymmenen kertaa ja suoritusnopeus laskettiin näiden toistojen aritmeettisena keskiarvona.
 
-\section{Teknologian kuvaus}
-
-Here is an equation.
-
-\begin{equation} 
-  f\left(k\right) = \binom{n}{k} p^k\left(1-p\right)^{n-k}
-  \label{eq:binom}
-\end{equation}
-
-You may refer to using \texttt{\textbackslash{}@ref(eq:binom)}, like see Equation \eqref{eq:binom}.
-
-\subsection{Kalibraatioalgoritmi}
-
-\section{AoA-menetelmistä}
-
-\subsection{MUSIC-algoritmi}
-
-Footnotes are put inside the square brackets after a caret \texttt{\^{}{[}{]}}. Like this one \footnote{This is a footnote.}.
-
-Citations. Reference items in your bibliography file(s) using \texttt{@key}.
-
-For example, we are using the \textbf{bookdown} package check out the last code chunk in index.Rmd to see how this citation key was added) in this sample book, which was built on top of R Markdown and
-Note that the \texttt{.bib} files need to be listed in the index.Rmd with the YAML \texttt{bibliography} key.
-
-The RStudio Visual Markdown Editor can also make it easier to insert citations: \url{https://rstudio.github.io/visual-markdown-editing/\#/citations}
-
-\hypertarget{datan-kuvaus}{%
-\section{Datan kuvaus}\label{datan-kuvaus}}
-
-\hypertarget{ongelman-ja-mallien-kuvaus}{%
-\section{Ongelman ja mallien kuvaus}\label{ongelman-ja-mallien-kuvaus}}
-
-\hypertarget{datan-valinta}{%
-\subsection{Datan valinta}\label{datan-valinta}}
-
-Convex hull goes here.
-
-\hypertarget{uskottavuusmallit}{%
-\subsection{Uskottavuusmallit}\label{uskottavuusmallit}}
-
-\hypertarget{dynaaminen-malli}{%
-\subsection{Dynaaminen malli}\label{dynaaminen-malli}}
-
-\hypertarget{algoritmien-toteutuksesta}{%
-\section{Algoritmien toteutuksesta}\label{algoritmien-toteutuksesta}}
-
-\hypertarget{karttasovitusalgoritmi}{%
-\section{Karttasovitusalgoritmi}\label{karttasovitusalgoritmi}}
-
-\hypertarget{reitinhakualgoritmi}{%
-\section{Reitinhakualgoritmi}\label{reitinhakualgoritmi}}
-
-\hypertarget{parametrien-valinnasta}{%
-\section{Parametrien valinnasta}\label{parametrien-valinnasta}}
+\begin{algorithm}[H]
+\label{total}
+\DontPrintSemicolon
+\SetAlgoShortEnd
+\KwResult{Testilaitteen sijaintiestimaatti $(x_R,y_R)$.\;}
+\KwData{Kolmen paikantimen koordinaatit $(x_i,y_i)$, $i=\{1,2,3\}$ ja näitä vastaavat vastakkaiset kulmahavainnot $\Phi^\prime_1, \Phi^\prime_2, \Phi^\prime_3$.\;}
+\Begin{Lasketaan muokatut koordinaatit \newline
+$x^\prime_1=x_1-x_2, \hspace{0.5cm} y^\prime_1=y_1-y_2, \hspace{0.5cm} x^\prime_3=x_3-x_2, \hspace{0.5cm} y^\prime_3=y_3-y_2.$ \;}
+\Begin{Lasketaan kotangentit \newline
+$T_{12}=\cot(\Phi^\prime_2-\Phi^\prime_1), \hspace{0.5cm} T_{23}=\cot(\Phi^\prime_3-\Phi^\prime_2), \hspace{0.5cm}T_{31}=\frac{1-T_{12}T_{23}}{T_{12}+T_{23}}$.\;}
+\Begin{Lasketaan muokatut ympyröiden keskipisteet $(x^\prime_{ij},y^\prime_{ij})$ \newline
+$x^\prime_{12}=x^\prime_1+T_{12}y^\prime_1,\hspace{0.5cm}y^\prime_{12}=y^\prime_1-T_{12}x^\prime_1$ \newline $x^\prime_{23}=x^\prime_3-T_{23}y^\prime_3,\hspace{0.5cm}y^\prime_{23}=y^\prime_3+T_{23}x^\prime_3$ \newline
+$x^\prime_{31}=(x^\prime_3+x^\prime_1)+T_{31}(y^\prime_3-y^\prime_1),\hspace{0.5cm}y^\prime_{31}=(y^\prime_3+y^\prime_1)-T_{31}(x^\prime_3-x^\prime_1)$.
+\;}
+\Begin{Lasketaan $k^\prime_{31}=x^\prime_1x^\prime_3+y^\prime_1y^\prime_3+T_{31}(x^\prime_1y^\prime_3-x^\prime_3y^\prime_1).$\;}
+\Begin{Lasketaan nimittäjä $D$ (jos $D=0$ palautetaan virhe).\newline
+$D=(x^\prime_{12}-x^\prime_{23})(y^\prime_{23}-y^\prime_{31})-(y^\prime_{12}-y^\prime_{23})(x^\prime_{23}-x^\prime_{31})$.\;}
+\Begin{Lasketaan ja palautetaan sijaintiestimaatti $(x_R,y_R)$. \newline
+$x_R=x_2+\frac{k^\prime_{31}(y^\prime_{12}-y^\prime_{23})}{D}\hspace{0.5cm}y_R=y_2+\frac{k^\prime_{31}(x^\prime_{23}-x^\prime_{12})}{D}$.\;}
+\caption{ToTal (Three object Triangulation algorithm)}
+\end{algorithm}
 
 \hypertarget{tulokset}{%
 \section{Tulokset}\label{tulokset}}
+
+Ensimmäisessä vaiheessa paikannus suoritettiin ilman uudelleenotantaa sekä priori- että uskottavuusotannalla (SIS) partikkelien määrän ollessa \(N=\{25^2,50^2,75^2,100^2\}\). Tulokset on esitetty kuvassa \(\ref{fig:prior-likelihood}\) sekä osana taulukkoa \(\ref{tab:paikannusvirheet}\). Kuten tuloksista huomataan, ei ehdotusjakauman valinnalla ole juurikaan vaikutusta algoritmin toimivuuteen paikannusvirheen suhteen. Partikkelien määrän kasvattaminen ei myöskään automaattisesti paranna paikannustarkkuuta. Tämä viittaa siihen, että koeasetelma on herkkä priorijakauman valinnalle. Tuloksista huomataan lisäksi, että algoritmin aikakompleksisuus on luokkaa \(\mathcal{O}(N)\), kuten tukielman teoriaosassa todettiin.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=15cm]{prior_likelihood}
+\caption{Priori- ja uskottavuusotanta. Ei uudelleenotantaa.}
+\label{fig:prior-likelihood}
+\end{figure}
+
+Koska ehdotusjakaumalla ei juurikaan ollut vaikutusta tuloksiin, valittiin seuraavaan vaiheeseen muodoltaan yksinkertaisempi uskottavuusotanta. Uskottavuusotantaa käyttäen vertailtiin nyt joka iteraatiolla suoritettavaa uudelleenotantaa (bootstrap) sekä adaptiivista uudelleenotantaa, joka suoritettiin aina, kun effektiivinen otoskoko \(N_{eff}<2N/3\). Tulokset on esitetty kuvassa \(\ref{fig:eachstep-adaptive}\) sekä osana taulukkoa \(\ref{tab:paikannusvirheet}\). Uudeeleenotantamenetelmän valinta ei vaikuta tuloksiin paikannusvirheen suhteen, mutta kuten oletettua, on adaptiivinen uudelleenotanta nopeampi. Nyt myös partikkelien määrän lisääminen parantaa selkeämmin paikkannustarkkuutta ja \(N=100^2\) partikkelilla saavutetaan jo haluttu alle metrin paikannustarkkuus.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=14.5cm]{eachstep_adaptive}
+\caption{Jokaisen iteraation uudelleenotanta / adaptiivinen uudellenotanta.}
+\label{fig:eachstep-adaptive}
+\end{figure}
+
+\newpage
+
+Kuvissa \ref{fig:noresample_maps} ja \ref{fig:resample_maps} esitetään partikkelien jakauma sijainnin suhteen kartalla ajanhetkinä \(k=\{1,3,5,10\}\). Punaiset ympyrät kuvaavat vastaanottimia, sininen neliö testilaitteen todellista sijaintia ja mustat ympyrät partikkelien sijainteja. Molemmat kuvat esittävät uskottaavusotannalla saatuja tuloksia, kun \(N=100^2\). Edellisessä kuvassa \ref{fig:noresample_maps} ei ole käytetty uudelleenotantaa. Vaikka partikkelien painoja ei kuvassa olekaan otettu huomioon, on kuvasta helppo huomata otoskoon ehtymisen ongelma. Jälkimmäisessä kuvassa \ref{fig:resample_maps} on käytetty adaptiivista uudelleenotantaa, joka on suoritettu aika-askelilla 1\textendash 6. Tämä ratkaisee otoskoon ehtymisen ja aika-askeleella \(10\) kaikki partikkelit approksimoivat haluttua sijaintia.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=14cm]{SIS_likelihood_maps}
+\caption{Partikkelikartta. Ei uudelleenotantaa.}
+\label{fig:noresample_maps}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=14cm]{SIR_likelihood_maps}
+\caption{Partikkelikartta. Adaptiivinen uudelleenotanta.}
+\label{fig:resample_maps}
+\end{figure}
+
+\def\arraystretch{1.25} 
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|l|l|l|}
+\hline
+Algoritmi & $N$ & Paikannusvirheen ka. (m) & Keston ka. (s)\\
+\hline
+ToTal & - & $2.15$ & 0.001\\
+SIS/Priori & $25^2$ & 5.31 & 7.91\\
+SIS/Priori & $50^2$ & 4.91 & 19.81\\
+SIS/Priori & $75^2$ & 4.82 & 46.02 \\
+SIS/Priori & $100^2$ & 4.78 & 81.83 \\
+SIS/Uskottavuus & $25^2$ & 5.31 & 7.42\\
+SIS/Uskottavuus & $50^2$ & 4.90 & 19.85\\
+SIS/Uskottavuus & $75^2$ & 4.82 & 45.94\\
+SIS/Uskottavuus & $100^2$ & 4.78 & 82.02\\
+Bootstrap/Uskottavuus & $25^2$ & 2.08 & 8.64\\
+Bootstrap/Uskottavuus & $50^2$ & 3.81 & 21.55\\
+Bootstrap/Uskottavuus & $75^2$ & 2.24 & 45.88\\
+Bootstrap/Uskottavuus & $100^2$ & 0.33 & 82.24\\
+SIR/Uskottavuus & $25^2$ & 2.08 & 7.30\\
+SIR/Uskottavuus & $50^2$ & 3.81 & 18.59\\
+SIR/Uskottavuus & $75^2$ & 2.24 & 42.11\\
+SIR/Uskottavuus & $100^2$ & 0.33 & 79.64\\
+\hline
+\end{tabular}
+\caption{Paikannusvirheet sekä suoritusajat}
+\label{tab:paikannusvirheet}
+\end{table}
+
+Tuloksista huomataan, että uskottavuusotannalla ja uudelleenotannalla SMC-menetelmät tuottavat esitetyssä koeasetelmassa halutun tarkkuuden. Tarvittavalla määrällä partikkeleita tässä käytetyt SMC-algoritmit ovat kuitenkin aivan liian hitaita tuotantokäyttöön. Vaikka algoritmit pystyvät tuottamaan hitaimmillaankin noin sijainnin sekunnissa, pitää käytännön toteutuksessa sijainteja laskea joka sekunti sadoista paikantimista. Todennäköisesti yksinkertaisin tapa saavuttaa haluttu alle metrin paikannustarkkuus nopeammalla laskennalla on lisätä triangulaatio-paikannukseen jokin laskennallisesti kevyempi suodin, esimerkiksi EKF-suodin.
+
+Koeasetelma toimi kuitenkin hyvänä konseptin todennuksena, sillä käytetyissä SMC-toteutuksissa on useita parannuskohteita. Ensinnäkin algoritmi voidaan toteuttaa täysin \texttt{data.table}-kirjaston avulla tai kokonaan R-ohjelmointikieltä tehokkaammilla ohjelmointikielillä. Toiseksi partikkelien määrää saattaa olla mahdollista laskea paikannustarkkuutta menettämättä käyttämällä parempia malleja. Koeasetelmassa käytetty havaintomalli (\ref{havaintomalli}) on erityisesti kohinan osalta hyvin \textit{ad hoc} -tyyppinen malli. Mallia on mahdollista parantaa esimerkiksi lisämittauksista kerätyn vastaanotindatan avulla. Lisäksi tilamallia (\ref{tilamalli-liikkuva}) pitää testata liikkuvalla lähettimellä, jotta eri paikannusalgoritmien erot tulevat näkyviin myös paremmin todellista käyttötilannetta vastaavassa koeasetelmassa.
 
 \hypertarget{lopuksi}{%
 \chapter{Lopuksi}\label{lopuksi}}

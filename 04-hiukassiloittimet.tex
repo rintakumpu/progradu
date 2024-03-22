@@ -1,0 +1,233 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\usepackage{booktabs}
+\usepackage[T1]{fontenc}
+\usepackage{color}
+\usepackage{xspace}
+\usepackage{tikz-cd}
+\usepackage{mathtools}
+\usepackage{mathrsfs}
+\usepackage{comment}
+\usepackage{commath}
+\usepackage{pict2e}
+\usepackage{float}
+\usepackage{array, makecell}
+\usepackage{amsthm}														% 
+\usepackage{amsmath}
+%\usepackage[tagpdf]{axessibility} 
+\usepackage[ruled,vlined,shortend]{algorithm2e} 
+\usepackage{graphicx}
+\usepackage{multicol}
+\usepackage{gensymb}
+%\usepackage[a-3b]{pdfx}
+\graphicspath{ {./images/} }
+\usetikzlibrary{shapes.geometric,arrows}
+\def\TikZ{Ti\emph{k}Z\ }
+\renewcommand{\algorithmcfname}{Algoritmi}
+\usepackage{babel}
+  \addto{\captionsfinnish}{\renewcommand{\bibname}{Lähteet}}
+\usepackage{geometry}
+\geometry{
+    a4paper,
+    total={150mm,237mm},
+    left=30mm,
+    top=30mm,
+    }
+\usepackage[numbers]{natbib}
+\newcommand{\tekija}{{Lasse Rintakumpu}}
+\newcommand{\titteli}{{}} 
+\newcommand{\otsikko}{{Hiukassuodin- ja hiukassiloitinalgoritmit sekä niiden soveltaminen AoA-menetelmään perustuvassa Bluetooth-sisätilapaikannuksessa}} 
+\newcommand{\tutkielma}{{Pro gradu }}
+\newcommand{\aika}{{Maaliskuu 2024}} 
+\newcommand{\paaaine}{{Tilastotiede}} 
+\newcommand{\ohjaaja}{{Ohjaajan titteli (Prof./Dos./FT) ja nimi }} %
+\newcommand{\tarkastaja}{{Toisen tarkastajan titteli (Prof./Dos./FT) ja nimi}} 
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\usepackage[]{natbib}
+\bibliographystyle{plainnat}
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+
+\pagenumbering{roman}
+\pagestyle{empty}
+
+\begin{center}
+\includegraphics[width=10cm]{UTU_logo_FI}
+\end{center}
+
+\vspace{3.0cm}
+\begin{center}\large
+{\sc \otsikko} 
+\end{center}
+
+\vspace{0.5cm}
+\begin{center}
+\titteli \tekija
+\end{center}
+
+\vspace{0.5cm}
+\begin{center}
+\tutkielma -tutkielma\\
+\aika
+\end{center}
+
+\vspace{2.5cm}
+\begin{center}
+\begin{tabular}{l}
+Tarkastajat:\\
+\ohjaaja \\
+\tarkastaja
+\end{tabular}
+\end{center}
+
+\vspace{2.5cm}
+\begin{center}
+MATEMATIIKAN JA TILASTOTIETEEN LAITOS
+\end{center}
+
+\newpage\null
+
+\vspace{22cm}
+
+\noindent Turun yliopiston laatujärjestelmän mukaisesti tämän julkaisun alkuperäisyys on tarkastettu Turnitin OriginalityCheck-järjestelmällä
+
+\cleardoublepage
+
+\noindent
+TURUN YLIOPISTO \newline
+Matematiikan ja tilastotieteen laitos\newline
+
+\noindent \textsc{\tekija}: \otsikko \newline
+\tutkielma-tutkielma, X s. \newline
+\paaaine \newline
+\aika
+\par\noindent{\rule{\textwidth}{.2mm}} \newline
+
+
+\vspace{4mm}\noindent Tutkielmassa esitetään hiukassuodin- ja hiukassiloitinalgoritmien teoria Bayesilaisessa tilastotieteellisessä viitekehyksessä. Lisäksi tutkielmassa käsitellään hiukassuotimien varianssin estimointia.
+
+\vspace{4mm}\noindent Empiirisenä esimerkkinä tutkielmassa tarkastellaan hiukassuodin- ja hiukassiloitinalgoritmien käyttöä AoA-teknologiaan perustuvassa Bluetooth-sisätilapaikannusratkaisussa.
+
+\vspace{4mm}\noindent Asiasanat: SMC-menetelmät, Monte Carlo -menetelmät, sekventiaalinen Monte Carlo, suodinongelma, hiukassuodin, hiukassiloitin, SIR-algoritmi, sisätilapaikannus, BLE, AoA, triangulaatio, Bayesilainen päättely
+
+\cleardoublepage
+
+\cleardoublepage
+
+\pagestyle{plain} 
+\pagenumbering{arabic} 
+
+{
+\setcounter{tocdepth}{3}
+\tableofcontents
+}
+\chapter{Hiukassilottimet}
+
+Tässä luvussa käsitellään suodinongelmaan läheisesti liittyvän hiukassiloittimen ratkaisemista ns. hiukassiloitinalgoritmien avulla. Kuten hiukassuotimien kohdalla, myös tässä luvussa esitetään ongelma ensin yleisessä Bayesilaisessa muodossa, jonka jälkeen siirrytään käsittelemään hiukkasmenetelmiin pohjautuvia siloitinalgoritmeja. Luvussa käsiteltävät algoritmit jaetaan kahteen pääkategoriaan, offline-algoritmeihin, joita sovelletaan hiukassuodinalgoritmin ajon jälkeen sekä online-algoritmeihin, jotka suoritetaan yhdessä hiukassuodinalgoritmin kanssa. Siloitinongelman esittely seuraa Särkkää (2013) \citep{sarkka-2013}, algoritmien käsittely pohjautuu TODO.
+
+\section{Bayesilainen siloitin}
+
+Bayesilaisen siloittimen tarkoitus on laskea tilan \(x_k\) marginaaliposteriorijakauma \(p(x_k|y_{1:T}\) ajanhetkellä \(k\), kun käytössä on havaintoja ajanhetkeen \(T\) asti, missä \(T>k\). Ero Bayesilaiseen suotimeen (kts. LUKULINKKI) on siinä, että suodinongelmassa havaintoja on saatavilla ainoastaan ajanhetkeen \(k\) asti, kun taas siloitinongelmassa myös tulevat havainnot ovat saatavilla. Ajassa taaksepäin etenevät rekursiiviset yhtälöt ongelman ratkaisemiseksi voidaan esittää muodossa
+
+\begin{align}\label{siloitin-prediktiivinen}
+p(x_{k+1}|y_{1:k})=\int_{\mathbb{R}^{n_x}}p(x_{k+1}|x_k)p(x_k|y_{1:k})\mathop{dx_k}.
+\end{align}
+
+\begin{align}\label{siloitin-ratkaisu}
+p(x_k|y_{1:T}) = p(x_k|y_{1:k}) \int \frac{p(x_{k+1}|x_k)p(x_{k+1}|y_{1:T})}{p(x_{k+1}|y_{1:k})} \mathop{dx_{k+1}}.
+\end{align},
+
+missä \(p(x_k|y_{1:k})\) on suodintiheys ajanhetkellä \(k\) ja \(p(x_{k+1}|y_{1:k})\) prediktiivinen jakauma ajanhetkelle \(k+1\). Kuten suodinongelman kohdalla, voidaan ongelma ratkaista suljetussa muodossa, kun mallit ovat LUVUNTODO tavoin lineaarisia. Tällöin kyseessä on Rauch-Turn-Striebel-siloitin (RTSS), josta käytetään myös nimitystä Kalman-siloitin. Samoin, kuten Kalman-suotimen kohdalla, ongelma voidaan tiettyjen ehtojen vallitessa linearisoida. Näitä linearisoituja suodattimia ei käsitellä tässä tutkielmassa. Hiukassuotimen tavoin hiukassiloitin ratkaisee ongelman mille hyvänsä epälineaariselle mallille.
+
+\section{Offline-algoritmit}
+
+Lorem ipsum.
+
+\subsection{SIR-siloitin}
+
+\subsection{BSPS-siloitin}
+
+\section{Online-algoritmit}
+
+Käytännössä online-algoritmit vaativat viipeen. Viipeen valinta XXX. optimaalinen.
+
+\subsection{XXX-siloitin}
+
+\subsection{Viipeen valinnasta}
+
+\end{document}

@@ -1,6 +1,6 @@
 \chapter{Hiukassilottimet}
 
-Tässä luvussa käsitellään suodinongelmaan läheisesti liittyvän hiukassiloittimen ratkaisemista ns. hiukassiloitinalgoritmien avulla. Kuten hiukassuotimien kohdalla, myös tässä luvussa esitetään ongelma ensin yleisessä Bayesilaisessa muodossa, jonka jälkeen siirrytään käsittelemään hiukkasmenetelmiin pohjautuvia siloitinalgoritmeja. Luvussa käsiteltävät algoritmit jaetaan kahteen pääkategoriaan, offline-algoritmeihin, joita sovelletaan hiukassuodinalgoritmin ajon jälkeen sekä online-algoritmeihin, jotka suoritetaan yhdessä hiukassuodinalgoritmin kanssa. Siloitinongelman esittely seuraa Särkkää (2013) [@sarkka-2013], algoritmien käsittely pohjautuu TODO.
+Tässä luvussa käsitellään suodinongelmaan läheisesti liittyvän hiukassiloittimen ratkaisemista ns. hiukassiloitinalgoritmien avulla. Kuten hiukassuotimien kohdalla, myös tässä luvussa esitetään ongelma ensin yleisessä Bayesilaisessa muodossa, jonka jälkeen siirrytään käsittelemään hiukkasmenetelmiin pohjautuvia siloitinalgoritmeja. Luvussa käsiteltävät algoritmit jaetaan kahteen pääkategoriaan, offline-algoritmeihin, joita sovelletaan hiukassuodinalgoritmin ajon jälkeen sekä online-algoritmeihin, jotka suoritetaan yhdessä hiukassuodinalgoritmin kanssa. Siloitinongelman esittely seuraa Särkkää (2013) [@sarkka-2013]. Algoritmien käsittely pohjautuu SIR-, BSPS- ja TODO-siloittimien osalta niin ikään Särkkään (2013) [@sarkka-2013]. TODO MUUT.
 
 \section{Bayesilainen siloitin}
 
@@ -18,10 +18,80 @@ missä $p(x_k|y_{1:k})$ on suodintiheys ajanhetkellä $k$ ja $p(x_{k+1}|y_{1:k})
 
 \section{Offline-algoritmit}
 
-Lorem ipsum. 
+Offline-siloittimet estimoivat siloitintiheyttä ajanhetkellä $k<T$, kun havaintodata on käytössä koko ajanjaksolta $1 \ldots T$. Oheiset algoritmit siis olettavat, että kaikki mahdollinen tuleva data on jo niiden käytössä. Ohessa käsitellään lyhyesti muutamaa ehdottua offline-hiukassiloitinalgoritmia.
 
 \subsection{SIR-siloitin}
 
+SÄRKKÄ2013, KITAGAWA1996, DOUCET2000. Kuten aiemmin mainittua, näyttävät hiukassuodinalgoritmit, erityisesti SIR-algoritmi \ref{sir}, ratkaisevan siloitteluongelman ilmaiseksi, kunhan tallennamme ajanhetkellä $k$ koko otoshistorian $x_{0:k}^i$. Tällöin voimme estimoida täyttä siloitteluposteriorijakaumaa seuraavasti:
+
+\begin{align}\label{siloitin-posteriori}
+p(x_{0:T}|y_{1:T}) \approx \sum_{i=1}^N w_T^i \delta (x_{0:T}-x_{0:T}^i),
+\end{align}.
+
+Nyt ajanhetken $k$ siloitinjakauma saadaan laskettua
+
+\begin{align}\label{siloitin-posteriori-k}
+p(x_{k}|y_{1:T}) \approx \sum_{i=1}^N w_T^i \delta (x_{k}-x_{k}^i),
+\end{align},
+
+missä $x^i_k$ on $x^i_{0:T}$:n $k$:s elementti. Koska uudelleenotanta hävittää otoshistorian, pitää uudelleenotanta suorittaa koko otoshistoriasta  $x_{0:k}^i = (x_{0:k-1}^i, x_{k}^i)$ pelkän ajanhetken $k$ otoksen $x_{k}^i$ sijaan. Koska nyt koko otoshistoria pitää tallentaa, vaatii SIR-siloitin $NkT$ muistia pelkän $N$ sijaan. Vastaavasti myös uudelleenotannan aikakompleksisuus kasvaa.  [@kitagawa-1996] 
+
+SIR-siloittimen suurin ongelma on kuitenkin sen tuottamien estimaattien hyvyys. Kun ajanhetkien määrä kasvaa, johtaa koko otoshistorian uudelleenotanta kaiken painon kasautumiseen historian tietyille otoksille, jolloin SIR-siloittimen tuottamat estimaatit eivät enää estimoi haluttua (siloittelu)posteriorijakaumaa. [@kitagawa-1996]
+
+\subsection{BS-PS-siloitin}
+
+*Backward-simulation particle smoother* (BS-PS) eli taaksepäin simuloiva hiukassiloitin estimoi paremmin hiukassuotimen tulosten perusteella siloitinjakaumaa. Tässä algoritmissa hiukkasten historia simuloidaan ajanhetkestä $T$ taaksepäin ajanhetkeen 0: 
+
+\begin{algorithm}[H]
+\label{BSPS}
+\DontPrintSemicolon
+\SetAlgoShortEnd
+\KwResult{Posteriorisiloitinjakauman $p(x_{k}|y_{1:T})$ estimaatti.\;}
+\KwData{Suodinjakaumia edustavat hiukkaset ja näihin liittyvät painot ${w_k^i, x_k^i}$, missä $i=1,\ldots,N$ ja $k=1,\ldots,T$\;}
+\Begin{
+  \Begin{Valitaan $\tilde{x}_T=x_T^i$\;}
+  \For{$k=\{T-1,\ldots,0\}$}{
+    \Begin{Lasketaan uudet painot \newline $w^i_{k|k+1} \propto w_k^i p(\tilde{x}_{k+1}|x_k^i)$\;}
+    \Begin{Valitaan $\tilde{x}_{k} = x_k^i$ todennäköisyydellä $w^i_{k|k+1}$.\;}
+  }  
+}
+\caption{Taaksepäin simuloiva hiukassiloitin}
+\end{algorithm}
+
+Nyt siloittelujakaumaa voidaan estimoida seuraavasti:
+
+\begin{align}\label{siloitin-BSPS}
+p(x_{0:T}|y_{1:T}) \approx \frac{1}{S} \sum_{i=1}^N \delta (x_{0:T}-\tilde{x}_{0:T}^j),
+\end{align},
+
+missä $S, j=1,\ldots,S$ on algoritmin \ref{BSPS} toistokertojen määrä. Koska $\tilde{x}_{0:T}^j$ pitää sisällään kaikki otospolut, saadaan marginaalijakauma ajanhetkellä $k$ yhtälöstä \ref{siloitin-BSPS} yksinkertaisesti valitsemalla sen $k$:net elementit. Sekä algoritmin aikakompleksisuus että muistivaade on $\mathcal{O}(STN)$.
+
+\subsection{Uudelleenpainottava hiukassiloitin}
+
+KUNCH 1998 DOUCET 2000. Uudelleenpainottavassa hiukassiloittimessa (tunnetaan myös nimellä marginaalihiukassiloitin) siloitinjakaumaa estimoidaan käyttämällä SIR-hiukassuodattmista (\ref{sir}) saatuja hiukkasia, mutta ne painotetaan uudelleen käyttäen dataa ajanhetkestä $T$ alkaen, edeten ajassa taaksepäin.
+
+\begin{algorithm}[H]
+\label{rwps}
+\DontPrintSemicolon
+\SetAlgoShortEnd
+\KwResult{Posteriorisiloitinjakauman $p(x_{k}|y_{1:T})$ estimaatti.\;}
+\KwData{Suodinjakaumia edustavat hiukkaset ja näihin liittyvät painot ${w_k^i, x_k^i}$, missä $i=1,\ldots,N$ ja $k=1,\ldots,T$\;}
+\Begin{
+  \Begin{Asetetaan $w_{T|T}^i = w_T^i$, jokaiselle $i=1,\ldots,N$;}
+  \For{$k=\{T-1,\ldots,0\}$}{
+    \Begin{Lasketaan uudet painot \newline $w^i_{k|T} = \sum_j w_{k+1|T}^j  \frac{w_k^i p(x_{k+1}^j|x_k^i)}{\sum_l w_k^l p(x_{k+1}^j|x_k^l)}$\;}
+  }  
+}
+\caption{Uudelleenpainottava hiukassiloitin}
+\end{algorithm},
+
+jolloin halutun siloitinjakauma estimaatti ajanhetkellä $k$ saadaan painotettuna keskiarvona $p(x_k|y_{1:T}) \approx \sum_i w_{k|t}^i \delta (x_k-x_k^i)$. Algoritmin aikakompleksisuus on $\mathcal{O}(N^2)$.
+
 \section{Online-algoritmit}
 
-Käytännössä online-algoritmit vaativat viipeen. Viipeen valinta XXX. optimaalinen.
+Koska XXX saatavilla ajettaessa. Online-siloittimet ratkaisevat nyt siloitinongelman niin, että saatavilla on dataa ajanhetkeen $k+L \le T$ asti, missä $L$ on dataan lisätty $L$:n ajanhetken viive. Viipeen valinta XXX optimaalinen. Nämä algoritmit voidaan jakaa kiinteän viipeen siloittimiin ja adaptiivisen viipeen siloittimiin.
+
+\subsection{Kiinteän viipeen siloitin}
+
+\subsection{Adaptiivisen viipeen siloitin}
+

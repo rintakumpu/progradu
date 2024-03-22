@@ -52,7 +52,7 @@ lyhsym <- as.data.frame(matrix(ncol=2,nrow=1))
 colnames(lyhsym) <- c("Lyhenne tai symboli", "Selitys")
 lyhsym[2,] <- linebreak(c("SMC", "\\textit{Sequential Monte Carlo}, \nsekventiaalinen Monte Carlo -menetelmä, \nsynonyymi hiukassuotimelle"))
 lyhsym[1,] <- linebreak(c("RTSS", "\\textit{Rauch-Turn-Striebel smoother}, Rauch-Turn-Striebel-siloitin"))
-
+lyhsym[3,] <- linebreak(c("BS-PS", "\\textit{Backwards simulation particle smoother}", "Taaksepäin simuloiva hiukassiloitin"))
 kableExtra::kbl(
   lyhsym, caption = 'Lyhenteet ja symbolit', format="latex",
   booktabs = TRUE, escape = FALSE
