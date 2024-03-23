@@ -1,1 +1,3 @@
-# (Liite) Other stuff {-}` (followed by `# A chapter`)
+# Liitteet` (followed by `# A chapter`)
+
+Konvergenssituloksen \ref{} nojalla kyseinen varianssi $\sigma^2 \rightarrow \lim 0$, kun $N \rightarrow \inf$.
