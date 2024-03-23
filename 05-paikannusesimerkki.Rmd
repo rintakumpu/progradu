@@ -76,7 +76,7 @@ height & vastaanottimen korkeus (m) & 2.22 \\
 \label{tab:muuttujat}
 \end{table}
 
-Etäisyys on estimoitu signaalin vahvuudesta käyttäen valmistajan omaa  propagaatiomallia. Etäisyyttä tai signaalin vahvuutta ei käytetä paikantamiseen, joten tämän mallin käsittely jätetään tutkielman ulkopuolelle. Munoz (2009) luku 2 sisältää yleiskatsauksen propagaatiomalleista.
+Etäisyys on estimoitu signaalin vahvuudesta käyttäen valmistajan omaa  propagaatiomallia. Etäisyyttä tai signaalin vahvuutta ei käytetä paikantamiseen, joten tämän mallin käsittely jätetään tutkielman ulkopuolelle. Munoz (2009) luku 2 sisältää yleiskatsauksen propagaatiomalleista. [@Munoz-2009]
 
 Atsimuuttikulma $\phi$ lasketaan aina vastaanottimen tietyltä sivulta, joten se vastaa napapohjoista ainoastaan siinä tapauksessa, että vastaanottimen kyseinen sivu on asetettu kohtisuoraan napapohjoiseen nähden. Käytännön syistä tämä ei ole aina mahdollista eikä vaihe-erojen mittaamisen kannalta edes suotavaa. Tämän vuoksi jokaiselle vastaanottimelle on tietokantaan tallennettu oma suuntimakulma $\eta$. Kokeessa käytetään napapohjoisesta laskettuja kulmia $\Phi$, jotka lasketaan jokaiselle havainnolle havainnon vastaanottimen suuntimakulman avulla
 
@@ -164,17 +164,80 @@ Kumpikaan funktiosta $h(\cdot)$ ja $f(\cdot)$ ei ole lineaarinen, joten SIR-algo
 
 ### Datan valinta
 
-Convex hull goes here.
+In the positioning particle filter, convex hull method is used in angle selection. The basic premise of this method is simple. Before evaluating particle likelihoods an angle/locator selection is performed. As one step of this process, a convex hull is drawn around the particle cloud and only angles that intersect this polygon get included in the likelihood evaluation. The following illustration explains the method.
+
+Here the angles from the locators #2 and #1 get included in the likelihood evaluation as they intersect the convex hull of the particle cloud whereas the angle from locator #3 is discarded.
+As the basic interpretation of the particle cloud is that the probability of the tag being within it is one, we can safely assume that the correct position of the tag is also within the convex hull enclosing the particle cloud. Thus this method works well for getting rid of poor angles and reflections. 
+
+The Problem
+However, the above method also leads to a problem: the smaller the particle cloud gets, the more precise the angles need to be to get included in the likelihood evaluation. When running the positioning particle filter at the frequency of one this is rarely a problem, as this frequency necessitates a noise q value of 1.5m thus leading to particle clouds averaging at least 3m in width. However if we want to move to a higher frequency to be able to reduce the noise value into centimeter range, this will become a problem.
+
+The Solution
+The simplest solution to the above problem is to add padding to the convex hull. An example of this is pictured below.
+
+In the R positioning particle filter this padding is achieved by introducing a new design parameter called ch_q_adjustment. Before the application of the movement model this value is added to the q noise value and the particles are moved using this adjusted q_new = q + ch_q_adjustment value. The resulting moved particle cloud is then used to create the adjusted convex hull after which these particles are discarded and the original particles are moved again using the plain q value.
+This method of achieving the convex hull padding is a bit involved and probably computationally more costly than just applying the movement model once and adjusting the size of the resulting convex hull using some other transformation. However this approach has the upside of retaining the original logic of convex hull creation and allowing to “decompose” the used noise. I.e. using a q value of 0.9 and ch_q_adjustment value of 0.52 leads to a similar sized convex hull as using the q value of 1.42.
 
 ### Uskottavuusmallit
 
+Uudet uskottavuusmallit. Truncated Normal and von Mises.
+
 ### Dynaaminen malli
+
+\section{Paikallaolon havaitseminen}
+
+Koska xyz käytetään paikallaolon havaitsemiseen seuraavaa algoritmia. Tämä tuottaa viipeen L=10 mutta samaa viivettä voidaan käyttää myöhemmin siloittelun laskennassa (kts.)
+
+The algorithm presented below is applied at the start of each iteration of the positioning particle filter. Its results are applied to the movement model noise, both in basic application of the movement model as well as in auxiliary/smoothing movement.
+Assumptions: 
+If we have missing data i.e. during a single second/time step the tag is not seen by any of the locators, we assume that the tag is in standby mode (as in standby mode the frequency is lowered to 1/10). Looking at the sequence numbers to determine whether the tag is in fact in standby would necessitate the introduction of a much longer lag and thus this assumption is used instead.
+If the tag is in standby mode it is also stationary. Inverse is not assumed to be true so this algorithm will only deal with stationarity in the standby mode.
+
+Input: 
+Azimuth angle data for a single tag for 1+n time steps (current time step + n time steps to the future). To obtain this data, a corresponding lag of n time steps needs to be introduced to the positioning particle filter. n should be set to the time it takes for the tag to enter the standby mode when the accelerometer no longer detects movement.
+Previous value of m (described below). For the first time step set m=0.
+Output: An integer variable m indicating for how many time steps we should dampen the movement model noise. If m==0 no dampening is applied.
+
+Steps:
+If m==0 apply step 2, otherwise decrement m by 1.
+t is the current time step. For each time step l = t+1 … t+n do the following:
+Check if there is data available for that time step. If not
+and m==0 set m=l-t. If m>0 and m+1==l-t set m=l-t if. What this does is it finds the first missing data time step and sets the m value correspondingly. If there are consecutive missing data time steps this sets m to correspond to the last of these time steps.
+If m!=0 for each application of the movement model for this iteration of the positioning particle filter, adjust the noise q value as follows: q = q/10 (can be adjusted, but we still want to allow for some movement to let the positioning system converge to the right stationary position).
+
+\section{Karttaprojektioista}
+
+In the particle filter positioning system there are various parts where we want to operate in meters instead of lat/long coordinates. The most important of these is the movement/dynamic model which is responsible for moving the particles between the time steps k and k+1. In the R code this is formulated as the following dead-reckoning model which is applied to each of the particles
+
+where x_k is the previous position of a single particle, represented as a vector with two elements, latitude and longitude, respectively, D_k a scalar representing the current speed, psi_k a scalar representing the current bearing and v_k a vector with two noise elements, one for latitude and other for longitude.
+In practice the D_k is currently set to 0 so the model is reduced to x_{k+1} = x_k + v_k, i.e. a noise-only random walk.
+In the movement model the noise v_k is created as follows. First the desired random walk movement distance d is sampled from the truncated Normal distribution with a=0, b=q_max and sd=q where q_max and q are adjustable parameters. Then the direction to which to move p is sampled from Uniform distribution with a=0 and b=2pi. Now the noise vector v_k is created as v_k = (cos(p)* d, sin(p)*d). 
+Previously we have represented all of the x/y coordinates in the positioning system as longitude and latitude. However in the movement model we want to give the arguments such as q and q_max in meters. This has presented us with a problem of how to do the meters to coordinates conversion. Previously we have just done a rough translation from meters to coordinates by giving the q and q_max value in meters and dividing that by 111132.954. 
+This is of course not exactly correct but the actual problem in the movement model above is actually the fact that when using lat/lon coordinates the distance of n meters would require different values for lat and lon whereas above only a single d is used. To mitigate this problem as well as to get rid of mixing and matching coordinates and meters a new conversion scheme was implemented. This is described in the following section.
+
+New coordinate conversion
+In order to make the positioning system more interpretable we have decided to handle everything exclusively in meters. This way we first transform everything that is stored in lat/lon coordinates into meters, use exclusively arguments in meters (or related units such as meters per second) and then convert back into lat/lon coordinates only when storing positions into the database.
+The conversion is done using linear interpolation by first determining the bounding box of the floor polygon. As all the positions and other polygons are within this polygon we can use this bounding box to scale lat/lon into meter scale. This is achieved by first determining the length of the sides of the bounding box in meters using geographic distance. 
+This metric distance is then used to linearly interpolate lat/lon axes from coordinates to the range [0, max(y)/max(x)] in meters. Once computed this conversion can be applied to all lat/lon coordinates to get y/x values in meters. 
+Before storing the positions the above process is inverted to get lat/lon coordinates. Go code for the above algorithm is in Appendix A.
 
 ### Karttasovitusalgoritmi
 
+Hyödynnetään polygoneja ja raycastingia. Asetetaan esimerkiksi rangaistus 1/1000. Jolloin uskottavuusfunktiot muuttuvat muotoon. Toteutus seuraa paperia XYZ (2019 tjsp).
+
 ### Reitinhakualgoritmi
 
+* Create separate grids for raw positions and Kalman filtered positions with separate and adjustable grid cell widths.
+* After positioning estimates and their Kalman filtered counterparts are created, snap these to the grid. Note! By default particles are not snapped to the grid, only the position estimates.
+* See if the previous position is within speed limit / Kalman filter speed limit (these are separate arguments) distance. These are set to 3m/s by default.
+* If the speed limit is not exceeded, create a new grid-snapped position. Also create a position to all the grid cells between the newly created position and the previous position. This path is found using A* algorithm.
+* If the speed limit is exceeded, wait for new raw / Kalman filtered positions to come in until the speed limit is no longer exceeded, in which case proceed as in the previous step.
+* Note! Pathfinding positions are not used anywhere else in the R positioning algorithm. Thus both the pathfinding positions and their Kalman filtered counterpresents create an entirely independent layer of positions on top of raw / Kalman filtered positions.
+* Note^2! When doing the A* pathfinding the time between positions is split equally so that the interpolated positions get a fractional time step between the start and stop positions of the pathfinding. Thus the positioning frequency of 1 is not respected.
+
 ### Siloittelualgoritmit
+
+Hyödynnetään alaluvussa TODO esitetty prediktiivistä siloitinta. Satunnaiskulkumalli ei ole optimaalinen, mutta ....
 
 \section{Algoritmin toteutuksesta}
 
@@ -197,7 +260,7 @@ Priorijakaumana $p_{x_0}$ käytettiin kahta toisistaan riippumatonta otosta tasa
 
 Paikannus suoritettiin yhteensä 17 kertaa. Ensimmäisessä vaiheessa tarkasteltiin partikkelien määrän $N$ vaikutusta paikannuskeskivirheeseen ilman uudelleenotantaa sekä priori- että uskottavuusotannalla. Seuraavassa vaiheessa valittiin ehdotusjakauma edellisen vaiheen tulosten perusteella ja tarkasteltiin tilannetta sekä adaptiivisella että jokaisella iteraatiolla suoritettavalla uudelleenotannalla.
 
-Kaikkien tulosten vertailukohtana käytettiin Pierlot \&al. artikkelissa "A New Three Object Triangulation Algorithm Based on the Power Center of Three Circles" (2011) esittämää ToTal-triangulaatioalgoritmia. Triangulaatio-algoritmia ei käsitellä tässä tarkemmin, mutta se on esitetty algoritmissa $\ref{total}$. Algoritmia varten valittiin kunakin ajanhetkenä $k$ ne kolme paikanninta ja kulmahavaintoa, joiden SNR-arvo oli korkein. 
+Kaikkien tulosten vertailukohtana käytettiin Pierlot \&al. artikkelissa "A New Three Object Triangulation Algorithm Based on the Power Center of Three Circles" (2011) esittämää ToTal-triangulaatioalgoritmia. [@Pierlot-2011] Triangulaatio-algoritmia ei käsitellä tässä tarkemmin, mutta se on esitetty algoritmissa $\ref{total}$. Algoritmia varten valittiin kunakin ajanhetkenä $k$ ne kolme paikanninta ja kulmahavaintoa, joiden SNR-arvo oli korkein. 
 
 Algoritmit ajettiin RStudion versiossa 1.4.1106 R-ohjelmointikielen versiolla 4.0.4. Tietokoneena käytettiin vuoden 2017 mallia olevaa MacBook Pro -kannettavaa, jossa oli 3.1 Ghz Quad-Core i7 -prosessori sekä 16 gigatavua 2133 Mhz LPDDR3 -muistia. Suoritusnopeuden mittaamiseen käytettiin `microbenchmark`-kirjastoa. Jokainen algoritmi toistettiin kymmenen kertaa ja suoritusnopeus laskettiin näiden toistojen aritmeettisena keskiarvona.
 

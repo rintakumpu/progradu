@@ -598,7 +598,7 @@ w^i_{k|k} = w^i_{k-1|k-1}p(x^i_k|x^i_{k-1}).
 
 \subsection{Konvergenssituloksia}
 
-Alla esitetään kaksi SIR-algoritmiin liittyvää konvergenssitulosta. Se, kuinka hyvin esitetyllä algoritmilla arvioitu posterioritiheys \(\hat{p}(x_{1:k}|y_{1:k})\) approksimoi todellista tiheysfunktiota \(p(x_{1:k}|y_{1:k})\) sekä mikä on approksimaation keskineliövirhe. Tulokset noudattavat Crisanin ja Doucet'n artikkeleita ``Convergence of Sequential Monte Carlo Methods'' (2000) ja ``A Survey of Convergence Results on Particle Filtering Methods for Practitioners'' (2002).
+Alla esitetään kaksi SIR-algoritmiin liittyvää konvergenssitulosta. Se, kuinka hyvin esitetyllä algoritmilla arvioitu posterioritiheys \(\hat{p}(x_{1:k}|y_{1:k})\) approksimoi todellista tiheysfunktiota \(p(x_{1:k}|y_{1:k})\) sekä mikä on approksimaation keskineliövirhe. Tulokset noudattavat Crisanin ja Doucet'n artikkeleita ``Convergence of Sequential Monte Carlo Methods'' (2000) \citep{crisan-2000} ja ``A Survey of Convergence Results on Particle Filtering Methods for Practitioners'' (2002) \citep{crisan-2002}.
 
 \textit{Konvergenssitulos 1}: Kun \(N \rightarrow \infty\) algoritmille pätee \(\forall k\) tulos (\ref{jakaumakonvergenssi}).
 
@@ -664,6 +664,8 @@ Saapasremmisuodin on edellä esitettyä SIR-algoritmia yksinkertaisempi toteutta
 \section{Varianssin estimointi}
 
 Hiukassuotimen varianssin estimoinnissa ollaan kiinnostuneita XXX. Yksinkertaisin tapa estimoida hiukassuodinalgoritmin varianssia on yksinkertaisesti *** Monte Carlo -varianssi *** todistus. Monte Carlo -varianssin laskeminen on kuitenkin laskennallisesti tehotonta, sillä se edellyttää algoritmin ajamista useita, todennäköisesti kymmeniä kertoja. Monissa käytännön sovelluksissa jo yhden hiukassuodinalgoritmin ajaminen vaatii runsaasti laskentatehoa, jolloin Monte Carlo -varianssin laskeminen ei ole mahdollista. Varianssia ei luonnollisesti voi myöskään laskea analyyttisesti. Varianssin estimointiin on kuitenkin viime vuosina kehitetty muutamia algoritmeja, jotka mahdollistavat varianssin estimoinnin aikakompleksisuudella TODO.
+
+Näin saatua varianssiestimaattia voidaan hyödyntää esimerkiksi mukautuvan viipeen hiukassiloittimen viipeen valinnassa (kts. luku 4 LINKKI).
 
 \chapter{Hiukassilottimet}
 
@@ -758,11 +760,69 @@ jolloin halutun siloitinjakauma estimaatti ajanhetkellä \(k\) saadaan painotett
 
 \section{Online-algoritmit}
 
-Koska XXX saatavilla ajettaessa. Online-siloittimet ratkaisevat nyt siloitinongelman niin, että saatavilla on dataa ajanhetkeen \(k+L \le T\) asti, missä \(L\) on dataan lisätty \(L\):n ajanhetken viive. Viipeen valinta XXX optimaalinen. Nämä algoritmit voidaan jakaa kiinteän viipeen siloittimiin ja adaptiivisen viipeen siloittimiin.
+Yllä esitetyt offline-suodinongelmat ratkaisevat suodinongelman niin, että kaikki data ajanhetkeen asti \(T\) on saatavilla. Käytännössä siloitin siis ajetaan suodinalgoritmin jälkeen. Käytännön sovelluksissa tämä ei ole aina mahdollista, jos siloittelujakauman pitää olla saatavilla reaaliaikaisesti. Online-siloittimet ratkaisevat nyt siloitinongelman niin, että saatavilla on dataa ajanhetkeen \(k+L \le T\) asti, missä \(L\) on dataan lisätty \(L\):n ajanhetken viive. Online-algoritmit voidaan edelleen jakaa kiinteän viipeen siloittimiin (\emph{fixed-lag smoother}) ja mukautuvan viipeen siloittimiin (\emph{adaptive-lag smoother}). Nimensä mukaisesta kiinteän viipeen siloitinalgoritmeissa viive \(L\) valitaan suunnitteluparametrina, kun taas mukautuvan viipeen siloittimet pyrkivät valitsemaan parhaan tai optimaalisen viipeen johonkin kriteeriin perustuen.
 
 \subsection{Kiinteän viipeen siloitin}
 
-\subsection{Adaptiivisen viipeen siloitin}
+Yksinkertaisin tapa toteuttaa kiinteän viipeen siloitin on yksinkertaisesti käyttää SIR-siloitinta niin, että maksimiajanhetki \(T\) korvataan valitulla viipeellä \(k+L \le T\). \citep{kitagawa-1996}. Nyt yhtälön \ref{siloitin-posteriori} jakauma saadaan muotoon
+
+\begin{align}\label{siloitin-posteriori-viive}
+p(x_{0:(k+L)}|y_{1:(k+L)}) \approx \sum_{i=1}^N w_{k+L}^i \delta (x_{0:(k+L)}-x_{0:(k+L)}^i),
+\end{align}
+
+ja nykyisen ajanhatken \(k\) siloitinjakauma lasketaan tästä jakaumasta kuten SIR-siloittimessa (kts. yhtälö \ref{siloitin-posteriori-k}). Kiinteän viipeen siloitin myös välttää SIR-siloittimen approksimaatio-ongelmat. Kun viipeelle \(L\) pätee \(k+L \ll T\) parantaa viipeen pidentäminen tiettyyn pisteeseen asti jakauman approksimaatiota. Kitagawa (1996) suosittelee 10\textendash 20 aika-askeleen viivettä ja esittää 50 aika-askelta viipeen ylärajaksi. \citep{kitagawa-1996}. Paremman estimaatin vastapainona pidemmän viipeen valinta lisää myös viivettä, joka dataa tuottavaan järjestelmään pitää lisätä. Siloittimien tulokset ovat saatavilla vasta \(L\) ajanhetken jälkeen, mikä ei aina ole käytännössä mahdollista tai haluttua. Pidempi viive myös lisää algoritmin muistivaatimuksia, joskin muistivaatimukset pysyvät aina pienempinä kuin SIR-siloittimessa.
+
+Kiinteän viipeen siloitinta (viipeellä \(L=1\)) voidaan hyödyntää myös prediktiivisenä siloittimena, jossa siloittelujakaumaa \(p(x_{0:(k+1)}|y_{1:(k+1)}\) käytetään suodinjakauman \(p(x_{1:(k)}|y_{1:k})\) laskennassa. \citep{Nyobe-2021} Ydinajatuksena on muokata SIR-algoritmia \ref{sir} niin, että ajanhetken \(k\) painoja \(w_k^i\) painotetaan edelleen seuraavan ajanhetkestä \(k+1\) lasketuilla painoilla ja näin painottaa jo nykyhetkessä niitä hiukkasia, joiden uskottavuus on seuraavalla ajanhetkellä suurempi. Tämä prediktiivinen siloitin voidaan toteuttaa lisäämällä SIR-algoritmiin painotusvaiheen jälkeen seuraava ala-algoritmi:
+
+\begin{algorithm}[H]
+\label{prediktiivinen-siloitin}
+\DontPrintSemicolon
+\SetAlgoShortEnd
+\KwResult{Prediktiivisellä siloittimella lasketut painot painotettu $\tilde{w}_{k}^i$.\;}
+\KwData{Viipeen $L=1$ avulla saadut havainnot $y_{k+1}$. Partikkelit $x_k^i$ ja niitä vastaavat painot $w_k^i$\;}
+\Begin{
+  \For{$i=\{1,2,\ldots,N\}$}{
+      \Begin{Luodaan simuloidut hiukkaset $\tilde{x}_{k+1}^i$ ehdotusjakaumsta $q(\tilde{x}_{k+1}|x^i_k,y_{k+1})$\;}
+      \Begin{Lasketaan simuloiduille hiukkasille painot $\tilde{w}_{k+1}^i$\;}
+      \Begin{Päivitetään nykyiset painot $\tilde{w}_{k}^i = {w}_{k}^i \tilde{w}_{k+1}^i$\;}
+    }
+  \Begin{Korvataan nykyiset painot ${w}_{k}$ siloitetuilla painoilla $\tilde{w}_{k}^i$;}
+  }  
+\caption{Prediktiivinen siloiti (viive=1)}
+\end{algorithm}
+
+Kun hiukkasten määrä \(N\) pysyy samana, lisää prediktiivinen siloitin suodinjakauman laskemisen tarkkuutta. Vastaavasti prediktiivinen siloitin mahdollistaa saman suodinjakauman estimaatin tarkkuuden kuin SIR-algoritmi pienemmällä määrällä hiukkasia, kuitenkin vainb tuplaten uskottavuusfunktiota laskettaessa vaadittavan laskentatehon ja muistitarpeen.
+
+\subsection{Mukautuvan viipeen siloitin}
+
+Yllä esitetyssä kiinteän viipeen siloittimessa on valittu viive \(L\) suunnitteluparametri. Valittu viive on aina kompromissi: liian suuri viive kasvattaa siloitinjakauman estimoinnin epätarkkuutta ja hidastaa laskentaa, kun taas liian pieni viive saattaa johtaa niin ikään epätarkkuuteen. Lisäksi valittu viive ei välttämättä johda jokaisella aika-askeleella optimaaliseen tai edes hyvään laskentatulokseen. Mukautuvan viipeen siloittimet yrittävät ratkaista tämän ongelman mukauttamalla kunakin ajanhetkenä valittua viivettä johonkin kriteeriin perustuen. Erään version mukautuvan viipeen siloittimesta esittävät Johan Alenlöv ja Jimmy Olsson artikkelissa ``Particle-Based Adaptive-Lag Online Marginal Smoothing in General State-Space Models'' (2019) \citep{alenlov-2019}. Siloitin hyödyntää hiukassuotimen varianssiestimaattia viipeen valinnassa.
+
+Yksinkertaisin versio siloittimesta on esitetty algoritmissa \ref{mukautuva-siloitin}. Perusidea on viivästyttää siloitinjakauman luomista hetkellä \(k\), kunnes tarjolla on viipeet \(S=1,\ldots,s\), joiden varianssi
+
+\begin{align}\label{siloitin-varianssi}
+\sigma^2_{s|t} = \sum_{i=1}^N \frac{w_t^i}{\Omega_t}\left\{\tilde{x}_{s|t} - \sum_{j=1}^N \frac{w_t^j}{\Omega_t}\tilde{x}_{s|t} \right\}^2,
+\end{align}
+
+pysyy tietyn valitun rajan \(\epsilon\) yläpuolella, missä \(\tilde{x}_{s|t}\) on kyseiselle viipeellä laskettu marginaalisiloitinjakauman painovektori (kts. algoritmi \ref{rwps}). Kun tämä ehto ei enää täyty, käytetään suurimmalle kriteerin \(\sigma^2{s|t} < \epsilon\) täyttämälle viipeelle laskettuja painoja siloitinjakauman estimointiin kaikilla \(t^\prime \ge t\). Varianssin estimoinnista katso alaluku TODOLINKKI.
+
+\begin{algorithm}[H]
+\label{mukautuva-siloitin}
+\DontPrintSemicolon
+\SetAlgoShortEnd
+\KwResult{Siloittelujakauman estimaatti viipeellä $s$, tarkemmin $\sum_i^N w_t^i \tilde{x}_{s|t}^i \Omega_t$.\;}
+\KwData{Olkoon $S$ joukko kullakin viipeellä $s$ laskettuja painoja $\tilde{x}_{s|t}^i$. Alustetaan $S \leftarrow \emptyset$\;}
+\Begin{
+  \For{$t=\{1,2,\ldots,T\}$}{
+      \Begin{Ajetaan SIR-algoritmi \ref{sir} ajanhetkenä $t$\;}
+      \Begin{Jokaiselle $s \in S$ lasketaan painovektori kuten algoritmissa \ref{rwps}.\;}
+      \Begin{$S \leftarrow S \cup \{s\}$Jokaiselle $s \in S$ lasketaan painovektori kuten algoritmissa \ref{rwps}.\;}
+      \Begin{Jokaiselle $s$ lasketaan varianssi $\sigma^2_{s|t}$ kuten yhtälössä \ref{siloitin-varianssi}. Jos $\sigma^2_{s|t} < \epsilon$ poistetaan $s$ joukosta $S$ ja käytetään siloitinjaukauman estimaattia $\sum_i^N w_t^i \tilde{x}_{s|t}^i \Omega_t$ kaikille ajanhetkille $t^\prime \ge t$.\;}
+    }
+  }  
+\caption{Mukautuvan viipeen siloitin}
+\end{algorithm}
+
+Myös tähän siloittimeen liittyy suunnitteluparametrien valinta. Vaikka itse viivettä \(L\) ei valita, pitää parametri \(\epsilon\). Pienempi \(\epsilon\) tuottaa suurempia viipeitä ja täten parempia estimaatteja, mutta on myös laskennallisesti sekä muistin käytöltään raskaampi. Alenlöv ja Olsson ehdottavat \(\epsilon\)-arvoja väliltä \((.5, 10^{-3})\).
 
 \chapter{Hiukassuodin ja -siloitin sisätilapaikannuksessa}
 
@@ -842,7 +902,7 @@ height & vastaanottimen korkeus (m) & 2.22 \\
 \label{tab:muuttujat}
 \end{table}
 
-Etäisyys on estimoitu signaalin vahvuudesta käyttäen valmistajan omaa propagaatiomallia. Etäisyyttä tai signaalin vahvuutta ei käytetä paikantamiseen, joten tämän mallin käsittely jätetään tutkielman ulkopuolelle. Munoz (2009) luku 2 sisältää yleiskatsauksen propagaatiomalleista.
+Etäisyys on estimoitu signaalin vahvuudesta käyttäen valmistajan omaa propagaatiomallia. Etäisyyttä tai signaalin vahvuutta ei käytetä paikantamiseen, joten tämän mallin käsittely jätetään tutkielman ulkopuolelle. Munoz (2009) luku 2 sisältää yleiskatsauksen propagaatiomalleista. \citep{Munoz-2009}
 
 Atsimuuttikulma \(\phi\) lasketaan aina vastaanottimen tietyltä sivulta, joten se vastaa napapohjoista ainoastaan siinä tapauksessa, että vastaanottimen kyseinen sivu on asetettu kohtisuoraan napapohjoiseen nähden. Käytännön syistä tämä ei ole aina mahdollista eikä vaihe-erojen mittaamisen kannalta edes suotavaa. Tämän vuoksi jokaiselle vastaanottimelle on tietokantaan tallennettu oma suuntimakulma \(\eta\). Kokeessa käytetään napapohjoisesta laskettuja kulmia \(\Phi\), jotka lasketaan jokaiselle havainnolle havainnon vastaanottimen suuntimakulman avulla
 
@@ -931,22 +991,95 @@ Kumpikaan funktiosta \(h(\cdot)\) ja \(f(\cdot)\) ei ole lineaarinen, joten SIR-
 \hypertarget{datan-valinta}{%
 \subsection{Datan valinta}\label{datan-valinta}}
 
-Convex hull goes here.
+In the positioning particle filter, convex hull method is used in angle selection. The basic premise of this method is simple. Before evaluating particle likelihoods an angle/locator selection is performed. As one step of this process, a convex hull is drawn around the particle cloud and only angles that intersect this polygon get included in the likelihood evaluation. The following illustration explains the method.
+
+Here the angles from the locators \#2 and \#1 get included in the likelihood evaluation as they intersect the convex hull of the particle cloud whereas the angle from locator \#3 is discarded.
+As the basic interpretation of the particle cloud is that the probability of the tag being within it is one, we can safely assume that the correct position of the tag is also within the convex hull enclosing the particle cloud. Thus this method works well for getting rid of poor angles and reflections.
+
+The Problem
+However, the above method also leads to a problem: the smaller the particle cloud gets, the more precise the angles need to be to get included in the likelihood evaluation. When running the positioning particle filter at the frequency of one this is rarely a problem, as this frequency necessitates a noise q value of 1.5m thus leading to particle clouds averaging at least 3m in width. However if we want to move to a higher frequency to be able to reduce the noise value into centimeter range, this will become a problem.
+
+The Solution
+The simplest solution to the above problem is to add padding to the convex hull. An example of this is pictured below.
+
+In the R positioning particle filter this padding is achieved by introducing a new design parameter called ch\_q\_adjustment. Before the application of the movement model this value is added to the q noise value and the particles are moved using this adjusted q\_new = q + ch\_q\_adjustment value. The resulting moved particle cloud is then used to create the adjusted convex hull after which these particles are discarded and the original particles are moved again using the plain q value.
+This method of achieving the convex hull padding is a bit involved and probably computationally more costly than just applying the movement model once and adjusting the size of the resulting convex hull using some other transformation. However this approach has the upside of retaining the original logic of convex hull creation and allowing to ``decompose'' the used noise. I.e. using a q value of 0.9 and ch\_q\_adjustment value of 0.52 leads to a similar sized convex hull as using the q value of 1.42.
 
 \hypertarget{uskottavuusmallit}{%
 \subsection{Uskottavuusmallit}\label{uskottavuusmallit}}
 
+Uudet uskottavuusmallit. Truncated Normal and von Mises.
+
 \hypertarget{dynaaminen-malli}{%
 \subsection{Dynaaminen malli}\label{dynaaminen-malli}}
+
+\section{Paikallaolon havaitseminen}
+
+Koska xyz käytetään paikallaolon havaitsemiseen seuraavaa algoritmia. Tämä tuottaa viipeen L=10 mutta samaa viivettä voidaan käyttää myöhemmin siloittelun laskennassa (kts.)
+
+The algorithm presented below is applied at the start of each iteration of the positioning particle filter. Its results are applied to the movement model noise, both in basic application of the movement model as well as in auxiliary/smoothing movement.
+Assumptions:
+If we have missing data i.e.~during a single second/time step the tag is not seen by any of the locators, we assume that the tag is in standby mode (as in standby mode the frequency is lowered to 1/10). Looking at the sequence numbers to determine whether the tag is in fact in standby would necessitate the introduction of a much longer lag and thus this assumption is used instead.
+If the tag is in standby mode it is also stationary. Inverse is not assumed to be true so this algorithm will only deal with stationarity in the standby mode.
+
+Input:
+Azimuth angle data for a single tag for 1+n time steps (current time step + n time steps to the future). To obtain this data, a corresponding lag of n time steps needs to be introduced to the positioning particle filter. n should be set to the time it takes for the tag to enter the standby mode when the accelerometer no longer detects movement.
+Previous value of m (described below). For the first time step set m=0.
+Output: An integer variable m indicating for how many time steps we should dampen the movement model noise. If m==0 no dampening is applied.
+
+Steps:
+If m==0 apply step 2, otherwise decrement m by 1.
+t is the current time step. For each time step l = t+1 \ldots{} t+n do the following:
+Check if there is data available for that time step. If not
+and m==0 set m=l-t. If m\textgreater0 and m+1==l-t set m=l-t if. What this does is it finds the first missing data time step and sets the m value correspondingly. If there are consecutive missing data time steps this sets m to correspond to the last of these time steps.
+If m!=0 for each application of the movement model for this iteration of the positioning particle filter, adjust the noise q value as follows: q = q/10 (can be adjusted, but we still want to allow for some movement to let the positioning system converge to the right stationary position).
+
+\section{Karttaprojektioista}
+
+In the particle filter positioning system there are various parts where we want to operate in meters instead of lat/long coordinates. The most important of these is the movement/dynamic model which is responsible for moving the particles between the time steps k and k+1. In the R code this is formulated as the following dead-reckoning model which is applied to each of the particles
+
+where x\_k is the previous position of a single particle, represented as a vector with two elements, latitude and longitude, respectively, D\_k a scalar representing the current speed, psi\_k a scalar representing the current bearing and v\_k a vector with two noise elements, one for latitude and other for longitude.
+In practice the D\_k is currently set to 0 so the model is reduced to x\_\{k+1\} = x\_k + v\_k, i.e.~a noise-only random walk.
+In the movement model the noise v\_k is created as follows. First the desired random walk movement distance d is sampled from the truncated Normal distribution with a=0, b=q\_max and sd=q where q\_max and q are adjustable parameters. Then the direction to which to move p is sampled from Uniform distribution with a=0 and b=2pi. Now the noise vector v\_k is created as v\_k = (cos(p)* d, sin(p)*d).
+Previously we have represented all of the x/y coordinates in the positioning system as longitude and latitude. However in the movement model we want to give the arguments such as q and q\_max in meters. This has presented us with a problem of how to do the meters to coordinates conversion. Previously we have just done a rough translation from meters to coordinates by giving the q and q\_max value in meters and dividing that by 111132.954.
+This is of course not exactly correct but the actual problem in the movement model above is actually the fact that when using lat/lon coordinates the distance of n meters would require different values for lat and lon whereas above only a single d is used. To mitigate this problem as well as to get rid of mixing and matching coordinates and meters a new conversion scheme was implemented. This is described in the following section.
+
+New coordinate conversion
+In order to make the positioning system more interpretable we have decided to handle everything exclusively in meters. This way we first transform everything that is stored in lat/lon coordinates into meters, use exclusively arguments in meters (or related units such as meters per second) and then convert back into lat/lon coordinates only when storing positions into the database.
+The conversion is done using linear interpolation by first determining the bounding box of the floor polygon. As all the positions and other polygons are within this polygon we can use this bounding box to scale lat/lon into meter scale. This is achieved by first determining the length of the sides of the bounding box in meters using geographic distance.
+This metric distance is then used to linearly interpolate lat/lon axes from coordinates to the range {[}0, max(y)/max(x){]} in meters. Once computed this conversion can be applied to all lat/lon coordinates to get y/x values in meters.
+Before storing the positions the above process is inverted to get lat/lon coordinates. Go code for the above algorithm is in Appendix A.
 
 \hypertarget{karttasovitusalgoritmi}{%
 \subsection{Karttasovitusalgoritmi}\label{karttasovitusalgoritmi}}
 
+Hyödynnetään polygoneja ja raycastingia. Asetetaan esimerkiksi rangaistus 1/1000. Jolloin uskottavuusfunktiot muuttuvat muotoon. Toteutus seuraa paperia XYZ (2019 tjsp).
+
 \hypertarget{reitinhakualgoritmi}{%
 \subsection{Reitinhakualgoritmi}\label{reitinhakualgoritmi}}
 
+\begin{itemize}
+\tightlist
+\item
+  Create separate grids for raw positions and Kalman filtered positions with separate and adjustable grid cell widths.
+\item
+  After positioning estimates and their Kalman filtered counterparts are created, snap these to the grid. Note! By default particles are not snapped to the grid, only the position estimates.
+\item
+  See if the previous position is within speed limit / Kalman filter speed limit (these are separate arguments) distance. These are set to 3m/s by default.
+\item
+  If the speed limit is not exceeded, create a new grid-snapped position. Also create a position to all the grid cells between the newly created position and the previous position. This path is found using A* algorithm.
+\item
+  If the speed limit is exceeded, wait for new raw / Kalman filtered positions to come in until the speed limit is no longer exceeded, in which case proceed as in the previous step.
+\item
+  Note! Pathfinding positions are not used anywhere else in the R positioning algorithm. Thus both the pathfinding positions and their Kalman filtered counterpresents create an entirely independent layer of positions on top of raw / Kalman filtered positions.
+\item
+  Note\^{}2! When doing the A* pathfinding the time between positions is split equally so that the interpolated positions get a fractional time step between the start and stop positions of the pathfinding. Thus the positioning frequency of 1 is not respected.
+\end{itemize}
+
 \hypertarget{siloittelualgoritmit}{%
 \subsection{Siloittelualgoritmit}\label{siloittelualgoritmit}}
+
+Hyödynnetään alaluvussa TODO esitetty prediktiivistä siloitinta. Satunnaiskulkumalli ei ole optimaalinen, mutta \ldots.
 
 \section{Algoritmin toteutuksesta}
 
@@ -969,7 +1102,7 @@ Priorijakaumana \(p_{x_0}\) käytettiin kahta toisistaan riippumatonta otosta ta
 
 Paikannus suoritettiin yhteensä 17 kertaa. Ensimmäisessä vaiheessa tarkasteltiin partikkelien määrän \(N\) vaikutusta paikannuskeskivirheeseen ilman uudelleenotantaa sekä priori- että uskottavuusotannalla. Seuraavassa vaiheessa valittiin ehdotusjakauma edellisen vaiheen tulosten perusteella ja tarkasteltiin tilannetta sekä adaptiivisella että jokaisella iteraatiolla suoritettavalla uudelleenotannalla.
 
-Kaikkien tulosten vertailukohtana käytettiin Pierlot \&al.~artikkelissa ``A New Three Object Triangulation Algorithm Based on the Power Center of Three Circles'' (2011) esittämää ToTal-triangulaatioalgoritmia. Triangulaatio-algoritmia ei käsitellä tässä tarkemmin, mutta se on esitetty algoritmissa \(\ref{total}\). Algoritmia varten valittiin kunakin ajanhetkenä \(k\) ne kolme paikanninta ja kulmahavaintoa, joiden SNR-arvo oli korkein.
+Kaikkien tulosten vertailukohtana käytettiin Pierlot \&al.~artikkelissa ``A New Three Object Triangulation Algorithm Based on the Power Center of Three Circles'' (2011) esittämää ToTal-triangulaatioalgoritmia. \citep{Pierlot-2011} Triangulaatio-algoritmia ei käsitellä tässä tarkemmin, mutta se on esitetty algoritmissa \(\ref{total}\). Algoritmia varten valittiin kunakin ajanhetkenä \(k\) ne kolme paikanninta ja kulmahavaintoa, joiden SNR-arvo oli korkein.
 
 Algoritmit ajettiin RStudion versiossa 1.4.1106 R-ohjelmointikielen versiolla 4.0.4. Tietokoneena käytettiin vuoden 2017 mallia olevaa MacBook Pro -kannettavaa, jossa oli 3.1 Ghz Quad-Core i7 -prosessori sekä 16 gigatavua 2133 Mhz LPDDR3 -muistia. Suoritusnopeuden mittaamiseen käytettiin \texttt{microbenchmark}-kirjastoa. Jokainen algoritmi toistettiin kymmenen kertaa ja suoritusnopeus laskettiin näiden toistojen aritmeettisena keskiarvona.
 
@@ -1074,17 +1207,6 @@ Koeasetelma toimi kuitenkin hyvänä konseptin todennuksena, sillä käytetyiss�
 Tässä tutkielmassa on esitetty pääpiirteittäin SMC-menetelmien teoria Bayesilaisessa tilastotieteellisessä viitekehyksessä. Lisäksi tutkielmassa on käyty läpi uudelleenotantaa efektiivisen otoskoon perusteella hyödyntävä SIR-suodinalgoritmi. Lopuksi tutkielmassa on tarkasteltu SIR-algoritmin parametrien valintaan, suorituskykyyn sekä konvergenssiin liittyviä tuloksia.
 
 Tutkielmassa on lisäksi tarkasteltu miten eri valinnat vaikuttavat algoritmin suorituskykyyn yksinkertaisen mutta kattavan ja todelliseen ongelmaan sekä dataan perustuvan paikannusesimerkin avulla.
-
-\begin{comment}
-\begin{thebibliography}{99}
-
-\bibitem{Crisan2000} Crisan, D., Doucet, A. 2000. \textit{Convergence of Sequential Monte Carlo Methods}. 
-\bibitem{Crisan2002} Crisan, D., Doucet, A. 2002. A survey of convergence results on particle filtering methods for practitioners. \textit{IEEE Transactions on Signal Processing}, Vol 50, No 3, 736\textendash 746.
-\bibitem{Davidson2010} Davidson, P., Collin J., Takala J. 2010, Application of particle filters for indoor positioning using floor plans. \textit{2010 Ubiquitous Positioning Indoor Navigation and Location Based Service}, 1\textendash 4.
-\bibitem{Munoz2009} Munoz, D., Enriquez-Caldera, R., Vargas, C., Bouchereau Lara, F. 2009. \textit{Position Location Techniques and Applications}. Elsevier.
-\bibitem{Pierlot2011} Pierlot, V., Urbin-Choffray M., Van Droogenbroeck, M. 2011. A New Three Object Triangulation Algorithm Based on the Power Center of Three Circles. \textit{Research and Education in Robotics - EUROBOT 2011}, 248\textendash 262. Springer.
-\end{thebibliography}
-\end{comment}
 
 \hypertarget{liite-other-stuff--followed-by-a-chapter}{%
 \chapter{\texorpdfstring{(Liite) Other stuff \{-\}\texttt{(followed\ by}\# A chapter`)}{(Liite) Other stuff \{-\}(followed by\# A chapter`)}}\label{liite-other-stuff--followed-by-a-chapter}}

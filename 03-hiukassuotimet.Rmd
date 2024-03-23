@@ -149,7 +149,7 @@ w^i_{k|k} = w^i_{k-1|k-1}p(x^i_k|x^i_{k-1}).
 
 \subsection{Konvergenssituloksia}
 
-Alla esitetään kaksi SIR-algoritmiin liittyvää konvergenssitulosta. Se, kuinka hyvin esitetyllä algoritmilla arvioitu posterioritiheys $\hat{p}(x_{1:k}|y_{1:k})$ approksimoi todellista tiheysfunktiota $p(x_{1:k}|y_{1:k})$ sekä mikä on approksimaation keskineliövirhe. Tulokset noudattavat Crisanin ja Doucet'n artikkeleita "Convergence of Sequential Monte Carlo Methods" (2000) ja "A Survey of Convergence Results on Particle Filtering Methods for Practitioners" (2002).
+Alla esitetään kaksi SIR-algoritmiin liittyvää konvergenssitulosta. Se, kuinka hyvin esitetyllä algoritmilla arvioitu posterioritiheys $\hat{p}(x_{1:k}|y_{1:k})$ approksimoi todellista tiheysfunktiota $p(x_{1:k}|y_{1:k})$ sekä mikä on approksimaation keskineliövirhe. Tulokset noudattavat Crisanin ja Doucet'n artikkeleita "Convergence of Sequential Monte Carlo Methods" (2000) [@crisan-2000] ja "A Survey of Convergence Results on Particle Filtering Methods for Practitioners" (2002) [@crisan-2002].
 
 \textit{Konvergenssitulos 1}: Kun $N \rightarrow \infty$ algoritmille pätee $\forall k$ tulos (\ref{jakaumakonvergenssi}).
 
@@ -216,3 +216,4 @@ Saapasremmisuodin on edellä esitettyä SIR-algoritmia yksinkertaisempi toteutta
 
 Hiukassuotimen varianssin estimoinnissa ollaan kiinnostuneita XXX. Yksinkertaisin tapa estimoida hiukassuodinalgoritmin varianssia on yksinkertaisesti *** Monte Carlo -varianssi *** todistus. Monte Carlo -varianssin laskeminen on kuitenkin laskennallisesti tehotonta, sillä se edellyttää algoritmin ajamista useita, todennäköisesti kymmeniä kertoja. Monissa käytännön sovelluksissa jo yhden hiukassuodinalgoritmin ajaminen vaatii runsaasti laskentatehoa, jolloin Monte Carlo -varianssin laskeminen ei ole mahdollista. Varianssia ei luonnollisesti voi myöskään laskea analyyttisesti. Varianssin estimointiin on kuitenkin viime vuosina kehitetty muutamia algoritmeja, jotka mahdollistavat varianssin estimoinnin aikakompleksisuudella TODO.
 
+Näin saatua varianssiestimaattia voidaan hyödyntää esimerkiksi mukautuvan viipeen hiukassiloittimen viipeen valinnassa (kts. luku 4 LINKKI).
