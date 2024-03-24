@@ -598,7 +598,7 @@ w^i_{k|k} = w^i_{k-1|k-1}p(x^i_k|x^i_{k-1}).
 
 \subsection{Konvergenssituloksia}
 
-Alla esitetään kaksi SIR-algoritmiin liittyvää konvergenssitulosta. Se, kuinka hyvin esitetyllä algoritmilla arvioitu posterioritiheys \(\hat{p}(x_{1:k}|y_{1:k})\) approksimoi todellista tiheysfunktiota \(p(x_{1:k}|y_{1:k})\) sekä mikä on approksimaation keskineliövirhe. Tulokset noudattavat Crisanin ja Doucet'n artikkeleita ``Convergence of Sequential Monte Carlo Methods'' (2000) \citep{crisan-2000} ja ``A Survey of Convergence Results on Particle Filtering Methods for Practitioners'' (2002) \citep{crisan-2002}.
+Alla esitetään kaksi SIR-algoritmiin liittyvää konvergenssitulosta. Se, kuinka hyvin esitetyllä algoritmilla arvioitu posterioritiheys \(\hat{p}(x_{1:k}|y_{1:k})\) approksimoi todellista tiheysfunktiota \(p(x_{1:k}|y_{1:k})\) sekä mikä on approksimaation keskineliövirhe. Tulokset 1\textendash 2 noudattavat Crisanin ja Doucet'n artikkeleita ``Convergence of Sequential Monte Carlo Methods'' (2000) \citep{crisan-2000} ja ``A Survey of Convergence Results on Particle Filtering Methods for Practitioners'' (2002) \citep{crisan-2002}, tulos 3 Chopinin artikkelia ``Central limit theorem for sequential Monte Carlo methods and its application to Bayesian inference'' (2004) \citep{chopin-2004}.
 
 \textit{Konvergenssitulos 1}: Kun \(N \to \infty\) algoritmille pätee \(\forall k\) tulos (\ref{jakaumakonvergenssi}).
 
@@ -612,7 +612,15 @@ Alla esitetään kaksi SIR-algoritmiin liittyvää konvergenssitulosta. Se, kuin
 \mathbb{E}(\hat{g}(x_k)-\mathbb{E}(g(x_k)))^2\leq\frac{p_k\norm{g(x_k)}}{N},
 \end{align}
 
-\noindent missä \(g\) on mikä hyvänsä piilossa olevan tila-avaruuden rajoitettu Borel-mitallinen funktio (\(g \in \mathcal{B}(\mathbb{R}^{n_x})\)), \(\norm{g(\cdot)}\) kyseisen funktion supremum-normi ja \(p_k\) jokin äärellinen vakio, jolle pätee ajanhetkestä \(k\) riippumatta \(p_k=p<\infty\). Konvergenssituloksia ei tämän tutkielman puitteissa todisteta.
+\noindent missä \(g\) on mikä hyvänsä piilossa olevan tila-avaruuden rajoitettu Borel-mitallinen funktio (\(g \in \mathcal{B}(\mathbb{R}^{n_x})\)), \(\norm{g(\cdot)}\) kyseisen funktion supremum-normi ja \(p_k\) jokin äärellinen vakio, jolle pätee ajanhetkestä \(k\) riippumatta \(p_k=p<\infty\).
+
+\textit{Konvergenssitulos 3}: Keskeinen raja-arvolause (\ref{CLT}).
+
+\begin{align}\label{CLT}
+\text{Kun } N \to \infty: \sqrt{N} \left\{ \frac{1}{N} \sum_{i=1}^N \hat{g}(x_k^i) -\mathbb{E}(g(x_k^i)) \right\} \xrightarrow{D} \mathbb{N}(0,\sigma^2 < \infty),
+\end{align},
+
+missä \(g\) on jälleen mikä hyvänsä piilossa olevan tila-avaruuden rajoitettu Borel-mitallinen funktio (\(g \in \mathcal{B}(\mathbb{R}^{n_x})\)). Konvergenssituloksia ei tämän tutkielman puitteissa todisteta.
 
 \subsection{Marginaalijakauma}
 
@@ -669,13 +677,13 @@ Hiukassuotimen varianssin estimoinnissa ollaan kiinnostuneita jakaumaestimaatin 
 \hat{\sigma}^2_{MC} = \text{Var}_{\text{MC}}(\hat{p}(x_{1:k}|y_{1:k})) = \frac{1}{M-1} \sum_{i=1}^{M}(x_k^i-\bar{x_k})^2.
 \end{align},
 
-missä \(x_k^i\) on \(k\):nen ajanhetken piste-estimaatti ajolle \(i=1,\ldots,M\) ja \(\bar{x_k}\) piste-estimaattien aritmeettinen keskiarvo laskettuna kaikkien \(M\) ajojen yli. TODO: vektoroi. Tällaisen Monte Carlo -varianssin estimoiminen on kuitenkin laskennallisesti tehotonta. Monissa käytännön sovelluksissa jo yhden hiukassuodinalgoritmin ajaminen vaatii runsaasti laskentatehoa, jolloin Monte Carlo -varianssin laskeminen ei ole mahdollista. Varianssia ei voi myöskään laskea analyyttisesti, mutta sen estimointiin on kuitenkin viime vuosina kehitetty muutamia asymptoottiseen varianssiin pohjautuvia menetelmiä. Alla käsitellään Leen ja Whitleyn (2018) ehdottamaa varianssin estimointitapaa. \citep{Lee-2018}
-
-Asymptoottinen varianssi voidaan esittää KONVERGENSSITULOKSEN (keskeinen raja-arvolause) määritellään
+missä \(x_k^i\) on \(k\):nen ajanhetken piste-estimaatti ajolle \(i=1,\ldots,M\) ja \(\bar{x_k}\) piste-estimaattien aritmeettinen keskiarvo laskettuna kaikkien \(M\) ajojen yli. TODO: vektoroi. Tällaisen Monte Carlo -varianssin estimoiminen on kuitenkin laskennallisesti tehotonta. Monissa käytännön sovelluksissa jo yhden hiukassuodinalgoritmin ajaminen vaatii runsaasti laskentatehoa, jolloin Monte Carlo -varianssin laskeminen ei ole mahdollista. Varianssia ei voi myöskään laskea analyyttisesti, mutta koska keskeisen raja-arvolauseen \ref{CLT} nojalla tiedetään, että asymptoottinen varianssi
 
 \begin{align}\label{asymptoottinen-varianssi}
-\text{lim}_{N\to \infty}
+\lim_{N\to \infty} N \text {Var}(\hat{g}(x_k^i))
 \end{align},
+
+on olemassa, on sen estimointiin on lähivuosina kehitetty joitakin menetelmiä. Alla käsitellään Leen ja Whitleyn (2018) ehdottamaa varianssin estimointitapaa. \citep{Lee-2018}
 
 Ajetaan SIR-algoritmi kuten esitetty algoritmissa \ref{sir}, mutta merkitään kullakin algoritmin suorituskerralla \(k=1,\ldots,T\) ja jokaisella partikkelilla \(n=1,\ldots,N\) indeksillä \(E_k^n\) kunkin hiukkasen kantaisää eli toisin sanoen sitä hiukkasta, josta kyseinen hiukkanen on uudelleenotantojen kaltta polveutunut ajanhetkestä \(k=1\) lähtien. Kaavio \ref{fig:eeva-indeksit} havainnollistaa hiukkasten polveutumista.
 
@@ -711,7 +719,13 @@ Nyt varianssi saadaan muotoon
 
 missä \(k(\lambda) \coloneq k-\lambda\). Viive \(\lambda\) on varianssiestimaatin suunnitteluparametri. Pienillä viipeillä estimaatti on harhainen, mutta harha laskee viipeen kasvaessa. Olsson ja Douc suosittavat viipeen ylärajaksi arvoa \(\lambda=20\), jolloin estimaattorin harha on käytännössä kokonaan hävitetty. Tämän jälkeen estimaatti voi myös alkaa kärsiä samasta epätarkkuudesta kuin Eeva-indekseihin perustuva CLT-estimaatti.
 
-Mastrototaro ja Olsson (2023) \citep{Mastrototaro-2023} laajentavat tätä estimaatti edelleen niin, että viive \(\lambda\) valitaan mukautuvasti. TODO ALvar-estimaattia, jossa valittu viive on mukautuva LINKKI.
+Mastrototaro ja Olsson (2023) \citep{Mastrototaro-2023} laajentavat tätä estimaattia edelleen niin, että viive \(\lambda\) valitaan mukautuvasti. Mastrototaron ja Olssonin ALvar-estimaatti (\emph{Adaptive-Lag variance}) lasketaan, kuten OD-varianssi edellä \ref{OD-varianssi}, mutta kunkin algoritmin ajokerran jälkeen asetetaan seuraavan ajanhetken \(\lambda\) seuraavasti:
+
+\begin{align}\label{ALvar-lambda}
+\lambda_{k+1} \leftarrow \operatorname*{arg\,max}_{\lambda \in [0, \lambda_k + 1]} \hat{\sigma}^2_{k+1,\lambda} (\gamma_{k+1})
+\end{align},
+
+Tämä perustuu havaintoon, jonka mukaan ehtyneille Henok-indekseille on olemassa \(\lambda^\prime \in [0, \lambda-1]\), joka täyttää ehdon \(\hat{\sigma}^2_{k+1,\lambda} (\gamma_{k+1}) < \hat{\sigma}^2_{k+1,\lambda^\prime} (\gamma_{k+1})\). Koska myös ehtyneiden indeksien kantaisät ovat ehtyneitä. Nyt indeksi \(\lambda_{n+1}\) voidaan valita rekursiivisesti niin, että se tuottaa suurimman varianssiestimaatin, joka on kuitenkin rajoitettu ylhäältä arvoon \(\lambda_n+1\). Tämä indeksi ei ole koskaan ehtynyt, joten se on myös parhaan varianssiestimaatin tuottava valinta.
 
 Esitettyjä varianssiestimaatteja voidaan hyödyntää paitsi algoritmien ja parametrivalintojen vertailussa myös mukautuvan viipeen hiukassiloittimen viipeen valinnassa (kts. luku 4 LINKKI). Varianssiestimaattia hyödynnetään myös luvun 5 empiirisen esimerkin uskottavuusfunktioiden parametrien estimoinnissa.
 
@@ -785,7 +799,7 @@ missä \(S, j=1,\ldots,S\) on algoritmin \ref{BSPS} toistokertojen määrä. Kos
 
 \subsection{Uudelleenpainottava hiukassiloitin}
 
-KUNCH 1998 DOUCET 2000. Uudelleenpainottavassa hiukassiloittimessa (tunnetaan myös nimellä marginaalihiukassiloitin) siloitinjakaumaa estimoidaan käyttämällä SIR-hiukassuodattmista (\ref{sir}) saatuja hiukkasia, mutta ne painotetaan uudelleen käyttäen dataa ajanhetkestä \(T\) alkaen, edeten ajassa taaksepäin.
+Uudelleenpainottavassa hiukassiloittimessa (tunnetaan myös nimellä marginaalihiukassiloitin, kts. mm. Doucet, Godsill \& ja Andrieu \citep{Doucet-2000}) siloitinjakaumaa estimoidaan käyttämällä SIR-hiukassuodattmista (\ref{sir}) saatuja hiukkasia, mutta ne painotetaan uudelleen käyttäen dataa ajanhetkestä \(T\) alkaen, edeten ajassa taaksepäin.
 
 \begin{algorithm}[H]
 \label{rwps}

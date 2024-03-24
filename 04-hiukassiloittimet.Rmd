@@ -68,7 +68,7 @@ missä $S, j=1,\ldots,S$ on algoritmin \ref{BSPS} toistokertojen määrä. Koska
 
 \subsection{Uudelleenpainottava hiukassiloitin}
 
-KUNCH 1998 DOUCET 2000. Uudelleenpainottavassa hiukassiloittimessa (tunnetaan myös nimellä marginaalihiukassiloitin) siloitinjakaumaa estimoidaan käyttämällä SIR-hiukassuodattmista (\ref{sir}) saatuja hiukkasia, mutta ne painotetaan uudelleen käyttäen dataa ajanhetkestä $T$ alkaen, edeten ajassa taaksepäin.
+Uudelleenpainottavassa hiukassiloittimessa (tunnetaan myös nimellä marginaalihiukassiloitin, kts. mm. Doucet, Godsill & ja Andrieu [@Doucet-2000]) siloitinjakaumaa estimoidaan käyttämällä SIR-hiukassuodattmista (\ref{sir}) saatuja hiukkasia, mutta ne painotetaan uudelleen käyttäen dataa ajanhetkestä $T$ alkaen, edeten ajassa taaksepäin.
 
 \begin{algorithm}[H]
 \label{rwps}

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.5.26)  24 MAR 2024 03:24
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.5.26)  24 MAR 2024 20:28
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1194,131 +1194,130 @@ n t‰-m‰ kir-joit-taa edel-leen Markov-ominaisuuden no-
  []
 
 [17] [18]
-Underfull \vbox (badness 10000) has occurred while \output is active []
+Underfull \vbox (badness 7221) has occurred while \output is active []
 
 [19] [20]
-<./images//eevaindeksit.png, id=348, 328.22626pt x 223.83624pt>
+<./images//eevaindeksit.png, id=353, 489.83pt x 306.14375pt>
 File: ./images//eevaindeksit.png Graphic file (type png)
 <use ./images//eevaindeksit.png>
-Package pdftex.def Info: ./images//eevaindeksit.png  used on input line 684.
-(pdftex.def)             Requested size: 256.07555pt x 174.63255pt.
-[21 <./images//eevaindeksit.png>]
-<./images//henokindeksit.png, id=362, 441.65pt x 279.0425pt>
+Package pdftex.def Info: ./images//eevaindeksit.png  used on input line 692.
+(pdftex.def)             Requested size: 256.08084pt x 160.05052pt.
+<./images//henokindeksit.png, id=357, 644.4075pt x 371.3875pt>
 File: ./images//henokindeksit.png Graphic file (type png)
 <use ./images//henokindeksit.png>
-Package pdftex.def Info: ./images//henokindeksit.png  used on input line 701.
-(pdftex.def)             Requested size: 256.08304pt x 161.79791pt.
-[22 <./images//henokindeksit.png>]
-\bbl@ensure@finnish {Luku} 3.
-[23
+Package pdftex.def Info: ./images//henokindeksit.png  used on input line 709.
+(pdftex.def)             Requested size: 256.08685pt x 147.58899pt.
+[21 <./images//eevaindeksit.png>] [22 <./images//henokindeksit.png>] [23] [24
 
-] [24] [25] [26] [27] [28]
+]
+\bbl@ensure@finnish {Luku} 3.
+[25] [26] [27] [28] [29] [30]
 \bbl@ensure@finnish {Luku} 4.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[29
+[31
 
 ]
-<./images//foculator.jpeg, id=444, 854.19125pt x 640.3925pt>
+<./images//foculator.jpeg, id=461, 854.19125pt x 640.3925pt>
 File: ./images//foculator.jpeg Graphic file (type jpg)
 <use ./images//foculator.jpeg>
-Package pdftex.def Info: ./images//foculator.jpeg  used on input line 898.
+Package pdftex.def Info: ./images//foculator.jpeg  used on input line 912.
 (pdftex.def)             Requested size: 199.15787pt x 149.30989pt.
-<./images//xr_2.jpeg, id=445, 3070.47125pt x 2302.6025pt>
+<./images//xr_2.jpeg, id=462, 3070.47125pt x 2302.6025pt>
 File: ./images//xr_2.jpeg Graphic file (type jpg)
 <use ./images//xr_2.jpeg>
-Package pdftex.def Info: ./images//xr_2.jpeg  used on input line 905.
+Package pdftex.def Info: ./images//xr_2.jpeg  used on input line 919.
 (pdftex.def)             Requested size: 199.16597pt x 149.3582pt.
-<./images//office_map.png, id=447, 1271.75125pt x 1081.03876pt>
+<./images//office_map.png, id=464, 1271.75125pt x 1081.03876pt>
 File: ./images//office_map.png Graphic file (type png)
 <use ./images//office_map.png>
-Package pdftex.def Info: ./images//office_map.png  used on input line 915.
+Package pdftex.def Info: ./images//office_map.png  used on input line 929.
 (pdftex.def)             Requested size: 341.43689pt x 290.23483pt.
-[30 <./images//foculator.jpeg> <./images//xr_2.jpeg>]
-Overfull \hbox (21.01038pt too wide) in paragraph at lines 931--949
+[32 <./images//foculator.jpeg> <./images//xr_2.jpeg>]
+Overfull \hbox (21.01038pt too wide) in paragraph at lines 945--963
  [][] 
  []
 
 
 Underfull \vbox (badness 1348) has occurred while \output is active []
 
-[31 <./images//office_map.png>] [32] [33]
-Underfull \hbox (badness 1584) in paragraph at lines 1023--1024
+[33 <./images//office_map.png>] [34] [35]
+Underfull \hbox (badness 1584) in paragraph at lines 1037--1038
 []\T1/lmr/m/n/12 (+20) Kovarianssimatriisin es-ti-maat-ti-na k‰y-te-t‰‰n ku-na-
 kin ajan-het-ke-n‰ $\OML/lmm/m/it/12 k$ \T1/lmr/m/n/12 (+20) an-
  []
 
 
-Underfull \hbox (badness 1688) in paragraph at lines 1023--1024
+Underfull \hbox (badness 1688) in paragraph at lines 1037--1038
 \T1/lmr/m/n/12 (+20) ten-ni-koh-tai-sis-ta ha-vain-nois-ta es-ti-moi-tu-ja otos
 -va-rians-se-ja $[]\OT1/lmr/m/n/12 (+20) ([]\OML/lmm/m/it/12 ; [] ; []\OT1/lmr/
 m/n/12 (+20) )[] =$
  []
 
-[34] [35] [36] [37] [38]
+[36] [37] [38] [39] [40]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[39]
-<./images//prior_likelihood.png, id=532, 921.4425pt x 383.4325pt>
+[41]
+<./images//prior_likelihood.png, id=549, 921.4425pt x 383.4325pt>
 File: ./images//prior_likelihood.png Graphic file (type png)
 <use ./images//prior_likelihood.png>
-Package pdftex.def Info: ./images//prior_likelihood.png  used on input line 118
-6.
+Package pdftex.def Info: ./images//prior_likelihood.png  used on input line 120
+0.
 (pdftex.def)             Requested size: 426.77913pt x 177.59218pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[40]
-<./images//eachstep_adaptive.png, id=543, 921.4425pt x 383.4325pt>
+[42]
+<./images//eachstep_adaptive.png, id=560, 921.4425pt x 383.4325pt>
 File: ./images//eachstep_adaptive.png Graphic file (type png)
 <use ./images//eachstep_adaptive.png>
-Package pdftex.def Info: ./images//eachstep_adaptive.png  used on input line 11
-95.
+Package pdftex.def Info: ./images//eachstep_adaptive.png  used on input line 12
+09.
 (pdftex.def)             Requested size: 412.5644pt x 171.67712pt.
-[41 <./images//prior_likelihood.png> <./images//eachstep_adaptive.png>]
-<./images//SIS_likelihood_maps.png, id=555, 697.60625pt x 176.66pt>
+[43 <./images//prior_likelihood.png> <./images//eachstep_adaptive.png>]
+<./images//SIS_likelihood_maps.png, id=572, 697.60625pt x 176.66pt>
 File: ./images//SIS_likelihood_maps.png Graphic file (type png)
 <use ./images//SIS_likelihood_maps.png>
 Package pdftex.def Info: ./images//SIS_likelihood_maps.png  used on input line 
-1206.
+1220.
 (pdftex.def)             Requested size: 398.34224pt x 100.87515pt.
-<./images//SIR_likelihood_maps.png, id=556, 697.60625pt x 176.66pt>
+<./images//SIR_likelihood_maps.png, id=573, 697.60625pt x 176.66pt>
 File: ./images//SIR_likelihood_maps.png Graphic file (type png)
 <use ./images//SIR_likelihood_maps.png>
 Package pdftex.def Info: ./images//SIR_likelihood_maps.png  used on input line 
-1213.
+1227.
 (pdftex.def)             Requested size: 398.34224pt x 100.87515pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[42 <./images//SIS_likelihood_maps.png> <./images//SIR_likelihood_maps.png>] [4
-3] [44
+[44 <./images//SIS_likelihood_maps.png> <./images//SIR_likelihood_maps.png>] [4
+5] [46
 
 ]
 \bbl@ensure@finnish {Luku} 5.
-[45] [46
+[47] [48
 
 ]
 \bbl@ensure@finnish {Luku} 6.
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <24.88> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 1260.
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 1274.
 
-LaTeX Warning: Reference `' on page 47 undefined on input line 1262.
+LaTeX Warning: Reference `' on page 49 undefined on input line 1276.
 
-(./gradu.bbl [47] [48
+(./gradu.bbl [49] [50
 
-] [49]) [50] (./gradu.aux)
+] [51]) [52] (./gradu.aux)
 
 LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 30810 strings out of 478268
- 583578 string characters out of 5846347
- 934833 words of memory out of 5000000
- 47972 multiletter control sequences out of 15000+600000
- 544845 words of font info for 189 fonts, out of 8000000 for 9000
+ 30826 strings out of 478268
+ 583811 string characters out of 5846347
+ 935003 words of memory out of 5000000
+ 47980 multiletter control sequences out of 15000+600000
+ 544974 words of font info for 190 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  98i,21n,94p,1088b,1029s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/usr/local/
@@ -1342,10 +1341,10 @@ ublic/lm/lmsy8.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lm
 tk10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmtt12.pfb><
 /usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.p
 fb>
-Output written on gradu.pdf (54 pages, 2252171 bytes).
+Output written on gradu.pdf (56 pages, 2308798 bytes).
 PDF statistics:
- 891 PDF objects out of 1000 (max. 8388607)
- 768 compressed objects within 8 object streams
- 233 named destinations out of 1000 (max. 500000)
+ 910 PDF objects out of 1000 (max. 8388607)
+ 785 compressed objects within 8 object streams
+ 239 named destinations out of 1000 (max. 500000)
  45492 words of extra memory for PDF output out of 51595 (max. 10000000)
 
