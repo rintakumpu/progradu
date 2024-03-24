@@ -674,7 +674,7 @@ missä \(x_k^i\) on \(k\):nen ajanhetken piste-estimaatti ajolle \(i=1,\ldots,M\
 Asymptoottinen varianssi voidaan esittää KONVERGENSSITULOKSEN (keskeinen raja-arvolause) määritellään
 
 \begin{align}\label{asymptoottinen-varianssi}
-\text{lim}_{N\rightarrow \inf}
+\text{lim}_{N\to \infty}
 \end{align},
 
 Ajetaan SIR-algoritmi kuten esitetty algoritmissa \ref{sir}, mutta merkitään kullakin algoritmin suorituskerralla \(k=1,\ldots,T\) ja jokaisella partikkelilla \(n=1,\ldots,N\) indeksillä \(E_k^n\) kunkin hiukkasen kantaisää eli toisin sanoen sitä hiukkasta, josta kyseinen hiukkanen on uudelleenotantojen kaltta polveutunut ajanhetkestä \(k=1\) lähtien. Kaavio \ref{fig:eeva-indeksit} havainnollistaa hiukkasten polveutumista.
@@ -688,13 +688,30 @@ Ajetaan SIR-algoritmi kuten esitetty algoritmissa \ref{sir}, mutta merkitään k
 
 Varianssiestimaatti voidaan laskea näiden, Leen ja Whitleyn Eeva-indekseiksi nimeämien indeksien perusteella seuraavasti:
 
-\begin{align}\label{CL-varianssi}
-\hat{\sigma}^2_{CL} = \frac{1}{N^2} \left[ (\sum_{i=1}^N \gamma(x_k^i))^2 - (\frac{N}{N-1})^{n+1} ( \sum_{i=1}^N \sum_{j:E_n^j=i} \gamma(x_k^i) \gamma(x_k^j)) \right]
+\begin{align}\label{CLT-varianssi}
+\hat{\sigma}^2_{CLT} = \frac{1}{N^2} \left[ (\sum_{i=1}^N \gamma(x_k^i))^2 - (\frac{N}{N-1})^{n+1} ( \sum_{i=1}^N \sum_{j:E_n^j=i} \gamma(x_k^i) \gamma(x_k^j)) \right]
 \end{align},
 
-missä \(\gamma: \mathbf{X}_n \rightarrow \mathbb{R}\) on rajoitettu, \(\mathcal{X}_n\)-mitallinen funktio. SIR-algoritmin kohdalla jakaumaestimaatti \(\hat{p}(x_{1:k}|y_{1:k}))\). Kyseessä on harhaton ja konsistentti asymptoottisen varianssin estimaatti. Tarkemmin \(N\hat{\sigma}^2_{CL}\) konvergoi asymptoottiseen varianssiin \textbackslash ref\{asymptoottinen-varianssi. Tätä ei tutkielman puitteissa todisteta.
+missä \(\gamma: \mathbf{X}_n \rightarrow \mathbb{R}\) on rajoitettu, \(\mathcal{X}_n\)-mitallinen funktio. SIR-algoritmin kohdalla jakaumaestimaatti \(\hat{p}(x_{1:k}|y_{1:k}))\). Kyseessä on harhaton ja konsistentti asymptoottisen varianssin estimaatti. Tarkemmin \(N\hat{\sigma}^2_{CL}\) konvergoi asymptoottiseen varianssiin \ref{asymptoottinen-varianssi}. Tätä ei tutkielman puitteissa todisteta.
 
-Yllä esitetty varianssiestimaatti kärsii kuitenkin epätarkkuudesta, sillä kun \(k \to \inf\) polveutuvat kaikki hiukkaset lopulta samasta kantaisästä eli indeksit \(E_k^i,\ldots,E_k^N\) ovat kaikki yhtäsuuria. Tämän vuoksi on mielekästä tarkastella XXX ainoastaan tietystä ajanhetkestä \(k-1\). Tässä tutkielmassa ei myöskään käsitellä tarkemmin XXX esittävät myös ALvar-estimaattia, jossa valittu viive on mukautuva LINKKI.
+Yllä esitetty varianssiestimaatti kärsii kuitenkin epätarkkuudesta, sillä kun \(k \to \infty\) polveutuvat kaikki hiukkaset lopulta samasta kantaisästä eli indeksit \(E_k^i,\ldots,E_k^N\) ovat kaikki yhtäsuuria. Tämän vuoksi on mielekästä johtaa indeksit ainoastaan tietystä aiemmasta ajanhetkestä alkaen. Olsson ja Douc (2019) \citep{olsson-2019} ehdottavat tähän tarkoitukseen Henok-indeksiä \(E_{k,m}^n\), jossa \(m\) merkitsee ajanhetken \(m<k\) hiukkasta, josta kyseinen hiukkanen polveutuu. Hiukkasten kantaisien sukupolvi määritetään viipeellä \(\lambda\) niin, että \(m=k-\lambda\). Kaavio \ref{fig:henok-indeksit} havainnollistaa hiukkasten polveutumista, kun \(\lambda=1\).
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=9cm]{henokindeksit}
+\caption{Esimerkki Henok-indekseistä, kun $T=3$, $N=3$ ja $\lambda=1$.}
+\label{fig:henok-indeksit}
+\end{figure}
+
+Nyt varianssi saadaan muotoon
+
+\begin{align}\label{OD-varianssi}
+\hat{\sigma}^2_{OD} = \frac{1}{N^2} \left[ (\sum_{i=1}^N \gamma(x_k^i))^2 - (\frac{N}{N-1})^{n+1} ( \sum_{i=1}^N \sum_{j:E_{n,k(\lambda)}^j=i} \gamma(x_k^i) \gamma(x_k^j)) \right]
+\end{align},
+
+missä \(k(\lambda) \coloneq k-\lambda\). Viive \(\lambda\) on varianssiestimaatin suunnitteluparametri. Pienillä viipeillä estimaatti on harhainen, mutta harha laskee viipeen kasvaessa. Olsson ja Douc suosittavat viipeen ylärajaksi arvoa \(\lambda=20\), jolloin estimaattorin harha on käytännössä kokonaan hävitetty. Tämän jälkeen estimaatti voi myös alkaa kärsiä samasta epätarkkuudesta kuin Eeva-indekseihin perustuva CLT-estimaatti.
+
+Mastrototaro ja Olsson (2023) \citep{Mastrototaro-2023} laajentavat tätä estimaatti edelleen niin, että viive \(\lambda\) valitaan mukautuvasti. TODO ALvar-estimaattia, jossa valittu viive on mukautuva LINKKI.
 
 Esitettyjä varianssiestimaatteja voidaan hyödyntää paitsi algoritmien ja parametrivalintojen vertailussa myös mukautuvan viipeen hiukassiloittimen viipeen valinnassa (kts. luku 4 LINKKI). Varianssiestimaattia hyödynnetään myös luvun 5 empiirisen esimerkin uskottavuusfunktioiden parametrien estimoinnissa.
 
