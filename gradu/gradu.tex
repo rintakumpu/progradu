@@ -888,11 +888,29 @@ Myös tähän siloittimeen liittyy suunnitteluparametrien valinta. Vaikka itse v
 
 \chapter{Hiukassuodin ja -siloitin sisätilapaikannuksessa}
 
-Sisätilapaikannus tarkoittaa nimensä mukaisesti ihmisten tai esineiden automaattista paikantamista sisätiloissa. Koska GPS toimii sisätiloissa huonosti tai ei lainkaan, tarvitaan näihin ympäristöihin muita paikannusratkaisuja. Yleinen valinta ovat erilaiset Bluetooth-standardiin tai muuhun radioteknologiaan perustuvat lähetin-vastaanotinratkaisut. Turkulainen teknologia- ja analytiikkayritys Walkbase käyttää Bluetooth-sisätilapaikannusta erityisesti ruokakaupoissa sekä tavarataloissa asiakkaiden käyttäytymistä koskevan datan keräämiseen. Tyypillisessä asennusskenaariossa lähettimet (tagit) kiinnitetään ostoskärryihin sekä -koreihin ja paikantimet kiinnitetään liiketilan kattoripustuksiin. Markkinoilla on lukuisia sisätilapaikannusratkaisuja, mutta kustannussyistä Walkbase on kehittänyt oman laitteistoratkaisunsa, jonka tavoitteena on tarjota kaikissa ympäristöissä \(95\%\) varmuudella alle metrin paikannustarkkuus.
-
-Esimerkissä käyteteään SMC-algoritmia Bluetooth-paikannussovelluksessa lähettimen sijainnin laskemiseen. Paikannukseen käytettävä data kerättiin toimistoympäristössä Bluetooth Low Energy (BLE) -lähettimen sekä kattoon sijoitettujen vastaanottimien avulla. Havainnot koostuvat vastaanottimien lähettimien signaalien perusteella laskemista, BLE5.1-standardin mukaisista signaalin tulokulmista eli AoA-havainnoista (angle of arrival). Lopuksi esimerkissä analysoidaan ja vertaillaan algoritmin eri versioiden suorituskykyä sekä suorituskyvyn että paikannustarkkuuden näkökulmasta. Vertailuarvona käytetään perinteistä triangulaatio-algoritmia.
+Sisätilapaikannus tarkoittaa nimensä mukaisesti ihmisten tai esineiden automaattista paikantamista sisätiloissa. Koska GPS-järjestelmät toimivat sisätiloissa huonosti tai eivät lainkaan, tarvitaan rakennusympäristöihin muita paikannusratkaisuja. Yleinen valinta ovat erilaiset Bluetooth-standardiin tai muuhun radioteknologiaan perustuvat lähetin-vastaanotinratkaisut.
 
 \section{Teknologian kuvaus}
+
+Turkulainen teknologia- ja analytiikkayritys Walkbase käyttää Bluetooth-sisätilapaikannusta asiakkaiden käyttäytymistä koskevan datan keräämiseen erityisesti ruokakaupoissa sekä tavarataloissa. Tyypillisessä asennusskenaariossa lähettimet (tagit) kiinnitetään ostoskärryihin sekä -koreihin ja paikantimet kiinnitetään liiketilan kattoripustuksiin.
+
+Walkbase on kehittänyt sisätilapaikannukseen oman laitteisto- ja ohjelmistoratkaisunsa, jonka tavoitteena on tarjota kaikissa ympäristöissä \(95\%\) varmuudella alle metrin paikannustarkkuus. Merkitään tätä paikannusvirhettä:
+
+\begin{align}\label{paikannusvirhe}
+\epsilon_{\text{pos}}=
+\end{align},
+
+jolloin yhden testi. Paikannusvirheeseen palataan luvun tulososassa. Walkbasen laitteistoratkaisu koostuu kolmesta eri komponentista, AT-2-Bluetooth-lähettimistä, jotka kiinnitetään ostoskärryihin. XR-2-Bluetooth-vastaanottimista, jotka kiinnitetään tilan kattoripustuksiin sekä OSCU-laskentayksiköstä, joka luo paikkadataa XR-2-vastaanotinten perusteella ja lähettää paikkadatan edelleen palvelinkeskukseen. Kaavio havainnollistaa \ref{fig:laitteistoarkkitehtuuri} ratkaisun toiminnan.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=12cm]{laitteistoarkkitehtuuri}
+\caption{Koeasetelman pohjapiirustus}
+\label{fig:laitteistoarkkitehtuuri}
+\end{figure}
+
+Spesifikaatiot. Ohjelmistoratkai XXX. koska suurin osa prosessoinnista tapahtuu OSCU-laitteella, on tehokkuus.
+ja ohjelmistoratkaisu XXX.
 
 \subsection{AoA-menetelmistä}
 
@@ -900,42 +918,7 @@ Esimerkissä käyteteään SMC-algoritmia Bluetooth-paikannussovelluksessa lähe
 
 \subsection{Kalibraatioalgoritmi}
 
-\section{Koeasetelma}
-
-Paikaunnusesimerkissä lähettimenä toimi 25 Bluetooth-paikannustagista koostuva Walkbase Foculator -testilaite (kuva \ref{fig:foculator}), vastaanottimena toimistoympäristöön asennetut neljä Walkbase XR-2 -vastaanotinta (kuva \ref{fig:xr2}). Jokainen vastaanotin sisältää kuusitoista antennia, joiden vastaanottamien lähetinsignaalien perusteella vastaanottimet laskevat signaalin tulokulman suhteessa vastaanottimeen. Tarkka tulokulmien laskemiseen käytetty algoritmi on paikantimen antennit toimittaneen Silicon Laboratories, Inc.~-yrityksen liikesalaisuus, mutta perusperiaate on arvioida tulokulma mittaamalla eri antenneiden välistä vaihe-eroa ns. IQ-signaalin avulla.
-
-Esteettömässä ympäristössä koeasetelmassa käytetyn järjestelmän kulmavirhe on hyvin pieni ja paikannusongelma voidaan ratkaista riittävällä tarkkuudella suoraan triangulaatio-algoritmilla. Tässäkin tilanteessa voi paikannusta parantaa suodattimen käytöllä, mutta jo triangulaatio-algoritmin perusversio tuottaa halutun tarkkuuden. Toimistoympäristö on kuitenkin haastava, sillä erityisesti näyttöruudut sekä heijastavat että estävät radiosignaaleja. Silicon Labs lupaa omalle AoA-järjestelmälleen vastaavassa toimisympäristössä (seitsemällä paikantimella) kulmavirheen välillä \(3.7^\degree-5.7^\degree\). Tämä ei kuitenkaan riitä johdonmukaisesti haluttuun alle metrin paikannustarkkuuteen, joten AoA-paikannus toimistoympäristössä tarjoaa hyvän motivaation SMC-menetelmien käytölle.
-
-\begin{multicols}{2}
-\begin{figure}[H]
-\centering
-\includegraphics[width=7cm]{foculator}
-\caption{Walkbase Foculator}
-\label{fig:foculator}
-\end{figure}
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=7cm]{xr_2}
-\caption{Walkbase XR-2}
-\label{fig:xr2}
-\end{figure}
-\end{multicols}
-
-Data on kuvattu tarkemmin alaluvussa 5.2. Koeympäristön pohjapiirustus on esitetty kuvassa \ref{fig:pohjapiirustus}. Piirustuksessa XR-2-paikantimet on kuvattu punaisilla numeroiduilla ympyröillä. Foculator-testilaitteen sijainti on kuvattu sinisellä ympyrällä. Toimistoympäristön pohjapiirustus on kuvattu harmaalla niin, että piirustuksesta erottuvat toimiston väliseinät.
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=12cm]{office_map}
-\caption{Koeasetelman pohjapiirustus}
-\label{fig:pohjapiirustus}
-\end{figure}
-
-\noindent Toimisto valittiin testiympäristöksi, koska siellä testaaminen on helpompaa ja halvempaa kuin aidossa kauppaympäristössä. Lisäksi toimistossa hyvin toimiva järjestelmä todennäköisesti toimii sellaisenaan vähemmän esteisessä kauppaympäristössä.
-
-Dataa kerättiin sekä liikkuvalla että paikallaan olevalla testilaitteella. Paikallaan oleva testilaite asetettiin pöydälle 1.5 metrin korkeudelle. Liikkuvassa tapauksessa testilaite kiinnitettiin robottiin, joka oli ohjelmoitu seuraamaan haluttua liikerataa vastaavia lattiamerkintöjä ennalta määrätyllä vakionopeudella. Yksinkertaisuuden vuoksi tässä tutkielmassa tarkastellaan ainoastaan ongelmaa, jossa testilaite on paikoillaan. Esitetyt mallit soveltuvat kuitenkin myös liikkuvalle laitteelle. Data kerättiin yöaikaan, jolloin toimiston käyttöaste oli alhainen. Tällä minimoitiin radiosignaalien tielle osuvien ihmisten vaikutus signaaleihin. Maan pinnan kaarevuus on otettu huomioon koeasetelmassa pisteiden välisiä etäisyyksiä laskettaessa.
-
-\section{Datan kuvaus}
+\subsection{Datan kuvaus}
 
 Riippuen päällä olevien paikannustagien lukumäärästä sekä kulmaestimaattien luomiseen käytetystä laskentamenetelmästä tuottaa testilaite noin \(60\) havaintoa sekunnissa jokaista vastaanotinta kohden. Koetta varten käytettiin yhden minuutin aikana kertyneitä havaintoja. Havaintoja on datassa yhteensä \(N_{obs}=15018\) kappaletta. Havaintojen aikaleimat on tallennettu sekunnin tuhannesosan tarkkuudella. Jokainen havainto koostuu taulukossa \ref{tab:muuttujat} kuvatuista muuttujista.
 
@@ -998,7 +981,25 @@ foculator\_lon & testilaitteen sijainti (pituuspiiri) & 22.29493 \\
 
 \noindent Testimuuttujia käytetään paikannusalgoritmien paikannusvirheen laskemisessa.
 
-\section{Ongelman ja mallien kuvaus}
+\subsection{Karttaprojektioista}
+
+In the particle filter positioning system there are various parts where we want to operate in meters instead of lat/long coordinates. The most important of these is the movement/dynamic model which is responsible for moving the particles between the time steps k and k+1. In the R code this is formulated as the following dead-reckoning model which is applied to each of the particles
+
+where x\_k is the previous position of a single particle, represented as a vector with two elements, latitude and longitude, respectively, D\_k a scalar representing the current speed, psi\_k a scalar representing the current bearing and v\_k a vector with two noise elements, one for latitude and other for longitude.
+In practice the D\_k is currently set to 0 so the model is reduced to x\_\{k+1\} = x\_k + v\_k, i.e.~a noise-only random walk.
+In the movement model the noise v\_k is created as follows. First the desired random walk movement distance d is sampled from the truncated Normal distribution with a=0, b=q\_max and sd=q where q\_max and q are adjustable parameters. Then the direction to which to move p is sampled from Uniform distribution with a=0 and b=2pi. Now the noise vector v\_k is created as v\_k = (cos(p)* d, sin(p)*d).
+Previously we have represented all of the x/y coordinates in the positioning system as longitude and latitude. However in the movement model we want to give the arguments such as q and q\_max in meters. This has presented us with a problem of how to do the meters to coordinates conversion. Previously we have just done a rough translation from meters to coordinates by giving the q and q\_max value in meters and dividing that by 111132.954.
+This is of course not exactly correct but the actual problem in the movement model above is actually the fact that when using lat/lon coordinates the distance of n meters would require different values for lat and lon whereas above only a single d is used. To mitigate this problem as well as to get rid of mixing and matching coordinates and meters a new conversion scheme was implemented. This is described in the following section.
+
+New coordinate conversion
+In order to make the positioning system more interpretable we have decided to handle everything exclusively in meters. This way we first transform everything that is stored in lat/lon coordinates into meters, use exclusively arguments in meters (or related units such as meters per second) and then convert back into lat/lon coordinates only when storing positions into the database.
+The conversion is done using linear interpolation by first determining the bounding box of the floor polygon. As all the positions and other polygons are within this polygon we can use this bounding box to scale lat/lon into meter scale. This is achieved by first determining the length of the sides of the bounding box in meters using geographic distance.
+This metric distance is then used to linearly interpolate lat/lon axes from coordinates to the range {[}0, max(y)/max(x){]} in meters. Once computed this conversion can be applied to all lat/lon coordinates to get y/x values in meters.
+Before storing the positions the above process is inverted to get lat/lon coordinates. Go code for the above algorithm is in Appendix A.
+
+\section{Sisätilapaikannusalgoritmi}
+
+\subsection{Ongelman kuvaus}
 
 Tarkoituksena on estimoida testilaitteen/robotin sijainti sekunnin tarkkuudella. Merkitään estimoitavaa tilasarjaa \(x_{1:k}=\{x_1,\ldots,x_k\}\). Lisäksi merkitään \(x_0\) testilaitteen lähtösijaintia. Jokainen tilasarjan havainto koostuu suuntimakulmasta sekä pituus- että leveyskoordinaateista \((x_k^x, x_k^y)\). Määritellään tilalle testilaitteen/robotin kulkua kuvaava vektorisuunnistukseen (dead reckoning) perustuva malli (\ref{tilamalli-liikkuva})
 
@@ -1075,7 +1076,7 @@ Uudet uskottavuusmallit. Truncated Normal and von Mises.
 \hypertarget{dynaaminen-malli}{%
 \subsection{Dynaaminen malli}\label{dynaaminen-malli}}
 
-\section{Paikallaolon havaitseminen}
+\subsection{Paikallaolon havaitseminen}
 
 Koska xyz käytetään paikallaolon havaitsemiseen seuraavaa algoritmia. Tämä tuottaa viipeen L=10 mutta samaa viivettä voidaan käyttää myöhemmin siloittelun laskennassa (kts.)
 
@@ -1095,22 +1096,6 @@ t is the current time step. For each time step l = t+1 \ldots{} t+n do the follo
 Check if there is data available for that time step. If not
 and m==0 set m=l-t. If m\textgreater0 and m+1==l-t set m=l-t if. What this does is it finds the first missing data time step and sets the m value correspondingly. If there are consecutive missing data time steps this sets m to correspond to the last of these time steps.
 If m!=0 for each application of the movement model for this iteration of the positioning particle filter, adjust the noise q value as follows: q = q/10 (can be adjusted, but we still want to allow for some movement to let the positioning system converge to the right stationary position).
-
-\section{Karttaprojektioista}
-
-In the particle filter positioning system there are various parts where we want to operate in meters instead of lat/long coordinates. The most important of these is the movement/dynamic model which is responsible for moving the particles between the time steps k and k+1. In the R code this is formulated as the following dead-reckoning model which is applied to each of the particles
-
-where x\_k is the previous position of a single particle, represented as a vector with two elements, latitude and longitude, respectively, D\_k a scalar representing the current speed, psi\_k a scalar representing the current bearing and v\_k a vector with two noise elements, one for latitude and other for longitude.
-In practice the D\_k is currently set to 0 so the model is reduced to x\_\{k+1\} = x\_k + v\_k, i.e.~a noise-only random walk.
-In the movement model the noise v\_k is created as follows. First the desired random walk movement distance d is sampled from the truncated Normal distribution with a=0, b=q\_max and sd=q where q\_max and q are adjustable parameters. Then the direction to which to move p is sampled from Uniform distribution with a=0 and b=2pi. Now the noise vector v\_k is created as v\_k = (cos(p)* d, sin(p)*d).
-Previously we have represented all of the x/y coordinates in the positioning system as longitude and latitude. However in the movement model we want to give the arguments such as q and q\_max in meters. This has presented us with a problem of how to do the meters to coordinates conversion. Previously we have just done a rough translation from meters to coordinates by giving the q and q\_max value in meters and dividing that by 111132.954.
-This is of course not exactly correct but the actual problem in the movement model above is actually the fact that when using lat/lon coordinates the distance of n meters would require different values for lat and lon whereas above only a single d is used. To mitigate this problem as well as to get rid of mixing and matching coordinates and meters a new conversion scheme was implemented. This is described in the following section.
-
-New coordinate conversion
-In order to make the positioning system more interpretable we have decided to handle everything exclusively in meters. This way we first transform everything that is stored in lat/lon coordinates into meters, use exclusively arguments in meters (or related units such as meters per second) and then convert back into lat/lon coordinates only when storing positions into the database.
-The conversion is done using linear interpolation by first determining the bounding box of the floor polygon. As all the positions and other polygons are within this polygon we can use this bounding box to scale lat/lon into meter scale. This is achieved by first determining the length of the sides of the bounding box in meters using geographic distance.
-This metric distance is then used to linearly interpolate lat/lon axes from coordinates to the range {[}0, max(y)/max(x){]} in meters. Once computed this conversion can be applied to all lat/lon coordinates to get y/x values in meters.
-Before storing the positions the above process is inverted to get lat/lon coordinates. Go code for the above algorithm is in Appendix A.
 
 \hypertarget{karttasovitusalgoritmi}{%
 \subsection{Karttasovitusalgoritmi}\label{karttasovitusalgoritmi}}
@@ -1143,15 +1128,75 @@ Hyödynnetään polygoneja ja raycastingia. Asetetaan esimerkiksi rangaistus 1/1
 
 Hyödynnetään alaluvussa TODO esitetty prediktiivistä siloitinta. Satunnaiskulkumalli ei ole optimaalinen, mutta \ldots.
 
-\section{Algoritmin toteutuksesta}
+\subsection{WB-sisätilapaikannusalgoritmi}
 
-Koeasetelmassa käytetty SMC-algoritmi on toteuttu R-kielellä. Algoritmin toteutus on pääosin vektorisoitu ja tehokas. For-silmukkaa on käytetty ainoastaan ajanhetkien läpikäyntiin. Koska tämän silmukan muuntaminen vektorisoituun muotoon ei ole mahdollista, voidaan toteutusta pitää näiltä osin hyvin optimoituna. Algoritmin rungon datan käsittely on toteutettu suorituskyvyltään hyvällä \texttt{data.table}-kirjastolla. Uskottavuusfunktiossa on käytetty hitaampia \texttt{dpylr}-kirjaston \texttt{tibble}-taulukkoja. Toteutustapa on valittu koodin ymmärrettävyyden parantamiseksi ja on edelleen riittävän nopea koeasetalman tarpeisiin. Koodin profilointi paljastaa, että suurin yksittäinen osa algoritmin ajasta kuluu \texttt{tibble}-taulukkojen käsittelyssä, joten suorituskykyä on tarpeen vaatiessa mahdollista myös parantaa.
+Alla esitetään
+
+\begin{algorithm}[H]
+\label{wb-positioning}
+\DontPrintSemicolon
+\SetAlgoShortEnd
+\KwResult{Posteriorisiloitinjakauman $p(x_{k}|y_{1:T})$ estimaatti.\;}
+\KwData{Suodinjakaumia edustavat hiukkaset ja näihin liittyvät painot ${w_k^i, x_k^i}$, missä $i=1,\ldots,N$ ja $k=1,\ldots,T$\;}
+\Begin{
+  \Begin{Asetetaan $w_{T|T}^i = w_T^i$, jokaiselle $i=1,\ldots,N$;}
+  \For{$k=\{T-1,\ldots,0\}$}{
+    \Begin{Lasketaan uudet painot \newline $w^i_{k|T} = \sum_j w_{k+1|T}^j  \frac{w_k^i p(x_{k+1}^j|x_k^i)}{\sum_l w_k^l p(x_{k+1}^j|x_k^l)}$\;}
+  }  
+}
+\caption{Uudelleenpainottava hiukassiloitin}
+\end{algorithm}
+
+,
+
+algoritmin ominaisuuksista.
+
+Koeasetelmassa käytetty SMC-algoritmi on toteuttu R-kielellä. Algoritmin toteutus on pääosin vektorisoitu ja tehokas. For-silmukkaa on käytetty ainoastaan ajanhetkien läpikäyntiin. Koska tämän silmukan muuntaminen vektorisoituun muotoon ei ole mahdollista, voidaan toteutusta pitää näiltä osin hyvin optimoituna. Algoritmin datan käsittely on toteutettu täysin suorituskyvyltään erinomaisella \texttt{data.table}-kirjastolla. Koodin profilointi XXX.
 
 Koska algoritmin uskottavuudet sekä painot ovat hyvin pieniä, on laskentatarkkuusongelmien välttämiseksi toteutuksessa käytetty logaritmoituja painoja ja uskottavuusfunktiota. Tämä ei vaikuta lainkaan itse algoritmin toimintaan, mutta estää numeeristen ongelmien syntymisen. Tilanteessa, jossa tietyn paikantimen ja kaikkien partikkelien välinen uskottavuus on nolla, päätyvät kaikki painot nolliksi eikä algoritmi enää toimi. Tällaisessa tilanteessa uskottavuusfunktion R-toteutus kutsuu itseään rekursiivisesti uudelleen niin, että kyseinen paikannin on tiputettu havainnoista.
 
 Paikannusvirheen laskemisessa on etäisyysfunktiona \(d(\cdot)\) käytetty \texttt{raster}-kirjaston \texttt{pointDistance()}-funktiota. Koodissa on korostettu tiiviyden sijaan luettavuutta ja koodi on kommentoitu kattavasti. SMC-algoritmifunktion sekä uskottavuusfunktion R-koodit löytyvät osoitteesta \url{https://github.com/rintakumpu/luk}, mistä löytyy myös asetelmassa käytetty data csv-muodossa sekä kokeen muun koodin sisältävä R Markdown -notebook.
 
-\section{Parametrien valinta}
+\section{Empiirinen esimerkki}
+
+\subsection{Koeasetelma}
+
+Esimerkissä käyteteään SMC-algoritmia Bluetooth-paikannussovelluksessa lähettimen sijainnin laskemiseen. Paikannukseen käytettävä data kerättiin toimistoympäristössä Bluetooth Low Energy (BLE) -lähettimen sekä kattoon sijoitettujen vastaanottimien avulla. Havainnot koostuvat vastaanottimien lähettimien signaalien perusteella laskemista, BLE5.1-standardin mukaisista signaalin tulokulmista eli AoA-havainnoista (angle of arrival). Lopuksi esimerkissä analysoidaan ja vertaillaan algoritmin eri versioiden suorituskykyä sekä suorituskyvyn että paikannustarkkuuden näkökulmasta. Vertailuarvona käytetään perinteistä triangulaatio-algoritmia.
+
+Paikaunnusesimerkissä lähettimenä toimi 25 Bluetooth-paikannustagista koostuva Walkbase Foculator -testilaite (kuva \ref{fig:foculator}), vastaanottimena toimistoympäristöön asennetut neljä Walkbase XR-2 -vastaanotinta (kuva \ref{fig:xr2}). Jokainen vastaanotin sisältää kuusitoista antennia, joiden vastaanottamien lähetinsignaalien perusteella vastaanottimet laskevat signaalin tulokulman suhteessa vastaanottimeen. Tarkka tulokulmien laskemiseen käytetty algoritmi on paikantimen antennit toimittaneen Silicon Laboratories, Inc.~-yrityksen liikesalaisuus, mutta perusperiaate on arvioida tulokulma mittaamalla eri antenneiden välistä vaihe-eroa ns. IQ-signaalin avulla.
+
+Esteettömässä ympäristössä koeasetelmassa käytetyn järjestelmän kulmavirhe on hyvin pieni ja paikannusongelma voidaan ratkaista riittävällä tarkkuudella suoraan triangulaatio-algoritmilla. Tässäkin tilanteessa voi paikannusta parantaa suodattimen käytöllä, mutta jo triangulaatio-algoritmin perusversio tuottaa halutun tarkkuuden. Toimistoympäristö on kuitenkin haastava, sillä erityisesti näyttöruudut sekä heijastavat että estävät radiosignaaleja. Silicon Labs lupaa omalle AoA-järjestelmälleen vastaavassa toimisympäristössä (seitsemällä paikantimella) kulmavirheen välillä \(3.7^\degree-5.7^\degree\). Tämä ei kuitenkaan riitä johdonmukaisesti haluttuun alle metrin paikannustarkkuuteen, joten AoA-paikannus toimistoympäristössä tarjoaa hyvän motivaation SMC-menetelmien käytölle.
+
+\begin{multicols}{2}
+\begin{figure}[H]
+\centering
+\includegraphics[width=7cm]{foculator}
+\caption{Walkbase Foculator}
+\label{fig:foculator}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=7cm]{xr_2}
+\caption{Walkbase XR-2}
+\label{fig:xr2}
+\end{figure}
+\end{multicols}
+
+Data on kuvattu tarkemmin alaluvussa 5.2. Koeympäristön pohjapiirustus on esitetty kuvassa \ref{fig:pohjapiirustus}. Piirustuksessa XR-2-paikantimet on kuvattu punaisilla numeroiduilla ympyröillä. Foculator-testilaitteen sijainti on kuvattu sinisellä ympyrällä. Toimistoympäristön pohjapiirustus on kuvattu harmaalla niin, että piirustuksesta erottuvat toimiston väliseinät.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=12cm]{office_map}
+\caption{Koeasetelman pohjapiirustus}
+\label{fig:pohjapiirustus}
+\end{figure}
+
+\noindent Toimisto valittiin testiympäristöksi, koska siellä testaaminen on helpompaa ja halvempaa kuin aidossa kauppaympäristössä. Lisäksi toimistossa hyvin toimiva järjestelmä todennäköisesti toimii sellaisenaan vähemmän esteisessä kauppaympäristössä.
+
+Dataa kerättiin sekä liikkuvalla että paikallaan olevalla testilaitteella. Paikallaan oleva testilaite asetettiin pöydälle 1.5 metrin korkeudelle. Liikkuvassa tapauksessa testilaite kiinnitettiin robottiin, joka oli ohjelmoitu seuraamaan haluttua liikerataa vastaavia lattiamerkintöjä ennalta määrätyllä vakionopeudella. Yksinkertaisuuden vuoksi tässä tutkielmassa tarkastellaan ainoastaan ongelmaa, jossa testilaite on paikoillaan. Esitetyt mallit soveltuvat kuitenkin myös liikkuvalle laitteelle. Data kerättiin yöaikaan, jolloin toimiston käyttöaste oli alhainen. Tällä minimoitiin radiosignaalien tielle osuvien ihmisten vaikutus signaaleihin. Maan pinnan kaarevuus on otettu huomioon koeasetelmassa pisteiden välisiä etäisyyksiä laskettaessa.
+
+\subsection{Parametrien valinta}
 
 Priorijakaumana \(p_{x_0}\) käytettiin kahta toisistaan riippumatonta otosta tasajakaumista, joista toinen vastasi leveys- ja toinen pituusasteita. Jakaumien alkupisteet valittiin niin, että ne vastasivat pienimpiä paikantimien leveys- ja pituusasteista. Vastaavasti päätepisteet valittiin niin, että ne vastasivat suurimpia paikantimien leveys- ja pituusasteita.
 
@@ -1191,7 +1236,7 @@ $x_R=x_2+\frac{k^\prime_{31}(y^\prime_{12}-y^\prime_{23})}{D}\hspace{0.5cm}y_R=y
 \end{algorithm}
 
 \hypertarget{tulokset}{%
-\section{Tulokset}\label{tulokset}}
+\subsection{Tulokset}\label{tulokset}}
 
 Ensimmäisessä vaiheessa paikannus suoritettiin ilman uudelleenotantaa sekä priori- että uskottavuusotannalla (SIS) partikkelien määrän ollessa \(N=\{25^2,50^2,75^2,100^2\}\). Tulokset on esitetty kuvassa \(\ref{fig:prior-likelihood}\) sekä osana taulukkoa \(\ref{tab:paikannusvirheet}\). Kuten tuloksista huomataan, ei ehdotusjakauman valinnalla ole juurikaan vaikutusta algoritmin toimivuuteen paikannusvirheen suhteen. Partikkelien määrän kasvattaminen ei myöskään automaattisesti paranna paikannustarkkuuta. Tämä viittaa siihen, että koeasetelma on herkkä priorijakauman valinnalle. Tuloksista huomataan lisäksi, että algoritmin aikakompleksisuus on luokkaa \(\mathcal{O}(N)\), kuten tukielman teoriaosassa todettiin.
 
