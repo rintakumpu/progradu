@@ -897,30 +897,43 @@ Turkulainen teknologia- ja analytiikkayritys Walkbase käyttää Bluetooth-sisä
 Walkbase on kehittänyt sisätilapaikannukseen oman laitteisto- ja ohjelmistoratkaisunsa, jonka tavoitteena on tarjota kaikissa ympäristöissä \(95\%\) varmuudella alle metrin paikannustarkkuus. Merkitään tätä paikannusvirhettä:
 
 \begin{align}\label{paikannusvirhe}
-\epsilon_{\text{pos}}=
+E_{\text{pos}} = 
 \end{align},
 
-jolloin yhden testi. Paikannusvirheeseen palataan luvun tulososassa. Walkbasen laitteistoratkaisu koostuu kolmesta eri komponentista, AT-2-Bluetooth-lähettimistä, jotka kiinnitetään ostoskärryihin. XR-2-Bluetooth-vastaanottimista, jotka kiinnitetään tilan kattoripustuksiin sekä OSCU-laskentayksiköstä, joka luo paikkadataa XR-2-vastaanotinten perusteella ja lähettää paikkadatan edelleen palvelinkeskukseen. Kaavio havainnollistaa \ref{fig:laitteistoarkkitehtuuri} ratkaisun toiminnan.
+jolloin yhden testi. Paikannusvirheeseen palataan luvun tulososassa. Walkbasen paikannusratkaisu koostuu kolmesta eri laitteistokomponentista, AT-2-Bluetooth-lähetin-vastaanottomista, jotka kiinnitetään ostoskärryihin, XR-2-Bluetooth-lähetin-vastaanottomista, jotka kiinnitetään tilan kattoripustuksiin sekä OSCU-laskentayksiköstä, joka luo paikkadataa XR-2.1-vastaanotinten perusteella ja lähettää paikkadatan edelleen palvelinkeskukseen.
+
+AT-2 on Bluetooth 5.1 (BLE) -strandardin mukaan toimiva lähetin-vastaanotin, joka toimii 2.4Ghz taajuusalueella. Walkbasen suunnitteleman laitteen PCB-kehäantenni kykenee lähettämään GFSK-moduloitua dataa 2Mbps nopeudella. Laite saa virtansa yhdestä CR-2477-paristosta.
+
+XR-2.1 on Bluetooth 5.1 (BLE) -strandardin mukaan toimiva lähetin-vastaanotin, joka toimii 2.4Ghz taajuusalueella. Walkbasen suunnitteleman laitteenPCB-kehäantenni kykenee lähettämään GFSK-moduloitua dataa 2Mbps nopeudella. Laite saa virtansa ethernet-lähiverkosta 802.3af-standardin mukaisesti. Laitteen vaatima laskenta tapahtuu Raspberry Pi Compute Module 4 -piirilevytietokoneella.
+
+OSCU-laskentayksikkönä käytetään Ubuntu-käyttöjärjestelmällä toimivaa TODO. Koska OSCU-laskentayksikön laskentateho on rajallista, on paikannusalgoritmin aikakompleksisuus yksi käytettävän algoritmin ydinkriteereistä. Tähän palataan myöhemmin koeasetelman kuvauksessa TODO linkki.
+
+Tarvittavasta laskennasta vastaava ohjelmistojärjestelmä koostuu puolestaan neljästä ohjelmistokomponentista. C-ohjelmointikielellä toteutettu \emph{angler} laskee AT-2-tagin lähettämän I/Q-datan perusteella signaalien tulokulman (kts. osio TODO), Go-ohjelmointikielellä toteutettu \emph{moonraker} lähettää tulokulmadatan paikallisverkon yli OSCU-laskentayksikölle, jossa Go-ohjelmointikielellä toteutettu \emph{launchpad} luo siitä sijaintidataa, jonka se lähettää edelleen palvelinkeskuksen taustajärjestelmään.
+
+Taustajärjestelmässä Go-ohjelmointikielellä \emph{goldfinger} prosessoi sijaintidatan Walkbasen analytiikka-alustan käyttämään muotoon. \emph{Goldfinger} myös vastaa siitä, että kaikki \emph{launchpad}-sovelluksen vaatima metadata on sen käytössä. Kaavio \ref{fig:jarjestelmaarkkitehtuuri} kuvaa järjestelmän laitteisto- ja ohjelmistoarkkitehtuurit.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=12cm]{laitteistoarkkitehtuuri}
-\caption{Koeasetelman pohjapiirustus}
-\label{fig:laitteistoarkkitehtuuri}
+\includegraphics[width=15cm]{jarjestelmaarkkitehtuuri}
+\caption{Järjestelmäarkkitehtuuri}
+\label{fig:jarjestelmaarkkitehtuuri}
 \end{figure}
 
-Spesifikaatiot. Ohjelmistoratkai XXX. koska suurin osa prosessoinnista tapahtuu OSCU-laitteella, on tehokkuus.
-ja ohjelmistoratkaisu XXX.
+Tässä luvussa keskitytään \emph{launchpad}-sovelluksen hyödyntämään paikannusalgoritmiin, mutta sitä ennen käsitellään lyhyesti tulokulman laskentamenetelmät sekä \emph{angler}-sovelluksen toiminta. Tekijänoikeussyistä tutkielmassa ei hyödynnetä Go-ohjelmointikielellä toteutettua ohjelmakoodia. Sen sijaan algoritmi on toteutettu R-ohjelmointikielellä.
 
 \subsection{AoA-menetelmistä}
 
 \subsubsection{MUSIC-algoritmi}
 
+Ei käsitellä tässä tutkielmassa.
+
 \subsection{Kalibraatioalgoritmi}
 
-\subsection{Datan kuvaus}
+Koska x y ja z niin d.
 
-Riippuen päällä olevien paikannustagien lukumäärästä sekä kulmaestimaattien luomiseen käytetystä laskentamenetelmästä tuottaa testilaite noin \(60\) havaintoa sekunnissa jokaista vastaanotinta kohden. Koetta varten käytettiin yhden minuutin aikana kertyneitä havaintoja. Havaintoja on datassa yhteensä \(N_{obs}=15018\) kappaletta. Havaintojen aikaleimat on tallennettu sekunnin tuhannesosan tarkkuudella. Jokainen havainto koostuu taulukossa \ref{tab:muuttujat} kuvatuista muuttujista.
+\section{Datan kuvaus}
+
+XR-2 lähettää . lukumäärästä sekä kulmaestimaattien luomiseen käytetystä laskentamenetelmästä tuottaa testilaite noin \(60\) havaintoa sekunnissa jokaista vastaanotinta kohden. Koetta varten käytettiin yhden minuutin aikana kertyneitä havaintoja. Havaintoja on datassa yhteensä \(N_{obs}=15018\) kappaletta. Havaintojen aikaleimat on tallennettu sekunnin tuhannesosan tarkkuudella. Jokainen havainto koostuu taulukossa \ref{tab:muuttujat} kuvatuista muuttujista.
 
 \def\arraystretch{1.25} 
 \begin{table}[H]
@@ -949,17 +962,13 @@ height & vastaanottimen korkeus (m) & 2.22 \\
 
 Etäisyys on estimoitu signaalin vahvuudesta käyttäen valmistajan omaa propagaatiomallia. Etäisyyttä tai signaalin vahvuutta ei käytetä paikantamiseen, joten tämän mallin käsittely jätetään tutkielman ulkopuolelle. Munoz (2009) luku 2 sisältää yleiskatsauksen propagaatiomalleista. \citep{Munoz-2009}
 
-Atsimuuttikulma \(\phi\) lasketaan aina vastaanottimen tietyltä sivulta, joten se vastaa napapohjoista ainoastaan siinä tapauksessa, että vastaanottimen kyseinen sivu on asetettu kohtisuoraan napapohjoiseen nähden. Käytännön syistä tämä ei ole aina mahdollista eikä vaihe-erojen mittaamisen kannalta edes suotavaa. Tämän vuoksi jokaiselle vastaanottimelle on tietokantaan tallennettu oma suuntimakulma \(\eta\). Kokeessa käytetään napapohjoisesta laskettuja kulmia \(\Phi\), jotka lasketaan jokaiselle havainnolle havainnon vastaanottimen suuntimakulman avulla
+Atsimuuttikulma \(\phi\) lasketaan aina vastaanottimen tietyltä sivulta, joten se vastaa napapohjoista ainoastaan siinä tapauksessa, että vastaanottimen kyseinen sivu on asetettu kohtisuoraan napapohjoiseen nähden. Käytännössä vastaanottimien asettaminen tiettyyn kulmaan ei ole aina mahdollista eikä vaihe-erojen mittaamisen kannalta edes suotavaa. Tämän vuoksi jokaiselle vastaanottimelle on tietokantaan tallennettu oma suuntimakulma \(\eta\). Kokeessa käytetään napapohjoisesta laskettuja kulmia \(\Phi\), jotka lasketaan jokaiselle havainnolle havainnon vastaanottimen suuntimakulman avulla
 
 \begin{align}
 \Phi=(\theta + \eta+360^\degree) \mod360^\degree.
 \end{align}
 
-Suuntimakulma \(\Phi\) kertoo vastaanottimen ja lähettimen välisen kulman. Koska triangulaatiossa tarvitaan päinvastaista kulmaa, lasketaan lisäksi yhtälöllä (\ref{vastakkainen-kulma}) suuntimakulman perusteella lähettimen ja vastaanottimen välinen kulma \(\Phi^\prime\). Samalla asteissa oleva kulma muunnetaan radiaaneiksi triangulaatiota varten.
-
-\begin{align}\label{vastakkainen-kulma}
-\Phi^\prime=\frac{\pi}{180^\degree}(\Phi+180^\degree \mod360^\degree).
-\end{align}
+Suuntimakulma \(\Phi\) kertoo vastaanottimen ja lähettimen välisen kulman.
 
 Lisäksi havainnot sisältävät antennikohtaisista SNR-arvoista lasketun neliösumman, jota käytetään erityisesti triangulaatiossa vahvimpien havaintojen valitsemiseen. Havaintomuuttujien ohella koetilanteessa tallennettiin Foculator-testilaitteen todellinen sijainti sekunnin tarkkuudella. Tallennettu sijainti perustuu koeympäristön lattiaan pohjapiirrustusten sekä laser-mittausten avulla tehtyihin merkintöihin. Näin saadut testimuuttujat on kuvattu taulukossa (\ref{tab:testimuuttujat}). Kun testilaite on paikoillaan, ovat nämä havainnot luonnollisesti samat jokaiselle ajanhetkelle.
 
