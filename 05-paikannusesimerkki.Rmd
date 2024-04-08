@@ -2,6 +2,8 @@
 
 Sisätilapaikannus tarkoittaa nimensä mukaisesti ihmisten tai esineiden automaattista paikantamista sisätiloissa. Koska GPS-järjestelmät toimivat sisätiloissa huonosti tai eivät lainkaan, tarvitaan rakennusympäristöihin muita paikannusratkaisuja. Yleinen valinta ovat erilaiset Bluetooth-standardiin tai muuhun radioteknologiaan perustuvat lähetin-vastaanotinratkaisut. 
 
+Tässä luvussa TODO kuvaus.
+
 \section{Teknologian kuvaus}
 
 Turkulainen teknologia- ja analytiikkayritys Walkbase käyttää Bluetooth-sisätilapaikannusta asiakkaiden käyttäytymistä koskevan datan keräämiseen erityisesti ruokakaupoissa sekä tavarataloissa. Tyypillisessä asennusskenaariossa lähettimet (tagit) kiinnitetään ostoskärryihin sekä -koreihin ja paikantimet kiinnitetään liiketilan kattoripustuksiin. 
@@ -16,7 +18,7 @@ jolloin yhden testi. Paikannusvirheeseen palataan luvun tulososassa. Walkbasen p
 
 AT-2 on Bluetooth 5.1 (BLE) -strandardin mukaan toimiva lähetin-vastaanotin, joka toimii 2.4Ghz taajuusalueella. Walkbasen suunnitteleman laitteen PCB-kehäantenni kykenee lähettämään GFSK-moduloitua dataa 2Mbps nopeudella. Laite saa virtansa yhdestä CR-2477-paristosta. 
 
-XR-2.1 on Bluetooth 5.1 (BLE) -strandardin mukaan toimiva lähetin-vastaanotin, joka toimii 2.4Ghz taajuusalueella. Walkbasen suunnitteleman laitteenPCB-kehäantenni kykenee lähettämään GFSK-moduloitua dataa 2Mbps nopeudella. Laite saa virtansa ethernet-lähiverkosta 802.3af-standardin mukaisesti. Laitteen vaatima laskenta tapahtuu Raspberry Pi Compute Module 4 -piirilevytietokoneella.
+XR-2.1 on Bluetooth 5.1 (BLE) -strandardin mukaan toimiva lähetin-vastaanotin, joka toimii 2.4Ghz taajuusalueella. Walkbasen suunnitteleman laitteenPCB-kehäantenni kykenee lähettämään GFSK-moduloitua dataa 2Mbps nopeudella. Laite saa virtansa ethernet-lähiverkosta 802.3af-standardin mukaisesti. Laitteen vaatima laskenta tapahtuu Raspberry Pi Compute Module 4 -piirilevytietokoneella. Lisäksi laite sisältää inertiamittausyksikön, jota voidaan käyttää asennetun laitteen kallistumis- ja nyökkäämiskulman (*roll* ja *pitch*) arviomiseen.
 
 OSCU-laskentayksikkönä käytetään Ubuntu-käyttöjärjestelmällä toimivaa TODO. Koska OSCU-laskentayksikön laskentateho on rajallista, on paikannusalgoritmin aikakompleksisuus yksi käytettävän algoritmin ydinkriteereistä. Tähän palataan myöhemmin koeasetelman kuvauksessa TODO linkki.
 
@@ -35,17 +37,36 @@ Tässä luvussa keskitytään *launchpad*-sovelluksen hyödyntämään paikannus
 
 \subsection{AoA-menetelmistä}
 
-\subsubsection{MUSIC-algoritmi}
+vaihe-eron havaitsemiseen.
 
-Ei käsitellä tässä tutkielmassa.
+*MUSIC-algoritmi* esitys seuraa Monson H. Hayesin kirjaa *Statistical Digital Signal Processing and Modeling* (1996) [@Hayes-1996].
+
+Gunia [@Gunia-2023]
+
+Lisäksi *angler*-sovellus hyödyntää niin ikään omaa hiukassuodinalgoritmiaan tulokulmien laskentaan. Tätä hiukassuodinalgoritmia ei käsitellä tämän tutkielman puitteissa.
 
 \subsection{Kalibraatioalgoritmi}
 
-Koska x y ja z niin d.
+Koska *angler*-sovellus laskee suuntimakulman aina antennielementin määrätystä reunasta nähden, on tärkeää, että laitteen asemointi karttapohjoiseen nähden on tiedossa. Koska laitteen tarkan kulman arvioiminen asennusympäristössä on haastavaa eikä laite sisällä kompassia, on alla esitetty SIR-hiukassuodinta hyödyntävä kalibraatioalgoritmi, joka ottaa huomioon myös laitteen intertiamittausyksiköstä saatavat kallistumis- ja nyökkäämiskulmat. Kalibraatio-ongelma on esitetty kaaviossa TODO.
+
+\begin{algorithm}[H]
+\label{kalibraatioalgo}
+\DontPrintSemicolon
+\SetAlgoShortEnd
+\KwResult{Posteriorisiloitinjakauman $p(x_{k}|y_{1:T})$ estimaatti.\;}
+\KwData{Suodinjakaumia edustavat hiukkaset ja näihin liittyvät painot ${w_k^i, x_k^i}$, missä $i=1,\ldots,N$ ja $k=1,\ldots,T$\;}
+\Begin{
+  \Begin{Asetetaan $w_{T|T}^i = w_T^i$, jokaiselle $i=1,\ldots,N$;}
+  \For{$k=\{T-1,\ldots,0\}$}{
+    \Begin{Lasketaan uudet painot \newline $w^i_{k|T} = \sum_j w_{k+1|T}^j  \frac{w_k^i p(x_{k+1}^j|x_k^i)}{\sum_l w_k^l p(x_{k+1}^j|x_k^l)}$\;}
+  }  
+}
+\caption{Kalibraatioalgoritmi}
+\end{algorithm},
 
 \section{Datan kuvaus}   
 
-XR-2 lähettää . lukumäärästä sekä kulmaestimaattien luomiseen käytetystä laskentamenetelmästä tuottaa testilaite noin $60$ havaintoa sekunnissa jokaista vastaanotinta kohden. Koetta varten käytettiin yhden minuutin aikana kertyneitä havaintoja. Havaintoja on datassa yhteensä $N_{obs}=15018$ kappaletta. Havaintojen aikaleimat on tallennettu sekunnin tuhannesosan tarkkuudella. Jokainen havainto koostuu taulukossa \ref{tab:muuttujat} kuvatuista muuttujista.
+Koeasetelmaa varten AT-2-tagi on asetettu lähettämään IQ-dataotoksia 20hz taajuudella. Jokaisen XR-2-laitteen *angler*-sovellus laskee näiden perusteella sekvenssinumeron, jonka perusteella samasta AT-2-tagin lähettämästä IQ-dataoksesta lasketut usean eri vastaanottimen laskemat tulokulmat voidaan yhdistää samaan IQ-dataotokseen. XR-2-laitteen lähettämä tulokulmadata on kuvattu alla.  
 
 \def\arraystretch{1.25} 
 \begin{table}[H]
@@ -68,19 +89,48 @@ bearing & suuntimakulma $\eta$ (astetta) & 34\\
 height & vastaanottimen korkeus (m) & 2.22 \\
 \hline
 \end{tabular}
-\caption{Havaintomuuttujat}
-\label{tab:muuttujat}
+\caption{Tulokulmamuuttujat}
+\label{tab:aoa-muuttujat}
 \end{table}
 
-Etäisyys on estimoitu signaalin vahvuudesta käyttäen valmistajan omaa  propagaatiomallia. Etäisyyttä tai signaalin vahvuutta ei käytetä paikantamiseen, joten tämän mallin käsittely jätetään tutkielman ulkopuolelle. Munoz (2009) luku 2 sisältää yleiskatsauksen propagaatiomalleista. [@Munoz-2009]
+*launchpad*-sovelluksessa tulokulmadataan yhdistetään XR-2-laitteen MAC-osoitteen perusteella lisäksi tarvittavaa, XR-2-laitteita koskevaa metadataa. Näihin kuuluvat muun muassa laitteen korkeus, tulokulma ja sijainti kartalla. Metadata on kuvattu taulukossa \ref{tab:metadata}.
 
-Atsimuuttikulma $\phi$ lasketaan aina vastaanottimen tietyltä sivulta, joten se vastaa napapohjoista ainoastaan siinä tapauksessa, että vastaanottimen kyseinen sivu on asetettu kohtisuoraan napapohjoiseen nähden. Käytännössä vastaanottimien asettaminen tiettyyn kulmaan ei ole aina mahdollista eikä vaihe-erojen mittaamisen kannalta edes suotavaa. Tämän vuoksi jokaiselle vastaanottimelle on tietokantaan tallennettu oma suuntimakulma $\eta$. Kokeessa käytetään napapohjoisesta laskettuja kulmia $\Phi$, jotka lasketaan jokaiselle havainnolle havainnon vastaanottimen suuntimakulman avulla
+\def\arraystretch{1.25} 
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+Muuttuja & Kuvaus & Esimerkkiarvo\\
+\hline
+ts & havainnon aikaleima & 21:38:20.998+00\\
+locator\_mac & vastaanottimen MAC-osoite & b8:27:eb:66:0d:2a\\
+azimuth\_angle & atsimuuttikulma $\theta$ (astetta) & 102.7\\
+converted\_azimuth & napapohjoisesta laskettu kulma $\Phi$ (astetta) & 34\\
+\makecell[tl]{snr\_ss} & \makecell[tl]{antennikohtaisten signaali-kohinasuhteiden\\neliösumma} & \makecell[tl]{6996.473}\\
+rssi & signaalin vahvuus (dBm) & -81\\
+distance & arvioitu etäisyys lähettimeen (m) & 13.5\\
+\makecell[tl]{opposite\_angle} & \makecell[tl]{vastakkainen kulma\\ (lähetin-vastaanotin) $\Phi^\prime$ (radiaania)} & \makecell[tl]{3.735}\\
+lat & vastaanottimen sijainti (leveyspiiri) & 60.448265\\
+lon & vastaanottimen sijainti (pituuspiirit) & 22.294823\\
+bearing & suuntimakulma $\eta$ (astetta) & 34\\
+height & vastaanottimen korkeus (m) & 2.22 \\
+\hline
+\end{tabular}
+\caption{Metadata}
+\label{tab:metadata}
+\end{table}
+
+TODO Etäisyys on estimoitu signaalin vahvuudesta käyttäen valmistajan omaa propagaatiomallia. Etäisyyttä tai signaalin vahvuutta ei käytetä paikantamiseen, joten tämän mallin käsittely jätetään tutkielman ulkopuolelle. Munoz (2009) luku 2 sisältää yleiskatsauksen propagaatiomalleista. [@Munoz-2009]
+
+Atsimuuttikulma $\phi$ lasketaan aina vastaanottimen tietyltä sivulta, joten se vastaa napapohjoista ainoastaan siinä tapauksessa, että vastaanottimen kyseinen sivu on asetettu kohtisuoraan napapohjoiseen nähden. Käytännössä vastaanottimien asettaminen tiettyyn kulmaan ei ole aina mahdollista eikä vaihe-erojen mittaamisen kannalta edes suotavaa. Tämän vuoksi jokaiselle vastaanottimelle on tietokantaan tallennettu oma suuntimakulma $\eta$. Toisin kuin tulokulmadatan kulmat, on tämä tallennettu tietokantaan asteina. Kokeessa käytetään napapohjoisesta laskettuja kulmia $\Phi$, jotka lasketaan jokaiselle havainnolle havainnon vastaanottimen suuntimakulman avulla
 
 \begin{align}
 \Phi=(\theta + \eta+360^\degree) \mod360^\degree.
 \end{align}
 
 Suuntimakulma $\Phi$ kertoo vastaanottimen ja lähettimen välisen kulman.
+
+Lisäksi on tallennettuna polygonidata.
 
 Lisäksi havainnot sisältävät antennikohtaisista SNR-arvoista lasketun neliösumman, jota käytetään erityisesti triangulaatiossa vahvimpien havaintojen valitsemiseen. Havaintomuuttujien ohella koetilanteessa tallennettiin Foculator-testilaitteen todellinen sijainti sekunnin tarkkuudella. Tallennettu sijainti perustuu koeympäristön lattiaan pohjapiirrustusten sekä laser-mittausten avulla tehtyihin merkintöihin. Näin saadut testimuuttujat on kuvattu taulukossa (\ref{tab:testimuuttujat}). Kun testilaite on paikoillaan, ovat nämä havainnot luonnollisesti samat jokaiselle ajanhetkelle.
 
@@ -104,31 +154,33 @@ foculator\_lon & testilaitteen sijainti (pituuspiiri) & 22.29493 \\
 
 \subsection{Karttaprojektioista}
 
-In the particle filter positioning system there are various parts where we want to operate in meters instead of lat/long coordinates. The most important of these is the movement/dynamic model which is responsible for moving the particles between the time steps k and k+1. In the R code this is formulated as the following dead-reckoning model which is applied to each of the particles
+Kaikki yllä esitetyssä datassa esiintyvät sijaintikoordinaatit on tallennettu tietokantaan WGS 84 -tasokoordinaattijärjestelmässä. Koska hiukassuotimiin perustuvaa paikannusalgoritmia sovellettaessa on monin paikoin tarve syöttää parametereja metrijärjestelmässä. Tästä syystä leveys- ja pituusasteisiin perustuvat koordinaatit muunnetaan laskentaa varten metreiksi ja metreinä esitetyt sijaintitulokset muutetaan tulosten esittämistä varten takaisin WGS 84 -koordinaattijärjestelmään.
 
-where x_k is the previous position of a single particle, represented as a vector with two elements, latitude and longitude, respectively, D_k a scalar representing the current speed, psi_k a scalar representing the current bearing and v_k a vector with two noise elements, one for latitude and other for longitude.
-In practice the D_k is currently set to 0 so the model is reduced to x_{k+1} = x_k + v_k, i.e. a noise-only random walk.
-In the movement model the noise v_k is created as follows. First the desired random walk movement distance d is sampled from the truncated Normal distribution with a=0, b=q_max and sd=q where q_max and q are adjustable parameters. Then the direction to which to move p is sampled from Uniform distribution with a=0 and b=2pi. Now the noise vector v_k is created as v_k = (cos(p)* d, sin(p)*d). 
-Previously we have represented all of the x/y coordinates in the positioning system as longitude and latitude. However in the movement model we want to give the arguments such as q and q_max in meters. This has presented us with a problem of how to do the meters to coordinates conversion. Previously we have just done a rough translation from meters to coordinates by giving the q and q_max value in meters and dividing that by 111132.954. 
-This is of course not exactly correct but the actual problem in the movement model above is actually the fact that when using lat/lon coordinates the distance of n meters would require different values for lat and lon whereas above only a single d is used. To mitigate this problem as well as to get rid of mixing and matching coordinates and meters a new conversion scheme was implemented. This is described in the following section.
+Muunnos tapahtuu lineaarisella interpolaatiolla. Määritellään ensin kerrospolygonin rajausalue. Koska kaikki käytetyt koordinaatit ovat tämän rajausalueen sisällä, voidaan tätä rajausaluetta käyttää konversiossa metreiksi. Rajausalue koostuu neljästä kulmapisteestä. Poimitaan näistä pisteistä minimit ja maksimit sekä pituus- että leveyskoordinaateille. Näin saadaan neljä arvoa $B_{\text{lonlat}}=\{\text{lon}_{\text{min}}, \text{lon}_{\text{max}}, \text{lat}_{\text{min}}, \text{lat}_{\text{max}}\}$. Määritellään rajausalueen sivujen pituus metreinä geodeettisen etäisyyden avulla, jolloin saadaan kaksi metreissä laskettua etäisyyttä $D_{\text{m}}={d_{\text{lon}}, d_{\text{lat}}}$ . Käytetään näitä kulmapisteitä sekä metreinä laskettuja etäisyyksiä interpoloimaan koordinaatit WGS 84 -koordinaattijärjestelmästä metreissä esitetyille arvoalueille $[0, \text{max}(x_m)]$ ja $[0, \text{max}(y_m)]$ seuraavasti:
 
-New coordinate conversion
-In order to make the positioning system more interpretable we have decided to handle everything exclusively in meters. This way we first transform everything that is stored in lat/lon coordinates into meters, use exclusively arguments in meters (or related units such as meters per second) and then convert back into lat/lon coordinates only when storing positions into the database.
-The conversion is done using linear interpolation by first determining the bounding box of the floor polygon. As all the positions and other polygons are within this polygon we can use this bounding box to scale lat/lon into meter scale. This is achieved by first determining the length of the sides of the bounding box in meters using geographic distance. 
-This metric distance is then used to linearly interpolate lat/lon axes from coordinates to the range [0, max(y)/max(x)] in meters. Once computed this conversion can be applied to all lat/lon coordinates to get y/x values in meters. 
-Before storing the positions the above process is inverted to get lat/lon coordinates. Go code for the above algorithm is in Appendix A.
+\begin{align}\label{wgs84-m}
+x_m = f(x_{\text{lon}}; B_{\text{lonlat}}, D_m) = \frac{x_{\text{lon}} -\text{lon}_{\text{min}}}{\text{lon}_{\text{max}}-\text{lon}_{\text{min}}} \times d_{\text{lon}}   \\
+y_m = f(y_{\text{lat}}; B_{\text{lonlat}}, D_m) = \frac{y_{\text{lat}} -\text{lat}_{\text{min}}}{\text{lat}_{\text{max}}-\text{lat}_{\text{min}}} \times d_{\text{lat}}
+\end{align},
+
+missä $x_m$ vastaa leveyskoordinaatteja metreissä ja $y_m$ pituuskoordinaatteja metreissä. Vastaavasti käännös takaisin WGS 84 -koordinaattijärjestelmään tapahtuu vastaavasti:
+
+\begin{align}\label{m-wgs84}
+x_{\text{lon}} = f(x_m; B_{\text{lonlat}}, D_m) = \frac{x_{\text{m}}}{d_{\text{lon}}} \times (\text{lon}_{\text{max}}-\text{lon}_{\text{min}}) + \text{lon}_{\text{min}} \\
+y_{\text{lat}} = f(y_m; B_{\text{lonlat}}, D_m) = \frac{y_{\text{m}}}{d_{\text{lat}}} \times (\text{lat}_{\text{max}}-\text{lat}_{\text{min}}) + \text{lat}_{\text{min}}
+\end{align}.
 
 \section{Sisätilapaikannusalgoritmi}
 
 \subsection{Ongelman kuvaus}
 
-Tarkoituksena on estimoida testilaitteen/robotin sijainti sekunnin tarkkuudella. Merkitään estimoitavaa tilasarjaa $x_{1:k}=\{x_1,\ldots,x_k\}$. Lisäksi merkitään $x_0$ testilaitteen lähtösijaintia. Jokainen tilasarjan havainto koostuu suuntimakulmasta sekä pituus- että leveyskoordinaateista $(x_k^x, x_k^y)$. Määritellään tilalle testilaitteen/robotin kulkua kuvaava vektorisuunnistukseen (dead reckoning) perustuva malli (\ref{tilamalli-liikkuva})
+Tarkoituksena on estimoida liikkuvan AT-2-tagin sijaintia sekunnin XXXtarkkuudella, kun XXX. Merkitään estimoitavaa tilasarjaa $x_{1:k}=\{x_1,\ldots,x_k\}$. Lisäksi merkitään $x_0$ testilaitteen lähtösijaintia. Jokainen tilasarjan havainto koostuu suuntimakulmasta sekä pituus- että leveyskoordinaateista $(x_k^x, x_k^y)$. Määritellään tilalle liikkuvan AT-2-tagin kulkua kuvaava vektorisuunnistukseen (dead reckoning) perustuva malli (\ref{tilamalli-liikkuva})
 
 \begin{align}\label{tilamalli-liikkuva}
 x_{k+1}=f(x_k, \nu_k)=x_k+D_k \begin{bmatrix} \cos\psi_k \\ \sin\psi_k \end{bmatrix}+\nu_k,
 \end{align}
 
-\noindent missä $D_k$ on testilaitteen/robotin ajanhetkenä $k$ kulkema matka ja $\psi_k$ testilaitteen/robotin atsimuutti/suuntimakulma kyseisenä ajanhetkenä. $\nu_k$ on kohinaa, joka syntyy mittausvirheestä ja jolle voidaan olettaa $\sim \mathcal{N}(\mu_x,\,\sigma_x^{2})$. Kun laite on paikallaan, yksinkertaistuu malli muotoon $x_{k+1}=f(x_k)=\text{id}(x_k)=x_k$, missä $\text{id}(\cdot)$ on identiteettifunktio.
+\noindent missä $D_k$ on AT-2-tagin ajanhetkenä $k$ kulkema matka ja $\psi_k$ AT-2-tagin suuntimakulma kyseisenä ajanhetkenä. $\nu_k$ on kohinaa, joka syntyy mittausvirheestä ja jolle voidaan olettaa $\sim \mathcal{N}(\mu_x,\,\sigma_x^{2})$. Kun laite on paikallaan, yksinkertaistuu malli muotoon $x_{k+1}=f(x_k)=\text{id}(x_k)=x_k$, missä $\text{id}(\cdot)$ on identiteettifunktio.
 
 Vastaavasti $y_{1:k}=\{y_1,\ldots,y_k\}$ kuvaa paikantimien ja lähettimien välillä laskettuja kulmahavaintoja. Näin ollen jokainen havainto koostuu (maksimissaan) paikantimien määrää vastaavasta neljästä kulmasta. Havainnot lasketaan sekunnin tarkkuudella, mutta todellinen havaintotarkkuus on tiheämpi. Tästä syystä jokaisen sekunnin sensorihavainnot $\{s_k^1,\ldots,s_k^4\}$ muodostetaan keskiarvona kaikista kyseisen sekunnin aikana tapahtuvista paikannin-lähetinparien kulmahavainnoista 
 
@@ -193,6 +245,12 @@ This method of achieving the convex hull padding is a bit involved and probably 
 Uudet uskottavuusmallit. Truncated Normal and von Mises.
 
 ### Dynaaminen malli
+
+In the particle filter positioning system there are various parts where we want to operate in meters instead of lat/long coordinates. The most important of these is the movement/dynamic model which is responsible for moving the particles between the time steps k and k+1. In the R code this is formulated as the following dead-reckoning model which is applied to each of the particles
+
+where x_k is the previous position of a single particle, represented as a vector with two elements, latitude and longitude, respectively, D_k a scalar representing the current speed, psi_k a scalar representing the current bearing and v_k a vector with two noise elements, one for latitude and other for longitude.
+In practice the D_k is currently set to 0 so the model is reduced to x_{k+1} = x_k + v_k, i.e. a noise-only random walk.
+In the movement model the noise v_k is created as follows. First the desired random walk movement distance d is sampled from the truncated Normal distribution with a=0, b=q_max and sd=q where q_max and q are adjustable parameters. Then the direction to which to move p is sampled from Uniform distribution with a=0 and b=2pi. Now the noise vector v_k is created as v_k = (cos(p)* d, sin(p)*d). 
 
 \subsection{Paikallaolon havaitseminen}
 
@@ -263,6 +321,8 @@ Paikannusvirheen laskemisessa on etäisyysfunktiona $d(\cdot)$ käytetty `raster
 \section{Empiirinen esimerkki}
 
 \subsection{Koeasetelma}
+
+Koetta varten käytettiin yhden minuutin aikana kertyneitä havaintoja. Havaintoja on datassa yhteensä $N_{obs}=15018$ kappaletta. Havaintojen aikaleimat on tallennettu sekunnin tuhannesosan tarkkuudella. 
 
 Esimerkissä käyteteään SMC-algoritmia Bluetooth-paikannussovelluksessa lähettimen sijainnin laskemiseen. Paikannukseen käytettävä data kerättiin toimistoympäristössä Bluetooth Low Energy (BLE) -lähettimen sekä kattoon sijoitettujen vastaanottimien avulla. Havainnot koostuvat vastaanottimien lähettimien signaalien perusteella laskemista, BLE5.1-standardin mukaisista signaalin tulokulmista eli AoA-havainnoista (angle of arrival). Lopuksi esimerkissä analysoidaan ja vertaillaan algoritmin eri versioiden suorituskykyä sekä suorituskyvyn että paikannustarkkuuden näkökulmasta. Vertailuarvona käytetään perinteistä triangulaatio-algoritmia.
 
