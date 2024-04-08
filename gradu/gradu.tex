@@ -956,7 +956,7 @@ Koska \emph{angler}-sovellus laskee suuntimakulman aina antennielementin määr�
 
 \section{Datan kuvaus}
 
-Koeasetelmaa varten AT-2-tagi on asetettu lähettämään IQ-dataotoksia 20hz taajuudella. Jokaisen XR-2-laitteen \emph{angler}-sovellus laskee näiden perusteella sekvenssinumeron, jonka perusteella samasta AT-2-tagin lähettämästä IQ-dataoksesta lasketut usean eri vastaanottimen laskemat tulokulmat voidaan yhdistää samaan IQ-dataotokseen. XR-2-laitteen lähettämä tulokulmadata on kuvattu alla.
+Koeasetelmaa varten AT-2-tagi on asetettu lähettämään IQ-dataotoksia 20hz taajuudella. AZIMUTH AND ELEVATION AND THEIR DISTRIBUTIONS. Nämä on kuvattu tarkemmin osiossa TODO. Jokaisen XR-2-laitteen \emph{angler}-sovellus laskee näiden perusteella sekvenssinumeron, jonka perusteella samasta AT-2-tagin lähettämästä IQ-dataoksesta lasketut usean eri vastaanottimen laskemat tulokulmat voidaan yhdistää samaan IQ-dataotokseen. XR-2-laitteen lähettämä tulokulmadata on kuvattu alla.
 
 \def\arraystretch{1.25} 
 \begin{table}[H]
@@ -965,23 +965,30 @@ Koeasetelmaa varten AT-2-tagi on asetettu lähettämään IQ-dataotoksia 20hz ta
 \hline
 Muuttuja & Kuvaus & Esimerkkiarvo\\
 \hline
-ts & havainnon aikaleima & 21:38:20.998+00\\
-locator\_mac & vastaanottimen MAC-osoite & b8:27:eb:66:0d:2a\\
-azimuth\_angle & atsimuuttikulma $\theta$ (astetta) & 102.7\\
-converted\_azimuth & napapohjoisesta laskettu kulma $\Phi$ (astetta) & 34\\
-\makecell[tl]{snr\_ss} & \makecell[tl]{antennikohtaisten signaali-kohinasuhteiden\\neliösumma} & \makecell[tl]{6996.473}\\
+id & havainnon yksilöivä tunniste & 317,092 \\
+ts & havainnon aikaleima & 2024-04-08 21:38:20.998+00\\
+locator\_mac & XR-2-laitteen MAC-osoite & 2c:e3:10:00:07:a6
+\\
+asset\_tag\_mac & AT-2-tagin MAC-osoite & 2c:e3:10:00:63:89\\
+sequence\_nr & \makecell[l]{kulmadatan IQ-dataotokseen yhdistävä \\ juokseva numerointi} & 2,066\\
+azimuth\_location & \makecell[l]{atsimuuttikulman $\theta$ \\ jaukauman sijaintiparametri (radiaania)} & 0.39
+\\
+azimuth\_scale & \makecell[l]{atsimuuttikulman $\theta$ \\ jaukauman skaalaparametri ($\frac{1}{\text{radiaania}^2}$)} & 80.98
+\\
+elevation\_location & \makecell[l]{korkeuskulman $\gamma$ \\ jaukauman sijaintiparametri (radiaania)} & 0.13
+\\
+elevation\_scale & \makecell[l]{korkeuskulman $\gamma$ \\ jaukauman skaalaparametri ($\text{radiaania}^2$)} & 0.012
+\\
+quality\_sndr & signaali-kohinasuhde & 22.0 \\
 rssi & signaalin vahvuus (dBm) & -81\\
-distance & arvioitu etäisyys lähettimeen (m) & 13.5\\
-\makecell[tl]{opposite\_angle} & \makecell[tl]{vastakkainen kulma\\ (lähetin-vastaanotin) $\Phi^\prime$ (radiaania)} & \makecell[tl]{3.735}\\
-lat & vastaanottimen sijainti (leveyspiiri) & 60.448265\\
-lon & vastaanottimen sijainti (pituuspiirit) & 22.294823\\
-bearing & suuntimakulma $\eta$ (astetta) & 34\\
-height & vastaanottimen korkeus (m) & 2.22 \\
+distance & arvioitu etäisyys lähettimeen (m) & 18.6\\
 \hline
 \end{tabular}
 \caption{Tulokulmamuuttujat}
 \label{tab:aoa-muuttujat}
 \end{table}
+
+Etäisyys on estimoitu signaalin vahvuudesta käyttäen propagaatiomallia. Etäisyyttä tai signaalin vahvuutta ei käytetä paikantamiseen, joten tämän mallin käsittely jätetään tutkielman ulkopuolelle. Munoz (2009) luku 2 sisältää yleiskatsauksen propagaatiomalleista. \citep{Munoz-2009}
 
 \emph{launchpad}-sovelluksessa tulokulmadataan yhdistetään XR-2-laitteen MAC-osoitteen perusteella lisäksi tarvittavaa, XR-2-laitteita koskevaa metadataa. Näihin kuuluvat muun muassa laitteen korkeus, tulokulma ja sijainti kartalla. Metadata on kuvattu taulukossa \ref{tab:metadata}.
 
@@ -992,8 +999,7 @@ height & vastaanottimen korkeus (m) & 2.22 \\
 \hline
 Muuttuja & Kuvaus & Esimerkkiarvo\\
 \hline
-ts & havainnon aikaleima & 21:38:20.998+00\\
-locator\_mac & vastaanottimen MAC-osoite & b8:27:eb:66:0d:2a\\
+locator\_mac & XR-2-laitteen MAC-osoite & b8:27:eb:66:0d:2a\\
 azimuth\_angle & atsimuuttikulma $\theta$ (astetta) & 102.7\\
 converted\_azimuth & napapohjoisesta laskettu kulma $\Phi$ (astetta) & 34\\
 \makecell[tl]{snr\_ss} & \makecell[tl]{antennikohtaisten signaali-kohinasuhteiden\\neliösumma} & \makecell[tl]{6996.473}\\
@@ -1009,8 +1015,6 @@ height & vastaanottimen korkeus (m) & 2.22 \\
 \caption{Metadata}
 \label{tab:metadata}
 \end{table}
-
-TODO Etäisyys on estimoitu signaalin vahvuudesta käyttäen valmistajan omaa propagaatiomallia. Etäisyyttä tai signaalin vahvuutta ei käytetä paikantamiseen, joten tämän mallin käsittely jätetään tutkielman ulkopuolelle. Munoz (2009) luku 2 sisältää yleiskatsauksen propagaatiomalleista. \citep{Munoz-2009}
 
 Atsimuuttikulma \(\phi\) lasketaan aina vastaanottimen tietyltä sivulta, joten se vastaa napapohjoista ainoastaan siinä tapauksessa, että vastaanottimen kyseinen sivu on asetettu kohtisuoraan napapohjoiseen nähden. Käytännössä vastaanottimien asettaminen tiettyyn kulmaan ei ole aina mahdollista eikä vaihe-erojen mittaamisen kannalta edes suotavaa. Tämän vuoksi jokaiselle vastaanottimelle on tietokantaan tallennettu oma suuntimakulma \(\eta\). Toisin kuin tulokulmadatan kulmat, on tämä tallennettu tietokantaan asteina. Kokeessa käytetään napapohjoisesta laskettuja kulmia \(\Phi\), jotka lasketaan jokaiselle havainnolle havainnon vastaanottimen suuntimakulman avulla
 
@@ -1057,7 +1061,7 @@ missä \(x_m\) vastaa leveyskoordinaatteja metreissä ja \(y_m\) pituuskoordinaa
 
 \begin{align}\label{m-wgs84}
 x_{\text{lon}} = f(x_m; B_{\text{lonlat}}, D_m) = \frac{x_{\text{m}}}{d_{\text{lon}}} \times (\text{lon}_{\text{max}}-\text{lon}_{\text{min}}) + \text{lon}_{\text{min}} \\
-y_{\text{lat}} = f(y_m; B_{\text{lonlat}}, D_m) = \frac{y_{\text{m}}}{d_{\text{at}}} \times (\text{at}_{\text{max}}-\text{at}_{\text{min}}) + \text{at}_{\text{min}}
+y_{\text{lat}} = f(y_m; B_{\text{lonlat}}, D_m) = \frac{y_{\text{m}}}{d_{\text{lat}}} \times (\text{lat}_{\text{max}}-\text{lat}_{\text{min}}) + \text{lat}_{\text{min}}
 \end{align}.
 
 \section{Sisätilapaikannusalgoritmi}
