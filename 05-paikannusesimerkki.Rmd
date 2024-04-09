@@ -100,7 +100,7 @@ distance & arvioitu etäisyys lähettimeen (m) & 18.6\\
 
 Etäisyys on estimoitu signaalin vahvuudesta käyttäen propagaatiomallia. Etäisyyttä tai signaalin vahvuutta ei käytetä paikantamiseen, joten tämän mallin käsittely jätetään tutkielman ulkopuolelle. Munoz (2009) luku 2 sisältää yleiskatsauksen propagaatiomalleista. [@Munoz-2009]
 
-*launchpad*-sovelluksessa tulokulmadataan yhdistetään XR-2-laitteen MAC-osoitteen perusteella lisäksi tarvittavaa, XR-2-laitteita koskevaa metadataa. Näihin kuuluvat muun muassa laitteen korkeus, tulokulma ja sijainti kartalla. Metadata on kuvattu taulukossa \ref{tab:metadata}.
+*launchpad*-sovelluksessa tulokulmadataan yhdistetään XR-2-laitteen MAC-osoitteen perusteella lisäksi tarvittavaa, XR-2-laitteita koskevaa metadataa. Näihin kuuluvat laitteen korkeus, laitteen suuntimakulma ja karttakoordinaatit. Metadata on kuvattu taulukossa \ref{tab:metadata}.
 
 \def\arraystretch{1.25} 
 \begin{table}[H]
@@ -112,7 +112,7 @@ Muuttuja & Kuvaus & Esimerkkiarvo\\
 locator\_mac & XR-2-laitteen MAC-osoite & b8:27:eb:66:0d:2a\\
 lat & vastaanottimen sijainti (leveyspiiri) & 60.448265\\
 lon & vastaanottimen sijainti (pituuspiirit) & 22.294823\\
-bearing & suuntimakulma $\eta$ (astetta) & 34\\
+direction & suuntimakulma $\eta$ (astetta) & 34\\
 height & vastaanottimen korkeus (m) & 2.22 \\
 \hline
 \end{tabular}
@@ -123,14 +123,12 @@ height & vastaanottimen korkeus (m) & 2.22 \\
 Atsimuuttikulma $\phi$ lasketaan aina vastaanottimen tietyltä sivulta, joten se vastaa napapohjoista ainoastaan siinä tapauksessa, että vastaanottimen kyseinen sivu on asetettu kohtisuoraan napapohjoiseen nähden. Käytännössä vastaanottimien asettaminen tiettyyn kulmaan ei ole aina mahdollista eikä vaihe-erojen mittaamisen kannalta edes suotavaa. Tämän vuoksi jokaiselle vastaanottimelle on tietokantaan tallennettu oma suuntimakulma $\eta$. Toisin kuin tulokulmadatan kulmat, on tämä tallennettu tietokantaan asteina. Kokeessa käytetään napapohjoisesta laskettuja kulmia $\Phi$, jotka lasketaan jokaiselle havainnolle havainnon vastaanottimen suuntimakulman avulla
 
 \begin{align}
-\Phi=(\theta + \eta+360^\degree) \mod360^\degree.
-\end{align}
+\Phi=(\theta + \eta \times \frac{\pi}{180^\degree}) \mod 2 \pi.
+\end{align}.
 
-Suuntimakulma $\Phi$ kertoo vastaanottimen ja lähettimen välisen kulman.
+Suuntimakulma $\Phi$ kertoo vastaanottimen ja lähettimen välisen kulman. Lisäksi saatavilla on PostGIS-muotoon tallennettua polygonidataa, joka vastaa koeympäristön pohjapiirrustusta sekä koeympäristössä esiintyviä liikkumisen estäviä kohteita, kuten hyllyjä tai pöytiä. Näitä hyödynnetään sekä sijaintialgoritmin alustuksessa että karttasovitusalgoritmissa (kts. TODO) 
 
-Lisäksi on tallennettuna polygonidata.
-
-Lisäksi havainnot sisältävät antennikohtaisista SNR-arvoista lasketun neliösumman, jota käytetään erityisesti triangulaatiossa vahvimpien havaintojen valitsemiseen. Havaintomuuttujien ohella koetilanteessa tallennettiin Foculator-testilaitteen todellinen sijainti sekunnin tarkkuudella. Tallennettu sijainti perustuu koeympäristön lattiaan pohjapiirrustusten sekä laser-mittausten avulla tehtyihin merkintöihin. Näin saadut testimuuttujat on kuvattu taulukossa (\ref{tab:testimuuttujat}). Kun testilaite on paikoillaan, ovat nämä havainnot luonnollisesti samat jokaiselle ajanhetkelle.
+Havaintomuuttujien ohella koetilanteesta on tallennettu testipolku, jota pitkin AT-2-tagia liikutetaan koetilanteessa. Testipolkudata pitää sisällään karttaan piirretyn janan pääte- ja sisäpisteet. Tallennettu sijainti perustuu koeympäristön lattiaan pohjapiirrustusten sekä laser-mittausten avulla tehtyihin merkintöihin. Näin saadut testimuuttujat on kuvattu taulukossa (\ref{tab:testimuuttujat}).
 
 \def\arraystretch{1.25} 
 \begin{table}[H]
@@ -139,9 +137,8 @@ Lisäksi havainnot sisältävät antennikohtaisista SNR-arvoista lasketun neliö
 \hline
 Muuttuja & Kuvaus & Esimerkkiarvo\\
 \hline
-foculator\_ts & aikaleima & 21:38:20+00\\
-foculator\_lat & testilaitteen sijainti (leveyspiiri) & 60.44819 \\
-foculator\_lon & testilaitteen sijainti (pituuspiiri) & 22.29493 \\
+path\_lat & polkupisteen sijainti (leveyspiiri) & 60.44819 \\
+path\_lon & polkupisteen sijainti (pituuspiiri) & 22.29493 \\
 \hline
 \end{tabular}
 \caption{Testimuuttujat}
@@ -168,25 +165,25 @@ x_{\text{lon}} = f(x_m; B_{\text{lonlat}}, D_m) = \frac{x_{\text{m}}}{d_{\text{l
 y_{\text{lat}} = f(y_m; B_{\text{lonlat}}, D_m) = \frac{y_{\text{m}}}{d_{\text{lat}}} \times (\text{lat}_{\text{max}}-\text{lat}_{\text{min}}) + \text{lat}_{\text{min}}
 \end{align}.
 
+\subsection{Muunnettu data}
+
+Kun yllä esitetyt konversiot on. Käytetään datassa seuraavia. TÄHÄN NOTAATIOT.
+
 \section{Sisätilapaikannusalgoritmi}
 
 \subsection{Ongelman kuvaus}
 
-Tarkoituksena on estimoida liikkuvan AT-2-tagin sijaintia sekunnin XXXtarkkuudella, kun XXX. Merkitään estimoitavaa tilasarjaa $x_{1:k}=\{x_1,\ldots,x_k\}$. Lisäksi merkitään $x_0$ testilaitteen lähtösijaintia. Jokainen tilasarjan havainto koostuu suuntimakulmasta sekä pituus- että leveyskoordinaateista $(x_k^x, x_k^y)$. Määritellään tilalle liikkuvan AT-2-tagin kulkua kuvaava vektorisuunnistukseen (dead reckoning) perustuva malli (\ref{tilamalli-liikkuva})
+Tarkoituksena on estimoida liikkuvan AT-2-tagin sijaintia. Merkitään tätä estimoitavaa tilasarjaa $x_{1:k}=\{x_1,\ldots,x_k\}$. Lisäksi merkitään $x_0$ testilaitteen lähtösijaintia. Jokainen tilasarjan havainto koostuu suuntimakulmasta sekä pituus- että leveyskoordinaateista $(x_k^x, x_k^y)$. Määritellään tilalle liikkuvan AT-2-tagin kulkua kuvaava vektorisuunnistukseen (dead reckoning) perustuva malli (\ref{tilamalli-liikkuva})
 
 \begin{align}\label{tilamalli-liikkuva}
 x_{k+1}=f(x_k, \nu_k)=x_k+D_k \begin{bmatrix} \cos\psi_k \\ \sin\psi_k \end{bmatrix}+\nu_k,
 \end{align}
 
-\noindent missä $D_k$ on AT-2-tagin ajanhetkenä $k$ kulkema matka ja $\psi_k$ AT-2-tagin suuntimakulma kyseisenä ajanhetkenä. $\nu_k$ on kohinaa, joka syntyy mittausvirheestä ja jolle voidaan olettaa $\sim \mathcal{N}(\mu_x,\,\sigma_x^{2})$. Kun laite on paikallaan, yksinkertaistuu malli muotoon $x_{k+1}=f(x_k)=\text{id}(x_k)=x_k$, missä $\text{id}(\cdot)$ on identiteettifunktio.
+\noindent missä $D_k$ on AT-2-tagin ajanhetkenä $k$ kulkema matka ja $\psi_k$ AT-2-tagin suuntimakulma kyseisenä ajanhetkenä. $\nu_k$ on kohinaa, joka syntyy mittausvirheestä ja jolle voidaan olettaa $\sim \mathcal{N}(\mu_x,\,\sigma_x^{2})$. Jos laite on paikallaan, yksinkertaistuu malli muotoon $x_{k+1}=f(x_k)=\text{id}(x_k)=x_k$, missä $\text{id}(\cdot)$ on identiteettifunktio.
 
-Vastaavasti $y_{1:k}=\{y_1,\ldots,y_k\}$ kuvaa paikantimien ja lähettimien välillä laskettuja kulmahavaintoja. Näin ollen jokainen havainto koostuu (maksimissaan) paikantimien määrää vastaavasta neljästä kulmasta. Havainnot lasketaan sekunnin tarkkuudella, mutta todellinen havaintotarkkuus on tiheämpi. Tästä syystä jokaisen sekunnin sensorihavainnot $\{s_k^1,\ldots,s_k^4\}$ muodostetaan keskiarvona kaikista kyseisen sekunnin aikana tapahtuvista paikannin-lähetinparien kulmahavainnoista 
+Vastaavasti $y_{1:k}=\{y_1,\ldots,y_k\}$ kuvaa AT-2-tagin ja XR-2-laitteiden välillä laskettuja kulmahavaintoja. Näin ollen jokainen havainto koostuu (maksimissaan) paikantimien määrää vastaavasta määrästä kulmia. Havainnot lasketaan sekunnin tarkkuudella, mutta todellinen havaintotarkkuus on tiheämpi.
 
-\begin{align}
-y_k=\begin{bmatrix} \frac{1}{n}\sum_{j=1}^ns^1_{k_j}\\   \vdots \\ \frac{1}{n}\sum_{j=1}^ns^4_{k_j} \end{bmatrix}.
-\end{align}
-
-\noindent Lisäksi tunnetaan sensoreihin $\{s^1,\ldots,s^4\}$ liittyvät pituus- ja leveyskoordinaatit $(\lambda, \phi)$
+\noindent Lisäksi tunnetaan sensoreihin $\{s^1,\ldots,s^4\}$ liittyvät pituus- ja leveyskoordinaatit $(\lambda, \phi)$, jotka on muutettu TODO mukaan metreiksi.
 
 \begin{align}
 u=\begin{bmatrix} \lambda^1 & \phi^1 \\   \vdots & \vdots \\ \lambda^4 & \phi^4 \end{bmatrix}.
@@ -212,31 +209,13 @@ Kovarianssimatriisin estimaattina käytetään kunakin ajanhetkenä $k$ antennik
 p(y_k|x_k)\propto\prod_{j=1}^4\exp\left\{-\frac{\norm{h(x^j_k,u)-y^j_k}^2}{2(\hat{\sigma}_i^j)^2}\right\},
 \end{align}
 
-\noindent missä $j=\{1,2,3,4\}$ vastaa nyt kutakin XR-2-vastaanotinta.
-
-Kumpikaan funktiosta $h(\cdot)$ ja $f(\cdot)$ ei ole lineaarinen, joten SIR-algoritmi on sopiva valinta ongelman ratkaisemiseksi. Koetuloksia arvioidaan ensisijaisesti paikannusvirheen avulla. Paikannusvirhe $e_k$ lasketaan jokaisen ajanhetken $k$ posteriorijakaumaestimaatista $\hat{p}_k$ painotettuna keskiarvona
+\noindent missä $j=\{1,l\dots,n\}$ vastaa nyt kutakin XR-2-laitetta. Kumpikaan funktiosta $h(\cdot)$ ja $f(\cdot)$ ei ole lineaarinen, joten SIR-algoritmi on sopiva valinta ongelman ratkaisemiseksi. Koetuloksia arvioidaan ensisijaisesti paikannusvirheen avulla. Paikannusvirhe $e_k$ lasketaan jokaisen ajanhetken $k$ posteriorijakaumaestimaatista $\hat{p}_k$ painotettuna keskiarvona
 
 \begin{align}
 \epsilon_k = \sum_{i=1}^Nw^k_i d(x^i_k, y_k),
 \end{align}.
 
 \noindent missä $w_i^k$ on ajanketken $k$ partikkelien normalisoitu paino ja $d(x^i_k,y_k)$ partikkelien ja testilaitteen todellisen sijainnin välisen etäisyyden laskeva funktio.
-
-### Datan valinta
-
-In the positioning particle filter, convex hull method is used in angle selection. The basic premise of this method is simple. Before evaluating particle likelihoods an angle/locator selection is performed. As one step of this process, a convex hull is drawn around the particle cloud and only angles that intersect this polygon get included in the likelihood evaluation. The following illustration explains the method.
-
-Here the angles from the locators #2 and #1 get included in the likelihood evaluation as they intersect the convex hull of the particle cloud whereas the angle from locator #3 is discarded.
-As the basic interpretation of the particle cloud is that the probability of the tag being within it is one, we can safely assume that the correct position of the tag is also within the convex hull enclosing the particle cloud. Thus this method works well for getting rid of poor angles and reflections. 
-
-The Problem
-However, the above method also leads to a problem: the smaller the particle cloud gets, the more precise the angles need to be to get included in the likelihood evaluation. When running the positioning particle filter at the frequency of one this is rarely a problem, as this frequency necessitates a noise q value of 1.5m thus leading to particle clouds averaging at least 3m in width. However if we want to move to a higher frequency to be able to reduce the noise value into centimeter range, this will become a problem.
-
-The Solution
-The simplest solution to the above problem is to add padding to the convex hull. An example of this is pictured below.
-
-In the R positioning particle filter this padding is achieved by introducing a new design parameter called ch_q_adjustment. Before the application of the movement model this value is added to the q noise value and the particles are moved using this adjusted q_new = q + ch_q_adjustment value. The resulting moved particle cloud is then used to create the adjusted convex hull after which these particles are discarded and the original particles are moved again using the plain q value.
-This method of achieving the convex hull padding is a bit involved and probably computationally more costly than just applying the movement model once and adjusting the size of the resulting convex hull using some other transformation. However this approach has the upside of retaining the original logic of convex hull creation and allowing to “decompose” the used noise. I.e. using a q value of 0.9 and ch_q_adjustment value of 0.52 leads to a similar sized convex hull as using the q value of 1.42.
 
 ### Uskottavuusmallit
 
@@ -270,6 +249,22 @@ t is the current time step. For each time step l = t+1 … t+n do the following:
 Check if there is data available for that time step. If not
 and m==0 set m=l-t. If m>0 and m+1==l-t set m=l-t if. What this does is it finds the first missing data time step and sets the m value correspondingly. If there are consecutive missing data time steps this sets m to correspond to the last of these time steps.
 If m!=0 for each application of the movement model for this iteration of the positioning particle filter, adjust the noise q value as follows: q = q/10 (can be adjusted, but we still want to allow for some movement to let the positioning system converge to the right stationary position).
+
+### Datan valinta
+
+In the positioning particle filter, convex hull method is used in angle selection. The basic premise of this method is simple. Before evaluating particle likelihoods an angle/locator selection is performed. As one step of this process, a convex hull is drawn around the particle cloud and only angles that intersect this polygon get included in the likelihood evaluation. The following illustration explains the method.
+
+Here the angles from the locators #2 and #1 get included in the likelihood evaluation as they intersect the convex hull of the particle cloud whereas the angle from locator #3 is discarded.
+As the basic interpretation of the particle cloud is that the probability of the tag being within it is one, we can safely assume that the correct position of the tag is also within the convex hull enclosing the particle cloud. Thus this method works well for getting rid of poor angles and reflections. 
+
+The Problem
+However, the above method also leads to a problem: the smaller the particle cloud gets, the more precise the angles need to be to get included in the likelihood evaluation. When running the positioning particle filter at the frequency of one this is rarely a problem, as this frequency necessitates a noise q value of 1.5m thus leading to particle clouds averaging at least 3m in width. However if we want to move to a higher frequency to be able to reduce the noise value into centimeter range, this will become a problem.
+
+The Solution
+The simplest solution to the above problem is to add padding to the convex hull. An example of this is pictured below.
+
+In the R positioning particle filter this padding is achieved by introducing a new design parameter called ch_q_adjustment. Before the application of the movement model this value is added to the q noise value and the particles are moved using this adjusted q_new = q + ch_q_adjustment value. The resulting moved particle cloud is then used to create the adjusted convex hull after which these particles are discarded and the original particles are moved again using the plain q value.
+This method of achieving the convex hull padding is a bit involved and probably computationally more costly than just applying the movement model once and adjusting the size of the resulting convex hull using some other transformation. However this approach has the upside of retaining the original logic of convex hull creation and allowing to “decompose” the used noise. I.e. using a q value of 0.9 and ch_q_adjustment value of 0.52 leads to a similar sized convex hull as using the q value of 1.42.
 
 ### Karttasovitusalgoritmi
 
