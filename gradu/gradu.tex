@@ -1110,16 +1110,48 @@ p(y_k|x_k)\propto\prod_{j=1}^4\exp\left\{-\frac{\norm{h(x^j_k,u)-y^j_k}^2}{2(\ha
 \hypertarget{uskottavuusmallit}{%
 \subsection{Uskottavuusmallit}\label{uskottavuusmallit}}
 
-Uudet uskottavuusmallit. Truncated Normal and von Mises.
+Jokainen yhtä tulokulmaa vastaava \emph{angler}-sovelluksen tuottama havaintodatarivi pitää sisällään neljä parametrimuuttujaa, \texttt{azimuth\_location}, \texttt{azimuth\_scale}, \texttt{elevation\_location} ja \texttt{elevation\_scale}. Koska \emph{angler}-sovellus on kirjoitettu varta vasten tuottamaan dataa hiukassuodinpaikannusalgoritmia varten, ovat nämä suoraan hiukassuotimen uskottavuusmallin parametreja.
+
+\emph{Angler}-sovelluksessa XR-2-laitteen ja AT-2-tagin välinen atsimuuttikulma simuloidaan von Mises -jakaumasta, jolloin muuttujat \texttt{azimuth\_location} ja \texttt{azimuth\_scale} vastaavat tämän jakauman sijainti- ja skaalaparametreja \(\mu\) ja \(\kappa\) ja näistä edellistä voidaan pitää itse atsimuuttikulman estimaattina. Määritellään siis jokaiselle hiukkassuotimen aikahetkelle \(k\) sekä XR-2-laitteelle \(l\) seuraava atsimuuttikulman uskottavuusmalli:
+
+\begin{align}\label{atsimuutti-uskottavuusmalli}
+L_{\theta_{k,l}}(y_{k,l}|x_{k,l}; \mu_{k,l}, \kappa_{k,l})=\frac{e^{\kappa_{k,l} \text{cos}(x_{k,l}-\mu_{k,l})}}{2 \pi I_0(\kappa_{k,l})}
+\end{align},
+
+missä \(I_0\) on 0:s ensimmäisen lajin Bessel-funktio ja \(x_{k,l}\) on jokaisen hiukkasen \(n=1,\ldots,N\) sekä XR-2-laitteen \(l\) välinen suuntimakulma.
+
+Vastaavasti \emph{angler}-sovelluksessa XR-2-laitteen ja AT-2-tagin välinen korkeuskulma simuloidaan katkaistusta normaalijakaumasta, jolle \(a=0\) ja \(b=2 \pi\). Nyt muuttujat \texttt{elevation\_location} ja \texttt{elevation\_scale} vastaavat tämän jakauman sijainti- ja skaalaparametreja \(\mu\) ja \(\sigma^2\) ja näistä edellistä voidaan pitää itse korkeuskulman estimaattina. Määritellään jokaiselle hiukkassuotimen aikahetkelle \(k\) sekä XR-2-laitteelle \(l\) seuraava korkeuskulman uskottavuusmalli:
+
+\begin{align}\label{korkeus-uskottavuusmalli}
+L_{\gamma_{k,l}}(y_{k,l}|x_{k,l}; \mu_{k,l}, \sigma^2_{k,l}, a=0, b=2 \pi)=\frac{1}{\sqrt{2 \pi}} \text{exp}(-\frac{(x_{k, l}-\mu_{k, l})}{2 \sigma^2}) / \sqrt{\sigma^2}Z_{k,l}
+\end{align},
+
+missä \(Z_{k,l}=\frac{1}{2}(1+\text{erf}(\frac{b-\mu_{k,l}}{\sqrt{\sigma^2}}))-\frac{1}{2}(1+\text{erf}(\frac{a-\mu_{k,l}}{\sqrt{\sigma^2}}))\) ja \(x_{k,l}\) on jokaisen hiukkasen \(n=1,\ldots,N\) sekä XR-2-laitteen \(l\) välinen korkeuskulma.
+
+Uskottavuusmallit \ref{atsimuutti-uskottavuusmalli} ja \ref{korkeus-uskottavuusmalli} kertomalla saadaan yhdistetty uskottavuusmalli hiukkassuotimen aikahetkelle \(k\) sekä XR-2-laitteelle \(l\)
+
+\begin{align}\label{yhdistetty-uskottavuusmalli}
+L_{k,l}=L_{\theta_{k,l}} \times L_{\gamma_{k,l}}
+\end{align},
+
+josta voidaan edelleen laskea jokaisen hiukkasen uskottavuus ajanhetkenä \(k\)
+
+\begin{align}\label{lopullinen-uskottavuusmalli}
+L_{k}=\prod_i^L L_{{k,i}}
+\end{align}.
+
+Koska yllä esitettyjen mallien uskottavuudet ovat käytännössä erittäin pieniä, käytetään numeerisista syistä itse algoritmissa logaritmoituja uskottavuusmalleja, jolloin \(l_{k,l} = \text{log}(L_{\theta_{k_l}}) + \text{log}(L_{\gamma_{k_l}})\) ja \(l_k = \sum_i^L l_{k,i}\).
 
 \hypertarget{dynaaminen-malli}{%
 \subsection{Dynaaminen malli}\label{dynaaminen-malli}}
 
-In the particle filter positioning system there are various parts where we want to operate in meters instead of lat/long coordinates. The most important of these is the movement/dynamic model which is responsible for moving the particles between the time steps k and k+1. In the R code this is formulated as the following dead-reckoning model which is applied to each of the particles
+Dynaamisen mallin tehtävänä on liikuttaa hiukkasia ajanhetkien \(k\) ja \(k+1\) välillä. Dynaaminen malli perustuu vektorisuunnistusmalliin \ref{tilamalli-liikkuva}. Koska AT-2-tagi ei sisällä luotettavaa IMU-yksikköä, ei tagi tuota nopeus- tai suuntadataa. Tästä syystä vektorisuunnistusmallin nopeutta ilmaiseva skalaarimuuttuja \(D_k=0\), jolloin malli yksinkertaistuu satunnaiskävelymalliksi
 
-where x\_k is the previous position of a single particle, represented as a vector with two elements, latitude and longitude, respectively, D\_k a scalar representing the current speed, psi\_k a scalar representing the current bearing and v\_k a vector with two noise elements, one for latitude and other for longitude.
-In practice the D\_k is currently set to 0 so the model is reduced to x\_\{k+1\} = x\_k + v\_k, i.e.~a noise-only random walk.
-In the movement model the noise v\_k is created as follows. First the desired random walk movement distance d is sampled from the truncated Normal distribution with a=0, b=q\_max and sd=q where q\_max and q are adjustable parameters. Then the direction to which to move p is sampled from Uniform distribution with a=0 and b=2pi. Now the noise vector v\_k is created as v\_k = (cos(p)* d, sin(p)*d).
+\begin{align}\label{dynaaminen-malli}
+x_{k+1}=x_k + v_k
+\end{align},
+
+missä \(v_k\) on kohinaa. Kohina luodaan jokaiselle ajanhetkelle seuraavasti. First the desired random walk movement distance d is sampled from the truncated Normal distribution with a=0, b=q\_max and sd=q where q\_max and q are adjustable parameters. Then the direction to which to move p is sampled from Uniform distribution with a=0 and b=2pi. Now the noise vector v\_k is created as v\_k = (cos(p)* d, sin(p)*d).
 
 \subsection{Paikallaolon havaitseminen}
 
