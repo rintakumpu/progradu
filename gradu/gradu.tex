@@ -1142,38 +1142,6 @@ L_{k}=\prod_i^L L_{{k,i}}
 
 Koska yllä esitettyjen mallien uskottavuudet ovat käytännössä erittäin pieniä, käytetään numeerisista syistä itse algoritmissa logaritmoituja uskottavuusmalleja, jolloin \(l_{k,l} = \text{log}(L_{\theta_{k_l}}) + \text{log}(L_{\gamma_{k_l}})\) ja \(l_k = \sum_i^L l_{k,i}\).
 
-\hypertarget{dynaaminen-malli}{%
-\subsection{Dynaaminen malli}\label{dynaaminen-malli}}
-
-Dynaamisen mallin tehtävänä on liikuttaa hiukkasia ajanhetkien \(k\) ja \(k+1\) välillä. Dynaaminen malli perustuu vektorisuunnistusmalliin \ref{tilamalli-liikkuva}. Koska AT-2-tagi ei sisällä luotettavaa IMU-yksikköä, ei tagi tuota nopeus- tai suuntadataa. Tästä syystä vektorisuunnistusmallin nopeutta ilmaiseva skalaarimuuttuja \(D_k=0\), jolloin malli yksinkertaistuu satunnaiskävelymalliksi
-
-\begin{align}\label{dynaaminen-malli}
-x_{k+1}=x_k + v_k
-\end{align},
-
-missä \(v_k\) on kohinaa. Kohina luodaan jokaiselle ajanhetkelle seuraavasti. First the desired random walk movement distance d is sampled from the truncated Normal distribution with a=0, b=q\_max and sd=q where q\_max and q are adjustable parameters. Then the direction to which to move p is sampled from Uniform distribution with a=0 and b=2pi. Now the noise vector v\_k is created as v\_k = (cos(p)* d, sin(p)*d).
-
-\subsection{Paikallaolon havaitseminen}
-
-Koska xyz käytetään paikallaolon havaitsemiseen seuraavaa algoritmia. Tämä tuottaa viipeen L=10 mutta samaa viivettä voidaan käyttää myöhemmin siloittelun laskennassa (kts.)
-
-The algorithm presented below is applied at the start of each iteration of the positioning particle filter. Its results are applied to the movement model noise, both in basic application of the movement model as well as in auxiliary/smoothing movement.
-Assumptions:
-If we have missing data i.e.~during a single second/time step the tag is not seen by any of the locators, we assume that the tag is in standby mode (as in standby mode the frequency is lowered to 1/10). Looking at the sequence numbers to determine whether the tag is in fact in standby would necessitate the introduction of a much longer lag and thus this assumption is used instead.
-If the tag is in standby mode it is also stationary. Inverse is not assumed to be true so this algorithm will only deal with stationarity in the standby mode.
-
-Input:
-Azimuth angle data for a single tag for 1+n time steps (current time step + n time steps to the future). To obtain this data, a corresponding lag of n time steps needs to be introduced to the positioning particle filter. n should be set to the time it takes for the tag to enter the standby mode when the accelerometer no longer detects movement.
-Previous value of m (described below). For the first time step set m=0.
-Output: An integer variable m indicating for how many time steps we should dampen the movement model noise. If m==0 no dampening is applied.
-
-Steps:
-If m==0 apply step 2, otherwise decrement m by 1.
-t is the current time step. For each time step l = t+1 \ldots{} t+n do the following:
-Check if there is data available for that time step. If not
-and m==0 set m=l-t. If m\textgreater0 and m+1==l-t set m=l-t if. What this does is it finds the first missing data time step and sets the m value correspondingly. If there are consecutive missing data time steps this sets m to correspond to the last of these time steps.
-If m!=0 for each application of the movement model for this iteration of the positioning particle filter, adjust the noise q value as follows: q = q/10 (can be adjusted, but we still want to allow for some movement to let the positioning system converge to the right stationary position).
-
 \hypertarget{datan-valinta}{%
 \subsection{Datan valinta}\label{datan-valinta}}
 
@@ -1191,13 +1159,74 @@ The simplest solution to the above problem is to add padding to the convex hull.
 In the R positioning particle filter this padding is achieved by introducing a new design parameter called ch\_q\_adjustment. Before the application of the movement model this value is added to the q noise value and the particles are moved using this adjusted q\_new = q + ch\_q\_adjustment value. The resulting moved particle cloud is then used to create the adjusted convex hull after which these particles are discarded and the original particles are moved again using the plain q value.
 This method of achieving the convex hull padding is a bit involved and probably computationally more costly than just applying the movement model once and adjusting the size of the resulting convex hull using some other transformation. However this approach has the upside of retaining the original logic of convex hull creation and allowing to ``decompose'' the used noise. I.e. using a q value of 0.9 and ch\_q\_adjustment value of 0.52 leads to a similar sized convex hull as using the q value of 1.42.
 
-\hypertarget{karttasovitusalgoritmi}{%
-\subsection{Karttasovitusalgoritmi}\label{karttasovitusalgoritmi}}
+\hypertarget{dynaaminen-malli}{%
+\subsection{Dynaaminen malli}\label{dynaaminen-malli}}
 
-Hyödynnetään polygoneja ja raycastingia. Asetetaan esimerkiksi rangaistus 1/1000. Jolloin uskottavuusfunktiot muuttuvat muotoon. Toteutus seuraa paperia XYZ (2019 tjsp).
+Dynaamisen mallin tehtävänä on liikuttaa hiukkasia ajanhetkien \(k\) ja \(k+1\) välillä. Dynaaminen malli perustuu vektorisuunnistusmalliin \ref{tilamalli-liikkuva}. Koska AT-2-tagi ei sisällä luotettavaa IMU-yksikköä, ei tagi tuota nopeus- tai suuntadataa. Tästä syystä vektorisuunnistusmallin nopeutta ilmaiseva skalaarimuuttuja \(D_k=0\), jolloin malli yksinkertaistuu satunnaiskävelymalliksi
+
+\begin{align}\label{dynaaminen-malli-empiirinen}
+x_{k+1}=x_k + v_k
+\end{align},
+
+missä \(v_k\) on kohinaa. Kohina luodaan jokaiselle ajanhetkelle seuraavasti. Ensin luodaan etäisyysvektori \(d_k\) katkaistusta normaalijakaumasta, jonka sijaintiparametri on 0 ja missä keskihajonta \(q\) ja katkaisukohdat \(q_min\) sekä \(q_max\) ovat paikannusalgoritmin suunnitteluparametreja:
+
+\begin{align}
+&d_k \sim \mathcal{N_{\text{katkaistu}}}(\mu=0, \sigma=q, a=q_{\text{min}}, b=q_{\text{max}}),
+\end{align}.
+
+Tämän jälkeen luodaan suuntavektori \(p\) tasajakaumasta
+
+\begin{align}
+&p_k\sim\mathcal{U}(0, 2 \pi)
+\end{align},
+
+ja lopulta kohinavektori
+
+\begin{align}
+&v_k = (\text{cos}(p_k) \times d_k, \text{sin}(p_k) \times d_k)
+\end{align},
+
+missä vektorin ensimmäinen elementti vastaa sijaintien leveysasteiden kohinaa ja toinen elementti pituusasteiden kohinaa.
+
+\hypertarget{paikallaanolon-havaitseminen}{%
+\subsubsection{Paikallaanolon havaitseminen}\label{paikallaanolon-havaitseminen}}
+
+Paristonsäästyösyistä AT-2-tagi lähettää dataa ainoastaan liikkuessaan. Jos laite ei ole 10 sekunnin aikana havainnut IMU-yksikön perusteella kiihtyvyyttä, lopettaa laite datan lähettämisen. Laite on tällöin valmiusmoodissa. Tätä tietoa voidaan hyödyntää poistamalla dynaamisesta mallista kohina, kun laitteen tiedetään olevan paikallaan. Koska hiukkassilottimen (kts. kohta TODO) vuoksi tarvitsemme paikannusalgoritmiin viipeen, voimme hyödyntää tätä viivettä myös paikallaolon tehokkaampaan havaitsemiseen.
+
+Jos yksikään XR-2-laite ei ole havainnut tagia yhdenkään sekuntiin kuuluvan 20 aika-askeleen aikana, voimme olettaa laitteen olevan valmiusmoodissa ja siten myös paikoillaan. Huomattavaa on kuitenkin, että päinvastainen ei päde. Paikoillaan oleva laite ei välttämättä ole valmisumoodissa, sillä valmiusmoodiin siirtyminen kestää 10 sekuntia. Tähän oletukseen perustuen voidaan havaita paikallaolon ja vaimentaa dynaamista mallia algoritmin \ref{paikallaanoloalgo} avulla. Algoritmi ajetaan jokaisella aika-askeleella \(k\) ennen hiukkasten siirtoa dynaamisen mallin avulla.
+
+\begin{algorithm}[H]
+\label{paikallaanoloalgo}
+\DontPrintSemicolon
+\SetAlgoShortEnd
+\KwResult{Positiivinen kokonaislukumuuttuja $m$, joka osoittaa kuinka moneksi aikahetkeksi dynaamista mallia tulee vaimentaa. Jos $m=0$ mallia ei vaimenneta.;}
+\KwData{Tagin tulokulmadata $n+1$ aika-askeleelle (nykyinen aika-askel + $n$ aika-askelta tulevaisuuteen). $n$ tulee asettaa niin, että paikallaan oleva tagi ehtii valmiustilaan. Koska tämä tapahtuu 10 sekunnin kohdalla, valitaan $n=200$. Jos saatavilla, edellinen muuttujan $m$ arvo. Algoritmin ensimmäisellä ajokerralla asetetaan $m=0$;}
+\Begin{
+  \Begin{Jos $m>0$, asetetaan $m=f(m)=m-1$ ja pysäytetään algoritmi. Jos $m=0$ jatketaan algoritmin suorittamista.;}
+  \For{$k=\{T-1,\ldots,0\}$}{
+    \Begin{Lasketaan uudet painot \newline $w^i_{k|T} = \sum_j w_{k+1|T}^j  \frac{w_k^i p(x_{k+1}^j|x_k^i)}{\sum_l w_k^l p(x_{k+1}^j|x_k^l)}$\;}
+  }  
+}
+\caption{Paikallaanolon havaitsemisalgoritmi}
+\end{algorithm}
+
+,
+
+What this does is it finds the first missing data time step and sets the m value correspondingly. If there are consecutive missing data time steps this sets m to correspond to the last of these time steps.
+
+Steps: If m==0 apply step 2, otherwise decrement m by 1.
+t is the current time step. For each time step l = t+1 \ldots{} t+n do the following:
+Check if there is data available for that time step. If not
+and m==0 set m=l-t. If m\textgreater0 and m+1==l-t set m=l-t if.
+If m!=0 for each application of the movement model for this iteration of the positioning particle filter, adjust the noise q value as follows: q = q/10 (can be adjusted, but we still want to allow for some movement to let the positioning system converge to the right stationary position).
+
+\hypertarget{karttasovitusalgoritmi}{%
+\subsubsection{Karttasovitusalgoritmi}\label{karttasovitusalgoritmi}}
+
+Dynaamista mallia sovellettaessa, voimme myös höydyntää saatavilla olevaa sisätilan karttadataa. Hyödynnetään polygoneja ja raycastingia. Asetetaan esimerkiksi rangaistus 1/1000. Jolloin uskottavuusfunktiot muuttuvat muotoon. Toteutus seuraa paperia XYZ (2019 tjsp).
 
 \hypertarget{reitinhakualgoritmi}{%
-\subsection{Reitinhakualgoritmi}\label{reitinhakualgoritmi}}
+\subsubsection{Reitinhakualgoritmi}\label{reitinhakualgoritmi}}
 
 \begin{itemize}
 \tightlist
@@ -1220,7 +1249,7 @@ Hyödynnetään polygoneja ja raycastingia. Asetetaan esimerkiksi rangaistus 1/1
 \hypertarget{siloittelualgoritmit}{%
 \subsection{Siloittelualgoritmit}\label{siloittelualgoritmit}}
 
-Hyödynnetään alaluvussa TODO esitetty prediktiivistä siloitinta. Satunnaiskulkumalli ei ole optimaalinen, mutta \ldots.
+Hyödynnetään alaluvussa TODO esitetty prediktiivistä siloitinta. Satunnaiskulkumalli ei ole optimaalinen, mutta \ldots{}
 
 \subsection{WB-sisätilapaikannusalgoritmi}
 
