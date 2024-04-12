@@ -290,8 +290,8 @@ Tämän jälkeen luodaan suuntavektori $p$ tasajakaumasta
 ja lopulta kohinavektori 
 
 \begin{align}
-&v_k = (\text{cos}(p_k) \times d_k, \text{sin}(p_k) \times d_k)
-\end{align},
+&v_k = (\text{cos}(p_k) \times d_k, \text{sin}(p_k) \times d_k),
+\end{align}
 
 missä vektorin ensimmäinen elementti vastaa sijaintien leveysasteiden kohinaa ja toinen elementti pituusasteiden kohinaa. 
 
@@ -309,24 +309,24 @@ Jos yksikään XR-2-laite ei ole havainnut tagia yhdenkään sekuntiin kuuluvan 
 \KwData{Tagin tulokulmadata $n+1$ aika-askeleelle (nykyinen aika-askel + $n$ aika-askelta tulevaisuuteen). $n$ tulee asettaa niin, että paikallaan oleva tagi ehtii valmiustilaan. Jos saatavilla, edellinen muuttujan $m$ arvo. Algoritmin ensimmäisellä ajokerralla asetetaan $m=0$;}
 \Begin{
   \Begin{Jos $m>0$, asetetaan $m=f(m)=m-1$ ja pysäytetään algoritmi. Jos $m=0$ jatketaan algoritmin suorittamista.;}
-  \For{$k=\{T-1,\ldots,0\}$}{
-    \Begin{Lasketaan uudet painot \newline $w^i_{k|T} = \sum_j w_{k+1|T}^j  \frac{w_k^i p(x_{k+1}^j|x_k^i)}{\sum_l w_k^l p(x_{k+1}^j|x_k^l)}$\;}
+  \For{$l=\{k+1,\ldots,k+n\}$}{
+    \Begin{Merkitään $o_l$ kulmahavaintojen määrää ajanhetkenä $l$;}
+    \If{$o_l = 0$ ja $m=0$}{\Begin{Asetetaan $m=l-k$;}}
+    \Else{
+      \If{$o_l=0$, $m>0$ ja $m+1=l-k$}{\Begin{Asetetaan $m=l-k$;}}}
   }  
 }
 \caption{Paikallaanolon havaitsemisalgoritmi}
 \end{algorithm},
 
-What this does is it finds the first missing data time step and sets the m value correspondingly. If there are consecutive missing data time steps this sets m to correspond to the last of these time steps.  Koska tämä tapahtuu 10 sekunnin kohdalla, valitaan $n=200$. 
+Yllä esitetty algoritmi etsii ensin ensimmäisen aika-askeleen, jonka aikana ei ole tallennettu lainkaan kulmahavaintoja ja asettaa muuttujan $m$ arvon vastaamaan ttä aika-askelta. Jos algoritmi löytää useita peräkkäisiä aika-askeleita, joiden aikana ei ole tallennettu lainkaan kulmahavaintoija, valitsee sen näistä suurimman. Koska koe-esimerkissä AT-2-laite lähettää dataa 20hz taajuudella ja valmiustila aktivoituu 10 sekunnin kohdalla, valitaan alla $n=200$. 
 
-Steps: If m==0 apply step 2, otherwise decrement m by 1.
-t is the current time step. For each time step l = t+1 … t+n do the following:
-Check if there is data available for that time step. If not
-and m==0 set m=l-t. If m>0 and m+1==l-t set m=l-t if. 
-If m!=0 for each application of the movement model for this iteration of the positioning particle filter, adjust the noise q value as follows: q = q/10 (can be adjusted, but we still want to allow for some movement to let the positioning system converge to the right stationary position).
+Jos paikallaanolon havaitsemisalgoritmin nojalla dynaamista mallia päädytään vaimentamaan (so. $m>0$), asetetaan dynaamisen mallin keskihajonta-arvo $q_{\text{vaimennettu}}=\frac{q}{10}$. Dynaamista mallia ei siis täysin poisteta käytöstä, jotta paikannusalgoritmi pystyy tehokkaammin hyödyntämään myös vaimennettujen aika-askeleiden dataa ja sijaintiestimaatti konvergoi mahdollisimman lähelle todellista sijaintia, johon tagi on pysähtynyt.
 
 #### Karttasovitusalgoritmi
 
-Dynaamista mallia sovellettaessa, voimme myös höydyntää saatavilla olevaa sisätilan karttadataa. Hyödynnetään polygoneja ja raycastingia. Asetetaan esimerkiksi rangaistus 1/1000. Jolloin uskottavuusfunktiot muuttuvat muotoon. Toteutus seuraa paperia XYZ (2019 tjsp).
+Dynaamista mallia sovellettaessa, voimme myös höydyntää saatavilla olevaa sisätilan karttadataa. Hyödynnetään polygoneja ja raycastingia. Asetetaan esimerkiksi rangaistus 1/1000. Jolloin uskottavuusfunktiot muuttuvat muotoon. Toteutus seuraa Arno Solinin &al artikkelia "Terrain Navigation in the Magnetic Landscape:
+Particle Filtering for Indoor Positioning" (@Solin-2016).
 
 #### Reitinhakualgoritmi
 
@@ -344,7 +344,7 @@ Hyödynnetään alaluvussa TODO esitetty prediktiivistä siloitinta. Satunnaisku
 
 \subsection{WB-sisätilapaikannusalgoritmi}
 
-Alla esitetään 
+Alla esitetään SIR-algoritmiin ja yllä esitettyihin algoritmeihin perustuva sisätilapaikannusalgoritmi kokonaisuudessaan.
 
 \begin{algorithm}[H]
 \label{wb-positioning}
