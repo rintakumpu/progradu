@@ -269,7 +269,7 @@ This method of achieving the convex hull padding is a bit involved and probably 
 
 ### Dynaaminen malli
 
-Dynaamisen mallin tehtävänä on liikuttaa hiukkasia ajanhetkien $k$ ja $k+1$ välillä. Dynaaminen malli perustuu vektorisuunnistusmalliin \ref{tilamalli-liikkuva}. Koska AT-2-tagi ei sisällä luotettavaa IMU-yksikköä, ei tagi tuota nopeus- tai suuntadataa. Tästä syystä vektorisuunnistusmallin nopeutta ilmaiseva skalaarimuuttuja $D_k=0$, jolloin malli yksinkertaistuu satunnaiskävelymalliksi
+Dynaamisen mallin tehtävänä on liikuttaa hiukkasia ajanhetkien $k$ ja $k+1$ välillä. Dynaaminen malli perustuu vektorisuunnistusmalliin \ref{tilamalli-liikkuva}. Vastaavaa mallia hyödyntää muun muassa Solin (2016) [@Solin-2016]. Koska AT-2-tagi ei sisällä luotettavaa IMU-yksikköä, ei tagi kuitenkaan tuota nopeus- tai suuntadataa. Tästä syystä vektorisuunnistusmallin nopeutta ilmaiseva skalaarimuuttuja $D_k=0$, jolloin malli yksinkertaistuu satunnaiskävelymalliksi
 
 \begin{align}\label{dynaaminen-malli-empiirinen}
 x_{k+1}=x_k + v_k
@@ -325,8 +325,10 @@ Jos paikallaanolon havaitsemisalgoritmin nojalla dynaamista mallia päädytään
 
 #### Karttasovitusalgoritmi
 
-Dynaamista mallia sovellettaessa, voimme myös höydyntää saatavilla olevaa sisätilan karttadataa. Hyödynnetään polygoneja ja raycastingia. Asetetaan esimerkiksi rangaistus 1/1000. Jolloin uskottavuusfunktiot muuttuvat muotoon. Toteutus seuraa Arno Solinin &al artikkelia "Terrain Navigation in the Magnetic Landscape:
-Particle Filtering for Indoor Positioning" (@Solin-2016).
+Dynaamista mallia sovellettaessa, voimme myös höydyntää saatavilla olevaa sisätilan karttadataa. Hyödynnetään polygoneja ja raycastingia. Vastaavaa toteutusta ovat hyödyntäneet muun muassa Davidson &al (2010) [@Davidson-2010] sekä Bojja &al (2015) [@Bojja-2015]. Missä edellisessä *** asetetaan rangaistus ja jälkimmäisessä mahdottomaan *** sijaintiin päätyvät hiukkaset poistetaan ja suoritetaan uudelleenotanta. Näitä molempia ajatuksia hyödynnetään paikannusalgoritmissa alla.
+
+Asetetaan esimerkiksi rangaistus 1/1000. Jolloin uskottavuusfunktiot muuttuvat muotoon. Toteutus seuraa Arno Solinin &al artikkelia "Terrain Navigation in the Magnetic Landscape:
+Particle Filtering for In door Positioning" [@Solin-2016].
 
 #### Reitinhakualgoritmi
 
