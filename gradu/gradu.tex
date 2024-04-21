@@ -1222,10 +1222,27 @@ Jos paikallaanolon havaitsemisalgoritmin nojalla dynaamista mallia päädytään
 \hypertarget{karttasovitusalgoritmi}{%
 \subsubsection{Karttasovitusalgoritmi}\label{karttasovitusalgoritmi}}
 
-Dynaamista mallia sovellettaessa, voimme myös höydyntää saatavilla olevaa sisätilan karttadataa. Hyödynnetään polygoneja ja raycastingia. Vastaavaa toteutusta ovat hyödyntäneet muun muassa Davidson \&al (2010) \citep{Davidson-2010} sekä Bojja \&al (2015) \citep{Bojja-2015}. Missä edellisessä *** asetetaan rangaistus ja jälkimmäisessä mahdottomaan *** sijaintiin päätyvät hiukkaset poistetaan ja suoritetaan uudelleenotanta. Näitä molempia ajatuksia hyödynnetään paikannusalgoritmissa alla.
+Dynaamista mallia sovellettaessa, voimme myös höydyntää saatavilla olevaa sisätilan karttadataa. Määritellään kaksi polygonityyppiä, lattiapolygoni \(F\) sekä estepolygonit \(E=\{E_1,\ldots,E_n\}\). Lattiapolygonit määrittävät alueen, jonka sisällä hiukassuodinalgoritmien hiukkasten pitää pysyä. Lattiapolygoneja on vain yksi. Vastaavasti estepolygonien joukko määrittää lattiapolygonien sisällä alueet, joiden sisälle hiukassuodinalgoritmin hiukkaset eivät voi siirtyä ja joiden läpi tagi ei voi kulkea. Käytännössä estepolygonit kuvaavat tilan seiniä sekä tiedossa olevia esteitä, kuten hyllyjä, pöytiä ja niin edelleen.
 
-Asetetaan esimerkiksi rangaistus 1/1000. Jolloin uskottavuusfunktiot muuttuvat muotoon. Toteutus seuraa Arno Solinin \&al artikkelia ``Terrain Navigation in the Magnetic Landscape:
-Particle Filtering for In door Positioning'' \citep{Solin-2016}.
+Tarkastellaan siis ensin jokaisen \(i=1,\ldots,N\) hiukkasen kohdalla, siirtääkö dynaaminen malli hiukkasen polygonin \(F\) ulkopuolelle tai jonkin polygoneista \(E\) sisäpuolelle ja asetetaan näitä hiukkasia vastaava paino nollaan.
+
+\begin{align}\label{inclusion-polygon}
+\displaystyle w^i_{k+1}={\begin{cases}w^i_{k+1}&\text{jos } x^i_{k+1} \in F,\\
+0& \text{jos } x^i_{k+1} \notin F \lor x^i_{k+1} \in E \end{cases}}\end{align},
+
+jonka jälkeen tarkastellaan jokaisen jäljellä olevan (\(w^i_{k+1} \neq 0\)) mallin siirtämän hiukkasen polkua \(x_{k+1}^i-x_{k}^i\). Jos tämä polku ylittää yhden tai useamman estepolygonin \(E\) asetetaan kyseiselle hiukkaselle rangaistus seuraavasti:
+
+\begin{align}\label{exclusion-polygon}
+\displaystyle w^i_{k+1}={\begin{cases}P \times w^i_{k+1}&\text{jos } x^i_{k+1} \text{ylittää estepolygonin},\\
+w^i_{k+1}& \text{muulloin }\end{cases}}\end{align},
+
+jossa rangaistus \(P\) on algoritmin suunnitteluparametri. Vastaavaa toteutusta ovat hyödyntäneet muun muassa Davidson \&al (2010) \citep{Davidson-2010}, jotka ehdottavat rangaistusarvoa \(\frac{1}{1000}\). Rangaistuksen valintaan palataan luvussa parametrien valinta TODO LINKKI.
+
+Koska erityisesti \ref{inclusion-polygon} asettaa hiukkasten painoja nollaan, eivät karttasovitetut hiukkaset välttämättä enää estimoi suodinjakaumaa tehokkaasti. Bojja \&al \citep{Bojja-2015} ehdottavat suoritettavaksi uudelleenotantaa karttasovituksen jälkeen. Uudelleenotannalla korvataan nollapainoiset hiukkaset hiukkasilla, joiden paino ei ole nolla:
+
+\begin{align}\label{map-matching-resampling}
+\displaystyle \operatorname{atan2}(y,x)={\begin{cases}\arctan({\frac {y}{x}})&{\text{jos }}>0,\\\arctan({\frac {y}{x}})+\pi &{\text{jos }}<0{\text{ ja }}y\geq 0,\\\arctan({\frac {y}{x}})-\pi & {\text{jos }}>0{\text{ ja }}<0,\\+{\frac {\pi }{2}}&{\text{jos }}x=0{\text{ ja }}>0,\\-{\frac {\pi }{2}}&{\text{jos }}x=0{\text{ ja }}<0,\\{\text{ei määritelty}}&{\text{jos }}x=0{\text{ ja }}y=0\end{cases}}
+\end{align}.
 
 \hypertarget{reitinhakualgoritmi}{%
 \subsubsection{Reitinhakualgoritmi}\label{reitinhakualgoritmi}}
