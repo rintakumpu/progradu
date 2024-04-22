@@ -341,25 +341,11 @@ w^i_{k+1}& \text{muulloin }\end{cases}}\end{align},
 
 jossa rangaistus $P$ on algoritmin suunnitteluparametri. Vastaavaa toteutusta ovat hyödyntäneet muun muassa Davidson &al (2010) [@Davidson-2010], jotka ehdottavat rangaistusarvoa $\frac{1}{1000}$. Rangaistuksen valintaan palataan luvussa parametrien valinta TODO LINKKI.
 
-Koska erityisesti \ref{inclusion-polygon} asettaa hiukkasten painoja nollaan, eivät karttasovitetut hiukkaset välttämättä enää estimoi suodinjakaumaa tehokkaasti. Bojja &al [@Bojja-2015] ehdottavat suoritettavaksi uudelleenotantaa karttasovituksen jälkeen. Uudelleenotannalla korvataan nollapainoiset hiukkaset hiukkasilla, joiden paino ei ole nolla:
-
-\begin{align}\label{map-matching-resampling}
-\displaystyle \operatorname{atan2}(y,x)={\begin{cases}\arctan({\frac {y}{x}})&{\text{jos }}>0,\\\arctan({\frac {y}{x}})+\pi &{\text{jos }}<0{\text{ ja }}y\geq 0,\\\arctan({\frac {y}{x}})-\pi & {\text{jos }}>0{\text{ ja }}<0,\\+{\frac {\pi }{2}}&{\text{jos }}x=0{\text{ ja }}>0,\\-{\frac {\pi }{2}}&{\text{jos }}x=0{\text{ ja }}<0,\\{\text{ei määritelty}}&{\text{jos }}x=0{\text{ ja }}y=0\end{cases}}
-\end{align}.
-
-#### Reitinhakualgoritmi
-
-* Create separate grids for raw positions and Kalman filtered positions with separate and adjustable grid cell widths.
-* After positioning estimates and their Kalman filtered counterparts are created, snap these to the grid. Note! By default particles are not snapped to the grid, only the position estimates.
-* See if the previous position is within speed limit / Kalman filter speed limit (these are separate arguments) distance. These are set to 3m/s by default.
-* If the speed limit is not exceeded, create a new grid-snapped position. Also create a position to all the grid cells between the newly created position and the previous position. This path is found using A* algorithm.
-* If the speed limit is exceeded, wait for new raw / Kalman filtered positions to come in until the speed limit is no longer exceeded, in which case proceed as in the previous step.
-* Note! Pathfinding positions are not used anywhere else in the R positioning algorithm. Thus both the pathfinding positions and their Kalman filtered counterpresents create an entirely independent layer of positions on top of raw / Kalman filtered positions.
-* Note^2! When doing the A* pathfinding the time between positions is split equally so that the interpolated positions get a fractional time step between the start and stop positions of the pathfinding. Thus the positioning frequency of 1 is not respected.
+Koska erityisesti \ref{inclusion-polygon} asettaa hiukkasten painoja nollaan, eivät karttasovitetut hiukkaset välttämättä enää estimoi suodinjakaumaa tehokkaasti. Bojja &al [@Bojja-2015] ehdottavat suoritettavaksi uudelleenotantaa karttasovituksen jälkeen. Uudellenotanta suoritetaan seuraavasti. Merkitään nollapainoisten hiukkasten lukumäärää $N_0$. Nyt otetaan uudet $N_0$ otosta palauttaen joukosta $\{x_{1:k}^i\}_{i=1}^N$, missä otoksen $i$ todennäköisyys on $w^i_{k|k}$. Korvataan nollapainoiset hiukkaset näin saadulla otoksella.
 
 ### Siloittelualgoritmit
 
-Hyödynnetään alaluvussa TODO esitetty prediktiivistä siloitinta. Satunnaiskulkumalli ei ole optimaalinen, mutta ...
+Koska haluttu sisätilapaikannusalgoritmi on online. Hyödynnetään alaluvussa TODO esitetty prediktiivistä siloitinta. Satunnaiskulkumalli ei ole optimaalinen, mutta ...
 
 \subsection{WB-sisätilapaikannusalgoritmi}
 
