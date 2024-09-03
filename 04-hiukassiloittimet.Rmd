@@ -1,10 +1,10 @@
-\chapter{Hiukassilottimet}
+\chapter{Hiukassilottimet} \label{hiukkassiloittimet}
 
-Tässä luvussa käsitellään suodinongelmaan läheisesti liittyvän hiukassiloittimen ratkaisemista ns. hiukassiloitinalgoritmien avulla. Kuten hiukassuotimien kohdalla, myös tässä luvussa esitetään ongelma ensin yleisessä Bayesilaisessa muodossa, jonka jälkeen siirrytään käsittelemään hiukkasmenetelmiin pohjautuvia siloitinalgoritmeja. Luvussa käsiteltävät algoritmit jaetaan kahteen pääkategoriaan, offline-algoritmeihin, joita sovelletaan hiukassuodinalgoritmin ajon jälkeen sekä online-algoritmeihin, jotka suoritetaan yhdessä hiukassuodinalgoritmin kanssa. Siloitinongelman esittely seuraa Särkkää (2013) [@sarkka-2013]. Algoritmien käsittely pohjautuu SIR-, BSPS- ja TODO-siloittimien osalta niin ikään Särkkään (2013) [@sarkka-2013]. TODO MUUT.
+Tässä luvussa käsitellään suodinongelmaan läheisesti liittyvän hiukassiloittimen ratkaisemista ns. hiukassiloitinalgoritmien avulla. Kuten hiukassuotimien kohdalla, myös tässä luvussa esitetään ongelma ensin yleisessä Bayesilaisessa muodossa, jonka jälkeen siirrytään käsittelemään hiukkasmenetelmiin pohjautuvia siloitinalgoritmeja. Luvussa käsiteltävät algoritmit jaetaan kahteen pääkategoriaan, offline-algoritmeihin, joita sovelletaan hiukassuodinalgoritmin ajon jälkeen sekä online-algoritmeihin, jotka suoritetaan yhdessä hiukassuodinalgoritmin kanssa. Siloitinongelman esittely seuraa Särkkää (2013) [@sarkka-2013]. Algoritmien käsittely pohjautuu SIR-siloittimien osalta Särkkään (2013) [@sarkka-2013] sekä Genshiro Kitagawan artikkeliin "Monte carlo filter and smoother for non-gaussian nonlinear state space models" (1996) [@kitagawa-2016]. , BSPS- ja TODO-siloittimien osalta niin ikään Särkkään (2013) [@sarkka-2013]. TODO MUUT.
 
 \section{Bayesilainen siloitin}
 
-Bayesilaisen siloittimen tarkoitus on laskea tilan $x_k$ marginaaliposteriorijakauma $p(x_k|y_{1:T}$ ajanhetkellä $k$, kun käytössä on havaintoja ajanhetkeen $T$ asti, missä $T>k$. Ero Bayesilaiseen suotimeen (kts. LUKULINKKI) on siinä, että suodinongelmassa havaintoja on saatavilla ainoastaan ajanhetkeen $k$ asti, kun taas siloitinongelmassa myös tulevat havainnot ovat saatavilla. Ajassa taaksepäin etenevät rekursiiviset yhtälöt ongelman ratkaisemiseksi voidaan esittää muodossa
+Bayesilaisen siloittimen tarkoitus on laskea tilan $x_k$ marginaaliposteriorijakauma $p(x_k|y_{1:T}$ ajanhetkellä $k$, kun käytössä on havaintoja ajanhetkeen $T$ asti, missä $T>k$. Ero Bayesilaiseen suotimeen (kts. alaluku \@ref(bayesilainen-suodin)) on siinä, että suodinongelmassa havaintoja on saatavilla ainoastaan ajanhetkeen $k$ asti, kun taas siloitinongelmassa myös tulevat havainnot ovat saatavilla. Ajassa taaksepäin etenevät rekursiiviset yhtälöt ongelman ratkaisemiseksi voidaan esittää muodossa
 
 \begin{align}\label{siloitin-prediktiivinen}
 p(x_{k+1}|y_{1:k})=\int_{\mathbb{R}^{n_x}}p(x_{k+1}|x_k)p(x_k|y_{1:k})\mathop{dx_k}.
@@ -14,15 +14,15 @@ p(x_{k+1}|y_{1:k})=\int_{\mathbb{R}^{n_x}}p(x_{k+1}|x_k)p(x_k|y_{1:k})\mathop{dx
 p(x_k|y_{1:T}) = p(x_k|y_{1:k}) \int \frac{p(x_{k+1}|x_k)p(x_{k+1}|y_{1:T})}{p(x_{k+1}|y_{1:k})} \mathop{dx_{k+1}}.
 \end{align},
 
-missä $p(x_k|y_{1:k})$ on suodintiheys ajanhetkellä $k$ ja $p(x_{k+1}|y_{1:k})$ prediktiivinen jakauma ajanhetkelle $k+1$. Kuten suodinongelman kohdalla, voidaan ongelma ratkaista suljetussa muodossa, kun mallit ovat LUVUNTODO tavoin lineaarisia. Tällöin kyseessä on Rauch-Turn-Striebel-siloitin (RTSS), josta käytetään myös nimitystä Kalman-siloitin. Samoin, kuten Kalman-suotimen kohdalla, ongelma voidaan tiettyjen ehtojen vallitessa linearisoida. Näitä linearisoituja suodattimia ei käsitellä tässä tutkielmassa. Hiukassuotimen tavoin hiukassiloitin ratkaisee ongelman mille hyvänsä epälineaariselle mallille.
+missä $p(x_k|y_{1:k})$ on suodintiheys ajanhetkellä $k$ ja $p(x_{k+1}|y_{1:k})$ prediktiivinen jakauma ajanhetkelle $k+1$. Kuten suodinongelman kohdalla, voidaan ongelma ratkaista suljetussa muodossa, kun mallit ovat lineaarisia. Tällöin kyseessä on Rauch-Turn-Striebel-siloitin (RTSS), josta käytetään myös nimitystä Kalman-siloitin. Samoin, kuten Kalman-suotimen kohdalla, ongelma voidaan tiettyjen ehtojen vallitessa linearisoida. Näitä linearisoituja suodattimia ei käsitellä tässä tutkielmassa. Hiukassuotimen tavoin hiukassiloitin ratkaisee ongelman mille hyvänsä epälineaariselle mallille.
 
 \section{Offline-algoritmit}
 
-Offline-siloittimet estimoivat siloitintiheyttä ajanhetkellä $k<T$, kun havaintodata on käytössä koko ajanjaksolta $1 \ldots T$. Oheiset algoritmit siis olettavat, että kaikki mahdollinen tuleva data on jo niiden käytössä. Ohessa käsitellään lyhyesti muutamaa ehdottua offline-hiukassiloitinalgoritmia.
+Offline-siloittimet estimoivat siloitintiheyttä ajanhetkellä $k<T$, kun havaintodata on käytössä koko ajanjaksolta $1 \ldots T$. Alla esitetyt algoritmit siis olettavat, että kaikki mahdollinen tuleva data on jo niiden käytössä. Ohessa käsitellään lyhyesti muutamaa ehdotettua offline-hiukassiloitinalgoritmia.
 
 \subsection{SIR-siloitin}
 
-SÄRKKÄ2013, KITAGAWA1996, DOUCET2000. Kuten aiemmin mainittua, näyttävät hiukassuodinalgoritmit, erityisesti SIR-algoritmi \ref{sir}, ratkaisevan siloitteluongelman ilmaiseksi, kunhan tallennamme ajanhetkellä $k$ koko otoshistorian $x_{0:k}^i$. Tällöin voimme estimoida täyttä siloitteluposteriorijakaumaa seuraavasti:
+Kuten aiemmin mainittua, näyttävät hiukassuodinalgoritmit, erityisesti SIR-algoritmi \ref{sir}, ratkaisevan siloitteluongelman ilmaiseksi, kunhan tallennamme ajanhetkellä $k$ koko otoshistorian $x_{0:k}^i$. Tällöin voimme estimoida täyttä siloitteluposteriorijakaumaa seuraavasti:
 
 \begin{align}\label{siloitin-posteriori}
 p(x_{0:T}|y_{1:T}) \approx \sum_{i=1}^N w_T^i \delta (x_{0:T}-x_{0:T}^i),
