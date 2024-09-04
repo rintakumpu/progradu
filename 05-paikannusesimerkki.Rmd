@@ -10,8 +10,7 @@ Optisessa paikannuksessa käytetään kameroita tai muita optisia/valoon perustu
 
 Yleinen valinta sisätilapaikannuksessa ovat erilaiset Bluetooth-standardiin tai muuhun radioteknologiaan (kuten esimerkiksi millimetriaaltoihin) perustuvat lähetin-vastaanotinratkaisut, joissa hyödynnetään laitteiden välisiä signaaleja etäisyyden tai kulman mittaamiseen. Radioteknologiaan perustuvilla järjestelmillä voidaan kotuullisin kustannuksin saavuttaa jopa senttimetritason paikannustarkkuus tietyissä sovelluksissa. Radioteknologiat ovat myös yksityisyyden näkökulmasta helpompia järjestelmiä toteuttaa kuin esimerkiksi optiseen paikannukseen perustuvat järjestelmät.
 
-Riippuen käytetystä teknologiasta, voidaanm ***. Kaaviossa XXX esitetään 
-Radioteknologiaan *** katso artikkeli "". Tässä luvussa k
+Riippuen käytetystä teknologiasta, voidaan sisätilapaikannuksessa soveltaa lukuisia eri paikannusalgoritmeja. Oguntalaa (2018) [@oguntala-2018] mukailevassa kaaviossa XXX esitetään pääpiirteittään eri paikannusalgoritmit sen mukaan, mikä sisätilapaikannusjärjestelmä on käytössä.
 
 \section{Teknologian kuvaus}
 
@@ -23,13 +22,13 @@ Walkbase on kehittänyt sisätilapaikannukseen oman laitteisto- ja ohjelmistorat
 E_{\text{pos}} = 
 \end{align},
 
-jolloin yhden testi TODO. Paikannusvirheeseen palataan luvun tulososassa. Walkbasen paikannusratkaisu koostuu kolmesta eri laitteistokomponentista, AT-2-Bluetooth-lähetin-vastaanottomista, jotka kiinnitetään ostoskärryihin, XR-2-Bluetooth-lähetin-vastaanottomista, jotka kiinnitetään tilan kattoripustuksiin sekä OSCU-laskentayksiköstä, joka luo paikkadataa XR-2.1-vastaanotinten perusteella ja lähettää paikkadatan edelleen palvelinkeskukseen. 
+jolloin yhden testi TODO. Paikannusvirheeseen palataan luvun tulososassa TODO. Walkbasen paikannusratkaisu koostuu kolmesta eri laitteistokomponentista, AT-2-Bluetooth-lähetin-vastaanottomista, jotka kiinnitetään ostoskärryihin, XR-2-Bluetooth-lähetin-vastaanottomista, jotka kiinnitetään tilan kattoripustuksiin sekä OSCU-laskentayksiköstä, joka luo paikkadataa XR-2.1-vastaanotinten perusteella ja lähettää paikkadatan edelleen palvelinkeskukseen. 
 
 AT-2 on Bluetooth 5.1 (BLE) -strandardin mukaan toimiva lähetin-vastaanotin, joka toimii 2.4Ghz taajuusalueella. Walkbasen suunnitteleman laitteen PCB-kehäantenni kykenee lähettämään GFSK-moduloitua dataa 2Mbps nopeudella. Laite saa virtansa yhdestä CR-2477-paristosta. 
 
 XR-2.1 on Bluetooth 5.1 (BLE) -strandardin mukaan toimiva lähetin-vastaanotin, joka toimii 2.4Ghz taajuusalueella. Walkbasen suunnitteleman laitteenPCB-kehäantenni kykenee lähettämään GFSK-moduloitua dataa 2Mbps nopeudella. Laite saa virtansa ethernet-lähiverkosta 802.3af-standardin mukaisesti. Laitteen vaatima laskenta tapahtuu Raspberry Pi Compute Module 4 -piirilevytietokoneella. Lisäksi laite sisältää inertiamittausyksikön, jota voidaan käyttää asennetun laitteen kallistumis- ja nyökkäämiskulman (*roll* ja *pitch*) arviomiseen.
 
-OSCU-laskentayksikkönä käytetään Ubuntu-käyttöjärjestelmällä toimivaa TODO. Koska OSCU-laskentayksikön laskentateho on rajallista, on paikannusalgoritmin aikakompleksisuus yksi käytettävän algoritmin ydinkriteereistä. Tähän palataan myöhemmin koeasetelman kuvauksessa TODO linkki.
+OSCU-laskentayksikkönä käytetään Ubuntu-käyttöjärjestelmällä toimivaa tietokonetta, jonka spesifikaatiot TODO. Koska OSCU-laskentayksikön laskentateho on rajallista, on paikannusalgoritmin aikakompleksisuus yksi käytettävän algoritmin ydinkriteereistä. Tähän palataan myöhemmin koeasetelman kuvauksessa TODO linkki.
 
 Tarvittavasta laskennasta vastaava ohjelmistojärjestelmä koostuu puolestaan neljästä ohjelmistokomponentista. C-ohjelmointikielellä toteutettu *angler* laskee AT-2-tagin lähettämän I/Q-datan perusteella signaalien tulokulman (kts. osio TODO), Go-ohjelmointikielellä toteutettu *moonraker* lähettää tulokulmadatan paikallisverkon yli OSCU-laskentayksikölle, jossa Go-ohjelmointikielellä toteutettu *launchpad* luo siitä sijaintidataa, jonka se lähettää edelleen palvelinkeskuksen taustajärjestelmään. 
 
@@ -46,13 +45,9 @@ Tässä luvussa keskitytään *launchpad*-sovelluksen hyödyntämään paikannus
 
 \subsection{AoA-menetelmistä} \label{aoa}
 
-vaihe-eron havaitsemiseen.
+vaihe-eron havaitsemiseen. *MUSIC-algoritmi* esitys seuraa Monson H. Hayesin kirjaa *Statistical Digital Signal Processing and Modeling* (1996) [@Hayes-1996].
 
-*MUSIC-algoritmi* esitys seuraa Monson H. Hayesin kirjaa *Statistical Digital Signal Processing and Modeling* (1996) [@Hayes-1996].
-
-Gunia [@Gunia-2023]
-
-Lisäksi *angler*-sovellus hyödyntää niin ikään omaa hiukassuodinalgoritmiaan tulokulmien laskentaan. Tätä hiukassuodinalgoritmia ei käsitellä tämän tutkielman puitteissa.
+Gunia [@Gunia-2023] Lisäksi *angler*-sovellus hyödyntää niin ikään omaa hiukassuodinalgoritmiaan tulokulmien laskentaan. Tätä hiukassuodinalgoritmia ei käsitellä tämän tutkielman puitteissa.
 
 \subsection{Kalibraatioalgoritmi}
 

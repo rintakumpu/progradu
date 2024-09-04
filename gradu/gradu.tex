@@ -116,6 +116,20 @@
 \newcommand{\paaaine}{{Tilastotiede}} 
 \newcommand{\ohjaaja}{{Ohjaajan titteli (Prof./Dos./FT) ja nimi }} %
 \newcommand{\tarkastaja}{{Toisen tarkastajan titteli (Prof./Dos./FT) ja nimi}} 
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
 \ifLuaTeX
   \usepackage{selnolig}  % disable illegal ligatures
 \fi
@@ -264,29 +278,31 @@ $w^i_k$ & Hiukassuotimen painovektori\\
 \toprule
 Lyhenne & Selitys\\
 \midrule
-ALvar & \textit{Adaptive-Lag variance}, Mukautuvan viipeen varianssiestimaatti\\
-AoA & \makecell[l]{\textit{Angle-of-Arrival}, Radiosignaalin tulokulman estimointimenetelmä,\\joka perustuu saman signaalin erojen tarkasteluun\\useamman antennin välillä}\\
-BLE & \textit{Bluetooth Low Energy}, Lyhyen matkan langaton likiverkkoteknologia\\
-BS-PS & \makecell[l]{\textit{Backwards simulation particle smoother},\\Taaksepäin simuloiva hiukassiloitin}\\
-CLT & \textit{Central limit theorem}, Keskeinen raja-arvolause\\
+ALvar & Adaptive-Lag variance\\
+AoA & Angle-of-Arrival\\
+BLE & Bluetooth Low Energy\\
+BS-PS & Backwards simulation particle smoother\\
+CLT & Central limit theorem\\
 \addlinespace
-EKF & \textit{Extended Kalman filter}, Laajennettu Kalman-suodin\\
-GFSK & \textit{Gaussian frequency-shift keying}, Taajuusmodulointimenetelmä\\
-GPS & \makecell[l]{\textit{Global Positioning System}, Yhdysvaltain puolustusministeriön\\kehittämä ja rahoittama satelliittipaikannusjärjestelmä}\\
-IMU & \textit{Inertial measurement unit}, Inertiamittausyksikkö\\
-MAC & \makecell[l]{\textit{Medium access control address}, Verkkosovittimen ethernet-verkossa\\yksilöivä osoite}\\
+EKF & Extended Kalman filter\\
+GFSK & Gaussian frequency-shift keying\\
+GPS & Global Positioning System\\
+IMU & Inertial measurement unit\\
+IQ, I/Q & In-phase / Quadrature\\
 \addlinespace
-MC & \textit{Monte Carlo}, Mikä hyvänsä Monte Carlo -menetelmä\\
-OSCU & \textit{On-site computing unit}, Pilven ulkopuolella toimiva laskentayksikkö\\
-PKF & \textit{Position Kalman filter}, Paikkaratkaisun Kalman-suodin\\
-RTSS & \textit{Rauch-Turn-Striebel smoother}, Rauch-Turn-Striebel-siloitin\\
-SIR & \makecell[l]{\textit{Sequential Importance Resampling},\\Uudelleenotannan tärkeytyspainoilla suorittava hiukassuodinalgoritmi}\\
+MAC & Medium access control address\\
+MC & Monte Carlo\\
+OSCU & On-site computing unit\\
+PKF & Position Kalman filter\\
+RTSS & Rauch-Turn-Striebel smoother\\
 \addlinespace
-SIS & \makecell[l]{\textit{Sequential Importance Sampling},\\Uudelleenotannan tärkeytyspainoilla suorittava hiukassuodinalgoritmi}\\
-SLF & \makecell[l]{\textit{Statistically linearized Kalman filter},\\Tilastollisesti linearisoitu Kalman-suodin}\\
-SMC & \makecell[l]{\textit{Sequential Monte Carlo}, \\sekventiaalinen Monte Carlo -menetelmä, \\synonyymi hiukassuotimelle}\\
-SNR & \textit{Signal-to-noise ratio}, Hyötysignaalin ja kohinasignaalin tehojen suhde\\
-UKF & \textit{Unscented Kalman filter}, Hajustamaton Kalman-suodin\\
+SIR & Sequential Importance Resampling\\
+SIS & Sequential Importance Sampling\\
+SLF & Statistically linearized Kalman filter\\
+SMC & Sequential Monte Carlo\\
+SNR & Signal-to-noise ratio\\
+\addlinespace
+UKF & Unscented Kalman filter\\
 \bottomrule
 \end{tabular}
 \end{table}
