@@ -219,7 +219,7 @@ Saapasremmisuodin \ref{saapasremmisuodin} eli *bootsrtrap filter* on SIR-algorit
 
 Saapasremmisuodin on edellä esitettyä SIR-algoritmia yksinkertaisempi toteuttaa, mutta epäinformatiivisen tärkeytysjakauman vuoksi algoritmi saattaa vaatia SIR-algoritmia suuremman määrän hiukkasia. Saapasremmisuodin esitetään tässä sen historiallisen tärkeyden vuoksi, sillä kyseessä oli ensimmäinen uudelleenotataantaa hyödyntävä hiukassuodinalgoritmi. Suotimen käytännön toteutukseen palataan luvussa \@ref(paikannusesimerkki). 
 
-\section{Varianssin estimoinnista}
+\section{Varianssin estimoinnista} \label{varianssin-estimointi}
 
 Hiukassuotimen varianssin estimoinnissa ollaan kiinnostuneita jakaumaestimaatin $\hat{p}(x_{1:k}|y_{1:k})$ varianssin estimoinnista. Yksinkertaisin tapa estimoida hiukassuodinalgoritmin varianssia on ajaa algoritmi $M > 1$ kertaa. Koska ajot ovat toisistaan riippumattomia, voidaan estimaatin varianssi laskea kullekin ajanhetkelle $k$ näiden ajojen $k$-hetken estimaattien otosvarianssina: 
 

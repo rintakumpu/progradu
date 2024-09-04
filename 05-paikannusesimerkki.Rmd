@@ -1,10 +1,17 @@
 \chapter{Hiukassuodin ja -siloitin sisätilapaikannuksessa} \label{paikannusesimerkki}
 
-Sisätilapaikannus tarkoittaa nimensä mukaisesti ihmisten tai esineiden automaattista paikantamista sisätiloissa. Koska GPS-järjestelmät toimivat sisätiloissa huonosti tai eivät lainkaan, tarvitaan rakennusympäristöihin muita paikannusratkaisuja. Tässä luvussa käydään ensin läpi sisätilapaikannuksen yleistä teoriaa sekä joitakin ehdotettuja ratkaisuja. Lisäksi mainitaan joitakin hiukassuodinalgoritmin käyttötapoja sisätilapaikannuksessa. Tämän jälkeen keskitytään Walkbase-ohjelmistoyrityksen sisätilapaikannusteknologian ympärille kehitettyyn algoritmiin, jonka tarkkuutta ja tehokkuutta testataan koeympäristössä.
+Sisätilapaikannus tarkoittaa nimensä mukaisesti ihmisten tai esineiden automaattista paikantamista sisätiloissa. Koska GPS-järjestelmät toimivat sisätiloissa huonosti tai eivät lainkaan, tarvitaan rakennusympäristöihin muita paikannusratkaisuja. Tässä luvussa käydään ensin läpi sisätilapaikannuksen yleisiä periaatteita sekä joitakin ehdotettuja ratkaisuja. Lisäksi mainitaan joitakin hiukassuodinalgoritmin käyttötapoja sisätilapaikannuksessa. Tämän jälkeen keskitytään Walkbase-ohjelmistoyrityksen sisätilapaikannusteknologian ympärille kehitettyyn algoritmiin, jonka tarkkuutta ja tehokkuutta testataan koeympäristössä.
 
 \section{Sisätilapaikannuksesta}
 
-Yleinen valinta ovat erilaiset Bluetooth-standardiin tai muuhun radioteknologiaan perustuvat lähetin-vastaanotinratkaisut. 
+Sisätilapaikannus tarkoittaa tekniikoita ja menetelmiä, joilla paikannetaan ihmisiä, laitteita tai esineitä sisätiloissa, joissa perinteinen GPS-signaali ei ole riittävä tai saatavilla. Sisätilapaikannuksessa hyödynnetään useita erilaisia teknologioita, kuten radiotaajuuksia, magneettikenttiä, ultraääntä ja optisia menetelmiä. Kattava esitys sisätilapaikannukseen käytettävistä teknologioista löytyy George Ogunatalan &al. artikkelista  "Indoor location identification technologies for real-time IoT-based applications: An inclusive survey" (2018) [@oguntala-2018], johon myös tämä alaluku perustuu.
+
+Optisessa paikannuksessa käytetään kameroita tai muita optisia/valoon perustuvia sensoreita halutun kohteen sijainnin määrittämiseen. Magneettikenttiin perustuvat paikannusratkaisut perustuvat rakennusten sisäisten metallirakenteiden maapallon magneettikenttään luomiin paikallisiin muutoksiin. Näitä muutoksia voidaan käyttää vertailutietona paikannuksessa, mittaamalla ympäröivän magneettikentän vahvuutta ja vertaamalla sitä ennalta tallennettuihin karttoihin. Ultraäänipohjainen paikannus puolestaan hyödyntää ääniaaltojen kulkuaikaa lähettimen ja vastaanottimen välillä.
+
+Yleinen valinta sisätilapaikannuksessa ovat erilaiset Bluetooth-standardiin tai muuhun radioteknologiaan (kuten esimerkiksi millimetriaaltoihin) perustuvat lähetin-vastaanotinratkaisut, joissa hyödynnetään laitteiden välisiä signaaleja etäisyyden tai kulman mittaamiseen. Radioteknologiaan perustuvilla järjestelmillä voidaan kotuullisin kustannuksin saavuttaa jopa senttimetritason paikannustarkkuus tietyissä sovelluksissa. Radioteknologiat ovat myös yksityisyyden näkökulmasta helpompia järjestelmiä toteuttaa kuin esimerkiksi optiseen paikannukseen perustuvat järjestelmät.
+
+Riippuen käytetystä teknologiasta, voidaanm ***. Kaaviossa XXX esitetään 
+Radioteknologiaan *** katso artikkeli "". Tässä luvussa k
 
 \section{Teknologian kuvaus}
 
@@ -16,7 +23,7 @@ Walkbase on kehittänyt sisätilapaikannukseen oman laitteisto- ja ohjelmistorat
 E_{\text{pos}} = 
 \end{align},
 
-jolloin yhden testi. Paikannusvirheeseen palataan luvun tulososassa. Walkbasen paikannusratkaisu koostuu kolmesta eri laitteistokomponentista, AT-2-Bluetooth-lähetin-vastaanottomista, jotka kiinnitetään ostoskärryihin, XR-2-Bluetooth-lähetin-vastaanottomista, jotka kiinnitetään tilan kattoripustuksiin sekä OSCU-laskentayksiköstä, joka luo paikkadataa XR-2.1-vastaanotinten perusteella ja lähettää paikkadatan edelleen palvelinkeskukseen. 
+jolloin yhden testi TODO. Paikannusvirheeseen palataan luvun tulososassa. Walkbasen paikannusratkaisu koostuu kolmesta eri laitteistokomponentista, AT-2-Bluetooth-lähetin-vastaanottomista, jotka kiinnitetään ostoskärryihin, XR-2-Bluetooth-lähetin-vastaanottomista, jotka kiinnitetään tilan kattoripustuksiin sekä OSCU-laskentayksiköstä, joka luo paikkadataa XR-2.1-vastaanotinten perusteella ja lähettää paikkadatan edelleen palvelinkeskukseen. 
 
 AT-2 on Bluetooth 5.1 (BLE) -strandardin mukaan toimiva lähetin-vastaanotin, joka toimii 2.4Ghz taajuusalueella. Walkbasen suunnitteleman laitteen PCB-kehäantenni kykenee lähettämään GFSK-moduloitua dataa 2Mbps nopeudella. Laite saa virtansa yhdestä CR-2477-paristosta. 
 
@@ -37,7 +44,7 @@ Taustajärjestelmässä Go-ohjelmointikielellä *goldfinger* prosessoi sijaintid
 
 Tässä luvussa keskitytään *launchpad*-sovelluksen hyödyntämään paikannusalgoritmiin, mutta sitä ennen käsitellään lyhyesti tulokulman laskentamenetelmät sekä *angler*-sovelluksen toiminta. Tekijänoikeussyistä tutkielmassa ei hyödynnetä Go-ohjelmointikielellä toteutettua ohjelmakoodia. Sen sijaan algoritmi on toteutettu R-ohjelmointikielellä.
 
-\subsection{AoA-menetelmistä}
+\subsection{AoA-menetelmistä} \label{aoa}
 
 vaihe-eron havaitsemiseen.
 
@@ -347,7 +354,7 @@ Koska erityisesti \ref{inclusion-polygon} asettaa hiukkasten painoja nollaan, ei
 
 ### Siloittelualgoritmit
 
-Koska haluttu sisätilapaikannusalgoritmi on online. Hyödynnetään alaluvussa TODO esitetty prediktiivistä siloitinta. Satunnaiskulkumalli ei ole optimaalinen, mutta ...
+Koska haluttu sisätilapaikannusalgoritmi on online-algoritmi, käytetään siloitteluun alaluvussa TODO esitetty prediktiivistä siloitinta. Satunnaiskulkumalli ei ole optimaalinen, mutta ...
 
 \subsection{WB-sisätilapaikannusalgoritmi}
 
