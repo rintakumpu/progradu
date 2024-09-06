@@ -1,6 +1,6 @@
-\chapter{Hiukassilottimet} \label{hiukkassiloittimet}
+\chapter{hiukkassilottimet} \label{hiukkassiloittimet}
 
-Tässä luvussa käsitellään suodinongelmaan läheisesti liittyvän hiukassiloittimen ratkaisemista ns. hiukassiloitinalgoritmien avulla. Kuten hiukassuotimien kohdalla, myös tässä luvussa esitetään ongelma ensin yleisessä Bayesilaisessa muodossa, jonka jälkeen siirrytään käsittelemään hiukkasmenetelmiin pohjautuvia siloitinalgoritmeja. Luvussa käsiteltävät algoritmit jaetaan kahteen pääkategoriaan, offline-algoritmeihin, joita sovelletaan hiukassuodinalgoritmin ajon jälkeen sekä online-algoritmeihin, jotka suoritetaan yhdessä hiukassuodinalgoritmin kanssa. 
+Tässä luvussa käsitellään suodinongelmaan läheisesti liittyvän hiukkassiloittimen ratkaisemista ns. hiukkassiloitinalgoritmien avulla. Kuten hiukkassuotimien kohdalla, myös tässä luvussa esitetään ongelma ensin yleisessä Bayesilaisessa muodossa, jonka jälkeen siirrytään käsittelemään hiukkasmenetelmiin pohjautuvia siloitinalgoritmeja. Luvussa käsiteltävät algoritmit jaetaan kahteen pääkategoriaan, offline-algoritmeihin, joita sovelletaan hiukkassuodinalgoritmin ajon jälkeen sekä online-algoritmeihin, jotka suoritetaan yhdessä hiukkassuodinalgoritmin kanssa. 
 
 Siloitinongelman esittely seuraa Särkkää (2013) [@sarkka-2013]. Algoritmien käsittely pohjautuu SIR- ja BS-PS-siloittimien osalta Särkkään (2013) [@sarkka-2013] sekä SIR-siloittimen osalta Genshiro Kitagawan artikkeliin "Monte carlo filter and smoother for non-gaussian nonlinear state space models" (1996) [@kitagawa-1996]. Kiinteän viipeen silotin seuraa niin ikään Kitagawaa (1996). Uudelleenpainottava siloitin perustuu Doucet &al. artikkeliin "On sequential Monte Carlo sampling methods for Bayesian filtering" (2000) [@Doucet-2000]. Mukautuvan viipeen siloitin seuraa puolestaan Alenlövin ja Olssonin artikkelia "Particle-Based Adaptive-Lag Online Marginal Smoothing in General State-Space Models" (2019) [@alenlov-2019].
 
@@ -16,25 +16,25 @@ p(x_{k+1}|y_{1:k})=\int_{\mathbb{R}^{n_x}}p(x_{k+1}|x_k)p(x_k|y_{1:k})\mathop{dx
 p(x_k|y_{1:T}) = p(x_k|y_{1:k}) \int \frac{p(x_{k+1}|x_k)p(x_{k+1}|y_{1:T})}{p(x_{k+1}|y_{1:k})} \mathop{dx_{k+1}}.
 \end{align},
 
-missä $p(x_k|y_{1:k})$ on suodintiheys ajanhetkellä $k$ ja $p(x_{k+1}|y_{1:k})$ prediktiivinen jakauma ajanhetkelle $k+1$. Kuten suodinongelman kohdalla, voidaan ongelma ratkaista suljetussa muodossa, kun mallit ovat lineaarisia. Tällöin kyseessä on Rauch-Turn-Striebel-siloitin (RTSS), josta käytetään myös nimitystä Kalman-siloitin. Samoin, kuten Kalman-suotimen kohdalla, ongelma voidaan tiettyjen ehtojen vallitessa linearisoida. Näitä linearisoituja suodattimia ei käsitellä tässä tutkielmassa. Hiukassuotimen tavoin hiukassiloitin ratkaisee ongelman mille hyvänsä epälineaariselle mallille.
+missä $p(x_k|y_{1:k})$ on suodintiheys ajanhetkellä $k$ ja $p(x_{k+1}|y_{1:k})$ prediktiivinen jakauma ajanhetkelle $k+1$. Kuten suodinongelman kohdalla, voidaan ongelma ratkaista suljetussa muodossa, kun mallit ovat lineaarisia. Tällöin kyseessä on Rauch-Turn-Striebel-siloitin (RTSS), josta käytetään myös nimitystä Kalman-siloitin. Samoin, kuten Kalman-suotimen kohdalla, ongelma voidaan tiettyjen ehtojen vallitessa linearisoida. Näitä linearisoituja suodattimia ei käsitellä tässä tutkielmassa. hiukkassuotimen tavoin hiukkassiloitin ratkaisee ongelman mille hyvänsä epälineaariselle mallille.
 
 \section{Offline-algoritmit}
 
-Offline-siloittimet estimoivat siloitintiheyttä ajanhetkellä $k<T$, kun havaintodata on käytössä koko ajanjaksolta $1 \ldots T$. Alla esitetyt algoritmit siis olettavat, että kaikki mahdollinen tuleva data on jo niiden käytössä. Ohessa käsitellään lyhyesti muutamaa ehdotettua offline-hiukassiloitinalgoritmia.
+Offline-siloittimet estimoivat siloitintiheyttä ajanhetkellä $k<T$, kun havaintodata on käytössä koko ajanjaksolta $1 \ldots T$. Alla esitetyt algoritmit siis olettavat, että kaikki mahdollinen tuleva data on jo niiden käytössä. Ohessa käsitellään lyhyesti muutamaa ehdotettua offline-hiukkassiloitinalgoritmia.
 
 \subsection{SIR-siloitin}
 
-Kuten aiemmin mainittua, näyttävät hiukassuodinalgoritmit, erityisesti SIR-algoritmi \ref{sir}, ratkaisevan siloitteluongelman ilmaiseksi, kunhan tallennamme ajanhetkellä $k$ koko otoshistorian $x_{0:k}^i$. Tällöin voimme estimoida täyttä siloitteluposteriorijakaumaa seuraavasti:
+Kuten aiemmin mainittua, näyttävät hiukkassuodinalgoritmit, erityisesti SIR-algoritmi \ref{sir}, ratkaisevan siloitteluongelman ilmaiseksi, kunhan tallennamme ajanhetkellä $k$ koko otoshistorian $x_{0:k}^i$. Tällöin voimme estimoida täyttä siloitteluposteriorijakaumaa seuraavasti:
 
 \begin{align}\label{siloitin-posteriori}
-p(x_{0:T}|y_{1:T}) \approx \sum_{i=1}^N w_T^i \delta (x_{0:T}-x_{0:T}^i),
-\end{align}.
+p(x_{0:T}|y_{1:T}) \approx \sum_{i=1}^N w_T^i \delta (x_{0:T}-x_{0:T}^i).
+\end{align}
 
 Nyt ajanhetken $k$ siloitinjakauma saadaan laskettua
 
 \begin{align}\label{siloitin-posteriori-k}
 p(x_{k}|y_{1:T}) \approx \sum_{i=1}^N w_T^i \delta (x_{k}-x_{k}^i),
-\end{align},
+\end{align}
 
 missä $x^i_k$ on $x^i_{0:T}$:n $k$:s elementti. Koska uudelleenotanta hävittää otoshistorian, pitää uudelleenotanta suorittaa koko otoshistoriasta  $x_{0:k}^i = (x_{0:k-1}^i, x_{k}^i)$ pelkän ajanhetken $k$ otoksen $x_{k}^i$ sijaan. Koska nyt koko otoshistoria pitää tallentaa, vaatii SIR-siloitin $NkT$ muistia pelkän $N$ sijaan. Vastaavasti myös uudelleenotannan aikakompleksisuus kasvaa.  [@kitagawa-1996] 
 
@@ -42,7 +42,7 @@ SIR-siloittimen suurin ongelma on kuitenkin sen tuottamien estimaattien hyvyys. 
 
 \subsection{BS-PS-siloitin}
 
-*Backward-simulation particle smoother* (BS-PS) eli taaksepäin simuloiva hiukassiloitin estimoi paremmin hiukassuotimen tulosten perusteella siloitinjakaumaa. Tässä algoritmissa hiukkasten historia simuloidaan ajanhetkestä $T$ taaksepäin ajanhetkeen 0: 
+*Backward-simulation particle smoother* (BS-PS) eli taaksepäin simuloiva hiukkassiloitin estimoi paremmin hiukkassuotimen tulosten perusteella siloitinjakaumaa. Tässä algoritmissa hiukkasten historia simuloidaan ajanhetkestä $T$ taaksepäin ajanhetkeen 0: 
 
 \begin{algorithm}[H]
 \label{BSPS}
@@ -57,20 +57,20 @@ SIR-siloittimen suurin ongelma on kuitenkin sen tuottamien estimaattien hyvyys. 
     \Begin{Valitaan $\tilde{x}_{k} = x_k^i$ todennäköisyydellä $w^i_{k|k+1}$.\;}
   }  
 }
-\caption{Taaksepäin simuloiva hiukassiloitin}
+\caption{Taaksepäin simuloiva hiukkassiloitin}
 \end{algorithm}
 
 Nyt siloittelujakaumaa voidaan estimoida seuraavasti:
 
 \begin{align}\label{siloitin-BSPS}
 p(x_{0:T}|y_{1:T}) \approx \frac{1}{S} \sum_{i=1}^N \delta (x_{0:T}-\tilde{x}_{0:T}^j),
-\end{align},
+\end{align}
 
 missä $S, j=1,\ldots,S$ on algoritmin \ref{BSPS} toistokertojen määrä. Koska $\tilde{x}_{0:T}^j$ pitää sisällään kaikki otospolut, saadaan marginaalijakauma ajanhetkellä $k$ yhtälöstä \ref{siloitin-BSPS} yksinkertaisesti valitsemalla sen $k$:net elementit. Sekä algoritmin aikakompleksisuus että muistivaade on $\mathcal{O}(STN)$.
 
-\subsection{Uudelleenpainottava hiukassiloitin}
+\subsection{Uudelleenpainottava hiukkassiloitin}
 
-Uudelleenpainottavassa hiukassiloittimessa (tunnetaan myös nimellä marginaalihiukassiloitin, kts. mm. Doucet, Godsill & ja Andrieu [@Doucet-2000]) siloitinjakaumaa estimoidaan käyttämällä SIR-hiukassuodattmista (\ref{sir}) saatuja hiukkasia, mutta ne painotetaan uudelleen käyttäen dataa ajanhetkestä $T$ alkaen, edeten ajassa taaksepäin.
+Uudelleenpainottavassa hiukkassiloittimessa (tunnetaan myös nimellä marginaalihiukkassiloitin, kts. mm. Doucet, Godsill & ja Andrieu [@Doucet-2000]) siloitinjakaumaa estimoidaan käyttämällä SIR-hiukkassuodattmista (\ref{sir}) saatuja hiukkasia, mutta ne painotetaan uudelleen käyttäen dataa ajanhetkestä $T$ alkaen, edeten ajassa taaksepäin.
 
 \begin{algorithm}[H]
 \label{rwps}
@@ -84,7 +84,7 @@ Uudelleenpainottavassa hiukassiloittimessa (tunnetaan myös nimellä marginaalih
     \Begin{Lasketaan uudet painot \newline $w^i_{k|T} = \sum_j w_{k+1|T}^j  \frac{w_k^i p(x_{k+1}^j|x_k^i)}{\sum_l w_k^l p(x_{k+1}^j|x_k^l)}$\;}
   }  
 }
-\caption{Uudelleenpainottava hiukassiloitin}
+\caption{Uudelleenpainottava hiukkassiloitin}
 \end{algorithm},
 
 jolloin halutun siloitinjakauma estimaatti ajanhetkellä $k$ saadaan painotettuna keskiarvona $p(x_k|y_{1:T}) \approx \sum_i w_{k|t}^i \delta (x_k-x_k^i)$. Algoritmin aikakompleksisuus on $\mathcal{O}(N^2)$.
@@ -122,11 +122,11 @@ Kiinteän viipeen siloitinta (viipeellä $L=1$) voidaan hyödyntää myös predi
 \caption{Prediktiivinen siloiti (viive=1)}
 \end{algorithm}
 
-Kun hiukkasten määrä $N$ pysyy samana, lisää prediktiivinen siloitin suodinjakauman laskemisen tarkkuutta. Vastaavasti prediktiivinen siloitin mahdollistaa saman suodinjakauman estimaatin tarkkuuden kuin SIR-algoritmi pienemmällä määrällä hiukkasia, kuitenkin vainb tuplaten uskottavuusfunktiota laskettaessa vaadittavan laskentatehon ja muistitarpeen. 
+Kun hiukkasten määrä $N$ pysyy samana, lisää prediktiivinen siloitin suodinjakauman laskemisen tarkkuutta. Vastaavasti prediktiivinen siloitin mahdollistaa saman suodinjakauman estimaatin tarkkuuden kuin SIR-algoritmi pienemmällä määrällä hiukkasia, kuitenkin vain tuplaten uskottavuusfunktiota laskettaessa vaadittavan laskentatehon ja muistitarpeen. 
 
 \subsection{Mukautuvan viipeen siloitin}
 
-Yllä esitetyssä kiinteän viipeen siloittimessa on valittu viive $L$ suunnitteluparametri. Valittu viive on aina kompromissi: liian suuri viive kasvattaa siloitinjakauman estimoinnin epätarkkuutta ja hidastaa laskentaa, kun taas liian pieni viive saattaa johtaa niin ikään epätarkkuuteen. Lisäksi valittu viive ei välttämättä johda jokaisella aika-askeleella optimaaliseen tai edes hyvään laskentatulokseen. Mukautuvan viipeen siloittimet yrittävät ratkaista tämän ongelman mukauttamalla kunakin ajanhetkenä valittua viivettä johonkin kriteeriin perustuen. Erään version mukautuvan viipeen siloittimesta esittävät Johan Alenlöv ja Jimmy Olsson artikkelissa "Particle-Based Adaptive-Lag Online Marginal Smoothing in General State-Space Models" (2019) [@alenlov-2019]. Siloitin hyödyntää hiukassuotimen varianssiestimaattia viipeen valinnassa.
+Yllä esitetyssä kiinteän viipeen siloittimessa on valittu viive $L$ suunnitteluparametri. Valittu viive on aina kompromissi: liian suuri viive kasvattaa siloitinjakauman estimoinnin epätarkkuutta ja hidastaa laskentaa, kun taas liian pieni viive saattaa johtaa niin ikään epätarkkuuteen. Lisäksi valittu viive ei välttämättä johda jokaisella aika-askeleella optimaaliseen tai edes hyvään laskentatulokseen. Mukautuvan viipeen siloittimet yrittävät ratkaista tämän ongelman mukauttamalla kunakin ajanhetkenä valittua viivettä johonkin kriteeriin perustuen. Erään version mukautuvan viipeen siloittimesta esittävät Johan Alenlöv ja Jimmy Olsson artikkelissa "Particle-Based Adaptive-Lag Online Marginal Smoothing in General State-Space Models" (2019) [@alenlov-2019]. Siloitin hyödyntää hiukkassuotimen varianssiestimaattia viipeen valinnassa.
 
 Yksinkertaisin versio siloittimesta on esitetty algoritmissa \ref{mukautuva-siloitin}. Perusidea on viivästyttää siloitinjakauman luomista hetkellä $k$, kunnes tarjolla on viipeet $S=1,\ldots,s$, joiden varianssi 
 

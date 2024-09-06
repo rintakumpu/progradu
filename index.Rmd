@@ -67,7 +67,7 @@ notaatiot[nrow(notaatiot)+1,] <- linebreak(c("$y_k$", "Havainnot sisältävä ve
 notaatiot[nrow(notaatiot)+1,] <- linebreak(c("$w^i_k$", "Hiukassuotimen painovektori"))
 
 kableExtra::kbl(
-  notaatiot, caption = 'Notaatiot', format="latex",
+  notaatiot, caption = 'Symbolit ja notaatiot', format="latex",
   booktabs = TRUE, escape = FALSE
 )
 ```
@@ -96,10 +96,22 @@ lyhsym[18,] <- linebreak(c("OSCU", "On-site computing unit"))
 lyhsym[19,] <- linebreak(c("MAC", "Medium access control address"))
 lyhsym[20,] <- linebreak(c("IMU", "Inertial measurement unit"))
 lyhsym[21,] <- linebreak(c("IQ, I/Q", "In-phase / Quadrature")) 
+lyhsym[22,] <- linebreak(c("Lidar", "Light detection and ranging")) 
+lyhsym[23,] <- linebreak(c("MUSIC, MuSiC", "MUltiple SIgnal Classification")) 
+lyhsym[24,] <- linebreak(c("IoT", "Internet of Things")) 
+lyhsym[25,] <- linebreak(c("OD", "Olsson and Douc")) 
+lyhsym[26,] <- linebreak(c("PCB", "Printed circuit board")) 
+lyhsym[27,] <- linebreak(c("GIS", "Geographic information system")) 
+lyhsym[28,] <- linebreak(c("WGS", "World Geodetic System")) 
+lyhsym[29,] <- linebreak(c("ToTal", "Three object Triangulation algorithm")) 
+lyhsym[30,] <- linebreak(c("CSI", "Channel State Information")) 
+lyhsym[31,] <- linebreak(c("ToA", "Time of Arrival")) 
+lyhsym[32,] <- linebreak(c("TDoA", "Time Difference of Arrival")) 
+lyhsym[33,] <- linebreak(c("RSS(I)", "Received signal strength (indicator)")) 
 
 lyhsym_sorted <- lyhsym[order(lyhsym[,"Lyhenne"]), ]
 kableExtra::kbl(
-  lyhsym_sorted, caption = 'Lyhenteet ja symbolit', format="latex",
+  lyhsym_sorted, caption = 'Lyhenteet', format="latex",
   booktabs = TRUE, escape = FALSE, row.names = FALSE
 )
 ```

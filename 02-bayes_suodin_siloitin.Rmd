@@ -1,6 +1,6 @@
 \section{Bayesilainen suodin} \label{bayesilainen-suodin}
 
-Suodinongelmassa ollaan kiinnostuttu tilavektorin posteriorijakauman $p(x_k|y_{1:k})$ estimoinnista. Tässä alaluvussa käydään läpi yleinen rekursiivinen, Bayesilainen posteriorijakauman laskenta. Tällaista suodinongelman ratkaisua kutsutaan myös Bayesilaiseksi suotimeksi. Koska epälineaarisessa, ei-normaalijakautuneessa tilanteessa rekursiota ei voida laskea analyyttisesti, pitää estimoinnissa käyttää numeerisia menetelmiä. SMC-menetelmissä tämä tarkoittaa jakauman sekventiaalista Monte Carlo -approksimointia, jonka toteutus esitetään alaluvun \@ref{paikannusesimerkki} algoritmissa. Molemmat esitykset noudattavat Gustafssonia (2010). 
+Suodinongelmassa ollaan kiinnostuttu tilavektorin posteriorijakauman $p(x_k|y_{1:k})$ estimoinnista. Tässä alaluvussa käydään läpi yleinen rekursiivinen, Bayesilainen posteriorijakauman laskenta. Tällaista suodinongelman ratkaisua kutsutaan myös Bayesilaiseksi suotimeksi. Koska epälineaarisessa, ei-normaalijakautuneessa tilanteessa rekursiota ei voida laskea analyyttisesti, pitää estimoinnissa käyttää numeerisia menetelmiä. SMC-menetelmissä tämä tarkoittaa jakauman sekventiaalista Monte Carlo -approksimointia, jonka toteutus esitetään alaluvun \@ref(paikannusesimerkki) algoritmissa. Molemmat esitykset noudattavat Gustafssonia (2010). 
 
 Bayesilainen ratkaisu tilavektorin posteriorijakauman estimaatille $\hat{p}(x_k|y_{1:k})$ saadaan seuraavalla rekursiolla (käydään läpi jokaiselle ajanhetkelle $k=\{1,\ldots,t\}$). Lasketaan ensin
 
@@ -36,16 +36,16 @@ Tässä alaluvussa käsitellään lyhyesti Kalman-suotimen yhteyttä hiukassuoti
 missä $\mathbf{A}_{k-1}$ on dynaamisen mallin tilasiirtymään kuvaava matriisi ja $\mathbf{H}_k$ on havaintojen mallimatriisi. Normaalisuusoletuksesta puolestaan seuraa, että sekä mallin että prosessin kohinavektorit noudattavat normaalijakaumia $q_{k-1} \sim \mathbb{N}(0, \mathbf{Q}_{k-1})$ ja $r_k \sim \mathbb{N}(0, \mathbf{R}_k)$, missä $\mathbf{Q}_{k-1}$ ja $\mathbf{R}_k$ ovat kovarianssimatrsiiseja. Lisäksi oletetaan, että prosessin priorijakauma on normaali eli $x_0 \sim \mathbb{N}(m_0, \mathbf{P_0})$. Mallit voidaan nyt kirjoittaa tiheysfunktiomuodossa
 
 \begin{align}
-&\label{kalman-malli-pdf1}p(x_k|x_{k-1})=\mathbb{N}(x_k|\mathbf{A}_{k-1}x_{k-1},\mathbf{Q}_{k-1})\\
-&\label{kalman-malli-pdf2}p(y_k|x_k)=\mathbb{N}(y_k|\mathbf{H}_{k}x_{k},\mathbf{R}_{k})
-\end{align},
+&\label{kalman-malli-pdf1}p(x_k|x_{k-1})=\mathcal{N}(x_k|\mathbf{A}_{k-1}x_{k-1},\mathbf{Q}_{k-1})\\
+&\label{kalman-malli-pdf2}p(y_k|x_k)=\mathcal{N}(y_k|\mathbf{H}_{k}x_{k},\mathbf{R}_{k}),
+\end{align}
 
 joista voidaan edelleen johtaa suodinongelman mallit
 
 \begin{align}
-&\label{kalman-malli-suodin1}p(x_k|y_{1:k-1})=\mathbb{N}(x_k|m_k^* ,\mathbf{P}_k^*)\\
-&\label{kalman-malli-suodin2}p(x_k|y_{1:k})=\mathbb{N}(x_k|m_k ,\mathbf{P}_k)\\
-&\label{kalman-malli-suodin3}p(y_k|y_{1:k-1})=\mathbb{N}(y_k|\mathbf{H}_k m_k^* ,\mathbf{S}_k)
+&\label{kalman-malli-suodin1}p(x_k|y_{1:k-1})=\mathcal{N}(x_k|m_k^* ,\mathbf{P}_k^*)\\
+&\label{kalman-malli-suodin2}p(x_k|y_{1:k})=\mathcal{N}(x_k|m_k ,\mathbf{P}_k)\\
+&\label{kalman-malli-suodin3}p(y_k|y_{1:k-1})=\mathcal{N}(y_k|\mathbf{H}_k m_k^* ,\mathbf{S}_k)
 \end{align}
 
 ja ongelma ratkaista näin algoritmilla $\ref{kf}$.

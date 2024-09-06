@@ -168,7 +168,7 @@ Alla esitetään kaksi SIR-algoritmiin liittyvää konvergenssitulosta. Se, kuin
 
 \begin{align}\label{CLT}
 \text{Kun } N \to \infty: \sqrt{N} \left\{ \frac{1}{N} \sum_{i=1}^N \hat{g}(x_k^i) -\mathbb{E}(g(x_k^i)) \right\} \xrightarrow{D} \mathbb{N}(0,\sigma^2 < \infty),
-\end{align},
+\end{align}
 
 missä $g$ on jälleen mikä hyvänsä piilossa olevan tila-avaruuden rajoitettu Borel-mitallinen funktio ($g \in \mathcal{B}(\mathbb{R}^{n_x})$). Konvergenssituloksia ei tämän tutkielman puitteissa todisteta.
 
@@ -196,7 +196,7 @@ Tällaisia tilanteita varten algoritmista on olemassa $\mathcal{O}(N\text{log}(N
 
 \section{Saapasremmisuodin}
 
-Saapasremmisuodin \ref{saapasremmisuodin} eli *bootsrtrap filter* on SIR-algoritmin muunnelma, jossa tärkeytysotannan (kts. \ref{tarkeytysotanta-algo}) käytetään dynaamista mallia $p(x_k|x_{k-1})$. 
+Saapasremmisuodin \ref{saapasremmisuodin} eli *bootstrap filter* on SIR-algoritmin muunnelma, jossa tärkeytysotannan (kts. \ref{tarkeytysotanta-algo}) käytetään dynaamista mallia $p(x_k|x_{k-1})$. 
 
 \begin{algorithm}[H]
 \label{saapasremmisuodin}
@@ -225,13 +225,13 @@ Hiukassuotimen varianssin estimoinnissa ollaan kiinnostuneita jakaumaestimaatin 
 
 \begin{align}\label{MC-varianssi}
 \hat{\sigma}^2_{MC} = \text{Var}_{\text{MC}}(\hat{p}(x_{1:k}|y_{1:k})) = \frac{1}{M-1} \sum_{i=1}^{M}(x_k^i-\bar{x_k})^2.
-\end{align},
+,\end{align}
 
 missä $x_k^i$ on $k$:nen ajanhetken piste-estimaatti ajolle  $i=1,\ldots,M$ ja $\bar{x_k}$ piste-estimaattien aritmeettinen keskiarvo laskettuna kaikkien $M$ ajojen yli. Tällaisen Monte Carlo -varianssin estimoiminen on kuitenkin laskennallisesti tehotonta. Monissa käytännön sovelluksissa jo yhden hiukassuodinalgoritmin ajaminen vaatii runsaasti laskentatehoa, jolloin Monte Carlo -varianssin laskeminen ei ole mahdollista. Varianssia ei voi myöskään laskea analyyttisesti, mutta koska keskeisen raja-arvolauseen \ref{CLT} nojalla tiedetään, että asymptoottinen varianssi 
 
 \begin{align}\label{asymptoottinen-varianssi}
 \lim_{N\to \infty} N \text {Var}(\hat{g}(x_k^i))
-\end{align},
+,\end{align}
 
 on olemassa, on sen estimointiin kehitetty lähivuosina joitakin menetelmiä. Alla käsitellään Leen ja Whitleyn (2018) ehdottamaa varianssin estimointitapaa. [@Lee-2018]
 
@@ -248,9 +248,9 @@ Varianssiestimaatti voidaan laskea näiden, Leen ja Whitleyn Eeva-indekseiksi ni
 
 \begin{align}\label{CLT-varianssi}
 \hat{\sigma}^2_{CLT} = \frac{1}{N^2} \left[ (\sum_{i=1}^N \gamma(x_k^i))^2 - (\frac{N}{N-1})^{n+1} ( \sum_{i=1}^N \sum_{j:E_n^j=i} \gamma(x_k^i) \gamma(x_k^j)) \right]
-\end{align},
+,\end{align}
 
-missä $\gamma: \mathbf{X}_n \rightarrow \mathbb{R}$ on rajoitettu, $\mathcal{X}_n$-mitallinen funktio. SIR-algoritmin kohdalla jakaumaestimaatti $\hat{p}(x_{1:k}|y_{1:k}))$. Kyseessä on harhaton ja konsistentti asymptoottisen varianssin estimaatti. Tarkemmin $N\hat{\sigma}^2_{CL}$ konvergoi asymptoottiseen varianssiin \ref{asymptoottinen-varianssi}. Tätä ei tutkielman puitteissa todisteta. 
+missä $\gamma: \mathbf{X}_n \rightarrow \mathbb{R}$ on rajoitettu, $\mathcal{X}_n$-mitallinen funktio. SIR-algoritmin kohdalla jakaumaestimaatti $\hat{p}(x_{1:k}|y_{1:k}))$. Kyseessä on harhaton ja konsistentti asymptoottisen varianssin estimaatti. Tarkemmin $N\hat{\sigma}^2_{CLT}$ konvergoi asymptoottiseen varianssiin \ref{asymptoottinen-varianssi}. Tätä ei tutkielman puitteissa todisteta. 
 
 Yllä esitetty varianssiestimaatti kärsii kuitenkin epätarkkuudesta, sillä kun $k \to \infty$ polveutuvat kaikki hiukkaset lopulta samasta kantaisästä eli indeksit $E_k^i,\ldots,E_k^N$ ovat kaikki yhtäsuuria. Tämän vuoksi on mielekästä johtaa indeksit ainoastaan tietystä aiemmasta ajanhetkestä alkaen. Olsson ja Douc (2019) [@olsson-2019] ehdottavat tähän tarkoitukseen Henok-indeksiä $E_{k,m}^n$, jossa $m$ merkitsee ajanhetken $m<k$ partikkelia, josta kyseinen partikkeli polveutuu. Partikkelien kantaisien sukupolvi määritetään viipeellä $\lambda$ niin, että $m=k-\lambda$. Kaavio \ref{fig:henok-indeksit} havainnollistaa partikkelien polveutumista, kun $\lambda=1$. 
 
@@ -265,7 +265,7 @@ Nyt varianssi saadaan muotoon
 
 \begin{align}\label{OD-varianssi}
 \hat{\sigma}^2_{OD} = \frac{1}{N^2} \left[ (\sum_{i=1}^N \gamma(x_k^i))^2 - (\frac{N}{N-1})^{n+1} ( \sum_{i=1}^N \sum_{j:E_{n,k(\lambda)}^j=i} \gamma(x_k^i) \gamma(x_k^j)) \right]
-\end{align},
+,\end{align}
 
 missä $k(\lambda) \vcentcolon= k-\lambda$. Viive $\lambda$ on varianssiestimaatin suunnitteluparametri. Pienillä viipeillä estimaatti on harhainen, mutta harha laskee viipeen kasvaessa. Olsson ja Douc suosittavat viipeen ylärajaksi arvoa $\lambda=20$, jolloin estimaattorin harha on käytännössä kokonaan hävitetty. Tämän jälkeen estimaatti voi myös alkaa kärsiä samasta epätarkkuudesta kuin Eeva-indekseihin perustuva CLT-estimaatti.
 
@@ -273,7 +273,7 @@ Mastrototaro ja Olsson (2023) [@Mastrototaro-2023] laajentavat tätä estimaatti
 
 \begin{align}\label{ALvar-lambda}
 \lambda_{k+1} \leftarrow \operatorname*{arg\,max}_{\lambda \in [0, \lambda_k + 1]} \hat{\sigma}^2_{k+1,\lambda} (\gamma_{k+1})
-\end{align},
+,\end{align}
 
 Tämä perustuu havaintoon, jonka mukaan ehtyneille Henok-indekseille on olemassa $\lambda^\prime \in [0, \lambda-1]$, joka täyttää ehdon $\hat{\sigma}^2_{k+1,\lambda} (\gamma_{k+1}) < \hat{\sigma}^2_{k+1,\lambda^\prime} (\gamma_{k+1})$, koska myös ehtyneiden indeksien kantaisät ovat ehtyneitä. Nyt indeksi $\lambda_{n+1}$ voidaan valita rekursiivisesti niin, että se tuottaa suurimman varianssiestimaatin, joka on kuitenkin rajoitettu ylhäältä arvoon $\lambda_n+1$. Tämä indeksi ei ole koskaan ehtynyt, joten se on myös parhaan varianssiestimaatin tuottava valinta.
 

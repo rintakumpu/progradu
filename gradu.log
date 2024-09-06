@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.5.26)  4 SEP 2024 18:07
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.5.26)  6 SEP 2024 14:05
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -815,85 +815,6 @@ Package: natbib 2010/09/13 8.31b (PWD, AO)
 \bibsep=\skip88
 LaTeX Info: Redefining \cite on input line 694.
 \c@NAT@ctr=\count331
-) (/usr/local/texlive/2022/texmf-dist/tex/latex/multirow/multirow.sty
-Package: multirow 2021/03/15 v2.8 Span multiple rows of a table
-\multirow@colwidth=\skip89
-\multirow@cntb=\count332
-\multirow@dima=\skip90
-\bigstrutjot=\dimen322
-) (/usr/local/texlive/2022/texmf-dist/tex/latex/wrapfig/wrapfig.sty
-\wrapoverhang=\dimen323
-\WF@size=\dimen324
-\c@WF@wrappedlines=\count333
-\WF@box=\box128
-\WF@everypar=\toks52
-Package: wrapfig 2003/01/31  v 3.6
-) (/usr/local/texlive/2022/texmf-dist/tex/latex/colortbl/colortbl.sty
-Package: colortbl 2020/01/04 v1.0e Color table columns (DPC)
-\everycr=\toks53
-\minrowclearance=\skip91
-) (/usr/local/texlive/2022/texmf-dist/tex/latex/pdflscape/pdflscape.sty
-Package: pdflscape 2019/12/05 v0.12 Display of landscape pages in PDF (HO)
-(/usr/local/texlive/2022/texmf-dist/tex/latex/graphics/lscape.sty
-Package: lscape 2020/05/28 v3.02 Landscape Pages (DPC)
-)
-Package pdflscape Info: Auto-detected driver: pdftex on input line 81.
-) (/usr/local/texlive/2022/texmf-dist/tex/latex/tabu/tabu.sty
-Package: tabu 2019/01/11 v2.9 - flexible LaTeX tabulars (FC+tabu-fixed)
-(/usr/local/texlive/2022/texmf-dist/tex/latex/varwidth/varwidth.sty
-Package: varwidth 2009/03/30 ver 0.92;  Variable-width minipages
-\@vwid@box=\box129
-\sift@deathcycles=\count334
-\@vwid@loff=\dimen325
-\@vwid@roff=\dimen326
-)
-\c@taburow=\count335
-\tabu@nbcols=\count336
-\tabu@cnt=\count337
-\tabu@Xcol=\count338
-\tabu@alloc=\count339
-\tabu@nested=\count340
-\tabu@target=\dimen327
-\tabu@spreadtarget=\dimen328
-\tabu@naturalX=\dimen329
-\tabucolX=\dimen330
-\tabu@Xsum=\dimen331
-\extrarowdepth=\dimen332
-\abovetabulinesep=\dimen333
-\belowtabulinesep=\dimen334
-\tabustrutrule=\dimen335
-\tabu@thebody=\toks54
-\tabu@footnotes=\toks55
-\tabu@box=\box130
-\tabu@arstrutbox=\box131
-\tabu@hleads=\box132
-\tabu@vleads=\box133
-\tabu@cellskip=\skip92
-)
-(/usr/local/texlive/2022/texmf-dist/tex/latex/threeparttable/threeparttable.sty
-Package: threeparttable 2003/06/13  v 3.0
-\@tempboxb=\box134
-)
-(/usr/local/texlive/2022/texmf-dist/tex/latex/threeparttablex/threeparttablex.s
-ty
-Package: threeparttablex 2013/07/23 v0.3 by daleif
-(/usr/local/texlive/2022/texmf-dist/tex/latex/environ/environ.sty
-Package: environ 2014/05/04 v0.3 A new way to define environments
-(/usr/local/texlive/2022/texmf-dist/tex/latex/trimspaces/trimspaces.sty
-Package: trimspaces 2009/09/17 v1.1 Trim spaces around a token list
-))
-\TPTL@width=\skip93
-) (/usr/local/texlive/2022/texmf-dist/tex/generic/ulem/ulem.sty
-\UL@box=\box135
-\UL@hyphenbox=\box136
-\UL@skip=\skip94
-\UL@hook=\toks56
-\UL@height=\dimen336
-\UL@pe=\count341
-\UL@pixel=\dimen337
-\ULC@box=\box137
-Package: ulem 2019/11/18
-\ULdepth=\dimen338
 ) (/usr/local/texlive/2022/texmf-dist/tex/latex/bookmark/bookmark.sty
 Package: bookmark 2020-11-06 v1.29 PDF bookmarks (HO)
 (/usr/local/texlive/2022/texmf-dist/tex/latex/hyperref/hyperref.sty
@@ -918,9 +839,9 @@ Package: letltxmacro 2019/12/03 v1.6 Let assignment for LaTeX macros (HO)
 ) (/usr/local/texlive/2022/texmf-dist/tex/latex/auxhook/auxhook.sty
 Package: auxhook 2019-12-17 v1.6 Hooks for auxiliary files (HO)
 )
-\@linkdim=\dimen339
-\Hy@linkcounter=\count342
-\Hy@pagecounter=\count343
+\@linkdim=\dimen322
+\Hy@linkcounter=\count332
+\Hy@pagecounter=\count333
 (/usr/local/texlive/2022/texmf-dist/tex/latex/hyperref/pd1enc.def
 File: pd1enc.def 2022-02-21 v7.00n Hyperref: PDFDocEncoding definition (HO)
 Now handling font encoding PD1 ...
@@ -930,7 +851,7 @@ Package: intcalc 2019/12/15 v1.3 Expandable calculations with integers (HO)
 ) (/usr/local/texlive/2022/texmf-dist/tex/generic/etexcmds/etexcmds.sty
 Package: etexcmds 2019/12/15 v1.7 Avoid name clashes with e-TeX commands (HO)
 )
-\Hy@SavedSpaceFactor=\count344
+\Hy@SavedSpaceFactor=\count334
 (/usr/local/texlive/2022/texmf-dist/tex/latex/hyperref/puenc.def
 File: puenc.def 2022-02-21 v7.00n Hyperref: PDF Unicode definition (HO)
 Now handling font encoding PU ...
@@ -944,22 +865,22 @@ Package hyperref Info: Plain pages OFF on input line 4152.
 Package hyperref Info: Backreferencing OFF on input line 4157.
 Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
 Package hyperref Info: Bookmarks ON on input line 4390.
-\c@Hy@tempcnt=\count345
+\c@Hy@tempcnt=\count335
 (/usr/local/texlive/2022/texmf-dist/tex/latex/url/url.sty
 \Urlmuskip=\muskip17
 Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
 )
 LaTeX Info: Redefining \url on input line 4749.
-\XeTeXLinkMargin=\dimen340
+\XeTeXLinkMargin=\dimen323
 (/usr/local/texlive/2022/texmf-dist/tex/generic/bitset/bitset.sty
 Package: bitset 2019/12/09 v1.3 Handle bit-vector datatype (HO)
 (/usr/local/texlive/2022/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty
 Package: bigintcalc 2019/12/15 v1.5 Expandable calculations on big integers (HO
 )
 ))
-\Fld@menulength=\count346
-\Field@Width=\dimen341
-\Fld@charsize=\dimen342
+\Fld@menulength=\count336
+\Field@Width=\dimen324
+\Fld@charsize=\dimen325
 Package hyperref Info: Hyper figures OFF on input line 6027.
 Package hyperref Info: Link nesting OFF on input line 6032.
 Package hyperref Info: Hyper index ON on input line 6035.
@@ -973,9 +894,9 @@ LaTeX Info: Redefining \pageref on input line 6101.
 Package: atbegshi-ltx 2021/01/10 v1.0c Emulation of the original atbegshi
 package with kernel methods
 )
-\Hy@abspage=\count347
-\c@Item=\count348
-\c@Hfootnote=\count349
+\Hy@abspage=\count337
+\c@Item=\count338
+\c@Hfootnote=\count339
 )
 Package hyperref Info: Driver (autodetected): hpdftex.
 (/usr/local/texlive/2022/texmf-dist/tex/latex/hyperref/hpdftex.def
@@ -985,8 +906,8 @@ Package: atveryend-ltx 2020/08/19 v1.0a Emulation of the original atveryend pac
 kage
 with kernel methods
 )
-\Fld@listcount=\count350
-\c@bookmark@seq@number=\count351
+\Fld@listcount=\count340
+\c@bookmark@seq@number=\count341
 
 (/usr/local/texlive/2022/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
 Package: rerunfilecheck 2019/12/05 v1.9 Rerun checks for auxiliary files (HO)
@@ -997,51 +918,51 @@ Package: uniquecounter 2019/12/15 v1.4 Provide unlimited unique counter (HO)
 Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
 86.
 )
-\Hy@SectionHShift=\skip95
+\Hy@SectionHShift=\skip89
 ) (/usr/local/texlive/2022/texmf-dist/tex/latex/bookmark/bkm-pdftex.def
 File: bkm-pdftex.def 2020-11-06 v1.29 bookmark driver for pdfTeX (HO)
-\BKM@id=\count352
+\BKM@id=\count342
 )) (/usr/local/texlive/2022/texmf-dist/tex/latex/xurl/xurl.sty
 Package: xurl 2022/01/09 v 0.10 modify URL breaks
 )
-Package hyperref Info: Option `colorlinks' set `true' on input line 148.
+Package hyperref Info: Option `colorlinks' set `true' on input line 134.
 (/usr/local/texlive/2022/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
 File: l3backend-pdftex.def 2022-02-07 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count353
-\l__pdf_internal_box=\box138
+\l__color_backend_stack_int=\count343
+\l__pdf_internal_box=\box128
 ) (./gradu.aux)
 \openout1 = `gradu.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 153.
-LaTeX Font Info:    ... okay on input line 153.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 153.
-LaTeX Font Info:    ... okay on input line 153.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 153.
-LaTeX Font Info:    ... okay on input line 153.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 153.
-LaTeX Font Info:    ... okay on input line 153.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 153.
-LaTeX Font Info:    ... okay on input line 153.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 153.
-LaTeX Font Info:    ... okay on input line 153.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 153.
-LaTeX Font Info:    ... okay on input line 153.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 153.
-LaTeX Font Info:    ... okay on input line 153.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 153.
-LaTeX Font Info:    ... okay on input line 153.
-LaTeX Info: Redefining \microtypecontext on input line 153.
-Package microtype Info: Applying patch `item' on input line 153.
-Package microtype Info: Applying patch `toc' on input line 153.
-Package microtype Info: Applying patch `eqnum' on input line 153.
-Package microtype Info: Applying patch `footnote' on input line 153.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 139.
+LaTeX Font Info:    ... okay on input line 139.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 139.
+LaTeX Font Info:    ... okay on input line 139.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 139.
+LaTeX Font Info:    ... okay on input line 139.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 139.
+LaTeX Font Info:    ... okay on input line 139.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 139.
+LaTeX Font Info:    ... okay on input line 139.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 139.
+LaTeX Font Info:    ... okay on input line 139.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 139.
+LaTeX Font Info:    ... okay on input line 139.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 139.
+LaTeX Font Info:    ... okay on input line 139.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 139.
+LaTeX Font Info:    ... okay on input line 139.
+LaTeX Info: Redefining \microtypecontext on input line 139.
+Package microtype Info: Applying patch `item' on input line 139.
+Package microtype Info: Applying patch `toc' on input line 139.
+Package microtype Info: Applying patch `eqnum' on input line 139.
+Package microtype Info: Applying patch `footnote' on input line 139.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using protrusion set `basicmath'.
 Package microtype Info: Automatic font expansion enabled (level 2),
 (microtype)             stretch: 20, shrink: 20, step: 1, non-selected.
 Package microtype Info: Using default expansion set `alltext-nott'.
-LaTeX Info: Redefining \showhyphens on input line 153.
+LaTeX Info: Redefining \showhyphens on input line 139.
 Package microtype Info: No adjustment of tracking.
 Package microtype Info: No adjustment of interword spacing.
 Package microtype Info: No adjustment of character kerning.
@@ -1050,17 +971,17 @@ File: mt-cmr.cfg 2013/05/19 v2.2 microtype config. file: Computer Modern Roman
 (RS)
 ) (/usr/local/texlive/2022/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count354
-\scratchdimen=\dimen343
-\scratchbox=\box139
-\nofMPsegments=\count355
-\nofMParguments=\count356
-\everyMPshowfont=\toks57
-\MPscratchCnt=\count357
-\MPscratchDim=\dimen344
-\MPnumerator=\count358
-\makeMPintoPDFobject=\count359
-\everyMPtoPDFconversion=\toks58
+\scratchcounter=\count344
+\scratchdimen=\dimen326
+\scratchbox=\box129
+\nofMPsegments=\count345
+\nofMParguments=\count346
+\everyMPshowfont=\toks52
+\MPscratchCnt=\count347
+\MPscratchDim=\dimen327
+\MPnumerator=\count348
+\makeMPintoPDFobject=\count349
+\everyMPtoPDFconversion=\toks53
 ) (/usr/local/texlive/2022/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
@@ -1071,15 +992,15 @@ e
 ))
 \symgns@font=\mathgroup7
 LaTeX Font Info:    Overwriting symbol font `gns@font' in version `bold'
-(Font)                  TS1/lmr/m/n --> TS1/lmr/b/n on input line 153.
-Package gensymb Info: Math companion symbols declared on input line 153.
-LaTeX Info: Redefining \degree on input line 153.
-LaTeX Info: Redefining \celsius on input line 153.
+(Font)                  TS1/lmr/m/n --> TS1/lmr/b/n on input line 139.
+Package gensymb Info: Math companion symbols declared on input line 139.
+LaTeX Info: Redefining \degree on input line 139.
+LaTeX Info: Redefining \celsius on input line 139.
 Package gensymb Info: Using text companion symbols for \degree, \celsius and \p
-erthousand on input line 153.
-LaTeX Info: Redefining \ohm on input line 153.
-Package gensymb Info: Using \textohm for \ohm on input line 153.
-Package gensymb Info: Using \textmu for \micro on input line 153.
+erthousand on input line 139.
+LaTeX Info: Redefining \ohm on input line 139.
+Package gensymb Info: Using \textohm for \ohm on input line 139.
+Package gensymb Info: Using \textmu for \micro on input line 139.
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
 *geometry* verbose mode - [ preamble ] result:
@@ -1114,7 +1035,7 @@ Package gensymb Info: Using \textmu for \micro on input line 153.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-Package hyperref Info: Link coloring ON on input line 153.
+Package hyperref Info: Link coloring ON on input line 139.
 (/usr/local/texlive/2022/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2021-04-02 v2.47 Cross-referencing by name of section
 (/usr/local/texlive/2022/texmf-dist/tex/latex/refcount/refcount.sty
@@ -1124,73 +1045,73 @@ Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
 ty
 Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
-\c@section@level=\count360
+\c@section@level=\count350
 )
-LaTeX Info: Redefining \ref on input line 153.
-LaTeX Info: Redefining \pageref on input line 153.
-LaTeX Info: Redefining \nameref on input line 153.
+LaTeX Info: Redefining \ref on input line 139.
+LaTeX Info: Redefining \pageref on input line 139.
+LaTeX Info: Redefining \nameref on input line 139.
 <./images//UTU_logo_FI.jpeg, id=7, 373.74779pt x 151.19247pt>
 File: ./images//UTU_logo_FI.jpeg Graphic file (type jpg)
 <use ./images//UTU_logo_FI.jpeg>
-Package pdftex.def Info: ./images//UTU_logo_FI.jpeg  used on input line 159.
+Package pdftex.def Info: ./images//UTU_logo_FI.jpeg  used on input line 145.
 (pdftex.def)             Requested size: 284.54741pt x 115.10817pt.
 Package microtype Info: Character `029' is missing
 (microtype)             in font `T1/lmr/m/sc/14.4'.
 (microtype)             Ignoring protrusion settings for this character.
 LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 1
-80.
+66.
 (/usr/local/texlive/2022/texmf-dist/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OML+lmm on input line 1
-80.
+66.
 (/usr/local/texlive/2022/texmf-dist/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 
-180.
+166.
 (/usr/local/texlive/2022/texmf-dist/tex/latex/lm/omslmsy.fd
 File: omslmsy.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 
-180.
+166.
 (/usr/local/texlive/2022/texmf-dist/tex/latex/lm/omxlmex.fd
 File: omxlmex.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 180.
+(Font)              <12> on input line 166.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 180.
+(Font)              <8> on input line 166.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 180.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 180
+(Font)              <6> on input line 166.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 166
 .
 (/usr/local/texlive/2022/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 ) (/usr/local/texlive/2022/texmf-dist/tex/latex/microtype/mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 180
+LaTeX Font Info:    Trying to load font information for U+msb on input line 166
 .
 (/usr/local/texlive/2022/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) (/usr/local/texlive/2022/texmf-dist/tex/latex/microtype/mt-msb.cfg
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+rsfs on input line 18
-0.
+LaTeX Font Info:    Trying to load font information for U+rsfs on input line 16
+6.
 (/usr/local/texlive/2022/texmf-dist/tex/latex/jknapltx/ursfs.fd
 File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
 )
 LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 1
-80.
+66.
 (/usr/local/texlive/2022/texmf-dist/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 ) [1
 
 {/usr/local/texlive/2022/texmf-var/fonts/map/pdftex/updmap/pdftex.map} <./image
 s//UTU_logo_FI.jpeg>] [2]
-Underfull \hbox (badness 10000) in paragraph at lines 200--203
+Underfull \hbox (badness 10000) in paragraph at lines 186--189
 
  []
 
@@ -1198,18 +1119,18 @@ Package microtype Info: Character `029' is missing
 (microtype)             in font `T1/lmr/m/sc/12'.
 (microtype)             Ignoring protrusion settings for this character.
 
-Underfull \hbox (badness 10000) in paragraph at lines 208--209
+Underfull \hbox (badness 10000) in paragraph at lines 194--195
 
  []
 
 
-Underfull \hbox (badness 5756) in paragraph at lines 213--214
+Underfull \hbox (badness 5756) in paragraph at lines 199--200
 \T1/lmr/m/n/12 (+20) Empiirisen‰ esi-merk-ki-n‰ tut-kiel-mas-sa tar-kas-tel-laa
 n hiukassuodin- ja hiu-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 213--214
+Underfull \hbox (badness 10000) in paragraph at lines 199--200
 \T1/lmr/m/n/12 (+20) kas-si-loi-ti-nal-go-rit-mien k‰yt-tˆ‰ AoA-teknologiaan pe
 -rus-tu-vas-sa Bluetooth-
  []
@@ -1280,163 +1201,183 @@ n t‰-m‰ kir-joit-taa edel-leen Markov-ominaisuuden no-
 Underfull \vbox (badness 7221) has occurred while \output is active []
 
 [21] [22]
-<./images//eevaindeksit.png, id=380, 489.83pt x 306.14375pt>
+<./images//eevaindeksit.png, id=381, 489.83pt x 306.14375pt>
 File: ./images//eevaindeksit.png Graphic file (type png)
 <use ./images//eevaindeksit.png>
 Package pdftex.def Info: ./images//eevaindeksit.png  used on input line 758.
 (pdftex.def)             Requested size: 256.08084pt x 160.05052pt.
-[23 <./images//eevaindeksit.png>]
-<./images//henokindeksit.png, id=392, 644.4075pt x 371.3875pt>
+<./images//henokindeksit.png, id=385, 644.4075pt x 371.3875pt>
 File: ./images//henokindeksit.png Graphic file (type png)
 <use ./images//henokindeksit.png>
 Package pdftex.def Info: ./images//henokindeksit.png  used on input line 775.
 (pdftex.def)             Requested size: 256.08685pt x 147.58899pt.
-[24 <./images//henokindeksit.png>] [25] [26
+[23 <./images//eevaindeksit.png>] [24 <./images//henokindeksit.png>]
+\bbl@ensure@finnish {Luku} 3.
+[25
 
 ]
-\bbl@ensure@finnish {Luku} 3.
-[27] [28]
+Underfull \hbox (badness 2042) in paragraph at lines 824--825
+\T1/lmr/m/n/12 (+20) algoritmi [][]3[][], rat-kai-se-van si-loit-te-luon-gel-ma
+n il-mai-sek-si, kun-han tal-len-nam-me
+ []
+
+[26]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[29] [30] [31] [32]
+[27] [28] [29] [30]
 \bbl@ensure@finnish {Luku} 4.
-[33
+[31
 
 ]
-Underfull \hbox (badness 4595) in paragraph at lines 974--975
-\T1/lmr/m/n/12 (+20) Turkulainen teknologia- ja ana-ly-tiik-kay-ri-tys Walk-ba-
-se k‰yt-t‰‰ Bluetooth-
- []
-
-
-Underfull \hbox (badness 2460) in paragraph at lines 974--975
-\T1/lmr/m/n/12 (+20) sis‰tilapaikannusta asiak-kai-den k‰yt-t‰y-ty-mis-t‰ kos-k
-e-van da-tan ke-r‰‰-mi-seen
- []
-
-
-Underfull \hbox (badness 1558) in paragraph at lines 974--975
-\T1/lmr/m/n/12 (+20) l‰-het-ti-met (ta-git) kiin-ni-te-t‰‰n os-tos-k‰r-ryi-hin 
-se-k‰ -koreihin ja pai-kan-ti-met
- []
-
-
-Underfull \hbox (badness 3396) in paragraph at lines 982--983
-\T1/lmr/m/n/12 (+20) Walk-ba-sen pai-kan-nus-rat-kai-su koos-tuu kol-mes-ta eri
- lait-teis-to-kom-po-nen-tis-ta,
- []
-
-
-Underfull \hbox (badness 1418) in paragraph at lines 986--987
+Underfull \hbox (badness 1418) in paragraph at lines 985--986
 []\T1/lmr/m/n/12 (+20) XR-2.1 on Blue-tooth 5.1 (BLE) -strandardin mu-kaan toi-
 mi-va l‰hetin-
  []
 
 
-Underfull \hbox (badness 2080) in paragraph at lines 986--987
+Underfull \hbox (badness 2080) in paragraph at lines 985--986
 \T1/lmr/m/n/12 (+20) vastaanotin, jo-ka toi-mii 2.4Ghz taa-juusa-lu-eel-la. Wal
 k-ba-sen suun-nit-te-le-man
  []
 
-[34]
-<./images//jarjestelmaarkkitehtuuri.png, id=500, 640.3925pt x 756.8275pt>
+[32]
+Underfull \hbox (badness 1082) in paragraph at lines 989--990
+[]\T1/lmr/m/n/12 (+20) Tarvittavasta las-ken-nas-ta vas-taa-va oh-jel-mis-to-j‰
+r-jes-tel-m‰ koos-tuu puo-les-
+ []
+
+
+Underfull \hbox (badness 2318) in paragraph at lines 989--990
+\T1/lmr/m/n/12 (+20) las-kee AT-2-tagin l‰-het-t‰-m‰n I/Q-datan pe-rus-teel-la 
+sig-naa-lien tu-lo-kul-man,
+ []
+
+<./images//jarjestelmaarkkitehtuuri.png, id=492, 640.3925pt x 756.8275pt>
 File: ./images//jarjestelmaarkkitehtuuri.png Graphic file (type png)
 <use ./images//jarjestelmaarkkitehtuuri.png>
 Package pdftex.def Info: ./images//jarjestelmaarkkitehtuuri.png  used on input 
-line 996.
+line 995.
 (pdftex.def)             Requested size: 426.79373pt x 504.39261pt.
 
-Underfull \vbox (badness 1242) has occurred while \output is active []
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[35 <./images//jarjestelmaarkkitehtuuri.png>] [36]
-Overfull \hbox (56.24573pt too wide) in paragraph at lines 1041--1064
+[33]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+[34 <./images//jarjestelmaarkkitehtuuri.png>]
+<./images//paikannusmenetelmat.png, id=506, 511.9125pt x 592.2125pt>
+File: ./images//paikannusmenetelmat.png Graphic file (type png)
+<use ./images//paikannusmenetelmat.png>
+Package pdftex.def Info: ./images//paikannusmenetelmat.png  used on input line 
+1008.
+(pdftex.def)             Requested size: 355.65709pt x 411.44643pt.
+
+Underfull \hbox (badness 2941) in paragraph at lines 1015--1016
+[]\T1/lmr/m/n/12 (+20) Walkbase hyˆ-dyn-t‰‰ ra-dio-sig-naa-lien tu-lo-kul-man e
+s-ti-moin-nis-sa MUSIC-
+ []
+
+
+Underfull \hbox (badness 1137) in paragraph at lines 1015--1016
+\T1/lmr/m/n/12 (+20) sig-naa-lien au-to-kor-re-laa-tio-mat-rii-sia ja et-si-m‰l
+-l‰ sen omi-nais-vek-to-rei-ta. Esi-tys
+ []
+
+[35 <./images//paikannusmenetelmat.png>] [36] [37] [38]
+Overfull \hbox (22.11803pt too wide) in paragraph at lines 1142--1168
  [][] 
  []
 
-[37] [38] [39]
-Underfull \hbox (badness 1584) in paragraph at lines 1173--1174
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+[39] [40]
+Underfull \hbox (badness 1584) in paragraph at lines 1206--1207
 []\T1/lmr/m/n/12 (+20) Kovarianssimatriisin es-ti-maat-ti-na k‰y-te-t‰‰n ku-na-
 kin ajan-het-ke-n‰ $\OML/lmm/m/it/12 k$ \T1/lmr/m/n/12 (+20) an-
  []
 
 
-Underfull \hbox (badness 1688) in paragraph at lines 1173--1174
+Underfull \hbox (badness 1688) in paragraph at lines 1206--1207
 \T1/lmr/m/n/12 (+20) ten-ni-koh-tai-sis-ta ha-vain-nois-ta es-ti-moi-tu-ja otos
 -va-rians-se-ja $[]\OT1/lmr/m/n/12 (+20) ([]\OML/lmm/m/it/12 ; [] ; []\OT1/lmr/
 m/n/12 (+20) )[] =$
  []
 
-[40] [41] [42] [43]
+[41] [42] [43]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[44] [45] [46]
-<./images//foculator.jpeg, id=617, 854.19125pt x 640.3925pt>
+[44] [45] [46] [47]
+<./images//foculator.jpeg, id=638, 854.19125pt x 640.3925pt>
 File: ./images//foculator.jpeg Graphic file (type jpg)
 <use ./images//foculator.jpeg>
-Package pdftex.def Info: ./images//foculator.jpeg  used on input line 1369.
+Package pdftex.def Info: ./images//foculator.jpeg  used on input line 1396.
 (pdftex.def)             Requested size: 199.15787pt x 149.30989pt.
-<./images//xr_2.jpeg, id=618, 3070.47125pt x 2302.6025pt>
+<./images//xr_2.jpeg, id=639, 3070.47125pt x 2302.6025pt>
 File: ./images//xr_2.jpeg Graphic file (type jpg)
 <use ./images//xr_2.jpeg>
-Package pdftex.def Info: ./images//xr_2.jpeg  used on input line 1376.
+Package pdftex.def Info: ./images//xr_2.jpeg  used on input line 1403.
 (pdftex.def)             Requested size: 199.16597pt x 149.3582pt.
-<./images//office_map.png, id=620, 1271.75125pt x 1081.03876pt>
+<./images//office_map.png, id=641, 1271.75125pt x 1081.03876pt>
 File: ./images//office_map.png Graphic file (type png)
 <use ./images//office_map.png>
-Package pdftex.def Info: ./images//office_map.png  used on input line 1386.
+Package pdftex.def Info: ./images//office_map.png  used on input line 1413.
 (pdftex.def)             Requested size: 341.43689pt x 290.23483pt.
-[47 <./images//foculator.jpeg> <./images//xr_2.jpeg>]
+
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[48 <./images//office_map.png>]
+[48 <./images//foculator.jpeg> <./images//xr_2.jpeg>]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[49]
-<./images//prior_likelihood.png, id=647, 921.4425pt x 383.4325pt>
+[49 <./images//office_map.png>]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+[50]
+<./images//prior_likelihood.png, id=667, 921.4425pt x 383.4325pt>
 File: ./images//prior_likelihood.png Graphic file (type png)
 <use ./images//prior_likelihood.png>
-Package pdftex.def Info: ./images//prior_likelihood.png  used on input line 144
-1.
+Package pdftex.def Info: ./images//prior_likelihood.png  used on input line 146
+8.
 (pdftex.def)             Requested size: 426.77913pt x 177.59218pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[50]
-<./images//eachstep_adaptive.png, id=658, 921.4425pt x 383.4325pt>
+[51]
+<./images//eachstep_adaptive.png, id=679, 921.4425pt x 383.4325pt>
 File: ./images//eachstep_adaptive.png Graphic file (type png)
 <use ./images//eachstep_adaptive.png>
 Package pdftex.def Info: ./images//eachstep_adaptive.png  used on input line 14
-50.
+77.
 (pdftex.def)             Requested size: 412.5644pt x 171.67712pt.
-[51 <./images//prior_likelihood.png> <./images//eachstep_adaptive.png>]
-<./images//SIS_likelihood_maps.png, id=671, 697.60625pt x 176.66pt>
+[52 <./images//prior_likelihood.png> <./images//eachstep_adaptive.png>]
+<./images//SIS_likelihood_maps.png, id=691, 697.60625pt x 176.66pt>
 File: ./images//SIS_likelihood_maps.png Graphic file (type png)
 <use ./images//SIS_likelihood_maps.png>
 Package pdftex.def Info: ./images//SIS_likelihood_maps.png  used on input line 
-1461.
+1488.
 (pdftex.def)             Requested size: 398.34224pt x 100.87515pt.
-<./images//SIR_likelihood_maps.png, id=672, 697.60625pt x 176.66pt>
+<./images//SIR_likelihood_maps.png, id=692, 697.60625pt x 176.66pt>
 File: ./images//SIR_likelihood_maps.png Graphic file (type png)
 <use ./images//SIR_likelihood_maps.png>
 Package pdftex.def Info: ./images//SIR_likelihood_maps.png  used on input line 
-1468.
+1495.
 (pdftex.def)             Requested size: 398.34224pt x 100.87515pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[52 <./images//SIS_likelihood_maps.png> <./images//SIR_likelihood_maps.png>] [5
-3] [54
-
-]
+[53 <./images//SIS_likelihood_maps.png> <./images//SIR_likelihood_maps.png>] [5
+4]
 \bbl@ensure@finnish {Luku} 5.
-[55] [56
+[55
+
+] [56
 
 ]
 \bbl@ensure@finnish {Luku} 6.
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <24.88> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 1515.
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 1542.
 
-LaTeX Warning: Reference `' on page 57 undefined on input line 1517.
+LaTeX Warning: Reference `' on page 57 undefined on input line 1544.
 
 (./gradu.bbl [57] [58
 
@@ -1446,11 +1387,11 @@ LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 32203 strings out of 478268
- 607621 string characters out of 5846347
- 959218 words of memory out of 5000000
- 49248 multiletter control sequences out of 15000+600000
- 550692 words of font info for 203 fonts, out of 8000000 for 9000
+ 30953 strings out of 478268
+ 586234 string characters out of 5846347
+ 936977 words of memory out of 5000000
+ 48047 multiletter control sequences out of 15000+600000
+ 546009 words of font info for 199 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  98i,22n,94p,1309b,1029s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/usr/local/
@@ -1460,24 +1401,24 @@ texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/local/texlive/2022/texmf-dist
 ps/lm/lm-mathex.enc}{/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/lm/lm-m
 athit.enc}</usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmbx12.pfb>
 </usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmbx8.pfb></usr/local
-/texlive/2022/texmf-dist/fonts/type1/public/lm/lmbxi10.pfb></usr/local/texlive/
-2022/texmf-dist/fonts/type1/public/lm/lmcsc10.pfb></usr/local/texlive/2022/texm
-f-dist/fonts/type1/public/lm/lmex10.pfb></usr/local/texlive/2022/texmf-dist/fon
-ts/type1/public/lm/lmmi12.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/p
-ublic/lm/lmmi6.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lm
-mi8.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmr12.pfb></u
-sr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmr6.pfb></usr/local/tex
-live/2022/texmf-dist/fonts/type1/public/lm/lmr8.pfb></usr/local/texlive/2022/te
-xmf-dist/fonts/type1/public/lm/lmri12.pfb></usr/local/texlive/2022/texmf-dist/f
-onts/type1/public/lm/lmsy10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1
-/public/lm/lmsy6.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/
-lmsy8.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmtk10.pfb>
-</usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmtt12.pfb></usr/loca
-l/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on gradu.pdf (65 pages, 2505204 bytes).
+/texlive/2022/texmf-dist/fonts/type1/public/lm/lmcsc10.pfb></usr/local/texlive/
+2022/texmf-dist/fonts/type1/public/lm/lmex10.pfb></usr/local/texlive/2022/texmf
+-dist/fonts/type1/public/lm/lmmi12.pfb></usr/local/texlive/2022/texmf-dist/font
+s/type1/public/lm/lmmi6.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/pub
+lic/lm/lmmi8.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmr1
+2.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmr6.pfb></usr/
+local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmr8.pfb></usr/local/texliv
+e/2022/texmf-dist/fonts/type1/public/lm/lmri12.pfb></usr/local/texlive/2022/tex
+mf-dist/fonts/type1/public/lm/lmsy10.pfb></usr/local/texlive/2022/texmf-dist/fo
+nts/type1/public/lm/lmsy6.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/p
+ublic/lm/lmsy8.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lm
+tk10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmtt12.pfb><
+/usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.p
+fb>
+Output written on gradu.pdf (65 pages, 2547202 bytes).
 PDF statistics:
- 1030 PDF objects out of 1200 (max. 8388607)
- 892 compressed objects within 9 object streams
- 278 named destinations out of 1000 (max. 500000)
- 47553 words of extra memory for PDF output out of 51595 (max. 10000000)
+ 1043 PDF objects out of 1200 (max. 8388607)
+ 904 compressed objects within 10 object streams
+ 281 named destinations out of 1000 (max. 500000)
+ 45510 words of extra memory for PDF output out of 51595 (max. 10000000)
 
