@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.5.26)  7 SEP 2024 19:38
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.5.26)  7 SEP 2024 22:30
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1386,7 +1386,10 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 [47]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[48] [49]
+[48]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+[49]
 <./images//foculator.jpeg, id=664, 854.19125pt x 640.3925pt>
 File: ./images//foculator.jpeg Graphic file (type jpg)
 <use ./images//foculator.jpeg>
@@ -1397,23 +1400,19 @@ File: ./images//xr_2.jpeg Graphic file (type jpg)
 <use ./images//xr_2.jpeg>
 Package pdftex.def Info: ./images//xr_2.jpeg  used on input line 1460.
 (pdftex.def)             Requested size: 199.16597pt x 149.3582pt.
-<./images//office_map.png, id=667, 1271.75125pt x 1081.03876pt>
+[50 <./images//foculator.jpeg> <./images//xr_2.jpeg>]
+<./images//office_map.png, id=673, 1271.75125pt x 1081.03876pt>
 File: ./images//office_map.png Graphic file (type png)
 <use ./images//office_map.png>
 Package pdftex.def Info: ./images//office_map.png  used on input line 1470.
 (pdftex.def)             Requested size: 341.43689pt x 290.23483pt.
-[50 <./images//foculator.jpeg> <./images//xr_2.jpeg>] [51 <./images//office_map
-.png>]
-<./images//prior_likelihood.png, id=686, 921.4425pt x 383.4325pt>
+[51 <./images//office_map.png>] [52]
+<./images//prior_likelihood.png, id=695, 921.4425pt x 383.4325pt>
 File: ./images//prior_likelihood.png Graphic file (type png)
 <use ./images//prior_likelihood.png>
 Package pdftex.def Info: ./images//prior_likelihood.png  used on input line 151
 6.
 (pdftex.def)             Requested size: 426.77913pt x 177.59218pt.
-
-Underfull \vbox (badness 2343) has occurred while \output is active []
-
-[52]
 <./images//eachstep_adaptive.png, id=698, 921.4425pt x 383.4325pt>
 File: ./images//eachstep_adaptive.png Graphic file (type png)
 <use ./images//eachstep_adaptive.png>
@@ -1458,11 +1457,11 @@ LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 32229 strings out of 478268
- 608196 string characters out of 5846347
+ 32227 strings out of 478268
+ 608176 string characters out of 5846347
  959703 words of memory out of 5000000
  49265 multiletter control sequences out of 15000+600000
- 546505 words of font info for 204 fonts, out of 8000000 for 9000
+ 546418 words of font info for 203 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  98i,24n,94p,1309b,1029s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/usr/local/
@@ -1486,7 +1485,7 @@ ublic/lm/lmsy8.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lm
 tk10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmtt12.pfb><
 /usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.p
 fb>
-Output written on gradu.pdf (67 pages, 2550926 bytes).
+Output written on gradu.pdf (67 pages, 2550896 bytes).
 PDF statistics:
  1066 PDF objects out of 1200 (max. 8388607)
  925 compressed objects within 10 object streams

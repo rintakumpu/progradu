@@ -433,7 +433,7 @@ parametrit[nrow(parametrit)+1,] <- linebreak(c("$q$", "Dynaamisen mallin kohina-
 parametrit[nrow(parametrit)+1,] <- linebreak(c("$\\text{map\\_matching}$", "Käytetäänkö karttasovitusalgoritmia, T/F"))
 parametrit[nrow(parametrit)+1,] <- linebreak(c("$N$", "Hiukkasten määrä, kokonaisluku"))
 parametrit[nrow(parametrit)+1,] <- linebreak(c("$P$", "Jos karttasovitusalgoritmi on käytössä,\n rangaistusparametri $P$, liukuluku"))
-parametrit[nrow(parametrit)+1,] <- linebreak(c("$\\text{resampling}$", "Adaptiivisen uudelleenotannat kynnysarvo, liukuluku"))
+parametrit[nrow(parametrit)+1,] <- linebreak(c("$\\text{resampling}$", "Adaptiivisen uudelleenotannat kynnysarvo,\n liukuluku välillä $[0,1]$. Jos $0$, uudelleenotantaa ei käytetä."))
 parametrit[nrow(parametrit)+1,] <- linebreak(c("$\\text{rssi\\_threshold}$", "Datan valinnassa käytettävä\n signaalin vahvuuden kynnysarvo, kokonaisluku"))
 
 kableExtra::kbl(

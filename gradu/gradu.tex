@@ -1408,7 +1408,7 @@ Alla esitetään SIR-algoritmiin ja yllä esitettyihin algoritmeihin perustuva s
 
 ,
 
-Yllä esitetyn algoritmin suoritusnopeus on perusmuodossaan luokkaa \(\mathcal(O)(N)\) ja prediktiivisen siloittimen kanssa \(\mathcal(O)(2N)\). Taulukossa \ref{tab:wb-parametrit} on esitetty algoritmin suunnitteluparametrit, joiden valintaan palataan empiirisessä esimerkissä alla.
+Yllä esitetyn algoritmin suoritusnopeus on perusmuodossaan luokkaa \(\mathcal{O}(N)\) ja prediktiivisen siloittimen kanssa \(\mathcal{O}(2N)\). Taulukossa \ref{tab:wb-parametrit} on esitetty algoritmin suunnitteluparametrit, joiden valintaan palataan empiirisessä esimerkissä alla.
 
 \begin{table}
 
@@ -1422,7 +1422,7 @@ $q$ & Dynaamisen mallin kohina-arvo\\
 $\text{map\_matching}$ & Käytetäänkö karttasovitusalgoritmia, T/F\\
 $N$ & Hiukkasten määrä, kokonaisluku\\
 $P$ & \makecell[l]{Jos karttasovitusalgoritmi on käytössä,\\ rangaistusparametri $P$, liukuluku}\\
-$\text{resampling}$ & Adaptiivisen uudelleenotannat kynnysarvo, liukuluku\\
+$\text{resampling}$ & \makecell[l]{Adaptiivisen uudelleenotannat kynnysarvo,\\ liukuluku välillä $[0,1]$. Jos $0$, uudelleenotantaa ei käytetä.}\\
 \addlinespace
 $\text{rssi\_threshold}$ & \makecell[l]{Datan valinnassa käytettävä\\ signaalin vahvuuden kynnysarvo, kokonaisluku}\\
 \bottomrule
