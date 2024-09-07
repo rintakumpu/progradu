@@ -46,7 +46,7 @@ Alla käsitellään algoritmiin liittyvän uudelleenotantamenetelmän, partikkel
 \KwResult{Posteriorijakauman $p(x_{1:k}|y_{1:k})$ estimaatti.\;}
 \KwData{Havainnot $y_k$. Generoitu $x_1^i\sim p_{x_0}$ missä $i=\{1,\ldots,N\}$ ja jokainen partikkeli saa saman painon $w_{1|0}^i=1/N$.\;}
 \Begin{
-  \For{$k=\{1,2,\ldots,t\}$}{
+  \For{$k=\{1,2,\ldots,T\}$}{
     \For{$i=\{1,2,\ldots,N\}$}{
       \Begin{Päivitetään painot $w_{k|k}.$\;}
       \Begin{Estimoidaan $p$ laskemalla tiheydelle approksimaatio $\hat{p}(x_{1:k}|y_{1:k})=\sum_{i=1}^{N}w_{k|k}^i \delta(x_{1:k}-x_{1:k}^i)$.\;}
@@ -54,7 +54,7 @@ Alla käsitellään algoritmiin liittyvän uudelleenotantamenetelmän, partikkel
     \Begin{Lasketaan efektiivinen otoskoko $\hat{N}_{eff}$.\;}
     \If{$\hat{N}_{eff}< N_{th}$}{\Begin{Otetaan uudet $N$ otosta palauttaen joukosta $\{x_{1:k}^i\}_{i=1}^N$, missä otoksen $i$ todennäköisyys on $w^i_{k|k}$.\;}
     \Begin{Asetetaan painot $w^i_{k|k}=1/N$.\;}}
-    \If{$k < t$}{\Begin{Aikapäivitys. \newline Luodaan ennusteet partikkeleille ehdotusjakaumasta $x_{k+1}^i\sim q(x_{k+1}|x_k^i,y_{k+1})$, \newline päivitetään partikkelien painot tärkeytysotannalla.\;}}
+    \If{$k < T$}{\Begin{Aikapäivitys. \newline Luodaan ennusteet partikkeleille ehdotusjakaumasta $x_{k+1}^i\sim q(x_{k+1}|x_k^i,y_{k+1})$, \newline päivitetään partikkelien painot tärkeytysotannalla.\;}}
   }  
 }
 \caption{SIR}

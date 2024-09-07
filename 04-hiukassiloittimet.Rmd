@@ -1,4 +1,4 @@
-\chapter{hiukkassilottimet} \label{hiukkassiloittimet}
+\chapter{Hiukkassilottimet} \label{hiukkassiloittimet}
 
 Tässä luvussa käsitellään suodinongelmaan läheisesti liittyvän hiukkassiloittimen ratkaisemista ns. hiukkassiloitinalgoritmien avulla. Kuten hiukkassuotimien kohdalla, myös tässä luvussa esitetään ongelma ensin yleisessä Bayesilaisessa muodossa, jonka jälkeen siirrytään käsittelemään hiukkasmenetelmiin pohjautuvia siloitinalgoritmeja. Luvussa käsiteltävät algoritmit jaetaan kahteen pääkategoriaan, offline-algoritmeihin, joita sovelletaan hiukkassuodinalgoritmin ajon jälkeen sekä online-algoritmeihin, jotka suoritetaan yhdessä hiukkassuodinalgoritmin kanssa. 
 

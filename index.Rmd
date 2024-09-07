@@ -108,6 +108,9 @@ lyhsym[30,] <- linebreak(c("CSI", "Channel State Information"))
 lyhsym[31,] <- linebreak(c("ToA", "Time of Arrival")) 
 lyhsym[32,] <- linebreak(c("TDoA", "Time Difference of Arrival")) 
 lyhsym[33,] <- linebreak(c("RSS(I)", "Received signal strength (indicator)")) 
+lyhsym[34,] <- linebreak(c("CR", "Lithium Rechargable"))
+lyhsym[35,] <- linebreak(c("WB", "Walkbase"))
+lyhsym[36,] <- linebreak(c("LPDDR", "Low-Power Double Data Rate"))
 
 lyhsym_sorted <- lyhsym[order(lyhsym[,"Lyhenne"]), ]
 kableExtra::kbl(
