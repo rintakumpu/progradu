@@ -1426,7 +1426,7 @@ Koeasetelmassa käytetty algoritmin \ref{wb-positioning} toteutus on ohjelmoitu 
 
 Koska algoritmin tuottamat uskottavuudet sekä painot ovat pieniä, on laskentatarkkuusongelmien välttämiseksi toteutuksessa käytetty logaritmoituja painoja ja uskottavuusfunktiota. Tämä ei vaikuta itse algoritmin toimintaan, mutta estää numeeristen ongelmien syntymisen. Tilanteessa, jossa tietyn paikantimen ja kaikkien partikkelien välinen uskottavuus on nolla, päätyvät kaikki painot nolliksi eikä sijaintiestimaattia voida luoda. Tällaisessa tilanteessa uskottavuusfunktion R-toteutus kutsuu itseään rekursiivisesti uudelleen niin, että kyseinen paikannin on tiputettu havainnoista. Alaluvussa \ref{datan-valinta} esitetyn datan valinnan lisäksi tämä auttaa poistamaan mahdolliset heijastukset tulokulmadatasta.
 
-Paikannusvirheen laskemisessa on etäisyysfunktiona \(d(\cdot)\) käytetty \texttt{raster}-kirjaston \texttt{pointDistance()}-funktiota. Koodissa on korostettu tiiviyden sijaan luettavuutta ja koodi on kommentoitu kattavasti. Algoritmin R-koodi löytyy \url{https://github.com/rintakumpu/progradu/analyysi}, mistä löytyy myös asetelmassa käytetty data csv-muodossa sekä empiirisen esimerkin muun koodin sisältävä R Markdown -notebook.
+Paikannusvirheen laskemisessa on etäisyysfunktiona \(d(\cdot)\) käytetty \texttt{raster}-kirjaston \texttt{pointDistance()}-funktiota. Koodissa on korostettu tiiviyden sijaan luettavuutta ja koodi on kommentoitu kattavasti. Algoritmin R-koodi löytyy osoitteesta \url{https://github.com/rintakumpu/progradu/analyysi/R/pf.R}.
 
 \section{Empiirinen esimerkki} \label{empiirinen-esimerkki}
 
@@ -1434,7 +1434,7 @@ Paikannusvirheen laskemisessa on etäisyysfunktiona \(d(\cdot)\) käytetty \text
 
 Esimerkissä käyteteään SMC-algoritmia Bluetooth-paikannussovelluksessa lähettimen sijainnin laskemiseen. Paikannukseen käytettävä data kerättiin toimistoympäristössä Bluetooth Low Energy (BLE) -lähettimen sekä kattoon sijoitettujen vastaanottimien avulla. Havainnot koostuvat vastaanottimien lähettimien signaalien perusteella laskemista, BLE5.1-standardin mukaisista signaalin tulokulmista eli AoA-havainnoista (angle of arrival). Lopuksi esimerkissä analysoidaan ja vertaillaan algoritmin eri versioiden suorituskykyä sekä suorituskyvyn että paikannustarkkuuden näkökulmasta. Vertailuarvona käytetään perinteistä triangulaatio-algoritmia.
 
-Paikaunnusesimerkissä lähettimenä toimi 20hz taajuudella havaintoja lähettävä AT-2 paikannustagi (kuva \ref{fig:at2}), vastaanottimena testiympäristöön asennetut 33 Walkbase XR-2 -vastaanotinta (kuva \ref{fig:xr2}). Jokainen vastaanotin sisältää kuusitoista antennia, joiden vastaanottamien lähetinsignaalien perusteella vastaanottimet laskevat signaalin tulokulman suhteessa vastaanottimeen. Koetta varten käytettiin yhden minuutin aikana kertyneitä havaintoja. Havaintoja on datassa yhteensä \(n_{obs}=12379\) kappaletta. Havaintojen aikaleimat on tallennettu sekunnin tuhannesosan tarkkuudella.
+Paikaunnusesimerkissä lähettimenä toimi 20hz taajuudella havaintoja lähettävä AT-2 paikannustagi (kuva \ref{fig:at2}), vastaanottimena testiympäristöön asennetut 33 Walkbase XR-2 -vastaanotinta (kuvat \ref{fig:xr2} ja \ref{fig:xr2_installed}). Jokainen vastaanotin sisältää kuusitoista antennia, joiden vastaanottamien lähetinsignaalien perusteella vastaanottimet laskevat signaalin tulokulman suhteessa vastaanottimeen. Koetta varten käytettiin yhden minuutin aikana kertyneitä havaintoja. Havaintoja on datassa yhteensä \(n_{obs}=12379\) kappaletta. Havaintojen aikaleimat on tallennettu sekunnin tuhannesosan tarkkuudella.
 
 \begin{multicols}{2}
 \begin{figure}[H]
@@ -1452,6 +1452,13 @@ Paikaunnusesimerkissä lähettimenä toimi 20hz taajuudella havaintoja lähettä
 \end{figure}
 \end{multicols}
 
+\begin{figure}[H]
+\centering
+\includegraphics[width=5.5cm]{xr_2_installed}
+\caption{Walkbase XR-2 asennettuna}
+\label{fig:xr2_installed}
+\end{figure}
+
 Koeympäristön pohjapiirustus on esitetty kuvassa \ref{fig:testipolku}. Piirustuksessa XR-2-paikantimet on kuvattu punaisilla ympyröillä ja kuljettu testipolku on merkitty violetilla janalla.
 
 \begin{figure}[H]
@@ -1461,7 +1468,23 @@ Koeympäristön pohjapiirustus on esitetty kuvassa \ref{fig:testipolku}. Piirust
 \label{fig:testipolku}
 \end{figure}
 
-\noindent Tagi kiinnitettiin ostoskärryyn 1.2 metrin korkeudelle ja testipolku käveltiin mahdollisimman tasaisella nopeudella. Data kerättiin aikaan, jolloin testiympäristön käyttöaste oli alhainen. Tällä minimoitiin radiosignaalien tielle osuvien ihmisten vaikutus signaaleihin.
+\noindent Tagi kiinnitettiin ostoskärryyn 1.2 metrin korkeudelle (kts. kuvat \ref{fig:at2_cart} ja \ref{fig:at2_cart2}) ja testipolku käveltiin mahdollisimman tasaisella nopeudella. Data kerättiin aikaan, jolloin testiympäristön käyttöaste oli alhainen. Tällä minimoitiin radiosignaalien tielle osuvien ihmisten vaikutus signaaleihin. Kerätty tulokulma löytyy osoitteesta\newline \url{https://github.com/rintakumpu/progradu/analyysi/data/y.csv}. Pohjapiirustus- ja polkudata löytyy osoitteista\newline \url{https://github.com/rintakumpu/progradu/analyysi/data/exclusion_polygons.csv} (ekskluusiopolygonit),\newline \url{https://github.com/rintakumpu/progradu/analyysi/data/inclusion_polygons.csv} (inkluusiopolygonit) ja\newline \url{https://github.com/rintakumpu/progradu/analyysi/data/test_path.csv} (testipolku). Datassa koordinaatit on valmiiksi interpoloitu metreiksi, jotta testiympäristön tarkkaa sijaintia ei voi paikallistaa koordinaattien perusteella. Interpolointiin käytetty ohjelmakoodi löytyy osoitteesta \newline \url{https://github.com/rintakumpu/progradu/analyysi/R/interpolate_coordinates.R} . Osoitteesta\newline \url{https://github.com/rintakumpu/progradu/analyysi/analyysi.Rmd} löytyy itse analyysikoodin sisältävä R Markdown -muistikirja.
+
+\begin{multicols}{2}
+\begin{figure}[H]
+\centering
+\includegraphics[width=5.5cm]{at_2_cart}
+\caption{Walkbase AT-2 kiinnitettynä}
+\label{fig:at2_cart}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=5.5cm]{at_2_cart2}
+\caption{Walkbase AT-2 kiinnitettynä}
+\label{fig:at2_cart2}
+\end{figure}
+\end{multicols}
 
 \subsection{Parametrien valinta} \label{parametrien-valinta}
 

@@ -8,3 +8,42 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+
+```{r}
+# Ladataan tarvittavat kirjastot
+library(truncnorm)
+```
+
+```{r}
+# Ladataan data
+testipolku <- read_csv("data/test_path.csv")
+polygonit_F <- read_csv("data/inclusion_polygons.csv")
+polygonit_E <- read_csv("data/exclusion_polygons.csv")
+y <- read_csv("data/y.csv")
+```
+
+```{r}
+# Ajetaan paikannus
+pf_positioning(y, exclusion_polygons = polygonit_E,
+               inclusion_polygons = polygonit_F)
+```
+
+pf_positioning <- function(y, 
+                N = 1024,
+                q = 3, 
+                q_min = 0, 
+                q_max = 10, 
+                resampling=2/3,
+                rssi_threshold=-120,
+                asset_tag_height = 1.2,
+                test_path=NA,
+                map_matching=F,
+                P=0,
+                exclusion_polygons=NA, 
+                inclusion_polygons=NA,
+                disable_movement_model_on_sleep = T,
+                stationary_attenuation=10,
+                burn_in=0, 
+                burn_in_multiplier=10,
+                smoothing=F,
+                verbose=T)
