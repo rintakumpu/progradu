@@ -23,27 +23,44 @@ y <- read_csv("data/y.csv")
 ```
 
 ```{r}
+# Asetetaan muuttujia
+r <- 30
+
 # Ajetaan paikannus
 pf_positioning(y, exclusion_polygons = polygonit_E,
-               inclusion_polygons = polygonit_F)
+               inclusion_polygons = polygonit_F,
+               N = 1000,
+                                resampling = 0,
+                                map_matching = F, q = 2.5,
+                                smoothing = F, rssi_threshold = -120,
+                                P = 0)
 ```
 
-pf_positioning <- function(y, 
-                N = 1024,
-                q = 3, 
-                q_min = 0, 
-                q_max = 10, 
-                resampling=2/3,
-                rssi_threshold=-120,
-                asset_tag_height = 1.2,
-                test_path=NA,
-                map_matching=F,
-                P=0,
-                exclusion_polygons=NA, 
-                inclusion_polygons=NA,
-                disable_movement_model_on_sleep = T,
-                stationary_attenuation=10,
-                burn_in=0, 
-                burn_in_multiplier=10,
-                smoothing=F,
-                verbose=T)
+## Vaihe 1
+
+Ensimmäisessä vaiheessa tarkastelaan partikkelien määrän $N={100,1000,10000}$ sekä uudelleenotannan kynnysarvon $resampling={0,1/10,2/3,1}$ vaikutusta paikannuskeskivirheeseen. Karttasovitusalgoritmia ei käytetä, kuten ei myöskään prediktiivistä siloitinta eikä signaalin vahvuuden kynnysarvoa. Dynaamisen mallin kohina-arvo $q=2.5$ pidettiin vakiona. Ensimmäisessä vaiheessa tarkasteltiin siis $12$ eri suunnitteluparametrikombinaatiota.
+
+```{r}
+N_values <- c(100,1000,10000)
+resampling_values <- c(0,1/10,2/3,1)
+phase1_values <- expand.grid(N=N_values, resampling=resampling_values)
+phase1_results <- list()
+
+for(i in 1:nrow(phase1_values)) {
+  set.seed(2666)
+  phase1_runs <- list()
+  for(j in 1:30) {
+   phase1_runs[[j]] <- pf_positioning(y, N = phase1_values$N[i],
+                                resampling = phase1_values$resampling[i],
+                                exclusion_polygons = polygonit_E,
+                                inclusion_polygons = polygonit_F,
+                                map_matching = F, q = 2.5,
+                                smoothing = F, rssi_threshold = -120,
+                                P = 0)
+  }
+  phase1_results[[i]] <- phase1_runs
+}
+```
+
+
+

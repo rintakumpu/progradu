@@ -454,7 +454,7 @@ Koeasetelmassa käytetty algoritmin \ref{wb-positioning} toteutus on ohjelmoitu 
 
 Koska algoritmin tuottamat uskottavuudet sekä painot ovat pieniä, on laskentatarkkuusongelmien välttämiseksi toteutuksessa käytetty logaritmoituja painoja ja uskottavuusfunktiota. Tämä ei vaikuta itse algoritmin toimintaan, mutta estää numeeristen ongelmien syntymisen. Tilanteessa, jossa tietyn paikantimen ja kaikkien partikkelien välinen uskottavuus on nolla, päätyvät kaikki painot nolliksi eikä sijaintiestimaattia voida luoda. Tällaisessa tilanteessa uskottavuusfunktion R-toteutus kutsuu itseään rekursiivisesti uudelleen niin, että kyseinen paikannin on tiputettu havainnoista. Alaluvussa \@ref(datan-valinta) esitetyn datan valinnan lisäksi tämä auttaa poistamaan mahdolliset heijastukset tulokulmadatasta.
 
-Paikannusvirheen laskemisessa on etäisyysfunktiona $d(\cdot)$ käytetty `raster`-kirjaston `pointDistance()`-funktiota. Koodissa on korostettu tiiviyden sijaan luettavuutta ja koodi on kommentoitu kattavasti. Algoritmin R-koodi löytyy osoitteesta https://github.com/rintakumpu/progradu/analyysi/R/pf.R.
+Paikannusvirheen laskemisessa on etäisyysfunktiona $d(\cdot)$ käytetty `raster`-kirjaston `pointDistance()`-funktiota. Koodissa on korostettu tiiviyden sijaan luettavuutta ja koodi on kommentoitu kattavasti. Algoritmin R-koodi löytyy osoitteesta https://github.com/rintakumpu/progradu/analyysi/R/pf_positioning.R.
 
 \section{Empiirinen esimerkki} \label{empiirinen-esimerkki}
 

@@ -114,7 +114,7 @@
 #' @export
 pf_positioning <- function(y, 
                 N = 1024,
-                q = 3, 
+                q = 2.5, 
                 q_min = 0, 
                 q_max = 10, 
                 resampling=2/3,
@@ -221,8 +221,9 @@ pf_positioning <- function(y,
   I[[1]] <- 1:N
   E <- list() # List of lists. Enoch indices for each time step.
   E[[1]] <- I
-  E_lambda <- rep(50, t) # Lambda value corresponding to each Enoch index run, size of the list stored in E. Let's start with
+  E_lambda <- rep(20, t) # Lambda value corresponding to each Enoch index run, size of the list stored in E. Let's start with
   # fixed lambda.
+  r <- rep(1, t) # How many times we have resampled
 
   # List to store the position estimates & candidates
   position_estimates <- list()
@@ -436,7 +437,7 @@ pf_positioning <- function(y,
     y_subset_likelihood <- data.table::copy(y_subset)
     
     # First RSSI
-    rssi_cutoff_count <- nrow(y_subset_likelihood[rssi >= rssi_threshold])
+    rssi_cutoff_count <- nrow(y_subset_likelihood[rssi < rssi_threshold])
     if(rssi_cutoff_count>0) {
       if(verbose) print(paste("Dropping ", rssi_cutoff_count,
                                     " azimuths below RSSI threshold.", sep=""))
@@ -699,17 +700,23 @@ pf_positioning <- function(y,
     # STEP 7: Variance estimation. #
     ################################
     
-    if(1==2) {
-      variance_estimate_k <- pf.estimate_variance(x, w_k, k_current, E,
-                                                  auxiliary = auxiliary,
-                                                  variance_estimate = variance_estimate,
-                                                  position_estimates = position_estimates,
-                                                  conversion_factor = conversion_factor)
-      v[k_current] <- variance_estimate_k[[1]]
-      v_lon[k_current] <- variance_estimate_k[[2]]
-      v_lat[k_current] <- variance_estimate_k[[3]]
-      E_lambda[(k_current+1)] <- variance_estimate_k[[4]]   
+    if(k>1 && resampling > 0) {
+      E_k <- E[[(k-1)]][[length(E[[(k-1)]])]] # E_k <- E[[(k)]][[length(E[[(k)]])]]
+      omega_j_k <- exp(w_k[E_k])
+      Omega_k <- sum(exp(w_k))
+      c_lon <- position_estimates[[k]][[2]]
+      c_lat <- position_estimates[[k]][[1]]
+      
+      # Compute longitudinal and latitudinal variance 
+      # This is the actual CLE
+      v_lon[k] <- mean(sum((omega_j_k/Omega_k) * (x_lon_previous[E_k] - c_lon))^2)
+      v_lat[k] <- mean(sum((omega_j_k/Omega_k) * (x_lat_previous[E_k] - c_lat))^2)
+      # And variance
+      v[k] <- mean(sum((omega_j_k/Omega_k) * (raster::pointDistance(matrix(c(x_lon_previous[E_k], 
+                                                                             x_lat_previous[E_k]), ncol=2), c(c_lon, c_lat), 
+                                                                    lonlat = F)))^2)
     }
+    
     
     ###################################
     # STEP 8: Resampling (optional). #
@@ -742,6 +749,8 @@ pf_positioning <- function(y,
           # Resampling. Get particles at random using exp-weights as probabilities.
           resample_index <- sample(x=1:N, size=N, replace=T, prob=exp(w_k))
           
+          if(k > 1) r[k] <- r[(k-1)]
+          
           # Store descendants
           I[[k]] <- resample_index
           
@@ -766,31 +775,37 @@ pf_positioning <- function(y,
       w_k <- -log(N) 
     }
     
-    # Compute particle ancestors (cf. Enoch index) if required
-    E_current <- list()
-        
-    # Fixed lag smoothing descendants
-    smoothing_lag <- 1
-    if(k < smoothing_lag) {
-      # Start from the first time step if not over
-      # the lag horizon yet
-      lookback_k <- 1
-    } else {
-      # Otherwise start lookback from whatever the lag is
-      lookback_k <- k - smoothing_lag
-    }
+    ######################################################
+    # Store resample index and compute Eve/Enoch indices #
+    ######################################################
     
-    j <- 1
-    for(i in lookback_k:k) {
-      if(i==lookback_k) {
-        E_current[[j]] <- 1:N
+    if(resampling > 0) {
+      # Get current lambda
+      current_lambda <- E_lambda[k]
+      if((k-current_lambda)<1) current_lambda <- (k - 1)
+      if(current_lambda > 0) {
+        
+        # This list is created always
+        E_current <- list()
+        
+        # Use Enoch index, starting from k-current_lambda
+        j <- 1
+        for(i in unique(r[(k-current_lambda):k])) {
+          if(i==unique(r[(k-current_lambda):k])[1]) {
+            E_current[[j]] <- I[[i]]
+          } else {
+            E_current[[j]] <- E_current[[(j-1)]][I[[i]]]
+          }
+          j <- j + 1
+        }
+        
+        # Store index list (of lists)
+        E[[k]] <- E_current
       } else {
-        E_current[[j]] <- E_current[[(j-1)]][I[[i]]]
+        # If lambda zero, we don't store the eve indices at all
+        E[[k]] <- list(I[[k]])
       }
-      j <- j + 1
     }
-    # Store index list (of lists)
-    E[[k]] <- E_current
         
     
     ########################
@@ -824,5 +839,6 @@ pf_positioning <- function(y,
   path_df$y <- unlist(position_estimates)[seq(from=1, to=length(unlist(position_estimates)), by=2)]
   path_df$x <- unlist(position_estimates)[seq(from=2, to=length(unlist(position_estimates)), by=2)]
   path_df$timestamp <- as.numeric(names(position_estimates))
+  path_df$variance <- v
   return(path_df)
 }
