@@ -120,7 +120,6 @@ pf_positioning <- function(y,
                 resampling=2/3,
                 rssi_threshold=-120,
                 asset_tag_height = 1.2,
-                test_path=NA,
                 map_matching=F,
                 P=0,
                 exclusion_polygons=NA, 
@@ -213,35 +212,18 @@ pf_positioning <- function(y,
   movement_disabled <- c()
   v_lon <- rep(NA, t) # Weighted longitude variance
   v_lat <- rep(NA, t) # Weighted latitude variance
-  qv <- rep(q, t) # q vector
   N_eff_vector <- rep(N, t) # Effective sample sizes
   resample_vector <- rep(FALSE, t) # Resampling performed?
-  #L_vector <- rep(0, t) # List of used smoothing lags
-  #L_var_vector <- rep(-Inf, t) # List of variances used with adaptive-lag smoothing
-  alpha_vector <- rep(1, t) # Square of mean squared errors of likelihood function
-  locator_n_vector <- rep(0, t) # How many locators were used each time step
-  likelihood_sum_vector <- rep(0, t) # Sum of likelihoods
-  likelihood_max_vector <- rep(0, t) # Max of likelihoods
-  likelihood_mean_vector_normalized <- rep(0, t) # Normalized mean of likelihoods
-  likelihood_list <- list() # All likelihoods
-  azimuth_ch_list <- list() # List used to track convex hull standard deviations
-  ch_df <- data.frame() # A data frame of convex hulls used in angle selection
-  angles_df <- data.frame() # A data frame of angles used in the likelihood evaluation
-  locators_used_list <- split(rep("", t), rep(1:t, each=1)) # Mac addresses of locators used
-  interpolated <- rep(FALSE, t) # Interpolation indicator
-  interpolation_intervals <- 0 # Interpolation counter(s)
   
   # If auxiliary particle filter is used to estimate variance, store resampling indicies (possible with smoothing
   # too)
   I <- list() # Resampling indices.
   I[[1]] <- 1:N
-  E <- list() # List of lists. Enoch indices for each time step as presented in the paper on ALvar variance estimator.
-  # Alternatively fixed-lag indices if SFLS is used
+  E <- list() # List of lists. Enoch indices for each time step.
   E[[1]] <- I
   E_lambda <- rep(50, t) # Lambda value corresponding to each Enoch index run, size of the list stored in E. Let's start with
   # fixed lambda.
-  r <- rep(1, t) # How many times we have resampled (APF/ALvar)
-  
+
   # List to store the position estimates & candidates
   position_estimates <- list()
   
@@ -264,7 +246,6 @@ pf_positioning <- function(y,
   # and set other initial values
   k <- 1
   ts_previous <- NA
-  
   
   #######################
   # START THE ALGORITHM #
@@ -355,189 +336,91 @@ pf_positioning <- function(y,
     # STEP 3: Handle inclusion and exclusion zones. #
     #################################################
     
-    # Remove particles outside inclusion_polygons
-    # (set their weight to zero)
-    if("data.frame" %in% class(inclusion_polygons)) {
-      
-      within_polygon_particles <- sp::point.in.polygon(point.x=x_lon,
-                                                       point.y=x_lat,
-                                                       pol.x=inclusion_polygons$x,
-                                                       pol.y=inclusion_polygons$y,
-                                                       mode.checked=F)
-      # 0 is outside, as the weights are e^w
-      # we set weights to -Inf which equals zero
-      w_k[within_polygon_particles==0] <- -Inf
-    }
-    
-    # Apply exclusion polygons if polygons provided, not in a burn-in period
-    # and exclusion polygons are applied to particles 
-    if("data.frame" %in% class(exclusion_polygons) && (is.na(burn_in) | (k > burn_in))) {
-      # First we simply remove the particles that are within an exclusion polygon
-      # First create a set from data frame
-      particles_set <- sf::st_as_sf(x[eval(.(k)), ], coords=c("lon", "lat"))
-      
-      # And this line does a check for each particle if that particle is within an exclusion polygon
-      # using sf::st_within
-      # this results in a matrix with each particle/polygon combibnation
-      # From which we can easily get the intersecting particles
-      intersecting_particles <- rowSums(sf::st_within(particles_set, exclusion_polygon_set, sparse=F))
-      
-      # These are within exclcusion polygons, so just set to zero
-      w_k[intersecting_particles!=0] <- -Inf
-      
-      # Next check the intersections from current position
-      if(k>1 && P) {
+    if(map_matching) {
+      # Remove particles outside inclusion_polygons
+      # (set their weight to zero)
+      if("data.frame" %in% class(inclusion_polygons)) {
         
-        # Create lines
-        lines_matrix_list <- lapply(apply(x[eval(.(k)), c("lon", "lat")], MARGIN=1, FUN=base::c, simplify=FALSE), 
-                                    FUN = rbind, c(position_estimates[[(k-1)]]))
-        lines_st <- sf::st_sfc(lapply(lines_matrix_list, FUN=sf::st_linestring))
-        
-        # Check whether each of the matrix's lines intersects with the exclusion polygon
-        intersecting_particles <- rowSums(as.data.frame(sf::st_intersects(lines_st, 
-                                                                          exclusion_polygon_set, 
-                                                                          sparse = F, prepared = T)))
-        
-        # If intersections found, check if they are below threshold
-        if(sum(intersecting_particles) > 0) {
-          
-          intersection_length <- 0
-          # If threshold set, check if intersections less than that.
-          if(exclusion_raycasting_threshold > 0) {
-            for(p_index in which(intersecting_particles>0)) {
-              
-              # Then compute the number of intersections
-              no_intersecting_points <- length(sf::st_intersection(lines_st[p_index], 
-                                                                   sf::st_cast(exclusion_polygon_set, 
-                                                                               "MULTILINESTRING"))) / 2
-              
-              # If (mod 2) isn't zero this particle cannot be included
-              # because of the threshold
-              if(no_intersecting_points %% 2 != 0) next()
-              
-              # Check if below threshold
-              intersection_length <- sf::st_length(sf::st_intersection(lines_st[p_index], 
-                                                                       exclusion_polygon_set), 
-                                                   sparse = F, prepared = T) * conversion_factor  
-              
-              # Let the jumps of less than the threshold pass
-              intersecting_particles[intersection_length<=exclusion_raycasting_threshold] <- 0
-            }
-          } else {
-            
-          }
-        }  
-        
-        # For those that are >0 we downweight set the corresponding weights
+        within_polygon_particles <- sp::point.in.polygon(point.x=x_lon,
+                                                         point.y=x_lat,
+                                                         pol.x=inclusion_polygons$x,
+                                                         pol.y=inclusion_polygons$y,
+                                                         mode.checked=F)
+        # 0 is outside, as the weights are e^w
+        # we set weights to -Inf which equals zero
+        w_k[within_polygon_particles==0] <- -Inf
       }
       
-      if(is.na(P)) {
+      # Apply exclusion polygons if polygons provided, not in a burn-in period
+      # and exclusion polygons are applied to particles 
+      if("data.frame" %in% class(exclusion_polygons) && (is.na(burn_in) | (k > burn_in))) {
+        # First we simply remove the particles that are within an exclusion polygon
+        # First create a set from data frame
+        particles_set <- sf::st_as_sf(x[eval(.(k)), ], coords=c("lon", "lat"))
+        
+        # And this line does a check for each particle if that particle is within an exclusion polygon
+        # using sf::st_within
+        # this results in a matrix with each particle/polygon combibnation
+        # From which we can easily get the intersecting particles
+        intersecting_particles <- rowSums(sf::st_within(particles_set, exclusion_polygon_set, sparse=F))
+        
+        # These are within exclcusion polygons, so just set to zero
         w_k[intersecting_particles!=0] <- -Inf
-      } else {
-        w_k[intersecting_particles!=0] <- log(exp(w_k[intersecting_particles!=0])*P)
-      }
-      
-      
-      # Sum exp to see if we have eliminated all the particles
-      # which is the case if sum is zero
-      w_sum_exp <- sum(exp(w_k))
-      
-      # However now these particles don't estimate the position anymore
-      # This can be side-stepped by re-sampling (which cannot be done
-      # if all probabilities -Inf)
-      
-      if(w_sum_exp!=0) {
-        # We draw from the original particles a sample with the weights
-        # where intersecting_particles are removed, the sample size is
-        # sum(intersecting_particles) i.e. the amount of TRUEs in that vector
-        resample_index <- sample(x=1:N, size=sum(intersecting_particles!=0), 
-                                 replace=T, prob=exp(w_k))
-        # And then set the current particles + weights to the ones resampled
-        x_resample <- data.table::copy(x[eval(.(k))][resample_index, ..lat_lon_names])
-        x[eval(.(k))][intersecting_particles!=0, (lat_lon_names) := x_resample]
-        w_k[intersecting_particles!=0] <- w_k[resample_index]
-      }
-    } 
-    
-    # If all the weights are -Inf i.e. all the particles are excluded,
-    # skip the movement, exclusion, inclusion and session polygons
-    # (reset to previous)
-    w_k <- tidyr::replace_na(w_k, -Inf)
-    if(all(w_k==-Inf) && k > 1) {
-      w_k <- w_k_previous
-      x[eval(.(k)), lon := x_lon_previous]
-      x[eval(.(k)), lat := x_lat_previous]
-    }
-    
-    ################################################
-    # STEP 3b: Auxiliary step                      #
-    # TODO: Store for Eve/Enoch index computation, #
-    # "commented out"                              #
-    ################################################
-    
-    if(1==2) {
-      
-      # Use these weights to sample parent trajectories, "presampling"
-      if(((resampling=="adaptive") && (N_eff < (resampling_threshold*N))) || (resampling=="each-step"))  {
-        resample_index <- sample(x=1:N, size=N, replace=T, prob=exp(v_k_normalized))
-        r[k] <- r[(k-1)] + 1 # Increment resampling counter
-      } else {
-        resample_index <- 1:N # This is how we handle Eve/Enoch indices
-        r[k] <- r[(k-1)]
-      }
-      
-      ######################################################
-      # Store resample index and compute Eve/Enoch indices #
-      ######################################################
-      
-      I[[k]] <- resample_index
-      
-      # Get current lambda
-      current_lambda <- E_lambda[k]
-      if((k-current_lambda)<1) current_lambda <- (k - 1)
-      if(current_lambda > 0 || eve_index) {
         
-        # This list is created always
-        E_current <- list()
-        
-        # Implementation of Eve index
-        # By going through resample indices recursively, starting from the k=1 + 1
-        if(eve_index) {
-          for(i in 1:k) {
-            
-            # For i==1 the resample index is the original 1:N
-            if(i==1) {
-              E_current[[i]] <- I[[i]]
-            } else {
-              E_current[[i]] <- E_current[[(i-1)]][I[[i]]]
-            }
-          }  
-        } else {
-          # Otherwise use Enoch index, starting from k-current_lambda
-          j <- 1
-          for(i in unique(r[(k-current_lambda):k])) {
-            if(i==unique(r[(k-current_lambda):k])[1]) {
-              E_current[[j]] <- I[[i]]
-            } else {
-              E_current[[j]] <- E_current[[(j-1)]][I[[i]]]
-            }
-            j <- j + 1
-          }
+        # Next check the intersections from current position
+        if(k>1 && P>0) {
+          
+          # Create lines
+          lines_matrix_list <- lapply(apply(x[eval(.(k)), c("lon", "lat")], MARGIN=1, FUN=base::c, simplify=FALSE), 
+                                      FUN = rbind, c(position_estimates[[(k-1)]]))
+          lines_st <- sf::st_sfc(lapply(lines_matrix_list, FUN=sf::st_linestring))
+          
+          # Check whether each of the matrix's lines intersects with the exclusion polygon
+          intersecting_particles <- rowSums(as.data.frame(sf::st_intersects(lines_st, 
+                                                                            exclusion_polygon_set, 
+                                                                            sparse = F, prepared = T)))
+          
         }
-        # Store index list (of lists)
-        E[[k]] <- E_current
-      } else {
-        # If lambda zero, we don't store the eve indices at all
-        E[[k]] <- list(I[[k]])
+        
+        if(P==0) {
+          w_k[intersecting_particles!=0] <- -Inf
+        } else {
+          w_k[intersecting_particles!=0] <- log(exp(w_k[intersecting_particles!=0])*P)
+        }
+        
+        
+        # Sum exp to see if we have eliminated all the particles
+        # which is the case if sum is zero
+        w_sum_exp <- sum(exp(w_k))
+        
+        # However now these particles don't estimate the position anymore
+        # This can be side-stepped by re-sampling (which cannot be done
+        # if all probabilities -Inf)
+        
+        if(w_sum_exp!=0 && sum(intersecting_particles!=0)>0) {
+          # We draw from the original particles a sample with the weights
+          # where intersecting_particles are removed, the sample size is
+          # sum(intersecting_particles) i.e. the amount of TRUEs in that vector
+          resample_index <- sample(x=1:N, size=sum(intersecting_particles!=0), 
+                                   replace=T, prob=exp(w_k))
+          # And then set the current particles + weights to the ones resampled
+          x_resample <- data.table::copy(x[eval(.(k))][resample_index, ..lat_lon_names])
+          k_temp <- k
+          x[k==k_temp][intersecting_particles!=0]$lat <- x_resample$lat 
+          x[k==k_temp][intersecting_particles!=0]$lon <- x_resample$lon 
+          w_k[intersecting_particles!=0] <- w_k[resample_index]
+        }
+      } 
+    
+      # If all the weights are -Inf i.e. all the particles are excluded,
+      # skip the movement, exclusion, inclusion and session polygons
+      # (reset to previous)
+      w_k <- tidyr::replace_na(w_k, -Inf)
+      if(all(w_k==-Inf) && k > 1) {
+        w_k <- w_k_previous
+        x[eval(.(k)), lon := x_lon_previous]
+        x[eval(.(k)), lat := x_lat_previous]
       }
-      
-      
-    } else {
-      # Store Eve/Enoch index, it's just i here, and it will be i always
-      # if APF is not used
-      current_E <- list()
-      current_E[[1]] <- 1:N 
-      E_list <- current_E
     }
     
     ###############################
@@ -629,7 +512,6 @@ pf_positioning <- function(y,
       log_p <- l_full$logSum
     }
     
-    likelihood_list[[k]] <- log_p
     c_k_vector <- log_p + w_k
     
     # c_k is a normalizing constant, logSumExp simply
@@ -637,16 +519,107 @@ pf_positioning <- function(y,
     # logarithm again. 
     # This function is to avoid numerical underflow which
     # would happen if using just log(sum(exp(x)))
-    c_k <- matrixStats::logSumExp(c_k_vector)
-    if(verbose) print(paste("Normalising constant: ", c_k, sep=""))
+    # Make sure that c_k_vector doesn't have NaNs
+    
+    ###################### 
+    # STEP 4b: Smoothing #
+    ######################
+    if(smoothing && k < t && k > burn_in) {
+      
+      # Move particles for smoothing, map matching not used
+      x_lon_smoothing <- x_lon #+ lon_noise_list[[(k+1)]]
+      x_lat_smoothing <- x_lat #+ lat_noise_list[[(k+1)]]
+      y_subset_likelihood <- data.table::copy(y[.(k_ts+1)])
+      
+      # First RSSI
+      rssi_cutoff_count <- nrow(y_subset_likelihood[rssi >= rssi_threshold])
+      if(rssi_cutoff_count>0) {
+        if(verbose) print(paste("Dropping ", rssi_cutoff_count,
+                                " azimuths below RSSI threshold.", sep=""))
+        y_subset_likelihood <- y_subset_likelihood[rssi >= rssi_threshold]
+        if(verbose) print(paste("Angle observations remaining:", nrow(y_subset_likelihood)))  
+      }
+      
+      # If less or just one row remaining
+      # this step needs to be interpolated, TODO check how to handle
+      if(nrow(y_subset_likelihood)>1) {
+        
+        # Data for likelihood evaluation selected, next, create
+        # a dataframe of locator/angle-particle pairs
+        
+        # Creates a new data frame for particle positions x
+        x_likelihood <- data.table::as.data.table(matrix(ncol=2, nrow=N, dimnames = list(c(), c("lat_b", "lon_b"))))
+        # And stores the input x latitude and longitude into this data frame
+        x_likelihood$lat_b <- x_lat_smoothing
+        x_likelihood$lon_b <- x_lon_smoothing
+        
+        # If we want to avoid joining by lat/lon values, let's add an id here
+        x_likelihood$id <- 1:nrow(x_likelihood)
+        y_subset_likelihood$id <- 1:nrow(y_subset_likelihood)
+        # Do some renaming
+        data.table::setnames(y_subset_likelihood, old = "y_m", new = "lat_a")
+        data.table::setnames(y_subset_likelihood, old = "x_m", new = "lon_a")
+        
+        # Now we have all the locator lat-lon pairs in y_input and
+        # particle lat-lon pairs in x_input
+        # So combine them to xy
+        xy <- data.table::CJ(x_id=x_likelihood$id, y_id=y_subset_likelihood$id)
+        xy <- merge(xy, x_likelihood, by.x="x_id", by.y="id")
+        xy <- merge(xy, y_subset_likelihood, by.x="y_id", by.y="id")
+        
+        # Now we have a dataset where we have each locator lat/lon
+        # paired with each particle lat/lon
+        # Compute angles between all the combinations
+        # NOTE! Uses atan2(x,y) not atan2(y,x)
+        xy <- xy[, angle := terra::atan2((as.numeric(lon_b)-as.numeric(lon_a)), 
+                                         (as.numeric(lat_b)-as.numeric(lat_a)))]
+        
+        # Elevation
+        # Create its own data frame for elevation
+        xy_elevation <- data.table::copy(xy)
+        # Compute angle between each particle and locator
+        xy_elevation <- xy_elevation %>%
+          dplyr::mutate(d = raster::pointDistance(matrix(c(lon_a, lat_a), ncol=2),
+                                                  matrix(c(as.numeric(lon_b), as.numeric(lat_b)), ncol=2), 
+                                                  lonlat = F, allpairs = F),
+                        h = height - asset_tag_height,
+                        elevation_angle_complement_rads = atan(d/h),
+                        elevation_angle_computed = pi/2-elevation_angle_complement_rads)
+        
+        # Compute squared error(s)
+        xy <- xy %>% dplyr::mutate(diff = pmin(abs(angle-azimuth_location_mdf), 
+                                               2*pi-abs(angle-azimuth_location_mdf)), se = diff^2)
+        xy_elevation <- xy_elevation %>% dplyr::mutate(diff_elevation = abs(elevation_angle_computed - elevation_location),
+                                                       se_elevation = diff_elevation^2)
+        
+        xy[, L := .(galoRe::pf.dvonmises(angle, azimuth_location_mdf, azimuth_scale)), by = y_id]
+        xy_elevation <- xy_elevation[, L := .(truncnorm::dtruncnorm(elevation_angle_computed, 
+                                                                    a=0, b=pi/2, 
+                                                                    mean=data.table::first(elevation_location), 
+                                                                    sd=sqrt(data.table::first(elevation_scale)))), by=y_id]
+        
+        
+        # Convert to log scale, compute MSE
+        xy <- xy[, `:=`(l=log(L), mse=mean(se))]
+        xy_elevation <- xy_elevation[, `:=`(l=log(L), mse=mean(se_elevation))]
+        xy$L <- xy$L * xy_elevation$L 
+        # Compute likelihood product.
+        l_full <- xy[order(x_id),.(logSum=sum(log(L))), by=x_id]  
+        log_p <- l_full$logSum
+        
+        # Apply smoothing
+        c_k_vector <- c_k_vector + log_p
+      }
+    }
+    
     
     #########################
     # STEP 5: Normalization #
     #########################
     
-    # Make sure that c_k_vector doesn't have NaNs
     c_k_vector[is.nan(c_k_vector)] <- -Inf
     c_k <- matrixStats::logSumExp(c_k_vector)
+    if(verbose) print(paste("Normalising constant: ", c_k, sep=""))
     c_k_vector_normalized <- c_k_vector-c_k
     
     # Store to weights, however use c_k_vector_normalized in the future
@@ -769,11 +742,8 @@ pf_positioning <- function(y,
           # Resampling. Get particles at random using exp-weights as probabilities.
           resample_index <- sample(x=1:N, size=N, replace=T, prob=exp(w_k))
           
-          # Store descendants for online smoothing
-          # TODO: This might still be required, commenting out.
-          #if(smoothing %in% c("SFLS")) {
-          #  I[[k]] <- resample_index
-          #} 
+          # Store descendants
+          I[[k]] <- resample_index
           
           # And then set the current particles to the ones resampled
           x_resample <- data.table::copy(x[eval(.(k))][resample_index, ..lat_lon_names])
@@ -784,16 +754,11 @@ pf_positioning <- function(y,
         }
       } else {
         if(verbose) print(paste("Effective sample size ", N_eff, " larger than threshold value. Skipping resampling.", sep=""))
-        
-        # Store descendants for online smoothing
-        # TODO: Again, indices need to be computed, leaving this in.
-        #if(smoothing %in% c("SFLS")) {
-        #  I[[k]] <- 1:N # This is how we handle Eve/Enoch indices
-        #}
+        # Store descendants
+        I[[k]] <- 1:N # This is how we handle Eve/Enoch indices
       }
     } else {
-      # TODO ???
-      I[[k]] <- 1:N # Interpolation on the first time step
+      I[[k]] <- 1:N # First time step
     }
     
     # No resampling, just reset weights
@@ -802,37 +767,31 @@ pf_positioning <- function(y,
     }
     
     # Compute particle ancestors (cf. Enoch index) if required
-    # TODO, "commented out" for now
-    if(1==2) {
-      if(smoothing %in% c("SFLS")) {
+    E_current <- list()
         
-        E_current <- list()
-        
-        # Fixed lag smoothing descendants
-        if(k < smoothing_lag) {
-          # Start from the first time step if not over
-          # the lag horizon yet
-          lookback_k <- 1
-        } else {
-          # Otherwise start lookback from whatever the lag is
-          lookback_k <- k - smoothing_lag
-          #print(length(lookback_k:k))
-        }
-        
-        j <- 1
-        for(i in lookback_k:k) {
-          if(i==lookback_k) {
-            E_current[[j]] <- 1:N
-          } else {
-            E_current[[j]] <- E_current[[(j-1)]][I[[i]]]
-          }
-          j <- j + 1
-        }
-        # Store index list (of lists)
-        E[[k]] <- E_current
-        
-      }
+    # Fixed lag smoothing descendants
+    smoothing_lag <- 1
+    if(k < smoothing_lag) {
+      # Start from the first time step if not over
+      # the lag horizon yet
+      lookback_k <- 1
+    } else {
+      # Otherwise start lookback from whatever the lag is
+      lookback_k <- k - smoothing_lag
     }
+    
+    j <- 1
+    for(i in lookback_k:k) {
+      if(i==lookback_k) {
+        E_current[[j]] <- 1:N
+      } else {
+        E_current[[j]] <- E_current[[(j-1)]][I[[i]]]
+      }
+      j <- j + 1
+    }
+    # Store index list (of lists)
+    E[[k]] <- E_current
+        
     
     ########################
     # STEP 9: Time update. #
@@ -854,143 +813,16 @@ pf_positioning <- function(y,
     ts_previous <- k_ts
   }
   
-  ###########################
-  # ALL DONE, WRAP-UP STEPS #
-  ###########################
+  ##############################
+  # ALL DONE, CREATE RETURN DF #
+  ##############################
   
   if(verbose) print("Positioning done. Wrapping up.")
   
-  return(positioning_estimates)
-  
-  ###############################
-  # A. Create a path data frame #
-  ###############################
-  
-  # Also used to return various state values for each time step
   path_df <- as.data.frame(matrix(ncol=5, nrow=length(position_estimates)))  
-  colnames(path_df) <- c("timestamp", "x", "y", "variance", "interpolated")
-  path_df$timestamp <- as.numeric(names(position_estimates))
+  colnames(path_df) <- c("timestamp", "x", "y", "variance")
   path_df$y <- unlist(position_estimates)[seq(from=1, to=length(unlist(position_estimates)), by=2)]
   path_df$x <- unlist(position_estimates)[seq(from=2, to=length(unlist(position_estimates)), by=2)]
-  path_df$y_prev <- c(NA, path_df$y[1:(nrow(path_df)-1)])
-  path_df$x_prev <- c(NA, path_df$x[1:(nrow(path_df)-1)])
-  path_df$variance <- v[1:nrow(path_df)]
-  path_df$variance_lon <- v_lon[1:nrow(path_df)]
-  path_df$variance_lat <- v_lat[1:nrow(path_df)]
-  path_df$sd_m <-sqrt(path_df$variance) * conversion_factor
-  path_df$asset_tag_id <- 0
-  path_df$interpolated <- interpolated[1:nrow(path_df)]
-  path_df$movement_disabled <- movement_disabled[1:nrow(path_df)]
-  path_df$resampling_used <- resample_vector[1:nrow(path_df)]
-  path_df$locator_n <- locator_n_vector[1:nrow(path_df)]
-  path_df$likelihood_sum <- likelihood_sum_vector[1:nrow(path_df)]
-  path_df$likelihood_max <- likelihood_max_vector[1:nrow(path_df)]
-  path_df$likelihood_mean_normalized <- likelihood_mean_vector_normalized[1:nrow(path_df)]
-  path_df$q <- qv[1:nrow(path_df)]
-  path_df$q_min <- q_min
-  path_df$q_max <- q_max
-  path_df$group <- 1
-  # TODO: Store smoothing once re-implemented.
-  #path_df$lag <- L_vector[1:nrow(path_df)]
-  #if(!is.na(smoothing_e)) path_df$lag_var <- L_var_vector[1:nrow(path_df)]
-  
-  # Set k values
-  path_df$k <- 1:nrow(path_df)
-  
-  # Add some statistics from lists
-  #path_df$mean_sd_m <- unlist(lapply(sd_list, mean))[1:nrow(path_df)]
-  #path_df$median_sd_m <- unlist(lapply(sd_list, median))[1:nrow(path_df)]
-  #path_df$mean_sd_m <- round(path_df$mean_sd_m, 4)
-  #path_df$median_sd_m <- round(path_df$median_sd_m, 4)
-  #path_df$mean_sd_m_silabs <- round(path_df$mean_sd_m_silabs, 4)
-  #path_df$median_sd_m_silabs <- round(path_df$median_sd_m_silabs, 4)
- 
-  # Add true path and compute error statistics
-  if("data.frame" %in% class(true_path)) { 
-    # If multiple paths are provided just use the first in data frame (as only one
-    # row is supposed to be provided)
-    true_path_string <- true_path$path[1]  
-    # Convert db coordinate string to vectors
-    true_path_string <- stringr::str_replace_all(true_path_string, "\\[", "")
-    true_path_string <- stringr::str_replace_all(true_path_string, "\\]", "")
-    true_path_string <- stringr::str_replace_all(true_path_string, "\\)\\,\\(", "\\,")
-    true_path_string <- stringr::str_replace_all(true_path_string, "\\(", "c\\(")
-    true_path_string <- eval(parse(text=true_path_string))
-    # Convert to df
-    true_path_df <- as.data.frame(matrix(true_path_string, ncol=2, dimnames=list(c(), c("lat","lon")), byrow=T))
-    # Assume constant speed and add time stamp
-    true_path_df$timestamp <- as.numeric(seq(from=true_path$start_time[1], 
-                                             to=true_path$end_time[1], 
-                                             length.out=nrow(true_path_df)))
-    
-    # Densify the true path for error computation
-    true_path_smooth <- as.data.frame(smoothr::smooth_densify(as.matrix(true_path_df[,1:2]), n=1000))
-    colnames(true_path_smooth) <- c("lat", "lon")
-    # Do a loop of path_df and compute the errors
-    path_df$positioning_error <- rep(NA, nrow(path_df))
-    if(apply_kalman_filter) path_df_kf$positioning_error <- rep(NA, nrow(path_df_kf))
-    for(path_df_i in 1:nrow(path_df)) {
-      # Compute distance to the true path i.e. positioning error for this time step
-      path_df[path_df_i, "positioning_error"] <- min(raster::pointDistance(t(matrix(c(path_df[path_df_i, "x"], 
-                                                                                      path_df[path_df_i, "y"]))), 
-                                                                           cbind(true_path_smooth$lon, true_path_smooth$lat), lonlat=lonlat))
-      
-      
-      # Kalman filtered df has the same number of rows
-      # so we can do that in this same loop
-      if(apply_kalman_filter) {
-        path_df_kf[path_df_i, "positioning_error"] <- min(raster::pointDistance(t(matrix(c(path_df_kf[path_df_i, "x"], 
-                                                                                           path_df_kf[path_df_i, "y"]))), 
-                                                                                cbind(true_path_smooth$lon, true_path_smooth$lat), lonlat=lonlat))
-      }
-    }
-  }
-  
-  # Add names/timestamps to locators used list
-  names(locators_used_list) <- path_df$timestamp
-  
-  # Add row for k=0
-  path_df[nrow(path_df)+1, ] <- rep(NA, ncol(path_df))
-  path_df[nrow(path_df), "k"] <- 0
-  path_df$N <- N
-  path_df$N_eff <- c(N, N_eff_vector)[1:nrow(path_df)]
-  
-  #######################
-  # F. Summarize errors #
-  #######################
-  
-  errors_data_frame <- as.data.frame(matrix(ncol=0, nrow=10))
-  rownames(errors_data_frame) <- c("min", "max", "mean", "rmse", "q50", "q80", "q90", "q95", "q99", "sd")
-  if("data.frame" %in% class(true_path)) {
-    errors_functions <- function(x) c(min(x, na.rm=T), max(x, na.rm=T), mean(x, na.rm=T), 
-                                      sqrt(mean(x^2, na.rm=T)), quantile(x, 0.5, na.rm=T), 
-                                      quantile(x, 0.8, na.rm=T), quantile(x, 0.9, na.rm=T), 
-                                      quantile(x, 0.95, na.rm=T), quantile(x,0.99, na.rm=T),
-                                      sd(x, na.rm=T))
-    errors_data_frame$positions <- errors_functions(path_df$positioning_error)
-  }
-  
-  ##########################################
-  # G. Return variables, plots, parameters #
-  ##########################################
-  
-  
-  #variance_return_list <- list(variance_estimate, E_lambda, v, sqrt(v)*conversion_factor, v_lon, v_lat)
-  #names(variance_return_list) <- c("Used variance estimate", "Lag values", "Variance", "Standard deviation (in meters)", "Longitudinal variance", "Latitudinal variance")
-  return_list <- list(x,w,p_maps,#variance_return_list,
-                      qv,path_df,path_df_kf,
-                      locators_used_list,w_original,p_path,p_path_kf,
-                      sitemaps,
-                      list(lat_noise_list, lon_noise_list),
-                      errors_data_frame, list(I, E), pf_animation_f)
-  names(return_list) <- c("Particle positions",
-                          "Particle weights", "Particle and angle maps",
-                          "Vector of used q values",
-                          "Position estimates", 
-                          "Position estimates (Kalman filtered)",
-                          "Locators used","Particle weights before resampling","Path plot", 
-                          "Path plot (Kalman filtered)","Sitemaps", "List of noise terms (lat, lon)",
-                          "Positioning errors", "Genealogy", "Animation save function")
-  if(verbose) print("All done.")
-  return(return_list)
+  path_df$timestamp <- as.numeric(names(position_estimates))
+  return(path_df)
 }
