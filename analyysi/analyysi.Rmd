@@ -12,7 +12,17 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r}
 # Ladataan tarvittavat kirjastot
 library(truncnorm)
-library(tidyverse)
+library(dplyr)
+library(terra)
+library(tidyr)
+library(data.table)
+library(raster)
+library(sf)
+library(sp)
+library(matrixStats)
+library(stats)
+# ja paikannusfunktio
+pf_positioning <- source("R/pf_positioning.R")
 ```
 
 ```{r}
@@ -50,15 +60,15 @@ colnames(phase1_results) <- c("q50_error", "q80_error", "q90_error", "q95_error"
 
 for(i in 1:nrow(phase1_values)) {
   set.seed(siemenluku)
-  print(paste("Running parameter combination ", i, "/", nrow(phase1_values), sep=""))
+  print(paste("Ajetaan parametrikombinaatio ", i, "/", nrow(phase1_values), sep=""))
   phase1_runs <- list()
   for(j in 1:r) {
-   print(paste("Running positioning ", j, "/", r, sep=""))
+   print(paste("Algoritmin ajokerta ", j, "/", r, sep=""))
    phase1_runs[[j]] <- pf_positioning(y, N = phase1_values$N[i],
                                 resampling = phase1_values$resampling[i],
                                 exclusion_polygons = polygonit_E,
                                 inclusion_polygons = polygonit_F,
-                                map_matching = F, q = 2.5,
+                                map_matching = F, q = 2,
                                 smoothing = F, rssi_threshold = -120,
                                 P = 0, verbose=F, test_path = testipolku_s)
   }
@@ -88,14 +98,13 @@ for(i in 1:nrow(phase1_summary)) {
   phase1_maps[[i]] <- kartta
   for(j in 1:r) {
     # Lisätään ajojen polut karttaan
-     phase1_maps[[i]] <- phase1_maps[[i]] + geom_path(data=phase1_results_list[[i]][[j]], aes(x=x,y=y), color="steelblue", alpha=0.5) + ggtitle(paste("N=", phase1_summary[j, "N"],
+     phase1_maps[[i]] <- phase1_maps[[i]] + geom_path(data=phase1_results_list[[i]][[j]], aes(x=x,y=y), color="steelblue", alpha=0.8) + ggtitle(paste("N=", phase1_summary[j, "N"],
                                                                                                                                                       "; resampling=", round(phase1_summary[j, "resampling"],2), sep=""))
   }
 }
 
-
-#do.call("grid.arrange", c(phase2_maps, ncol=3))
+phase2_maps <- list()
+phase2_maps[[1]] <- phase1_maps[[i]]
+phase2_maps[[2]] <- phase1_maps[[i]]
+do.call("grid.arrange", c(phase2_maps, ncol=3))
 ```
-
-
-
