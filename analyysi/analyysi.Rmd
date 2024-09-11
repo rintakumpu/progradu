@@ -12,28 +12,27 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r}
 # Ladataan tarvittavat kirjastot
 library(truncnorm)
+library(tidyverse)
 ```
 
 ```{r}
-# Ladataan data
+# Ladataan testipolkudata
 testipolku <- read_csv("data/test_path.csv")
+# Ilmaistaan testipolku tihennettynä pistejoukkona
+testipolku_s <- as.data.frame(smoothr::smooth_densify(as.matrix(testipolku[,1:2]), n=1000))
+colnames(testipolku_s) <- c("y", "x")
+
+# Ladataan kartta-ggplot, polygonidatakehykset ja itse testidata
+kartta <- read_rds("data/sitemap_bw.RDS") 
 polygonit_F <- read_csv("data/inclusion_polygons.csv")
 polygonit_E <- read_csv("data/exclusion_polygons.csv")
 y <- read_csv("data/y.csv")
 ```
 
 ```{r}
-# Asetetaan muuttujia
-r <- 30
-
-# Ajetaan paikannus
-pf_positioning(y, exclusion_polygons = polygonit_E,
-               inclusion_polygons = polygonit_F,
-               N = 1000,
-                                resampling = 0,
-                                map_matching = F, q = 2.5,
-                                smoothing = F, rssi_threshold = -120,
-                                P = 0)
+# Asetetaan käytetyt muuttujat
+r <- 30 # Kuinka monta kertaa kukin parametrikombinaatio ajetaan
+siemenluku <- 2666 # Asetetaan jokaisessa parametrikombinaatiossa käytetty siemenluku
 ```
 
 ## Vaihe 1
@@ -44,22 +43,58 @@ Ensimmäisessä vaiheessa tarkastelaan partikkelien määrän $N={100,1000,10000
 N_values <- c(100,1000,10000)
 resampling_values <- c(0,1/10,2/3,1)
 phase1_values <- expand.grid(N=N_values, resampling=resampling_values)
-phase1_results <- list()
+
+phase1_results <- as.data.frame(matrix(ncol=7, nrow=nrow(phase1_values)))
+phase1_results_list <- list()
+colnames(phase1_results) <- c("q50_error", "q80_error", "q90_error", "q95_error", "sub_meter_quantile", "variance", "mc_variance")
 
 for(i in 1:nrow(phase1_values)) {
-  set.seed(2666)
+  set.seed(siemenluku)
+  print(paste("Running parameter combination ", i, "/", nrow(phase1_values), sep=""))
   phase1_runs <- list()
-  for(j in 1:30) {
+  for(j in 1:r) {
+   print(paste("Running positioning ", j, "/", r, sep=""))
    phase1_runs[[j]] <- pf_positioning(y, N = phase1_values$N[i],
                                 resampling = phase1_values$resampling[i],
                                 exclusion_polygons = polygonit_E,
                                 inclusion_polygons = polygonit_F,
                                 map_matching = F, q = 2.5,
                                 smoothing = F, rssi_threshold = -120,
-                                P = 0)
+                                P = 0, verbose=F, test_path = testipolku_s)
   }
-  phase1_results[[i]] <- phase1_runs
+  phase1_results_list[[i]] <- phase1_runs
+  
+  # Lasketaan MC-varianssi
+  mc_variance <- c()
+  for(k in 1:nrow(phase1_runs[[1]])) {
+    mc_variance[k] <- (var(unlist(lapply(phase1_runs, function(x) x$x[k])),na.rm=T) + var(unlist(lapply(phase1_runs, function(x) x$y[k])),na.rm=T))/2
+  }
+  
+  # Lasketaan ajojen ka.
+  phase1_results[i,] <-  c(mean(unlist(lapply(phase1_runs, function(x) quantile(x$positioning_error, probs=0.5, na.rm=T))),na.rm=T),
+                           mean(unlist(lapply(phase1_runs, function(x) quantile(x$positioning_error, probs=0.8, na.rm=T))),na.rm=T),
+                           mean(unlist(lapply(phase1_runs, function(x) quantile(x$positioning_error, probs=0.9, na.rm=T))),na.rm=T),
+                           mean(unlist(lapply(phase1_runs, function(x) quantile(x$positioning_error, probs=0.95, na.rm=T))),na.rm=T),
+                           mean(unlist(lapply(phase1_runs, function(x) ecdf(x$positioning_error[!is.na(x$positioning_error)])(1))),na.rm=T),
+                           mean(unlist(lapply(phase1_runs, function(x) median(x$variance, na.rm=T))),na.rm=T),
+                           mean(mc_variance))
+  
+  
 }
+phase1_summary <- cbind(phase1_values, phase1_results)
+
+phase1_maps <- list()
+for(i in 1:nrow(phase1_summary)) {
+  phase1_maps[[i]] <- kartta
+  for(j in 1:r) {
+    # Lisätään ajojen polut karttaan
+     phase1_maps[[i]] <- phase1_maps[[i]] + geom_path(data=phase1_results_list[[i]][[j]], aes(x=x,y=y), color="steelblue", alpha=0.5) + ggtitle(paste("N=", phase1_summary[j, "N"],
+                                                                                                                                                      "; resampling=", round(phase1_summary[j, "resampling"],2), sep=""))
+  }
+}
+
+
+#do.call("grid.arrange", c(phase2_maps, ncol=3))
 ```
 
 

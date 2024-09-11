@@ -487,7 +487,7 @@ Paikaunnusesimerkissä lähettimenä toimi 20hz taajuudella havaintoja lähettä
 \label{fig:xr2_installed}
 \end{figure}
 
-Koeympäristön pohjapiirustus on esitetty kuvassa \ref{fig:testipolku}. Piirustuksessa XR-2-paikantimet on kuvattu punaisilla ympyröillä ja kuljettu testipolku on merkitty violetilla janalla. 
+Koeympäristön pohjapiirustus on esitetty kuvassa \ref{fig:testipolku}. Piirustuksessa XR-2-paikantimet on kuvattu punaisilla ympyröillä ja kuljettu testipolku on merkitty violetilla janalla. Piirustus on luotu käyttäen `ggplot2`-kirjastoa ja se löytyy RDS-muotoon tallennettuna osoitteesta \newline https://github.com/rintakumpu/progradu/analyysi/R/data/sitemap.RDS.
 
 \begin{figure}[H]
 \centering
@@ -518,9 +518,9 @@ Koeympäristön pohjapiirustus on esitetty kuvassa \ref{fig:testipolku}. Piirust
 
 Yllä kerättyyn dataan perustuva paikannus suoritettiin kolmessa vaiheessa. Kussakin vaiheessa paikannusalgoritmi ajettiin jokaisella vaiheeseen liittyvällä suunnitteluparametrikombinaatiolla $r=30$ kertaa ja tulokset (paikannusvirhe, suoritusaika, varianssi) laskettiin näiden $30$ ajon aritmeettisena keskiarvona.
 
-Ensimmäisessä vaiheessa tarkasteltiin partikkelien määrän $N={100,1000,10000}$ sekä uudelleenotannan kynnysarvon $resampling={0,1/10,2/3,1}$ vaikutusta paikannuskeskivirheeseen. Karttasovitusalgoritmia ei käytetty, kuten ei myöskään prediktiivistä siloitinta eikä signaalin vahvuuden kynnysarvoa. Dynaamisen mallin kohina-arvo $q=2.5$ pidettiin vakiona. Ensimmäisessä vaiheessa tarkasteltiin siis $12$ eri suunnitteluparametrikombinaatiota.
+Ensimmäisessä vaiheessa tarkasteltiin partikkelien määrän $N={100,1000,10000}$ sekä uudelleenotannan kynnysarvon $resampling={0,1/10,2/3,1}$ vaikutusta paikannuskeskivirheeseen. Karttasovitusalgoritmia ei käytetty, kuten ei myöskään prediktiivistä siloitinta eikä signaalin vahvuuden kynnysarvoa. Dynaamisen mallin kohina-arvo $q=2$ pidettiin vakiona. Ensimmäisessä vaiheessa tarkasteltiin siis $12$ eri suunnitteluparametrikombinaatiota.
 
-Toisessa vaiheessa valittiin edellisen vaiheen tulosten perusteella parhaimman paikannusvirheen suhteessa suoritusaikaan ja varianssiin tuottava uudelleenotannan kynnysarvo $resampling$ sekä partikkelien määrä $N$. Nämä pidettiin vakioarvoisina ja testattiin karttasovitusalgoritmia *map_matching* $={T,F}$, karttasovitusalgoritmin rangaistusarvoa $P={1,100,1000,10000}$ sekä dynaamisen mallin kohina-arvoa $q={0.75,1.5,2.5,3}$. Signaalin vahvuuden kynnysarvoa ei käytetty, kuten ei käytetty myöskään prediktiivistä siloitinta. Koska rangaistusarvo $P$ oli käytössä ainoastaan karttasovitusalgoritmia käytettäessä, tarkasteltiin toisessa vaiheessa $20$ eri suunnitteluparametrikombinaatiota.
+Toisessa vaiheessa valittiin edellisen vaiheen tulosten perusteella parhaimman paikannusvirheen suhteessa suoritusaikaan ja varianssiin tuottava uudelleenotannan kynnysarvo $resampling$ sekä partikkelien määrä $N$. Nämä pidettiin vakioarvoisina ja testattiin karttasovitusalgoritmia *map_matching* $={T,F}$, karttasovitusalgoritmin rangaistusarvoa $P={1,100,1000}$ sekä dynaamisen mallin kohina-arvoa $q={0.75,1.5,2,2.5}$. Signaalin vahvuuden kynnysarvoa ei käytetty, kuten ei käytetty myöskään prediktiivistä siloitinta. Koska rangaistusarvo $P$ oli käytössä ainoastaan karttasovitusalgoritmia käytettäessä, tarkasteltiin toisessa vaiheessa $16$ eri suunnitteluparametrikombinaatiota.
 
 Viimeisessä vaiheessa valittiin edellisten vaihdeiden tulosten perusteella parhaimman paikannusvirheen suhteessa suoritusaikaan ja varianssiin tuottavat parametrit testattujen joukosta ja testattiin adatan valinnassa käytettävää signaalin vahvuuden kynnysarvoa *rssi_threshold* $={-100,-90,-80}$ sekä prediktiivistä siloitinta *smoothing* $={T,F}$ eli kuutta eri suunnitteluparametrikombinaatiota.
 

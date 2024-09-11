@@ -114,7 +114,7 @@
 #' @export
 pf_positioning <- function(y, 
                 N = 1024,
-                q = 2.5, 
+                q = 2, 
                 q_min = 0, 
                 q_max = 10, 
                 resampling=2/3,
@@ -126,10 +126,11 @@ pf_positioning <- function(y,
                 inclusion_polygons=NA,
                 disable_movement_model_on_sleep = T,
                 stationary_attenuation=10,
-                burn_in=0, 
+                burn_in=10, 
                 burn_in_multiplier=10,
                 smoothing=F,
-                verbose=T) {
+                verbose=T,
+                test_path=NA) {
   
   ##########################
   # STEP 0. Initialization #
@@ -210,8 +211,6 @@ pf_positioning <- function(y,
   # to store results and diagnostics
   v <- rep(NA, t) # Variance
   movement_disabled <- c()
-  v_lon <- rep(NA, t) # Weighted longitude variance
-  v_lat <- rep(NA, t) # Weighted latitude variance
   N_eff_vector <- rep(N, t) # Effective sample sizes
   resample_vector <- rep(FALSE, t) # Resampling performed?
   
@@ -626,6 +625,7 @@ pf_positioning <- function(y,
     # Store to weights, however use c_k_vector_normalized in the future
     # to speed up rest of the algorithm
     w_k <- c_k_vector_normalized
+    w_k[is.nan(w_k)] <- -Inf
     
     # Store previous weights,
     # this is used by auxiliary PF and the regular one in the case
@@ -700,23 +700,48 @@ pf_positioning <- function(y,
     # STEP 7: Variance estimation. #
     ################################
     
-    if(k>1 && resampling > 0) {
-      E_k <- E[[(k-1)]][[length(E[[(k-1)]])]] # E_k <- E[[(k)]][[length(E[[(k)]])]]
-      omega_j_k <- exp(w_k[E_k])
-      Omega_k <- sum(exp(w_k))
-      c_lon <- position_estimates[[k]][[2]]
-      c_lat <- position_estimates[[k]][[1]]
+    if(resampling > 0 && k>1) {
+      #E_k <- E[[(k-1)]][[length(E[[(k-1)]])]] # E_k <- E[[(k)]][[length(E[[(k)]])]]
+      #print(E)
+      #omega_j_k <- exp(w_k[E_k])
+      #Omega_k <- sum(exp(w_k))
+      #c_lon <- position_estimates[[k]][[2]]
+      #c_lat <- position_estimates[[k]][[1]]
       
       # Compute longitudinal and latitudinal variance 
       # This is the actual CLE
-      v_lon[k] <- mean(sum((omega_j_k/Omega_k) * (x_lon_previous[E_k] - c_lon))^2)
-      v_lat[k] <- mean(sum((omega_j_k/Omega_k) * (x_lat_previous[E_k] - c_lat))^2)
+      #v_lon[k] <- mean(sum((omega_j_k/Omega_k) * (x_lon_previous[E_k] - c_lon))^2)
+      #v_lat[k] <- mean(sum((omega_j_k/Omega_k) * (x_lat_previous[E_k] - c_lat))^2)
       # And variance
-      v[k] <- mean(sum((omega_j_k/Omega_k) * (raster::pointDistance(matrix(c(x_lon_previous[E_k], 
-                                                                             x_lat_previous[E_k]), ncol=2), c(c_lon, c_lat), 
-                                                                    lonlat = F)))^2)
+      #v[k] <- mean(sum((omega_j_k/Omega_k) * (raster::pointDistance(matrix(c(x_lon_previous[E_k], 
+       #                                                                      x_lat_previous[E_k]), ncol=2), c(c_lon, c_lat), 
+      #                                                              lonlat = F)))^2)
+      
+      #E_lambda[(k+1)] <- E_lambda
+      
+      
+      v[k] <- 0
+      c_lon <- position_estimates[[k]][[2]]
+      c_lat <- position_estimates[[k]][[1]]
+      for(E_index in 1:length(E[[(k-1)]])) {
+        
+        E_k <- E[[(k-1)]][[E_index]]
+        
+        # And variance
+        o <- exp(c_k_vector[E_k])/sum(exp(c_k_vector[E_k]))
+        v_current <- o*raster::pointDistance(matrix(c(x_lon[E_k], x_lat[E_k]), ncol=2), c(c_lon, c_lat), lonlat = F)
+        v_current <- mean(sum(v_current)^2)
+        if(is.na(v_current)) v_current <- 0
+        
+        # Check if maximizes variance
+        if(v_current >= v[k]) {
+          v[k] <- v_current
+          # As E_index starts from 
+          # current_lambda + 2 - E_index
+          E_lambda[[(k)]] <- length(E[[(k-1)]]) - E_index + 1
+        }
+      }
     }
-    
     
     ###################################
     # STEP 8: Resampling (optional). #
@@ -748,8 +773,11 @@ pf_positioning <- function(y,
           resample_vector[k] <- T
           # Resampling. Get particles at random using exp-weights as probabilities.
           resample_index <- sample(x=1:N, size=N, replace=T, prob=exp(w_k))
-          
-          if(k > 1) r[k] <- r[(k-1)]
+          if(k > 1) {
+            r[k] <- r[(k-1)] + 1
+          } else {
+            r[k] <- 1
+          }
           
           # Store descendants
           I[[k]] <- resample_index
@@ -759,7 +787,7 @@ pf_positioning <- function(y,
           x[eval(.(k)), (lat_lon_names) := x_resample]
           
           # And reset weights to uniform
-          w_k <- -log(N) 
+          w_k <- rep(-log(N), N)
         }
       } else {
         if(verbose) print(paste("Effective sample size ", N_eff, " larger than threshold value. Skipping resampling.", sep=""))
@@ -772,7 +800,7 @@ pf_positioning <- function(y,
     
     # No resampling, just reset weights
     if(resampling==0) {
-      w_k <- -log(N) 
+      w_k <- rep(-log(N), N)
     }
     
     ######################################################
@@ -782,6 +810,7 @@ pf_positioning <- function(y,
     if(resampling > 0) {
       # Get current lambda
       current_lambda <- E_lambda[k]
+      
       if((k-current_lambda)<1) current_lambda <- (k - 1)
       if(current_lambda > 0) {
         
@@ -800,13 +829,13 @@ pf_positioning <- function(y,
         }
         
         # Store index list (of lists)
-        E[[k]] <- E_current
+        #print(E_current)
+        E[[k+1]] <- E_current
       } else {
         # If lambda zero, we don't store the eve indices at all
-        E[[k]] <- list(I[[k]])
+        E[[k+1]] <- list(I[[k]])
       }
     }
-        
     
     ########################
     # STEP 9: Time update. #
@@ -834,11 +863,24 @@ pf_positioning <- function(y,
   
   if(verbose) print("Positioning done. Wrapping up.")
   
+  # Save positioning results in data frame
   path_df <- as.data.frame(matrix(ncol=5, nrow=length(position_estimates)))  
-  colnames(path_df) <- c("timestamp", "x", "y", "variance")
+  colnames(path_df) <- c("timestamp", "x", "y", "variance", "positioning_error")
   path_df$y <- unlist(position_estimates)[seq(from=1, to=length(unlist(position_estimates)), by=2)]
   path_df$x <- unlist(position_estimates)[seq(from=2, to=length(unlist(position_estimates)), by=2)]
   path_df$timestamp <- as.numeric(names(position_estimates))
   path_df$variance <- v
+  path_df$variance[path_df$variance==0] <- NA # Replace zero variance with NA
+  
+  # Finally compute positioning error
+  if("data.frame" %in% class(test_path)) {
+    # Do a loop of path_df and compute the errors
+    for(path_df_i in 1:nrow(path_df)) {
+      # Compute distance to the true path i.e. positioning error for this time step
+      path_df[path_df_i, "positioning_error"] <- min(raster::pointDistance(t(matrix(c(path_df[path_df_i, "x"], 
+                                                                                      path_df[path_df_i, "y"]))), 
+                                                                           cbind(test_path$x, test_path$y), lonlat=F))
+    }
+  }
   return(path_df)
 }
