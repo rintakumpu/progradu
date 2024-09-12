@@ -552,7 +552,7 @@ $x_R=x_2+\frac{k^\prime_{31}(y^\prime_{12}-y^\prime_{23})}{D}\hspace{0.5cm}y_R=y
 
 ### Tulokset
 
-Ensimmäisessä vaiheessa paikannus suoritettiin ilman uudelleenotantaa sekä priori- että uskottavuusotannalla (SIS) partikkelien määrän ollessa $N=\{25^2,50^2,75^2,100^2\}$. Tulokset on esitetty kuvassa $\ref{fig:prior-likelihood}$ sekä osana taulukkoa $\ref{tab:paikannusvirheet}$. Kuten tuloksista huomataan, ei ehdotusjakauman valinnalla ole juurikaan vaikutusta algoritmin toimivuuteen paikannusvirheen suhteen. Partikkelien määrän kasvattaminen ei myöskään automaattisesti paranna paikannustarkkuuta. Tämä viittaa siihen, että koeasetelma on herkkä priorijakauman valinnalle. Tuloksista huomataan lisäksi, että algoritmin aikakompleksisuus on luokkaa $\mathcal{O}(N)$, kuten tukielman teoriaosassa todettiin. 
+Ensimmäisessä vaiheessa paikannus suoritettiin ilman uudelleenotantaa sekä priori- että uskottavuusotannalla (SIS) partikkelien määrän ollessa $N=\{25^2,50^2,75^2,100^2\}$. Tulokset on esitetty kuvassa $\ref{fig:prior-likelihood}$ sekä taulukossa $\ref{tab:paikannusvirheet}$. Kuten tuloksista huomataan, ei ehdotusjakauman valinnalla ole juurikaan vaikutusta algoritmin toimivuuteen paikannusvirheen suhteen. Partikkelien määrän kasvattaminen ei myöskään automaattisesti paranna paikannustarkkuuta. Tämä viittaa siihen, että koeasetelma on herkkä priorijakauman valinnalle. Tuloksista huomataan lisäksi, että algoritmin aikakompleksisuus on luokkaa $\mathcal{O}(N)$, kuten tukielman teoriaosassa todettiin. 
 
 \begin{figure}[H]
 \centering

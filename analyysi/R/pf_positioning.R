@@ -367,28 +367,6 @@ pf_positioning <- function(y,
         # These are within exclcusion polygons, so just set to zero
         w_k[intersecting_particles!=0] <- -Inf
         
-        # Next check the intersections from current position
-        if(k>1 && P>0) {
-          
-          # Create lines
-          lines_matrix_list <- lapply(apply(x[eval(.(k)), c("lon", "lat")], MARGIN=1, FUN=base::c, simplify=FALSE), 
-                                      FUN = rbind, c(position_estimates[[(k-1)]]))
-          lines_st <- sf::st_sfc(lapply(lines_matrix_list, FUN=sf::st_linestring))
-          
-          # Check whether each of the matrix's lines intersects with the exclusion polygon
-          intersecting_particles <- rowSums(as.data.frame(sf::st_intersects(lines_st, 
-                                                                            exclusion_polygon_set, 
-                                                                            sparse = F, prepared = T)))
-          
-        }
-        
-        if(P==0) {
-          w_k[intersecting_particles!=0] <- -Inf
-        } else {
-          w_k[intersecting_particles!=0] <- log(exp(w_k[intersecting_particles!=0])*P)
-        }
-        
-        
         # Sum exp to see if we have eliminated all the particles
         # which is the case if sum is zero
         w_sum_exp <- sum(exp(w_k))
@@ -396,7 +374,6 @@ pf_positioning <- function(y,
         # However now these particles don't estimate the position anymore
         # This can be side-stepped by re-sampling (which cannot be done
         # if all probabilities -Inf)
-        
         if(w_sum_exp!=0 && sum(intersecting_particles!=0)>0) {
           # We draw from the original particles a sample with the weights
           # where intersecting_particles are removed, the sample size is
@@ -410,8 +387,23 @@ pf_positioning <- function(y,
           x[k==k_temp][intersecting_particles!=0]$lon <- x_resample$lon 
           w_k[intersecting_particles!=0] <- w_k[resample_index]
         }
-      } 
-    
+        
+        # Next check the intersections from current position
+        if(k>1 && P>0) {
+          
+          # Create lines
+          lines_matrix_list <- lapply(apply(x[eval(.(k)), c("lat", "lon")], MARGIN=1, FUN=base::c, simplify=FALSE), 
+                                      FUN = rbind, c(position_estimates[[(k-1)]]))
+          lines_st <- sf::st_sfc(lapply(lines_matrix_list, FUN=sf::st_linestring))
+          
+          # Check whether each of the matrix's lines intersects with the exclusion polygon
+          intersecting_particles <- rowSums(as.data.frame(sf::st_intersects(lines_st, 
+                                                                            exclusion_polygon_set, 
+                                                                            sparse = F, prepared = T)))
+          w_k[intersecting_particles!=0] <- log(exp(w_k[intersecting_particles!=0])*1/P)
+        }
+        
+      }
       # If all the weights are -Inf i.e. all the particles are excluded,
       # skip the movement, exclusion, inclusion and session polygons
       # (reset to previous)
@@ -626,6 +618,13 @@ pf_positioning <- function(y,
     # to speed up rest of the algorithm
     w_k <- c_k_vector_normalized
     w_k[is.nan(w_k)] <- -Inf
+    
+    # If all are -Inf, revert to previous
+    if(all(w_k==-Inf) && k > 1) {
+      w_k <- w_k_previous
+      x[eval(.(k)), lon := x_lon_previous]
+      x[eval(.(k)), lat := x_lat_previous]
+    }
     
     # Store previous weights,
     # this is used by auxiliary PF and the regular one in the case

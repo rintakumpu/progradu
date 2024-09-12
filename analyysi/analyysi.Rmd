@@ -54,16 +54,18 @@ N_values <- c(100,1000,10000)
 resampling_values <- c(0,1/10,2/3,1)
 phase1_values <- expand.grid(N=N_values, resampling=resampling_values)
 
-phase1_results <- as.data.frame(matrix(ncol=7, nrow=nrow(phase1_values)))
+phase1_results <- as.data.frame(matrix(ncol=8, nrow=nrow(phase1_values)))
 phase1_results_list <- list()
-colnames(phase1_results) <- c("q50_error", "q80_error", "q90_error", "q95_error", "sub_meter_quantile", "variance", "mc_variance")
+colnames(phase1_results) <- c("q50_error", "q80_error", "q90_error", "q95_error", "sub_meter_quantile", "variance", "mc_variance", "run_time")
 
 for(i in 1:nrow(phase1_values)) {
   set.seed(siemenluku)
   print(paste("Ajetaan parametrikombinaatio ", i, "/", nrow(phase1_values), sep=""))
   phase1_runs <- list()
+  phase1_runtimes <- c()
   for(j in 1:r) {
    print(paste("Algoritmin ajokerta ", j, "/", r, sep=""))
+   start_time <- Sys.time()
    phase1_runs[[j]] <- pf_positioning(y, N = phase1_values$N[i],
                                 resampling = phase1_values$resampling[i],
                                 exclusion_polygons = polygonit_E,
@@ -71,6 +73,8 @@ for(i in 1:nrow(phase1_values)) {
                                 map_matching = F, q = 2,
                                 smoothing = F, rssi_threshold = -120,
                                 P = 0, verbose=F, test_path = testipolku_s)
+   end_time <- Sys.time()
+   phase1_runtimes[j] <- as.numeric(difftime(end_time,start_time, units="secs"))
   }
   phase1_results_list[[i]] <- phase1_runs
   
@@ -87,24 +91,168 @@ for(i in 1:nrow(phase1_values)) {
                            mean(unlist(lapply(phase1_runs, function(x) quantile(x$positioning_error, probs=0.95, na.rm=T))),na.rm=T),
                            mean(unlist(lapply(phase1_runs, function(x) ecdf(x$positioning_error[!is.na(x$positioning_error)])(1))),na.rm=T),
                            mean(unlist(lapply(phase1_runs, function(x) median(x$variance, na.rm=T))),na.rm=T),
-                           mean(mc_variance))
+                           mean(mc_variance), mean(phase1_runtimes))
   
   
 }
 phase1_summary <- cbind(phase1_values, phase1_results)
+phase1_summary$variance[1:3] <- NA
+#write_csv(phase1_summary, "data/tulokset_vaihe1.csv")
+#write_rds(phase1_results_list, "data/tulokset_vaihe1.RDS")
 
 phase1_maps <- list()
 for(i in 1:nrow(phase1_summary)) {
   phase1_maps[[i]] <- kartta
   for(j in 1:r) {
     # Lisätään ajojen polut karttaan
-     phase1_maps[[i]] <- phase1_maps[[i]] + geom_path(data=phase1_results_list[[i]][[j]], aes(x=x,y=y), color="steelblue", alpha=0.8) + ggtitle(paste("N=", phase1_summary[j, "N"],
-                                                                                                                                                      "; resampling=", round(phase1_summary[j, "resampling"],2), sep=""))
+     phase1_maps[[i]] <- phase1_maps[[i]] + geom_path(data=phase1_results_list[[i]][[j]], aes(x=x,y=y), color="steelblue", alpha=0.8)
   }
+  phase1_maps[[i]] <- phase1_maps[[i]] + ggtitle(paste("N=", phase1_summary[i, "N"],"; resampling=", round(phase1_summary[i, "resampling"],2), sep=""))
 }
 
-phase2_maps <- list()
-phase2_maps[[1]] <- phase1_maps[[i]]
-phase2_maps[[2]] <- phase1_maps[[i]]
-do.call("grid.arrange", c(phase2_maps, ncol=3))
+do.call("grid.arrange", c(phase1_maps, ncol=3))
 ```
+
+## Vaihe 2
+
+Toisessa vaiheessa valitaan edellisen vaiheen tulosten perusteella parhaimman paikannusvirheen suhteessa suoritusaikaan ja varianssiin tuottava uudelleenotannan kynnysarvo $resampling$ sekä partikkelien määrä $N$. Nämä pidetään vakioarvoisina ja testataan karttasovitusalgoritmia *map_matching* $={T,F}$, karttasovitusalgoritmin rangaistusarvoa $P={1,100,1000}$ sekä dynaamisen mallin kohina-arvoa $q={0.75,1.5,2,2.5}$. Signaalin vahvuuden kynnysarvoa ei käytetä, kuten ei myöskään prediktiivistä siloitinta. Koska rangaistusarvo $P$ on käytössä ainoastaan karttasovitusalgoritmia käytettäessä, tarkastellaan toisessa vaiheessa $16$ eri suunnitteluparametrikombinaatiota.
+
+```{r}
+P <- c(0,100,1000)
+q <- c(0.75,1.5,2,2.5)
+phase2_values_a <- expand.grid(map_matching=T, P=P, q=q)
+phase2_values_b <- expand.grid(map_matching=F, P=0, q=q)
+phase2_values <- rbind(phase2_values_a, phase2_values_b)
+
+phase2_results <- as.data.frame(matrix(ncol=8, nrow=nrow(phase2_values)))
+phase2_results_list <- list()
+colnames(phase2_results) <- c("q50_error", "q80_error", "q90_error", "q95_error", "sub_meter_quantile", "variance", "mc_variance", "run_time")
+
+for(i in 1:nrow(phase2_values)) {
+  set.seed(siemenluku)
+  print(paste("Ajetaan parametrikombinaatio ", i, "/", nrow(phase2_values), sep=""))
+  phase2_runs <- list()
+  phase2_runtimes <- c()
+  for(j in 1:r) {
+   print(paste("Algoritmin ajokerta ", j, "/", r, sep=""))
+   start_time <- Sys.time()
+   phase2_runs[[j]] <- pf_positioning(y, N = 1000,
+                                resampling = 2/3,
+                                exclusion_polygons = polygonit_E,
+                                inclusion_polygons = polygonit_F,
+                                map_matching = phase2_values$map_matching[i], q = phase2_values$q[i],
+                                smoothing = F, rssi_threshold = -120,
+                                P = phase2_values$P[i], verbose=F, test_path = testipolku_s)
+   end_time <- Sys.time()
+   phase2_runtimes[j] <- as.numeric(difftime(end_time,start_time, units="secs"))
+  }
+  phase2_results_list[[i]] <- phase2_runs
+  
+  # Lasketaan MC-varianssi
+  mc_variance <- c()
+  for(k in 1:nrow(phase2_runs[[1]])) {
+    mc_variance[k] <- (var(unlist(lapply(phase2_runs, function(x) x$x[k])),na.rm=T) + var(unlist(lapply(phase2_runs, function(x) x$y[k])),na.rm=T))/2
+  }
+  
+  # Lasketaan ajojen ka.
+  phase2_results[i,] <-  c(mean(unlist(lapply(phase2_runs, function(x) quantile(x$positioning_error, probs=0.5, na.rm=T))),na.rm=T),
+                           mean(unlist(lapply(phase2_runs, function(x) quantile(x$positioning_error, probs=0.8, na.rm=T))),na.rm=T),
+                           mean(unlist(lapply(phase2_runs, function(x) quantile(x$positioning_error, probs=0.9, na.rm=T))),na.rm=T),
+                           mean(unlist(lapply(phase2_runs, function(x) quantile(x$positioning_error, probs=0.95, na.rm=T))),na.rm=T),
+                           mean(unlist(lapply(phase2_runs, function(x) ecdf(x$positioning_error[!is.na(x$positioning_error)])(1))),na.rm=T),
+                           mean(unlist(lapply(phase2_runs, function(x) median(x$variance, na.rm=T))),na.rm=T),
+                           mean(mc_variance), mean(phase2_runtimes))
+  
+  
+}
+phase2_summary <- cbind(phase2_values, phase2_results)
+#write_csv(phase2_summary, "data/tulokset_vaihe2.csv")
+#write_rds(phase2_results_list, "data/tulokset_vaihe2.RDS")
+
+phase2_maps <- list()
+for(i in 1:nrow(phase2_summary)) {
+  phase2_maps[[i]] <- kartta
+  for(j in 1:r) {
+    # Lisätään ajojen polut karttaan
+     phase2_maps[[i]] <- phase2_maps[[i]] + geom_path(data=phase2_results_list[[i]][[j]], aes(x=x,y=y), color="steelblue", alpha=0.8)
+  }
+  phase2_maps[[i]] <- phase2_maps[[i]] + ggtitle(paste("Karttasovitus: ", 
+                                                       phase2_summary[i, "map_matching"], "\nP=", 
+                                                       phase2_summary[i, "P"],
+                                                       "; q=", 
+                                                       round(phase2_summary[i, "q"],2), sep=""))
+}
+
+do.call("grid.arrange", c(phase2_maps, ncol=4))
+```
+
+Viimeisessä vaiheessa valitaan edellisten vaihdeiden tulosten perusteella parhaimman paikannusvirheen suhteessa suoritusaikaan ja varianssiin tuottavat parametrit testattujen joukosta ($P=1000$, $q=1.5$, *map_matching=TRUE*) ja testataan datan valinnassa käytettävää signaalin vahvuuden kynnysarvoa *rssi_threshold* $={-100,-90,-80}$ sekä prediktiivistä siloitinta *smoothing* $={T,F}$ eli kuutta eri suunnitteluparametrikombinaatiota.
+
+```{r}
+rssi_threshold <- c(-100,-90,-80)
+smoothing <- c(T,F)
+phase3_values <- expand.grid(rssi_threshold=rssi_threshold, smoothing=smoothing)
+phase3_results <- as.data.frame(matrix(ncol=8, nrow=nrow(phase3_values)))
+phase3_results_list <- list()
+colnames(phase3_results) <- c("q50_error", "q80_error", "q90_error", "q95_error", "sub_meter_quantile", "variance", "mc_variance", "run_time")
+
+for(i in 1:nrow(phase3_values)) {
+  set.seed(siemenluku)
+  print(paste("Ajetaan parametrikombinaatio ", i, "/", nrow(phase3_values), sep=""))
+  phase3_runs <- list()
+  phase3_runtimes <- c()
+  for(j in 1:r) {
+   print(paste("Algoritmin ajokerta ", j, "/", r, sep=""))
+   start_time <- Sys.time()
+   phase3_runs[[j]] <- pf_positioning(y, N = 1000,
+                                resampling = 2/3,
+                                exclusion_polygons = polygonit_E,
+                                inclusion_polygons = polygonit_F,
+                                map_matching = T, q = 1.5,
+                                smoothing = phase3_values$smoothing[i], 
+                                rssi_threshold = phase3_values$rssi_threshold[i],
+                                P = 1000, verbose=F, test_path = testipolku_s)
+   end_time <- Sys.time()
+   phase3_runtimes[j] <- as.numeric(difftime(end_time,start_time, units="secs"))
+  }
+  phase3_results_list[[i]] <- phase3_runs
+  
+  # Lasketaan MC-varianssi
+  mc_variance <- c()
+  for(k in 1:nrow(phase3_runs[[1]])) {
+    mc_variance[k] <- (var(unlist(lapply(phase3_runs, function(x) x$x[k])),na.rm=T) + var(unlist(lapply(phase3_runs, function(x) x$y[k])),na.rm=T))/2
+  }
+  
+  # Lasketaan ajojen ka.
+  phase3_results[i,] <-  c(mean(unlist(lapply(phase3_runs, function(x) quantile(x$positioning_error, probs=0.5, na.rm=T))),na.rm=T),
+                           mean(unlist(lapply(phase3_runs, function(x) quantile(x$positioning_error, probs=0.8, na.rm=T))),na.rm=T),
+                           mean(unlist(lapply(phase3_runs, function(x) quantile(x$positioning_error, probs=0.9, na.rm=T))),na.rm=T),
+                           mean(unlist(lapply(phase3_runs, function(x) quantile(x$positioning_error, probs=0.95, na.rm=T))),na.rm=T),
+                           mean(unlist(lapply(phase3_runs, function(x) ecdf(x$positioning_error[!is.na(x$positioning_error)])(1))),na.rm=T),
+                           mean(unlist(lapply(phase3_runs, function(x) median(x$variance, na.rm=T))),na.rm=T),
+                           mean(mc_variance), mean(phase3_runtimes))
+  
+  
+}
+phase3_summary <- cbind(phase3_values, phase3_results)
+#write_csv(phase3_summary, "data/tulokset_vaihe3.csv")
+#write_rds(phase3_results_list, "data/tulokset_vaihe3.RDS")
+
+phase3_maps <- list()
+for(i in 1:nrow(phase3_summary)) {
+  phase3_maps[[i]] <- kartta
+  for(j in 1:r) {
+    # Lisätään ajojen polut karttaan
+     phase3_maps[[i]] <- phase3_maps[[i]] + geom_path(data=phase3_results_list[[i]][[j]], aes(x=x,y=y), color="steelblue", alpha=0.8)
+  }
+  phase3_maps[[i]] <- phase3_maps[[i]] + ggtitle(paste("Karttasovitus: ", 
+                                                       phase3_summary[i, "map_matching"], "\nP=", 
+                                                       phase3_summary[i, "P"],
+                                                       "; q=", 
+                                                       round(phase3_summary[i, "q"],2), sep=""))
+}
+
+do.call("grid.arrange", c(phase3_maps, ncol=4))
+```
+
+
