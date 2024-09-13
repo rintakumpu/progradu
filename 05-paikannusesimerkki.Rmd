@@ -552,14 +552,26 @@ $x_R=x_2+\frac{k^\prime_{31}(y^\prime_{12}-y^\prime_{23})}{D}\hspace{0.5cm}y_R=y
 
 ### Tulokset
 
-Ensimmäisessä vaiheessa suoritettiin paikannus partikkelien määrällä $N={100,1000,10000}$ sekä uudelleenotannan kynnysarvolla $resampling={0,1/10,2/3,1}$. Kun kynnysarvo oli $0$, uudelleenotantaa ei käytetty, jolloin SIR-algoritmin sijaan paikannus suoritettiin bootstrap-suotimella. Kun kynnysarvo oli $1$, uudelleenotanta suoritettiin jokaisella aika-askeleella. Arvoilla $1/10$ ja $2/3$ käytettiin adaptiivista uudelleenotantaa. Tulokset on esitetty kuvassa $\ref{fig:phase1_results}$ sekä taulukossa $\ref{tab:vaihe-1-tulokset}$. Ajojen tulokset on esitetty karttapolkuina LIITTEESSÄ A TODO.
+Ensimmäisessä vaiheessa suoritettiin paikannus partikkelien määrällä $N={100,1000,10000}$ sekä uudelleenotannan kynnysarvolla $resampling={0,1/10,2/3,1}$. Kun kynnysarvo oli $0$, uudelleenotantaa ei käytetty, jolloin SIR-algoritmin sijaan paikannus suoritettiin bootstrap-suotimella. Kun kynnysarvo oli $1$, uudelleenotanta suoritettiin jokaisella aika-askeleella. Arvoilla $1/10$ ja $2/3$ käytettiin adaptiivista uudelleenotantaa. Tulokset on esitetty kuvassa $\ref{fig:phase1_results}$ sekä taulukoissa \ref{tab:vaihe-1-tulokset} ja \ref{tab:vaihe-1-tulokset-varianssi}. Ajojen tulokset on esitetty karttapolkuina LIITTEESSÄ A TODO.
 
 ```{r vaihe-1-tulokset, tidy=FALSE}
-vaihe1_tulokset <- readr::read_csv("analyysi/data/tulokset_vaihe1.csv", show_col_types = FALSE)
-vaihe1_tulokset <- vaihe1_tulokset %>% dplyr::select(N, resampling, q50_error, sub_meter_quantile, variance, mc_variance, run_time)
-colnames(vaihe1_tulokset) <- c("N", "resampling", "Mediaani (m)", "<1m", "Varianssi", "MC-varianssi", "Ajoaika (s)")
+vaihe1_tulokset <- readr::read_csv("analyysi/data/tulokset_vaihe1_ci.csv", show_col_types = FALSE)
+vaihe1_tulokset <- vaihe1_tulokset %>% dplyr::select(N, resampling, q50_error, q50_error_lo, q50_error_hi, sub_meter_quantile)
+vaihe1_tulokset <-vaihe1_tulokset %>% dplyr::mutate(q50_error_95ci = paste("[",round(q50_error_lo,2), ", ", round(q50_error_hi,2), "]", sep=""))
+vaihe1_tulokset <- vaihe1_tulokset %>% dplyr::select(N, resampling, q50_error, q50_error_95ci, sub_meter_quantile)
+colnames(vaihe1_tulokset) <- c("N", "resampling", "Mediaani (m)", "Mediaanin 95\\%-luottamusväli", "<1m")
 kableExtra::kbl(
-  vaihe1_tulokset, caption = 'Vaiheen 1 tulokset', format="latex",
+  vaihe1_tulokset, caption = 'Vaiheen 1 tulokset, paikannusvirhe', format="latex",
+  booktabs = TRUE, escape = FALSE, digits=2
+)
+```
+
+```{r vaihe-1-tulokset-varianssi, tidy=FALSE}
+vaihe1_tulokset <- readr::read_csv("analyysi/data/tulokset_vaihe1_ci.csv", show_col_types = FALSE)
+vaihe1_tulokset <- vaihe1_tulokset %>% dplyr::select(N, resampling, variance, mc_variance, run_time)
+colnames(vaihe1_tulokset) <- c("N", "resampling", "Varianssi", "MC-varianssi", "Ajoaika (s)")
+kableExtra::kbl(
+  vaihe1_tulokset, caption = 'Vaiheen 1 tulokset, varianssi ja ajoaika', format="latex",
   booktabs = TRUE, escape = FALSE, digits=2
 )
 ```
@@ -573,62 +585,43 @@ kableExtra::kbl(
 
 Kuten tuloksista huomataan, ei ehdotusjakauman valinnalla ole juurikaan vaikutusta algoritmin toimivuuteen paikannusvirheen suhteen. Partikkelien määrän kasvattaminen ei myöskään automaattisesti paranna paikannustarkkuuta. Tämä viittaa siihen, että koeasetelma on herkkä priorijakauman valinnalle. Tuloksista huomataan lisäksi, että algoritmin aikakompleksisuus on luokkaa $\mathcal{O}(N)$, kuten tukielman teoriaosassa todettiin. 
 
-Koska ehdotusjakaumalla ei juurikaan ollut vaikutusta tuloksiin, valittiin seuraavaan vaiheeseen muodoltaan yksinkertaisempi uskottavuusotanta. Uskottavuusotantaa käyttäen vertailtiin nyt joka iteraatiolla suoritettavaa uudelleenotantaa (bootstrap) sekä adaptiivista uudelleenotantaa, joka suoritettiin aina, kun effektiivinen otoskoko $N_{eff}<2N/3$. Tulokset on esitetty kuvassa $\ref{fig:eachstep-adaptive}$ sekä osana taulukkoa $\ref{tab:paikannusvirheet}$. Uudeeleenotantamenetelmän valinta ei vaikuta tuloksiin paikannusvirheen suhteen, mutta kuten oletettua, on adaptiivinen uudelleenotanta nopeampi. Nyt myös partikkelien määrän lisääminen parantaa selkeämmin paikkannustarkkuutta ja $N=100^2$ partikkelilla saavutetaan jo haluttu alle metrin paikannustarkkuus. 
+Koska ehdotusjakaumalla ei juurikaan ollut vaikutusta tuloksiin, valittiin seuraavaan vaiheeseen muodoltaan yksinkertaisempi uskottavuusotanta. Uskottavuusotantaa käyttäen vertailtiin nyt joka iteraatiolla suoritettavaa uudelleenotantaa (bootstrap) sekä adaptiivista uudelleenotantaa, joka suoritettiin aina, kun effektiivinen otoskoko $N_{eff}<2N/3$. Uudeeleenotantamenetelmän valinta ei vaikuta tuloksiin paikannusvirheen suhteen, mutta kuten oletettua, on adaptiivinen uudelleenotanta nopeampi. Nyt myös partikkelien määrän lisääminen parantaa selkeämmin paikkannustarkkuutta ja $N=100^2$ partikkelilla saavutetaan jo haluttu alle metrin paikannustarkkuus. 
+
+```{r vaihe-2-tulokset, tidy=FALSE}
+vaihe2_tulokset <- readr::read_csv("analyysi/data/tulokset_vaihe2.csv", show_col_types = FALSE)
+vaihe2_tulokset <- vaihe2_tulokset %>% dplyr::select(map_matching, P, q, q50_error, sub_meter_quantile, variance, mc_variance, run_time)
+colnames(vaihe2_tulokset) <- c("map\\_matching", "P", "q", "Mediaani (m)", "<1m", "Varianssi", "MC-varianssi", "Ajoaika (s)")
+kableExtra::kbl(
+  vaihe2_tulokset, caption = 'Vaiheen 2 tulokset', format="latex",
+  booktabs = TRUE, escape = FALSE, digits=2
+)
+```
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=14.5cm]{eachstep_adaptive}
-\caption{Jokaisen iteraation uudelleenotanta / adaptiivinen uudellenotanta.}
-\label{fig:eachstep-adaptive}
+\includegraphics[width=15cm]{phase2_results_vertical_safe}
+\caption{Vaiheen 2 tulokset}
+\label{fig:phase2_results}
 \end{figure}
 
-\newpage
+```{r vaihe-3-tulokset, tidy=FALSE}
+vaihe3_tulokset <- readr::read_csv("analyysi/data/tulokset_vaihe3.csv", show_col_types = FALSE)
+vaihe3_tulokset <- vaihe3_tulokset %>% dplyr::select(rssi_threshold, smoothing, q50_error, sub_meter_quantile, variance, mc_variance, run_time)
+colnames(vaihe3_tulokset) <- c("rssi\\_threshold", "smoothing", "Mediaani (m)", "<1m", "Varianssi", "MC-varianssi", "Ajoaika (s)")
+kableExtra::kbl(
+  vaihe3_tulokset, caption = 'Vaiheen 3 tulokset', format="latex",
+  booktabs = TRUE, escape = FALSE, digits=2
+)
+```
 
-Kuvissa \ref{fig:noresample_maps} ja \ref{fig:resample_maps} esitetään partikkelien jakauma sijainnin suhteen kartalla ajanhetkinä $k=\{1,3,5,10\}$. Punaiset ympyrät kuvaavat vastaanottimia, sininen neliö testilaitteen todellista sijaintia ja mustat ympyrät partikkelien sijainteja. Molemmat kuvat esittävät uskottaavusotannalla saatuja tuloksia, kun $N=100^2$. Edellisessä kuvassa \ref{fig:noresample_maps} ei ole käytetty uudelleenotantaa. Vaikka partikkelien painoja ei kuvassa olekaan otettu huomioon, on kuvasta helppo huomata otoskoon ehtymisen ongelma. Jälkimmäisessä kuvassa \ref{fig:resample_maps} on käytetty adaptiivista uudelleenotantaa, joka on suoritettu aika-askelilla 1\textendash 6. Tämä ratkaisee otoskoon ehtymisen ja aika-askeleella $10$ kaikki partikkelit approksimoivat haluttua sijaintia.
-
-\begin{figure}[h]
+\begin{figure}[H]
 \centering
-\includegraphics[width=14cm]{SIS_likelihood_maps}
-\caption{Partikkelikartta. Ei uudelleenotantaa.}
-\label{fig:noresample_maps}
+\includegraphics[width=15cm]{phase3_results_vertical_safe}
+\caption{Vaiheen 3 tulokset}
+\label{fig:phase3_results}
 \end{figure}
 
-\begin{figure}[h]
-\centering
-\includegraphics[width=14cm]{SIR_likelihood_maps}
-\caption{Partikkelikartta. Adaptiivinen uudelleenotanta.}
-\label{fig:resample_maps}
-\end{figure}
-
-\def\arraystretch{1.25} 
-\begin{table}[H]
-\centering
-\begin{tabular}{|l|l|l|l|}
-\hline
-Algoritmi & $N$ & Paikannusvirheen ka. (m) & Keston ka. (s)\\
-\hline
-ToTal & - & $2.15$ & 0.001\\
-SIS/Priori & $25^2$ & 5.31 & 7.91\\
-SIS/Priori & $50^2$ & 4.91 & 19.81\\
-SIS/Priori & $75^2$ & 4.82 & 46.02 \\
-SIS/Priori & $100^2$ & 4.78 & 81.83 \\
-SIS/Uskottavuus & $25^2$ & 5.31 & 7.42\\
-SIS/Uskottavuus & $50^2$ & 4.90 & 19.85\\
-SIS/Uskottavuus & $75^2$ & 4.82 & 45.94\\
-SIS/Uskottavuus & $100^2$ & 4.78 & 82.02\\
-Bootstrap/Uskottavuus & $25^2$ & 2.08 & 8.64\\
-Bootstrap/Uskottavuus & $50^2$ & 3.81 & 21.55\\
-Bootstrap/Uskottavuus & $75^2$ & 2.24 & 45.88\\
-Bootstrap/Uskottavuus & $100^2$ & 0.33 & 82.24\\
-SIR/Uskottavuus & $25^2$ & 2.08 & 7.30\\
-SIR/Uskottavuus & $50^2$ & 3.81 & 18.59\\
-SIR/Uskottavuus & $75^2$ & 2.24 & 42.11\\
-SIR/Uskottavuus & $100^2$ & 0.33 & 79.64\\
-\hline
-\end{tabular}
-\caption{Paikannusvirheet sekä suoritusajat}
-\label{tab:paikannusvirheet}
-\end{table}
+Punaiset ympyrät kuvaavat vastaanottimia, sininen neliö testilaitteen todellista sijaintia ja mustat ympyrät partikkelien sijainteja. Molemmat kuvat esittävät uskottaavusotannalla saatuja tuloksia, kun $N=100^2$.  Vaikka partikkelien painoja ei kuvassa olekaan otettu huomioon, on kuvasta helppo huomata otoskoon ehtymisen ongelma. Jälkimmäisessä on käytetty adaptiivista uudelleenotantaa, joka on suoritettu aika-askelilla 1\textendash 6. Tämä ratkaisee otoskoon ehtymisen ja aika-askeleella $10$ kaikki partikkelit approksimoivat haluttua sijaintia.
 
 Tuloksista huomataan, että uskottavuusotannalla ja uudelleenotannalla SMC-menetelmät tuottavat esitetyssä koeasetelmassa halutun tarkkuuden. Tarvittavalla määrällä partikkeleita tässä käytetyt SMC-algoritmit ovat kuitenkin aivan liian hitaita tuotantokäyttöön. Vaikka algoritmit pystyvät tuottamaan hitaimmillaankin noin sijainnin sekunnissa, pitää käytännön toteutuksessa sijainteja laskea joka sekunti sadoista paikantimista. Todennäköisesti yksinkertaisin tapa saavuttaa haluttu alle metrin paikannustarkkuus nopeammalla laskennalla on lisätä triangulaatio-paikannukseen jokin laskennallisesti kevyempi suodin, esimerkiksi EKF-suodin. 
 

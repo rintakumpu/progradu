@@ -43,6 +43,7 @@ y <- read_csv("data/y.csv")
 # Asetetaan käytetyt muuttujat
 r <- 30 # Kuinka monta kertaa kukin parametrikombinaatio ajetaan
 siemenluku <- 2666 # Asetetaan jokaisessa parametrikombinaatiossa käytetty siemenluku
+persentiili <- 95 # Luottamusväleissä käytettävä persentiili
 ```
 
 ## Vaihe 1
@@ -100,6 +101,25 @@ phase1_summary$variance[1:3] <- NA
 #write_csv(phase1_summary, "data/tulokset_vaihe1.csv")
 #write_rds(phase1_results_list, "data/tulokset_vaihe1.RDS")
 
+# Compute CI for each statistic and parameter combination
+for(i in 1:length(phase1_results_list)) {
+  phase1_results[i,"q50_error_lo"] <- phase1_results[i,"q50_error"] - (stats::qt(persentiili/100, df=(r-1)) * sd(unlist(lapply(phase1_results_list[[i]], function(x) quantile(x$positioning_error, probs=0.5, na.rm=T))),na.rm=T) / sqrt(r))
+  phase1_results[i,"q50_error_hi"] <- phase1_results[i,"q50_error"] + (stats::qt(persentiili/100, df=(r-1)) * sd(unlist(lapply(phase1_results_list[[i]], function(x) quantile(x$positioning_error, probs=0.5, na.rm=T))),na.rm=T) / sqrt(r))
+  phase1_results[i,"q80_error_lo"] <- phase1_results[i,"q80_error"] - (stats::qt(persentiili/100, df=(r-1)) * sd(unlist(lapply(phase1_results_list[[i]], function(x) quantile(x$positioning_error, probs=0.8, na.rm=T))),na.rm=T) / sqrt(r))
+  phase1_results[i,"q80_error_hi"] <- phase1_results[i,"q80_error"] + (stats::qt(persentiili/100, df=(r-1)) * sd(unlist(lapply(phase1_results_list[[i]], function(x) quantile(x$positioning_error, probs=0.8, na.rm=T))),na.rm=T) / sqrt(r))
+  phase1_results[i,"q90_error_lo"] <- phase1_results[i,"q90_error"] - (stats::qt(persentiili/100, df=(r-1)) * sd(unlist(lapply(phase1_results_list[[i]], function(x) quantile(x$positioning_error, probs=0.9, na.rm=T))),na.rm=T) / sqrt(r))
+  phase1_results[i,"q90_error_hi"] <- phase1_results[i,"q90_error"] + (stats::qt(persentiili/100, df=(r-1)) * sd(unlist(lapply(phase1_results_list[[i]], function(x) quantile(x$positioning_error, probs=0.9, na.rm=T))),na.rm=T) / sqrt(r))
+  phase1_results[i,"q95_error_lo"] <- phase1_results[i,"q95_error"] - (stats::qt(persentiili/100, df=(r-1)) * sd(unlist(lapply(phase1_results_list[[i]], function(x) quantile(x$positioning_error, probs=0.95, na.rm=T))),na.rm=T) / sqrt(r))
+  phase1_results[i,"q95_error_hi"] <- phase1_results[i,"q95_error"] + (stats::qt(persentiili/100, df=(r-1)) * sd(unlist(lapply(phase1_results_list[[i]], function(x) quantile(x$positioning_error, probs=0.95, na.rm=T))),na.rm=T) / sqrt(r))
+  phase1_results[i,"variance_lo"] <- phase1_results[i,"variance"] - (stats::qt(persentiili/100, df=(r-1)) * sd(unlist(lapply(phase1_results_list[[i]], function(x) median(x$variance, na.rm=T))),na.rm=T) / sqrt(r))
+  phase1_results[i,"variance_hi"] <- phase1_results[i,"variance"] + (stats::qt(persentiili/100, df=(r-1)) * sd(unlist(lapply(phase1_results_list[[i]], function(x) median(x$variance, na.rm=T))),na.rm=T) / sqrt(r))
+  phase1_results[i,"sub_meter_quantile_lo"] <- phase1_results[i,"sub_meter_quantile"] - (stats::qt(persentiili/100, df=(r-1)) * sd(unlist(lapply(phase1_results_list[[i]], function(x) ecdf(x$positioning_error[!is.na(x$positioning_error)])(1))),na.rm=T) / sqrt(r))
+  phase1_results[i,"sub_meter_quantile_hi"] <- phase1_results[i,"sub_meter_quantile"] + (stats::qt(persentiili/100, df=(r-1)) * sd(unlist(lapply(phase1_results_list[[i]], function(x) ecdf(x$positioning_error[!is.na(x$positioning_error)])(1))),na.rm=T) / sqrt(r))
+}
+phase1_summary <- cbind(phase1_values, phase1_results)
+phase1_summary$variance[1:3] <- NA
+#write_csv(phase1_summary, "data/tulokset_vaihe1_ci.csv")
+
 phase1_maps <- list()
 for(i in 1:nrow(phase1_summary)) {
   phase1_maps[[i]] <- kartta
@@ -117,7 +137,7 @@ do.call("grid.arrange", c(phase1_maps, ncol=3))
 # Plots
 palette_values  <- c("black", "tomato", "steelblue", "purple") #c("#000000", "#E69F00", "#56B4E9", "#009E73")
 p1 <- ggplot(phase1_summary, aes(x=N, y=q50_error, color=as.factor(round(resampling,2)), linetype=as.factor(round(resampling,2)))) + geom_point(data=phase1_summary, aes( 
-       shape=as.factor(round(resampling,2)))) + geom_line() + ylab("Mediaanivirhe (m)") + scale_colour_manual(name = "resampling", values=palette_values) + scale_shape_manual(name = "resampling", values=as.factor(round(unique(phase1_summary$resampling),2))) + scale_linetype_manual(name = "resampling", values=as.factor(round(unique(phase1_summary$resampling),2)))
+       shape=as.factor(round(resampling,2)))) + geom_line() + ylab("Mediaanivirhe (m)") + scale_colour_manual(name = "resampling", values=palette_values) + scale_shape_manual(name = "resampling", values=as.factor(round(unique(phase1_summary$resampling),2))) + scale_linetype_manual(name = "resampling", values=as.factor(round(unique(phase1_summary$resampling),2))) #+  geom_ribbon(aes(ymin = q50_error_lo, ymax = q50_error_hi, fill=as.factor(round(resampling,2))), alpha=0.2, linetype=0) 
 
 p2 <- ggplot(phase1_summary, aes(x=N, y=variance, color=as.factor(round(resampling,2)), linetype=as.factor(round(resampling,2)))) + geom_point(data=phase1_summary, aes( 
        shape=as.factor(round(resampling,2)))) + geom_line() + ylab("Varianssi") + scale_colour_manual(name = "resampling", values=palette_values) + scale_shape_manual(name = "resampling", values=as.factor(round(unique(phase1_summary$resampling),2))) + scale_linetype_manual(name = "resampling", values=as.factor(round(unique(phase1_summary$resampling),2)))
@@ -187,6 +207,25 @@ phase2_summary <- cbind(phase2_values, phase2_results)
 #write_csv(phase2_summary, "data/tulokset_vaihe2.csv")
 #write_rds(phase2_results_list, "data/tulokset_vaihe2.RDS")
 
+# Compute CI for each statistic and parameter combination
+for(i in 1:length(phase2_results_list)) {
+  phase2_results[i,"q50_error_lo"] <- phase2_results[i,"q50_error"] - (stats::qt(persentiili/100, df=(r-1)) * sd(unlist(lapply(phase2_results_list[[i]], function(x) quantile(x$positioning_error, probs=0.5, na.rm=T))),na.rm=T) / sqrt(r))
+  phase2_results[i,"q50_error_hi"] <- phase2_results[i,"q50_error"] + (stats::qt(persentiili/100, df=(r-1)) * sd(unlist(lapply(phase2_results_list[[i]], function(x) quantile(x$positioning_error, probs=0.5, na.rm=T))),na.rm=T) / sqrt(r))
+  phase2_results[i,"q80_error_lo"] <- phase2_results[i,"q80_error"] - (stats::qt(persentiili/100, df=(r-1)) * sd(unlist(lapply(phase2_results_list[[i]], function(x) quantile(x$positioning_error, probs=0.8, na.rm=T))),na.rm=T) / sqrt(r))
+  phase2_results[i,"q80_error_hi"] <- phase2_results[i,"q80_error"] + (stats::qt(persentiili/100, df=(r-1)) * sd(unlist(lapply(phase2_results_list[[i]], function(x) quantile(x$positioning_error, probs=0.8, na.rm=T))),na.rm=T) / sqrt(r))
+  phase2_results[i,"q90_error_lo"] <- phase2_results[i,"q90_error"] - (stats::qt(persentiili/100, df=(r-1)) * sd(unlist(lapply(phase2_results_list[[i]], function(x) quantile(x$positioning_error, probs=0.9, na.rm=T))),na.rm=T) / sqrt(r))
+  phase2_results[i,"q90_error_hi"] <- phase2_results[i,"q90_error"] + (stats::qt(persentiili/100, df=(r-1)) * sd(unlist(lapply(phase2_results_list[[i]], function(x) quantile(x$positioning_error, probs=0.9, na.rm=T))),na.rm=T) / sqrt(r))
+  phase2_results[i,"q95_error_lo"] <- phase2_results[i,"q95_error"] - (stats::qt(persentiili/100, df=(r-1)) * sd(unlist(lapply(phase2_results_list[[i]], function(x) quantile(x$positioning_error, probs=0.95, na.rm=T))),na.rm=T) / sqrt(r))
+  phase2_results[i,"q95_error_hi"] <- phase2_results[i,"q95_error"] + (stats::qt(persentiili/100, df=(r-1)) * sd(unlist(lapply(phase2_results_list[[i]], function(x) quantile(x$positioning_error, probs=0.95, na.rm=T))),na.rm=T) / sqrt(r))
+  phase2_results[i,"variance_lo"] <- phase2_results[i,"variance"] - (stats::qt(persentiili/100, df=(r-1)) * sd(unlist(lapply(phase2_results_list[[i]], function(x) median(x$variance, na.rm=T))),na.rm=T) / sqrt(r))
+  phase2_results[i,"variance_hi"] <- phase2_results[i,"variance"] + (stats::qt(persentiili/100, df=(r-1)) * sd(unlist(lapply(phase2_results_list[[i]], function(x) median(x$variance, na.rm=T))),na.rm=T) / sqrt(r))
+  phase2_results[i,"sub_meter_quantile_lo"] <- phase2_results[i,"sub_meter_quantile"] - (stats::qt(persentiili/100, df=(r-1)) * sd(unlist(lapply(phase2_results_list[[i]], function(x) ecdf(x$positioning_error[!is.na(x$positioning_error)])(1))),na.rm=T) / sqrt(r))
+  phase2_results[i,"sub_meter_quantile_hi"] <- phase2_results[i,"sub_meter_quantile"] + (stats::qt(persentiili/100, df=(r-1)) * sd(unlist(lapply(phase2_results_list[[i]], function(x) ecdf(x$positioning_error[!is.na(x$positioning_error)])(1))),na.rm=T) / sqrt(r))
+}
+phase2_summary <- cbind(phase2_values, phase2_results)
+phase2_summary$variance[1:3] <- NA
+#write_csv(phase2_summary, "data/tulokset_vaihe2_ci.csv")
+
 phase2_maps <- list()
 for(i in 1:nrow(phase2_summary)) {
   phase2_maps[[i]] <- kartta
@@ -208,9 +247,16 @@ do.call("grid.arrange", c(phase2_maps, ncol=4))
 ```{r}
 # Plots
 p1 <- ggplot(phase2_summary, aes(x=q, y=q50_error, color=as.factor(round(P,2)), linetype=as.factor(round(P,2)))) + geom_point(data=phase2_summary, aes( 
-       shape=as.factor(round(P,2)))) + geom_line() + ylab("Mediaanivirhe (m)") + scale_colour_manual(name = "P", values=as.factor(round(unique(phase2_summary$P),2))) + scale_shape_manual(name = "P", values=as.factor(round(unique(phase2_summary$P),2))) + scale_linetype_manual(name = "P", values=as.factor(round(unique(phase2_summary$P),2))) + facet_wrap(vars(map_matching), labeller= "label_both")
+       shape=as.factor(round(P,2)))) + geom_line() + ylab("Mediaanivirhe (m)") + scale_colour_manual(name = "P", values=palette_values) + scale_shape_manual(name = "P", values=as.factor(round(unique(phase2_summary$P),2))) + scale_linetype_manual(name = "P", values=as.factor(round(unique(phase2_summary$P),2))) + facet_wrap(vars(map_matching), labeller= "label_both")
 
-grid.arrange(p1,p2,p3,p4, ncol=2)
+p2 <- ggplot(phase2_summary, aes(x=q, y=variance, color=as.factor(round(P,2)), linetype=as.factor(round(P,2)))) + geom_point(data=phase2_summary, aes( 
+       shape=as.factor(round(P,2)))) + geom_line() + ylab("Varianssi") + scale_colour_manual(name = "P", values=palette_values) + scale_shape_manual(name = "P", values=as.factor(round(unique(phase2_summary$P),2))) + scale_linetype_manual(name = "P", values=as.factor(round(unique(phase2_summary$P),2))) + facet_wrap(vars(map_matching), labeller= "label_both")
+
+p3 <- ggplot(phase2_summary, aes(x=q, y=mc_variance, color=as.factor(round(P,2)), linetype=as.factor(round(P,2)))) + geom_point(data=phase2_summary, aes( 
+       shape=as.factor(round(P,2)))) + geom_line() + ylab("MC-varianssi") + scale_colour_manual(name = "P", values=palette_values) + scale_shape_manual(name = "P", values=as.factor(round(unique(phase2_summary$P),2))) + scale_linetype_manual(name = "P", values=as.factor(round(unique(phase2_summary$P),2))) + facet_wrap(vars(map_matching), labeller= "label_both")
+
+p4 <- ggplot(phase2_summary, aes(x=q, y=run_time, color=as.factor(round(P,2)), linetype=as.factor(round(P,2)))) + geom_point(data=phase2_summary, aes( 
+       shape=as.factor(round(P,2)))) + geom_line() + ylab("Ajoaika") + scale_colour_manual(name = "P", values=palette_values) + scale_shape_manual(name = "P", values=as.factor(round(unique(phase2_summary$P),2))) + scale_linetype_manual(name = "P", values=as.factor(round(unique(phase2_summary$P),2))) + facet_wrap(vars(map_matching), labeller= "label_both")
 grid.arrange(p1,p2,p3,p4, ncol=1)
 ```
 
@@ -266,6 +312,25 @@ phase3_summary <- cbind(phase3_values, phase3_results)
 #write_csv(phase3_summary, "data/tulokset_vaihe3.csv")
 #write_rds(phase3_results_list, "data/tulokset_vaihe3.RDS")
 
+# Compute CI for each statistic and parameter combination
+for(i in 1:length(phase3_results_list)) {
+  phase3_results[i,"q50_error_lo"] <- phase3_results[i,"q50_error"] - (stats::qt(persentiili/100, df=(r-1)) * sd(unlist(lapply(phase3_results_list[[i]], function(x) quantile(x$positioning_error, probs=0.5, na.rm=T))),na.rm=T) / sqrt(r))
+  phase3_results[i,"q50_error_hi"] <- phase3_results[i,"q50_error"] + (stats::qt(persentiili/100, df=(r-1)) * sd(unlist(lapply(phase3_results_list[[i]], function(x) quantile(x$positioning_error, probs=0.5, na.rm=T))),na.rm=T) / sqrt(r))
+  phase3_results[i,"q80_error_lo"] <- phase3_results[i,"q80_error"] - (stats::qt(persentiili/100, df=(r-1)) * sd(unlist(lapply(phase3_results_list[[i]], function(x) quantile(x$positioning_error, probs=0.8, na.rm=T))),na.rm=T) / sqrt(r))
+  phase3_results[i,"q80_error_hi"] <- phase3_results[i,"q80_error"] + (stats::qt(persentiili/100, df=(r-1)) * sd(unlist(lapply(phase3_results_list[[i]], function(x) quantile(x$positioning_error, probs=0.8, na.rm=T))),na.rm=T) / sqrt(r))
+  phase3_results[i,"q90_error_lo"] <- phase3_results[i,"q90_error"] - (stats::qt(persentiili/100, df=(r-1)) * sd(unlist(lapply(phase3_results_list[[i]], function(x) quantile(x$positioning_error, probs=0.9, na.rm=T))),na.rm=T) / sqrt(r))
+  phase3_results[i,"q90_error_hi"] <- phase3_results[i,"q90_error"] + (stats::qt(persentiili/100, df=(r-1)) * sd(unlist(lapply(phase3_results_list[[i]], function(x) quantile(x$positioning_error, probs=0.9, na.rm=T))),na.rm=T) / sqrt(r))
+  phase3_results[i,"q95_error_lo"] <- phase3_results[i,"q95_error"] - (stats::qt(persentiili/100, df=(r-1)) * sd(unlist(lapply(phase3_results_list[[i]], function(x) quantile(x$positioning_error, probs=0.95, na.rm=T))),na.rm=T) / sqrt(r))
+  phase3_results[i,"q95_error_hi"] <- phase3_results[i,"q95_error"] + (stats::qt(persentiili/100, df=(r-1)) * sd(unlist(lapply(phase3_results_list[[i]], function(x) quantile(x$positioning_error, probs=0.95, na.rm=T))),na.rm=T) / sqrt(r))
+  phase3_results[i,"variance_lo"] <- phase3_results[i,"variance"] - (stats::qt(persentiili/100, df=(r-1)) * sd(unlist(lapply(phase3_results_list[[i]], function(x) median(x$variance, na.rm=T))),na.rm=T) / sqrt(r))
+  phase3_results[i,"variance_hi"] <- phase3_results[i,"variance"] + (stats::qt(persentiili/100, df=(r-1)) * sd(unlist(lapply(phase3_results_list[[i]], function(x) median(x$variance, na.rm=T))),na.rm=T) / sqrt(r))
+  phase3_results[i,"sub_meter_quantile_lo"] <- phase3_results[i,"sub_meter_quantile"] - (stats::qt(persentiili/100, df=(r-1)) * sd(unlist(lapply(phase3_results_list[[i]], function(x) ecdf(x$positioning_error[!is.na(x$positioning_error)])(1))),na.rm=T) / sqrt(r))
+  phase3_results[i,"sub_meter_quantile_hi"] <- phase3_results[i,"sub_meter_quantile"] + (stats::qt(persentiili/100, df=(r-1)) * sd(unlist(lapply(phase3_results_list[[i]], function(x) ecdf(x$positioning_error[!is.na(x$positioning_error)])(1))),na.rm=T) / sqrt(r))
+}
+phase3_summary <- cbind(phase3_values, phase3_results)
+phase3_summary$variance[1:3] <- NA
+#write_csv(phase3_summary, "data/tulokset_vaihe3_ci.csv")
+
 phase3_maps <- list()
 for(i in 1:nrow(phase3_summary)) {
   phase3_maps[[i]] <- kartta
@@ -281,4 +346,11 @@ for(i in 1:nrow(phase3_summary)) {
 do.call("grid.arrange", c(phase3_maps, ncol=4))
 ```
 
+```{r}
+p1 <- ggplot(phase3_summary, aes(x=rssi_threshold, y=q50_error)) + geom_point() + geom_line() + ylab("Mediaanivirhe (m)") + facet_wrap(vars(smoothing), labeller= "label_both")
+p2 <- ggplot(phase3_summary, aes(x=rssi_threshold, y=variance)) + geom_point() + geom_line() + ylab("Varianssi") + facet_wrap(vars(smoothing), labeller= "label_both")
+p3 <- ggplot(phase3_summary, aes(x=rssi_threshold, y=mc_variance)) + geom_point() + geom_line() + ylab("MC-varianssi") + facet_wrap(vars(smoothing), labeller= "label_both")
+p4 <- ggplot(phase3_summary, aes(x=rssi_threshold, y=run_time)) + geom_point() + geom_line() + ylab("Ajoaika") + facet_wrap(vars(smoothing), labeller= "label_both")
+grid.arrange(p1,p2,p3,p4, ncol=1)
+```
 
