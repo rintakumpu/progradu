@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.5.26)  10 SEP 2024 14:54
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.5.26)  13 SEP 2024 15:30
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1337,7 +1337,7 @@ Underfull \vbox (badness 2050) has occurred while \output is active []
 [50
 
  <./images//at_2.jpg> <./images//xr_2_plain.jpg>]
-<./images//testipolku_numeroimaton.png, id=678, 1049.9225pt x 656.4525pt>
+<./images//testipolku_numeroimaton.png, id=679, 1049.9225pt x 656.4525pt>
 File: ./images//testipolku_numeroimaton.png Graphic file (type png)
 <use ./images//testipolku_numeroimaton.png>
 Package pdftex.def Info: ./images//testipolku_numeroimaton.png  used on input l
@@ -1358,72 +1358,88 @@ y g o n s . c s v$[][]
  []
 
 [51 <./images//xr_2_installed.jpg> <./images//testipolku_numeroimaton.png>]
-<./images//at_2_cart.jpg, id=696, 3070.47125pt x 2302.6025pt>
+<./images//at_2_cart.jpg, id=697, 3070.47125pt x 2302.6025pt>
 File: ./images//at_2_cart.jpg Graphic file (type jpg)
 <use ./images//at_2_cart.jpg>
 Package pdftex.def Info: ./images//at_2_cart.jpg  used on input line 1476.
 (pdftex.def)             Requested size: 156.4842pt x 117.35036pt.
-<./images//at_2_cart2.jpg, id=697, 3070.47125pt x 2302.6025pt>
+<./images//at_2_cart2.jpg, id=698, 3070.47125pt x 2302.6025pt>
 File: ./images//at_2_cart2.jpg Graphic file (type jpg)
 <use ./images//at_2_cart2.jpg>
 Package pdftex.def Info: ./images//at_2_cart2.jpg  used on input line 1483.
 (pdftex.def)             Requested size: 156.4842pt x 117.35036pt.
 [52 <./images//at_2_cart.jpg> <./images//at_2_cart2.jpg>]
-<./images//prior_likelihood.png, id=706, 921.4425pt x 383.4325pt>
-File: ./images//prior_likelihood.png Graphic file (type png)
-<use ./images//prior_likelihood.png>
-Package pdftex.def Info: ./images//prior_likelihood.png  used on input line 153
-2.
-(pdftex.def)             Requested size: 426.77913pt x 177.59218pt.
+Underfull \hbox (badness 1472) in paragraph at lines 1528--1529
+\T1/lmr/m/n/12 (+20) Ensimm‰isess‰ vai-hees-sa suo-ri-tet-tiin pai-kan-nus par-
+tik-ke-lien m‰‰-r‰l-l‰ $\OML/lmm/m/it/12 N \OT1/lmr/m/n/12 (+20) =$
+ []
+
 [53]
-<./images//eachstep_adaptive.png, id=719, 921.4425pt x 383.4325pt>
+Overfull \hbox (8.12689pt too wide) in paragraph at lines 1534--1554
+ [][] 
+ []
+
+<./images//phase1_results_vertical_safe.png, id=716, 622.325pt x 946.53625pt>
+File: ./images//phase1_results_vertical_safe.png Graphic file (type png)
+<use ./images//phase1_results_vertical_safe.png>
+Package pdftex.def Info: ./images//phase1_results_vertical_safe.png  used on in
+put line 1558.
+(pdftex.def)             Requested size: 426.79333pt x 649.13892pt.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+[54]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+[55 <./images//phase1_results_vertical_safe.png>]
+<./images//eachstep_adaptive.png, id=730, 921.4425pt x 383.4325pt>
 File: ./images//eachstep_adaptive.png Graphic file (type png)
 <use ./images//eachstep_adaptive.png>
 Package pdftex.def Info: ./images//eachstep_adaptive.png  used on input line 15
-41.
+69.
 (pdftex.def)             Requested size: 412.5644pt x 171.67712pt.
-[54 <./images//prior_likelihood.png> <./images//eachstep_adaptive.png>]
-<./images//SIS_likelihood_maps.png, id=731, 697.60625pt x 176.66pt>
+[56 <./images//eachstep_adaptive.png>]
+<./images//SIS_likelihood_maps.png, id=742, 697.60625pt x 176.66pt>
 File: ./images//SIS_likelihood_maps.png Graphic file (type png)
 <use ./images//SIS_likelihood_maps.png>
 Package pdftex.def Info: ./images//SIS_likelihood_maps.png  used on input line 
-1552.
+1580.
 (pdftex.def)             Requested size: 398.34224pt x 100.87515pt.
-<./images//SIR_likelihood_maps.png, id=732, 697.60625pt x 176.66pt>
+<./images//SIR_likelihood_maps.png, id=743, 697.60625pt x 176.66pt>
 File: ./images//SIR_likelihood_maps.png Graphic file (type png)
 <use ./images//SIR_likelihood_maps.png>
 Package pdftex.def Info: ./images//SIR_likelihood_maps.png  used on input line 
-1559.
+1587.
 (pdftex.def)             Requested size: 398.34224pt x 100.87515pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[55 <./images//SIS_likelihood_maps.png> <./images//SIR_likelihood_maps.png>] [5
-6]
+[57 <./images//SIS_likelihood_maps.png> <./images//SIR_likelihood_maps.png>] [5
+8]
 \bbl@ensure@finnish {Luku} 5.
-[57
+[59
 
-] [58
+] [60
 
 ]
 \bbl@ensure@finnish {Luku} 6.
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <24.88> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 1606.
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 1634.
 
-LaTeX Warning: Reference `' on page 59 undefined on input line 1608.
+LaTeX Warning: Reference `' on page 61 undefined on input line 1636.
 
-(./gradu.bbl [59] [60
+(./gradu.bbl [61] [62
 
-] [61] [62]) [63] (./gradu.aux)
+] [63] [64]) [65] (./gradu.aux)
 
 LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 31035 strings out of 478268
- 588244 string characters out of 5846347
- 937870 words of memory out of 5000000
- 48116 multiletter control sequences out of 15000+600000
+ 31039 strings out of 478268
+ 588419 string characters out of 5846347
+ 937883 words of memory out of 5000000
+ 48117 multiletter control sequences out of 15000+600000
  546225 words of font info for 201 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  98i,24n,94p,1311b,1029s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -1448,10 +1464,10 @@ ublic/lm/lmsy8.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lm
 tk10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmtt12.pfb><
 /usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.p
 fb>
-Output written on gradu.pdf (67 pages, 3929958 bytes).
+Output written on gradu.pdf (69 pages, 3974894 bytes).
 PDF statistics:
- 1083 PDF objects out of 1200 (max. 8388607)
- 939 compressed objects within 10 object streams
- 287 named destinations out of 1000 (max. 500000)
+ 1096 PDF objects out of 1200 (max. 8388607)
+ 950 compressed objects within 10 object streams
+ 290 named destinations out of 1000 (max. 500000)
  45525 words of extra memory for PDF output out of 51595 (max. 10000000)
 

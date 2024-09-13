@@ -113,6 +113,24 @@ for(i in 1:nrow(phase1_summary)) {
 do.call("grid.arrange", c(phase1_maps, ncol=3))
 ```
 
+```{r}
+# Plots
+palette_values  <- c("black", "tomato", "steelblue", "purple") #c("#000000", "#E69F00", "#56B4E9", "#009E73")
+p1 <- ggplot(phase1_summary, aes(x=N, y=q50_error, color=as.factor(round(resampling,2)), linetype=as.factor(round(resampling,2)))) + geom_point(data=phase1_summary, aes( 
+       shape=as.factor(round(resampling,2)))) + geom_line() + ylab("Mediaanivirhe (m)") + scale_colour_manual(name = "resampling", values=palette_values) + scale_shape_manual(name = "resampling", values=as.factor(round(unique(phase1_summary$resampling),2))) + scale_linetype_manual(name = "resampling", values=as.factor(round(unique(phase1_summary$resampling),2)))
+
+p2 <- ggplot(phase1_summary, aes(x=N, y=variance, color=as.factor(round(resampling,2)), linetype=as.factor(round(resampling,2)))) + geom_point(data=phase1_summary, aes( 
+       shape=as.factor(round(resampling,2)))) + geom_line() + ylab("Varianssi") + scale_colour_manual(name = "resampling", values=palette_values) + scale_shape_manual(name = "resampling", values=as.factor(round(unique(phase1_summary$resampling),2))) + scale_linetype_manual(name = "resampling", values=as.factor(round(unique(phase1_summary$resampling),2)))
+
+p3 <- ggplot(phase1_summary, aes(x=N, y=mc_variance, color=as.factor(round(resampling,2)), linetype=as.factor(round(resampling,2)))) + geom_point(data=phase1_summary, aes( 
+       shape=as.factor(round(resampling,2)))) + geom_line() + ylab("MC-varianssi") + scale_colour_manual(name = "resampling", values=palette_values) + scale_shape_manual(name = "resampling", values=as.factor(round(unique(phase1_summary$resampling),2))) + scale_linetype_manual(name = "resampling", values=as.factor(round(unique(phase1_summary$resampling),2)))
+
+p4 <- ggplot(phase1_summary, aes(x=N, y=run_time, color=as.factor(round(resampling,2)), linetype=as.factor(round(resampling,2)))) + geom_point(data=phase1_summary, aes( 
+       shape=as.factor(round(resampling,2)))) + geom_line() + ylab("Ajoaika (s)") + scale_colour_manual(name = "resampling", values=palette_values) + scale_shape_manual(name = "resampling", values=as.factor(round(unique(phase1_summary$resampling),2))) + scale_linetype_manual(name = "resampling", values=as.factor(round(unique(phase1_summary$resampling),2)))
+
+grid.arrange(p1,p2,p3,p4, ncol=1)
+```
+
 ## Vaihe 2
 
 Toisessa vaiheessa valitaan edellisen vaiheen tulosten perusteella parhaimman paikannusvirheen suhteessa suoritusaikaan ja varianssiin tuottava uudelleenotannan kynnysarvo $resampling$ sekä partikkelien määrä $N$. Nämä pidetään vakioarvoisina ja testataan karttasovitusalgoritmia *map_matching* $={T,F}$, karttasovitusalgoritmin rangaistusarvoa $P={1,100,1000}$ sekä dynaamisen mallin kohina-arvoa $q={0.75,1.5,2,2.5}$. Signaalin vahvuuden kynnysarvoa ei käytetä, kuten ei myöskään prediktiivistä siloitinta. Koska rangaistusarvo $P$ on käytössä ainoastaan karttasovitusalgoritmia käytettäessä, tarkastellaan toisessa vaiheessa $16$ eri suunnitteluparametrikombinaatiota.
@@ -186,6 +204,16 @@ for(i in 1:nrow(phase2_summary)) {
 do.call("grid.arrange", c(phase2_maps, ncol=4))
 ```
 
+
+```{r}
+# Plots
+p1 <- ggplot(phase2_summary, aes(x=q, y=q50_error, color=as.factor(round(P,2)), linetype=as.factor(round(P,2)))) + geom_point(data=phase2_summary, aes( 
+       shape=as.factor(round(P,2)))) + geom_line() + ylab("Mediaanivirhe (m)") + scale_colour_manual(name = "P", values=as.factor(round(unique(phase2_summary$P),2))) + scale_shape_manual(name = "P", values=as.factor(round(unique(phase2_summary$P),2))) + scale_linetype_manual(name = "P", values=as.factor(round(unique(phase2_summary$P),2))) + facet_wrap(vars(map_matching), labeller= "label_both")
+
+grid.arrange(p1,p2,p3,p4, ncol=2)
+grid.arrange(p1,p2,p3,p4, ncol=1)
+```
+
 Viimeisessä vaiheessa valitaan edellisten vaihdeiden tulosten perusteella parhaimman paikannusvirheen suhteessa suoritusaikaan ja varianssiin tuottavat parametrit testattujen joukosta ($P=1000$, $q=1.5$, *map_matching=TRUE*) ja testataan datan valinnassa käytettävää signaalin vahvuuden kynnysarvoa *rssi_threshold* $={-100,-90,-80}$ sekä prediktiivistä siloitinta *smoothing* $={T,F}$ eli kuutta eri suunnitteluparametrikombinaatiota.
 
 ```{r}
@@ -245,11 +273,9 @@ for(i in 1:nrow(phase3_summary)) {
     # Lisätään ajojen polut karttaan
      phase3_maps[[i]] <- phase3_maps[[i]] + geom_path(data=phase3_results_list[[i]][[j]], aes(x=x,y=y), color="steelblue", alpha=0.8)
   }
-  phase3_maps[[i]] <- phase3_maps[[i]] + ggtitle(paste("Karttasovitus: ", 
-                                                       phase3_summary[i, "map_matching"], "\nP=", 
-                                                       phase3_summary[i, "P"],
-                                                       "; q=", 
-                                                       round(phase3_summary[i, "q"],2), sep=""))
+  phase3_maps[[i]] <- phase3_maps[[i]] + ggtitle(paste("Siloittelu: ", 
+                                                       phase3_summary[i, "smoothing"], "\nRSSI-kynnysarvo=", 
+                                                       phase3_summary[i, "rssi_threshold"], sep=""))
 }
 
 do.call("grid.arrange", c(phase3_maps, ncol=4))

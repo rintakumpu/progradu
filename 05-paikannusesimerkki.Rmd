@@ -516,7 +516,7 @@ Koeympäristön pohjapiirustus on esitetty kuvassa \ref{fig:testipolku}. Piirust
 
 \subsection{Parametrien valinta} \label{parametrien-valinta}
 
-Yllä kerättyyn dataan perustuva paikannus suoritettiin kolmessa vaiheessa. Kussakin vaiheessa paikannusalgoritmi ajettiin jokaisella vaiheeseen liittyvällä suunnitteluparametrikombinaatiolla $r=30$ kertaa ja tulokset (paikannusvirhe, suoritusaika, varianssi) laskettiin näiden $30$ ajon aritmeettisena keskiarvona.
+Kokeessa oli tarkoituksena testata kunkin taulukossa \ref{tab:wb-parametrit} esitetyn parametrin vaikutusta paikannusvirheeseen, ajoaikaan sekä varianssiin. Koska kaikkien parametrikombinaatioiden testaaminen ei ollut mahdollista (eikä mielekästä), suoritettiin yllä kerättyyn dataan perustuva paikannus kolmessa vaiheessa. Kussakin vaiheessa paikannusalgoritmi ajettiin jokaisella vaiheeseen liittyvällä suunnitteluparametrikombinaatiolla $r=30$ kertaa ja tulokset (paikannusvirhe, suoritusaika, varianssi) laskettiin näiden $30$ ajon aritmeettisena keskiarvona.
 
 Ensimmäisessä vaiheessa tarkasteltiin partikkelien määrän $N={100,1000,10000}$ sekä uudelleenotannan kynnysarvon $resampling={0,1/10,2/3,1}$ vaikutusta paikannuskeskivirheeseen. Karttasovitusalgoritmia ei käytetty, kuten ei myöskään prediktiivistä siloitinta eikä signaalin vahvuuden kynnysarvoa. Dynaamisen mallin kohina-arvo $q=2$ pidettiin vakiona. Ensimmäisessä vaiheessa tarkasteltiin siis $12$ eri suunnitteluparametrikombinaatiota.
 
@@ -552,14 +552,26 @@ $x_R=x_2+\frac{k^\prime_{31}(y^\prime_{12}-y^\prime_{23})}{D}\hspace{0.5cm}y_R=y
 
 ### Tulokset
 
-Ensimmäisessä vaiheessa paikannus suoritettiin ilman uudelleenotantaa sekä priori- että uskottavuusotannalla (SIS) partikkelien määrän ollessa $N=\{25^2,50^2,75^2,100^2\}$. Tulokset on esitetty kuvassa $\ref{fig:prior-likelihood}$ sekä taulukossa $\ref{tab:paikannusvirheet}$. Kuten tuloksista huomataan, ei ehdotusjakauman valinnalla ole juurikaan vaikutusta algoritmin toimivuuteen paikannusvirheen suhteen. Partikkelien määrän kasvattaminen ei myöskään automaattisesti paranna paikannustarkkuuta. Tämä viittaa siihen, että koeasetelma on herkkä priorijakauman valinnalle. Tuloksista huomataan lisäksi, että algoritmin aikakompleksisuus on luokkaa $\mathcal{O}(N)$, kuten tukielman teoriaosassa todettiin. 
+Ensimmäisessä vaiheessa suoritettiin paikannus partikkelien määrällä $N={100,1000,10000}$ sekä uudelleenotannan kynnysarvolla $resampling={0,1/10,2/3,1}$. Kun kynnysarvo oli $0$, uudelleenotantaa ei käytetty, jolloin SIR-algoritmin sijaan paikannus suoritettiin bootstrap-suotimella. Kun kynnysarvo oli $1$, uudelleenotanta suoritettiin jokaisella aika-askeleella. Arvoilla $1/10$ ja $2/3$ käytettiin adaptiivista uudelleenotantaa. Tulokset on esitetty kuvassa $\ref{fig:phase1_results}$ sekä taulukossa $\ref{tab:vaihe-1-tulokset}$. Ajojen tulokset on esitetty karttapolkuina LIITTEESSÄ A TODO.
+
+```{r vaihe-1-tulokset, tidy=FALSE}
+vaihe1_tulokset <- readr::read_csv("analyysi/data/tulokset_vaihe1.csv", show_col_types = FALSE)
+vaihe1_tulokset <- vaihe1_tulokset %>% dplyr::select(N, resampling, q50_error, sub_meter_quantile, variance, mc_variance, run_time)
+colnames(vaihe1_tulokset) <- c("N", "resampling", "Mediaani (m)", "<1m", "Varianssi", "MC-varianssi", "Ajoaika (s)")
+kableExtra::kbl(
+  vaihe1_tulokset, caption = 'Vaiheen 1 tulokset', format="latex",
+  booktabs = TRUE, escape = FALSE, digits=2
+)
+```
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=15cm]{prior_likelihood}
-\caption{Priori- ja uskottavuusotanta. Ei uudelleenotantaa.}
-\label{fig:prior-likelihood}
+\includegraphics[width=15cm]{phase1_results_vertical_safe}
+\caption{Vaiheen 1 tulokset}
+\label{fig:phase1_results}
 \end{figure}
+
+Kuten tuloksista huomataan, ei ehdotusjakauman valinnalla ole juurikaan vaikutusta algoritmin toimivuuteen paikannusvirheen suhteen. Partikkelien määrän kasvattaminen ei myöskään automaattisesti paranna paikannustarkkuuta. Tämä viittaa siihen, että koeasetelma on herkkä priorijakauman valinnalle. Tuloksista huomataan lisäksi, että algoritmin aikakompleksisuus on luokkaa $\mathcal{O}(N)$, kuten tukielman teoriaosassa todettiin. 
 
 Koska ehdotusjakaumalla ei juurikaan ollut vaikutusta tuloksiin, valittiin seuraavaan vaiheeseen muodoltaan yksinkertaisempi uskottavuusotanta. Uskottavuusotantaa käyttäen vertailtiin nyt joka iteraatiolla suoritettavaa uudelleenotantaa (bootstrap) sekä adaptiivista uudelleenotantaa, joka suoritettiin aina, kun effektiivinen otoskoko $N_{eff}<2N/3$. Tulokset on esitetty kuvassa $\ref{fig:eachstep-adaptive}$ sekä osana taulukkoa $\ref{tab:paikannusvirheet}$. Uudeeleenotantamenetelmän valinta ei vaikuta tuloksiin paikannusvirheen suhteen, mutta kuten oletettua, on adaptiivinen uudelleenotanta nopeampi. Nyt myös partikkelien määrän lisääminen parantaa selkeämmin paikkannustarkkuutta ja $N=100^2$ partikkelilla saavutetaan jo haluttu alle metrin paikannustarkkuus. 
 
