@@ -1606,31 +1606,62 @@ Koska ehdotusjakaumalla ei juurikaan ollut vaikutusta tuloksiin, valittiin seura
 
 \begin{table}
 
-\caption{\label{tab:vaihe-2-tulokset}Vaiheen 2 tulokset}
+\caption{\label{tab:vaihe-2-tulokset}Vaiheen 2 tulokset, paikannusvirhe}
 \centering
-\begin{tabular}[t]{lrrrrrrr}
+\begin{tabular}[t]{lrrrlr}
 \toprule
-map\_matching & P & q & Mediaani (m) & <1m & Varianssi & MC-varianssi & Ajoaika (s)\\
+map\_matching & P & q & Mediaani (m) & Mediaanin 95\%-luottamusväli & <1m\\
 \midrule
-TRUE & 0 & 0.75 & 0.74 & 0.66 & 0.46 & 1.35 & 55.73\\
-TRUE & 100 & 0.75 & 0.73 & 0.66 & 0.49 & 2.10 & 65.11\\
-TRUE & 1000 & 0.75 & 0.72 & 0.67 & 0.52 & 2.24 & 66.57\\
-TRUE & 0 & 1.50 & 0.72 & 0.68 & 0.43 & 0.14 & 57.64\\
-TRUE & 100 & 1.50 & 0.71 & 0.68 & 0.43 & 0.58 & 66.86\\
+TRUE & 0 & 0.75 & 0.74 & {}[0.73, 0.74] & 0.66\\
+TRUE & 100 & 0.75 & 0.73 & {}[0.72, 0.74] & 0.66\\
+TRUE & 1000 & 0.75 & 0.72 & {}[0.71, 0.72] & 0.67\\
+TRUE & 0 & 1.50 & 0.72 & {}[0.71, 0.72] & 0.68\\
+TRUE & 100 & 1.50 & 0.71 & {}[0.7, 0.72] & 0.68\\
 \addlinespace
-TRUE & 1000 & 1.50 & 0.69 & 0.68 & 0.47 & 0.92 & 67.85\\
-TRUE & 0 & 2.00 & 0.71 & 0.68 & 0.47 & 0.11 & 59.93\\
-TRUE & 100 & 2.00 & 0.70 & 0.68 & 0.48 & 0.66 & 68.44\\
-TRUE & 1000 & 2.00 & 0.70 & 0.68 & 0.52 & 1.15 & 66.92\\
-TRUE & 0 & 2.50 & 0.71 & 0.68 & 0.52 & 0.12 & 57.93\\
+TRUE & 1000 & 1.50 & 0.69 & {}[0.69, 0.7] & 0.68\\
+TRUE & 0 & 2.00 & 0.71 & {}[0.7, 0.72] & 0.68\\
+TRUE & 100 & 2.00 & 0.70 & {}[0.69, 0.7] & 0.68\\
+TRUE & 1000 & 2.00 & 0.70 & {}[0.69, 0.71] & 0.68\\
+TRUE & 0 & 2.50 & 0.71 & {}[0.71, 0.72] & 0.68\\
 \addlinespace
-TRUE & 100 & 2.50 & 0.69 & 0.68 & 0.53 & 0.73 & 66.75\\
-TRUE & 1000 & 2.50 & 0.70 & 0.67 & 0.58 & 1.08 & 67.41\\
-FALSE & 0 & 0.75 & 0.88 & 0.57 & 0.42 & 0.04 & 16.13\\
-FALSE & 0 & 1.50 & 0.87 & 0.57 & 0.35 & 0.01 & 16.17\\
-FALSE & 0 & 2.00 & 0.86 & 0.58 & 0.37 & 0.01 & 16.07\\
+TRUE & 100 & 2.50 & 0.69 & {}[0.69, 0.7] & 0.68\\
+TRUE & 1000 & 2.50 & 0.70 & {}[0.69, 0.71] & 0.67\\
+FALSE & 0 & 0.75 & 0.88 & {}[0.88, 0.89] & 0.57\\
+FALSE & 0 & 1.50 & 0.87 & {}[0.87, 0.87] & 0.57\\
+FALSE & 0 & 2.00 & 0.86 & {}[0.86, 0.87] & 0.58\\
 \addlinespace
-FALSE & 0 & 2.50 & 0.86 & 0.57 & 0.41 & 0.01 & 16.22\\
+FALSE & 0 & 2.50 & 0.86 & {}[0.85, 0.86] & 0.57\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}
+
+\caption{\label{tab:vaihe-2-tulokset-varianssi}Vaiheen 2 tulokset, varianssi ja ajoaika}
+\centering
+\begin{tabular}[t]{lrrrrr}
+\toprule
+map\_matching & P & q & Varianssi & MC-varianssi & Ajoaika (s)\\
+\midrule
+TRUE & 0 & 0.75 & NA & 1.35 & 55.73\\
+TRUE & 100 & 0.75 & NA & 2.10 & 65.11\\
+TRUE & 1000 & 0.75 & NA & 2.24 & 66.57\\
+TRUE & 0 & 1.50 & 0.43 & 0.14 & 57.64\\
+TRUE & 100 & 1.50 & 0.43 & 0.58 & 66.86\\
+\addlinespace
+TRUE & 1000 & 1.50 & 0.47 & 0.92 & 67.85\\
+TRUE & 0 & 2.00 & 0.47 & 0.11 & 59.93\\
+TRUE & 100 & 2.00 & 0.48 & 0.66 & 68.44\\
+TRUE & 1000 & 2.00 & 0.52 & 1.15 & 66.92\\
+TRUE & 0 & 2.50 & 0.52 & 0.12 & 57.93\\
+\addlinespace
+TRUE & 100 & 2.50 & 0.53 & 0.73 & 66.75\\
+TRUE & 1000 & 2.50 & 0.58 & 1.08 & 67.41\\
+FALSE & 0 & 0.75 & 0.42 & 0.04 & 16.13\\
+FALSE & 0 & 1.50 & 0.35 & 0.01 & 16.17\\
+FALSE & 0 & 2.00 & 0.37 & 0.01 & 16.07\\
+\addlinespace
+FALSE & 0 & 2.50 & 0.41 & 0.01 & 16.22\\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -1644,19 +1675,38 @@ FALSE & 0 & 2.50 & 0.86 & 0.57 & 0.41 & 0.01 & 16.22\\
 
 \begin{table}
 
-\caption{\label{tab:vaihe-3-tulokset}Vaiheen 3 tulokset}
+\caption{\label{tab:vaihe-3-tulokset}Vaiheen 3 tulokset, paikannusvirhe}
 \centering
-\begin{tabular}[t]{rlrrrrr}
+\begin{tabular}[t]{rlrlr}
 \toprule
-rssi\_threshold & smoothing & Mediaani (m) & <1m & Varianssi & MC-varianssi & Ajoaika (s)\\
+rssi\_threshold & smoothing & Mediaani (m) & Mediaanin 95\%-luottamusväli & <1m\\
 \midrule
--100 & TRUE & 0.72 & 0.65 & 0.35 & 0.68 & 80.13\\
--90 & TRUE & 0.73 & 0.65 & 0.34 & 0.76 & 78.59\\
--80 & TRUE & 0.70 & 0.62 & 0.40 & 0.86 & 67.85\\
--100 & FALSE & 0.69 & 0.68 & 0.47 & 0.92 & 65.14\\
--90 & FALSE & 0.70 & 0.68 & 0.48 & 0.81 & 64.59\\
+-100 & TRUE & 0.72 & {}[0.72, 0.73] & 0.65\\
+-90 & TRUE & 0.73 & {}[0.72, 0.74] & 0.65\\
+-80 & TRUE & 0.70 & {}[0.69, 0.71] & 0.62\\
+-100 & FALSE & 0.69 & {}[0.69, 0.7] & 0.68\\
+-90 & FALSE & 0.70 & {}[0.7, 0.71] & 0.68\\
 \addlinespace
--80 & FALSE & 0.70 & 0.65 & 0.56 & 1.75 & 61.30\\
+-80 & FALSE & 0.70 & {}[0.7, 0.71] & 0.65\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}
+
+\caption{\label{tab:vaihe-3-tulokset-varianssi}Vaiheen 3 tulokset, varianssi ja ajoaika}
+\centering
+\begin{tabular}[t]{rlrrr}
+\toprule
+rssi\_threshold & smoothing & Varianssi & MC-varianssi & Ajoaika (s)\\
+\midrule
+-100 & TRUE & NA & 0.68 & 80.13\\
+-90 & TRUE & NA & 0.76 & 78.59\\
+-80 & TRUE & NA & 0.86 & 67.85\\
+-100 & FALSE & 0.47 & 0.92 & 65.14\\
+-90 & FALSE & 0.48 & 0.81 & 64.59\\
+\addlinespace
+-80 & FALSE & 0.56 & 1.75 & 61.30\\
 \bottomrule
 \end{tabular}
 \end{table}

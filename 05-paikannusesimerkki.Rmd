@@ -588,11 +588,23 @@ Kuten tuloksista huomataan, ei ehdotusjakauman valinnalla ole juurikaan vaikutus
 Koska ehdotusjakaumalla ei juurikaan ollut vaikutusta tuloksiin, valittiin seuraavaan vaiheeseen muodoltaan yksinkertaisempi uskottavuusotanta. Uskottavuusotantaa käyttäen vertailtiin nyt joka iteraatiolla suoritettavaa uudelleenotantaa (bootstrap) sekä adaptiivista uudelleenotantaa, joka suoritettiin aina, kun effektiivinen otoskoko $N_{eff}<2N/3$. Uudeeleenotantamenetelmän valinta ei vaikuta tuloksiin paikannusvirheen suhteen, mutta kuten oletettua, on adaptiivinen uudelleenotanta nopeampi. Nyt myös partikkelien määrän lisääminen parantaa selkeämmin paikkannustarkkuutta ja $N=100^2$ partikkelilla saavutetaan jo haluttu alle metrin paikannustarkkuus. 
 
 ```{r vaihe-2-tulokset, tidy=FALSE}
-vaihe2_tulokset <- readr::read_csv("analyysi/data/tulokset_vaihe2.csv", show_col_types = FALSE)
-vaihe2_tulokset <- vaihe2_tulokset %>% dplyr::select(map_matching, P, q, q50_error, sub_meter_quantile, variance, mc_variance, run_time)
-colnames(vaihe2_tulokset) <- c("map\\_matching", "P", "q", "Mediaani (m)", "<1m", "Varianssi", "MC-varianssi", "Ajoaika (s)")
+vaihe2_tulokset <- readr::read_csv("analyysi/data/tulokset_vaihe2_ci.csv", show_col_types = FALSE)
+vaihe2_tulokset <- vaihe2_tulokset %>% dplyr::select(map_matching, P, q, q50_error, q50_error_lo, q50_error_hi, sub_meter_quantile)
+vaihe2_tulokset <- vaihe2_tulokset %>% dplyr::mutate(q50_error_95ci = paste("[",round(q50_error_lo,2), ", ", round(q50_error_hi,2), "]", sep=""))
+vaihe2_tulokset <- vaihe2_tulokset %>% dplyr::select(map_matching, P, q, q50_error, q50_error_95ci, sub_meter_quantile)
+colnames(vaihe2_tulokset) <- c("map\\_matching", "P", "q", "Mediaani (m)", "Mediaanin 95\\%-luottamusväli", "<1m")
 kableExtra::kbl(
-  vaihe2_tulokset, caption = 'Vaiheen 2 tulokset', format="latex",
+ vaihe2_tulokset, caption = 'Vaiheen 2 tulokset, paikannusvirhe', format="latex",
+  booktabs = TRUE, escape = FALSE, digits=2
+)
+```
+
+```{r vaihe-2-tulokset-varianssi, tidy=FALSE}
+vaihe2_tulokset <- readr::read_csv("analyysi/data/tulokset_vaihe2_ci.csv", show_col_types = FALSE)
+vaihe2_tulokset <- vaihe2_tulokset %>% dplyr::select(map_matching, P, q, variance, mc_variance, run_time)
+colnames(vaihe2_tulokset) <- c("map\\_matching", "P", "q", "Varianssi", "MC-varianssi", "Ajoaika (s)")
+kableExtra::kbl(
+ vaihe2_tulokset, caption = 'Vaiheen 2 tulokset, varianssi ja ajoaika', format="latex",
   booktabs = TRUE, escape = FALSE, digits=2
 )
 ```
@@ -604,12 +616,25 @@ kableExtra::kbl(
 \label{fig:phase2_results}
 \end{figure}
 
+
 ```{r vaihe-3-tulokset, tidy=FALSE}
-vaihe3_tulokset <- readr::read_csv("analyysi/data/tulokset_vaihe3.csv", show_col_types = FALSE)
-vaihe3_tulokset <- vaihe3_tulokset %>% dplyr::select(rssi_threshold, smoothing, q50_error, sub_meter_quantile, variance, mc_variance, run_time)
-colnames(vaihe3_tulokset) <- c("rssi\\_threshold", "smoothing", "Mediaani (m)", "<1m", "Varianssi", "MC-varianssi", "Ajoaika (s)")
+vaihe3_tulokset <- readr::read_csv("analyysi/data/tulokset_vaihe3_ci.csv", show_col_types = FALSE)
+vaihe3_tulokset <- vaihe3_tulokset %>% dplyr::select(rssi_threshold, smoothing, q50_error, q50_error_lo, q50_error_hi, sub_meter_quantile)
+vaihe3_tulokset <- vaihe3_tulokset %>% dplyr::mutate(q50_error_95ci = paste("[",round(q50_error_lo,2), ", ", round(q50_error_hi,2), "]", sep=""))
+vaihe3_tulokset <- vaihe3_tulokset %>% dplyr::select(rssi_threshold, smoothing, q50_error, q50_error_95ci, sub_meter_quantile)
+colnames(vaihe3_tulokset) <- c("rssi\\_threshold", "smoothing", "Mediaani (m)", "Mediaanin 95\\%-luottamusväli", "<1m")
 kableExtra::kbl(
-  vaihe3_tulokset, caption = 'Vaiheen 3 tulokset', format="latex",
+ vaihe3_tulokset, caption = 'Vaiheen 3 tulokset, paikannusvirhe', format="latex",
+  booktabs = TRUE, escape = FALSE, digits=2
+)
+```
+
+```{r vaihe-3-tulokset-varianssi, tidy=FALSE}
+vaihe3_tulokset <- readr::read_csv("analyysi/data/tulokset_vaihe3_ci.csv", show_col_types = FALSE)
+vaihe3_tulokset <- vaihe3_tulokset %>% dplyr::select(rssi_threshold, smoothing, variance, mc_variance, run_time)
+colnames(vaihe3_tulokset) <- c("rssi\\_threshold", "smoothing", "Varianssi", "MC-varianssi", "Ajoaika (s)")
+kableExtra::kbl(
+ vaihe3_tulokset, caption = 'Vaiheen 3 tulokset, varianssi ja ajoaika', format="latex",
   booktabs = TRUE, escape = FALSE, digits=2
 )
 ```
