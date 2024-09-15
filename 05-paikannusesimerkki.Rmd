@@ -20,7 +20,7 @@ Walkbase on kehittänyt sisätilapaikannukseen oman laitteisto- ja ohjelmistorat
 \epsilon_{\text{pos}_k} = d(P_k,\hat{x}_k) = \sqrt{(P_{\text{lon}_k}-\hat{x}_{\text{lon}_k})^2+(P_{\text{lat}_k}-\hat{x}_{\text{lat}_k})^2}
 ,\end{align}
 
-eli käytetään paikannusvirheenä yksinkertaisesti euklidista etäisyyttä. Tämä antaa paikannusvirheen suoraan metreinä alaluvussa \@ref(karttaprojektioista) suoritettavan lineaarisen interpolaation vuoksi. Haluttu, alle metrin paikannustarkkuus saavutetaan, kun missä hyvänsä testiasetelmassa kaikkien asetelmaan liittyvien paikannusvirheiden $95.$ persentiili on $\leq1$m.
+eli käytetään paikannusvirheenä yksinkertaisesti euklidista etäisyyttä. Tämä antaa paikannusvirheen suoraan metreinä alaluvussa \@ref(karttaprojektioista) suoritettavan lineaarisen interpolaation vuoksi. Haluttu, alle metrin paikannustarkkuus saavutetaan, kun missä hyvänsä testiasetelmassa kaikkien asetelmaan liittyvien paikannusvirheiden $50.$ persentiili on $\leq1$m.
 
 Walkbasen paikannusratkaisu koostuu kolmesta eri laitteistokomponentista, AT-2-Bluetooth-lähetin-vastaanottomista, jotka kiinnitetään ostoskärryihin, XR-2-Bluetooth-lähetin-vastaanottomista, jotka kiinnitetään tilan kattoripustuksiin sekä OSCU-laskentayksiköstä, joka luo paikkadataa XR-2.1-vastaanotinten perusteella ja lähettää paikkadatan edelleen palvelinkeskukseen. 
 
@@ -654,6 +654,8 @@ kableExtra::kbl(
 )
 ```
 
+\newpage
+
 \begin{figure}[H]
 \centering
 \includegraphics[width=15cm]{phase3_results_vertical_safe}
@@ -661,6 +663,24 @@ kableExtra::kbl(
 \label{fig:phase3_results}
 \end{figure}
 
-Tuloksista huomataan, ettei siloittelun tai signaalin vahvuuden kynnysarvon käyttäminen paranna paikannusvirhettä. Siloittelun osalta tämä on odotettua, kun liikemallina on käytetty satunnaiskulkua. Liitteenä olevista karttapoluista kuitenkin huomataan, että siloittelu tuottaa odotetusti sileämpiä polkuja, mikä saattaa olla käytännössä haluttu ominaisuus. Taulukossa TODO on esitetty 
+Tuloksista huomataan, ettei siloittelun tai signaalin vahvuuden kynnysarvon käyttäminen paranna paikannusvirhettä. Siloittelun osalta tämä on odotettua, kun liikemallina on käytetty satunnaiskulkua. Liitteenä olevista karttapoluista kuitenkin huomataan, että siloittelu tuottaa odotetusti sileämpiä polkuja, mikä saattaa olla käytännössä haluttu ominaisuus. Taulukossa \ref{tab:tulokset-final} on esitetty vielä tulosten perusteella valitut suunnitteluparametrit.
 
-Tulosten perusteella voidaan todeta, että WB-sisätilapaikannusalgoritmi tuottaa halutun paikannusvirheen. Algoritmia ja järjestelmää voitaisiin mahdollisesti edelleen parantaa TODO.
+```{r tulokset-final, tidy=FALSE}
+tulokset_final <- as.data.frame(matrix(ncol=2,nrow=0))
+colnames(tulokset_final) <- c("Suunnitteluparametri", "Arvo")
+tulokset_final[nrow(tulokset_final)+1,] <- c("N", 1000)
+tulokset_final[nrow(tulokset_final)+1,] <- c("resampling", 0.67)
+tulokset_final[nrow(tulokset_final)+1,] <- c("map\\_matching", TRUE)
+tulokset_final[nrow(tulokset_final)+1,] <- c("P", 1000)
+tulokset_final[nrow(tulokset_final)+1,] <- c("q", 1.5)
+tulokset_final[nrow(tulokset_final)+1,] <- c("smoothing", FALSE)
+tulokset_final[nrow(tulokset_final)+1,] <- c("rssi\\_threshold", -120)
+kableExtra::kbl(
+ tulokset_final, caption = 'Tulosten perusteella valitut suunnitteluparametrit', format="latex",
+  booktabs = TRUE, escape = FALSE, digits=2
+)
+```
+
+Tulosten perusteella voidaan todeta, että WB-sisätilapaikannusalgoritmi tuottaa halutun paikannusvirheen. Algoritmia ja järjestelmää voitaisiin mahdollisesti edelleen parantaa esimerkiksi hyödyntämällä paremmin tagin kiihtyvyysmittarin tuottamaa dataa informatiivisen liikemallin luomisessa. Vastaavasti datan valinta voitaisiin suorittaa esimerkiksi niin, että datasta poistettaisiin kullakin aika-askeleella ne kulmahavainnot, jotka poikkeavat kulmahavaintojen suuntakonsensuksesta.
+
+Liitteenä olevia polkuja tarkastelemalla huomataan, että nyt toteutetun algoritmin sijantiestimaatilla on taipumus jäädä osassa testiympäristöä jälkeen itse tagin sijainnista. Tätä ongelmaa voitaisiin mahdollisesti lieventää käyttämällä esimerkiksi Yi Chenging &al artikkelissa "Improved Particle Filter Algorithm for Multi-Target Detection and Tracking" (2024) [@Cheng-2024] esittämää menetelmää, jossa partikkelit jaetaan ns. seurantahiukkasiin sekä etsintähiukkasiin, joista ainoastaan edellisiä käytetään sijaintiestimaatin luomisessa ja jälkimmäisten annetaan liikkua suuremmilla kohina-arvoilla. Näin mahdollistetaan satunnaiskulkumallilla laajempi signaaliavaruuden tutkinta ja nopeampi ongelmatilanteista toipuminen ilman, että sijaintiestimaatit kärsivät liikemalliin lisätystä kohinasta.

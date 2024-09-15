@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.5.26)  15 SEP 2024 16:06
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.5.26)  15 SEP 2024 16:47
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1406,16 +1406,14 @@ Overfull \hbox (7.56789pt too wide) in paragraph at lines 1682--1695
  [][] 
  []
 
-<./images//phase3_results_vertical_safe.png, id=759, 622.325pt x 946.53625pt>
+[60]
+<./images//phase3_results_vertical_safe.png, id=768, 622.325pt x 946.53625pt>
 File: ./images//phase3_results_vertical_safe.png Graphic file (type png)
 <use ./images//phase3_results_vertical_safe.png>
 Package pdftex.def Info: ./images//phase3_results_vertical_safe.png  used on in
-put line 1718.
+put line 1720.
 (pdftex.def)             Requested size: 426.79333pt x 649.13892pt.
 
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-[60]
 Overfull \vbox (194.13757pt too high) has occurred while \output is active []
 
 [61 <./images//phase3_results_vertical_safe.png>] [62]
@@ -1427,9 +1425,9 @@ Overfull \vbox (194.13757pt too high) has occurred while \output is active []
 ]
 \bbl@ensure@finnish {Luku} 6.
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <24.88> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 1735.
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 1759.
 
-LaTeX Warning: Reference `' on page 65 undefined on input line 1737.
+LaTeX Warning: Reference `' on page 65 undefined on input line 1761.
 
 (./gradu.bbl [65] [66
 
@@ -1439,10 +1437,10 @@ LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 31052 strings out of 478268
- 588578 string characters out of 5846347
- 938069 words of memory out of 5000000
- 48112 multiletter control sequences out of 15000+600000
+ 31058 strings out of 478268
+ 588677 string characters out of 5846347
+ 938202 words of memory out of 5000000
+ 48116 multiletter control sequences out of 15000+600000
  546744 words of font info for 206 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  98i,24n,94p,1311b,1029s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -1467,10 +1465,10 @@ ublic/lm/lmsy8.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lm
 tk10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmtt12.pfb><
 /usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.p
 fb>
-Output written on gradu.pdf (73 pages, 4051417 bytes).
+Output written on gradu.pdf (73 pages, 4052978 bytes).
 PDF statistics:
- 1119 PDF objects out of 1200 (max. 8388607)
- 971 compressed objects within 10 object streams
- 298 named destinations out of 1000 (max. 500000)
+ 1123 PDF objects out of 1200 (max. 8388607)
+ 975 compressed objects within 10 object streams
+ 300 named destinations out of 1000 (max. 500000)
  45520 words of extra memory for PDF output out of 51595 (max. 10000000)
 
