@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.5.26)  15 SEP 2024 15:58
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.5.26)  15 SEP 2024 16:06
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1406,7 +1406,7 @@ Overfull \hbox (7.56789pt too wide) in paragraph at lines 1682--1695
  [][] 
  []
 
-<./images//phase3_results_vertical_safe.png, id=758, 622.325pt x 946.53625pt>
+<./images//phase3_results_vertical_safe.png, id=759, 622.325pt x 946.53625pt>
 File: ./images//phase3_results_vertical_safe.png Graphic file (type png)
 <use ./images//phase3_results_vertical_safe.png>
 Package pdftex.def Info: ./images//phase3_results_vertical_safe.png  used on in
@@ -1439,10 +1439,10 @@ LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 31048 strings out of 478268
- 588521 string characters out of 5846347
- 938019 words of memory out of 5000000
- 48109 multiletter control sequences out of 15000+600000
+ 31052 strings out of 478268
+ 588578 string characters out of 5846347
+ 938069 words of memory out of 5000000
+ 48112 multiletter control sequences out of 15000+600000
  546744 words of font info for 206 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  98i,24n,94p,1311b,1029s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -1467,10 +1467,10 @@ ublic/lm/lmsy8.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lm
 tk10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmtt12.pfb><
 /usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.p
 fb>
-Output written on gradu.pdf (73 pages, 4051472 bytes).
+Output written on gradu.pdf (73 pages, 4051417 bytes).
 PDF statistics:
- 1117 PDF objects out of 1200 (max. 8388607)
- 969 compressed objects within 10 object streams
- 297 named destinations out of 1000 (max. 500000)
+ 1119 PDF objects out of 1200 (max. 8388607)
+ 971 compressed objects within 10 object streams
+ 298 named destinations out of 1000 (max. 500000)
  45520 words of extra memory for PDF output out of 51595 (max. 10000000)
 
