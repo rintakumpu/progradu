@@ -522,7 +522,7 @@ Ensimmäisessä vaiheessa tarkasteltiin partikkelien määrän $N={100,1000,1000
 
 Toisessa vaiheessa valittiin edellisen vaiheen tulosten perusteella parhaimman paikannusvirheen suhteessa suoritusaikaan ja varianssiin tuottava uudelleenotannan kynnysarvo $resampling$ sekä partikkelien määrä $N$. Nämä pidettiin vakioarvoisina ja testattiin karttasovitusalgoritmia *map_matching* $={T,F}$, karttasovitusalgoritmin rangaistusarvoa $P={1,100,1000}$ sekä dynaamisen mallin kohina-arvoa $q={0.75,1.5,2,2.5}$. Signaalin vahvuuden kynnysarvoa ei käytetty, kuten ei käytetty myöskään prediktiivistä siloitinta. Koska rangaistusarvo $P$ oli käytössä ainoastaan karttasovitusalgoritmia käytettäessä, tarkasteltiin toisessa vaiheessa $16$ eri suunnitteluparametrikombinaatiota.
 
-Viimeisessä vaiheessa valittiin edellisten vaihdeiden tulosten perusteella parhaimman paikannusvirheen suhteessa suoritusaikaan ja varianssiin tuottavat parametrit testattujen joukosta ja testattiin adatan valinnassa käytettävää signaalin vahvuuden kynnysarvoa *rssi_threshold* $={-100,-90,-80}$ sekä prediktiivistä siloitinta *smoothing* $={T,F}$ eli kuutta eri suunnitteluparametrikombinaatiota.
+Viimeisessä vaiheessa valittiin edellisten vaihdeiden tulosten perusteella parhaimman paikannusvirheen suhteessa suoritusaikaan ja varianssiin tuottavat parametrit testattujen joukosta ja testattiin datan valinnassa käytettävää signaalin vahvuuden kynnysarvoa *rssi_threshold* $={-100,-90,-80}$ sekä prediktiivistä siloitinta *smoothing* $={T,F}$ eli kuutta eri suunnitteluparametrikombinaatiota.
 
 Kaikkien tulosten vertailukohtana käytettiin Pierlot \&al. artikkelissa "A New Three Object Triangulation Algorithm Based on the Power Center of Three Circles" (2011) esittämää ToTal-triangulaatioalgoritmia. [@Pierlot-2011] Triangulaatio-algoritmia ei käsitellä tässä tarkemmin, mutta se on esitetty algoritmissa $\ref{total}$. Algoritmia varten valittiin kunakin aika-askeleella $k$ ne kolme paikanninta ja kulmahavaintoa, joiden RSSI-arvo oli korkein.
 
@@ -576,6 +576,8 @@ kableExtra::kbl(
 )
 ```
 
+\newpage
+
 \begin{figure}[H]
 \centering
 \includegraphics[width=15cm]{phase1_results_vertical_safe}
@@ -583,10 +585,16 @@ kableExtra::kbl(
 \label{fig:phase1_results}
 \end{figure}
 
-Kuten tuloksista huomataan, ei ehdotusjakauman valinnalla ole juurikaan vaikutusta algoritmin toimivuuteen paikannusvirheen suhteen. Partikkelien määrän kasvattaminen ei myöskään automaattisesti paranna paikannustarkkuuta. Tämä viittaa siihen, että koeasetelma on herkkä priorijakauman valinnalle. Tuloksista huomataan lisäksi, että algoritmin aikakompleksisuus on luokkaa $\mathcal{O}(N)$, kuten tukielman teoriaosassa todettiin. 
+Ensimmäisen vaiheen tuloksista huomataan, ettei hiukkasten määrällä ole juurikan vaikutusta mediaanipaikannusvirheesen, kun uudelleenotanta on käytössä (so. käytämme SIR-algoritmia). Samoin adaptiivisen uudelleenotannan kynnysarvolla ei ole juurikaan vaikutusta mediaanipaikannusvirheeseen tai ajoaikaan.
 
-Koska ehdotusjakaumalla ei juurikaan ollut vaikutusta tuloksiin, valittiin seuraavaan vaiheeseen muodoltaan yksinkertaisempi uskottavuusotanta. Uskottavuusotantaa käyttäen vertailtiin nyt joka iteraatiolla suoritettavaa uudelleenotantaa (bootstrap) sekä adaptiivista uudelleenotantaa, joka suoritettiin aina, kun effektiivinen otoskoko $N_{eff}<2N/3$. Uudeeleenotantamenetelmän valinta ei vaikuta tuloksiin paikannusvirheen suhteen, mutta kuten oletettua, on adaptiivinen uudelleenotanta nopeampi. Nyt myös partikkelien määrän lisääminen parantaa selkeämmin paikkannustarkkuutta ja $N=100^2$ partikkelilla saavutetaan jo haluttu alle metrin paikannustarkkuus. 
+Se, ettei partikkelien määrän kasvattaminen automaattisesti paranna paikannustarkkuuta viittaa siihen, että koeasetelma on herkkä priorijakauman valinnalle. Tuloksista huomataan lisäksi, että algoritmin aikakompleksisuus on uudelleenotannasta riipumatta luokkaa $\mathcal{O}(N)$, kuten tukielman teoriaosassa todettiin. Samoin hiukkasten määrän kasvattaminen pienentää variansseja, kuten teoriaosassa todettiin. MC-varianssia pienentää myös uudelleenotannan käyttäminen.
 
+Koska MC-varianssi on laskettu itse sijaintiestimaateista ja ALvar-varianssi kaikista partikkeleista, on näiden kahden varianssin suuruusluokka eri. Huomataan kuitenkin, että nämä kaksi varianssiestimaattia ovat hyvin korreloituneita, korrelaatiokertoimilla $\rho_\text{Pearson} \approx 0.86$ ja $\rho_\text{Spearman} \approx 0.88$. Voidaan siis olettaa ALvar-varianssin estimoivan hyvin hiukkassuotimen todellista varianssia.
+
+Ensimmäisen vaiheen tulosten perusteella valitaan seuraavaan vaiheeseen ne $N$- ja *resampling*-parametriarvot, jotka tuottavat parhaimman mediaanipaikannusvirheen. Jos kahden eri paikannusvirheen 95%-luottamusvälit ovat päällekäiset, valitaan arvoista ensin se, joka tuottaa paremman ALvar-varianssin. Näin päädytään parametriyhdistelmään $N=10000$, *resampling* $=2/3$. Koska algoritmin ajoaika 10000 partikkelilla on kuitenkin epäkäytännöllinen, valitaan $N=1000$, vaikka tämä lisääkin hieman algoritmin varianssia.
+
+Toisessa vaiheessa $N=1000$ ja *resampling*=$2/3$ pidettiin vakioarvoisina ja testattiin karttasovitusalgoritmia *map_matching* $={T,F}$, karttasovitusalgoritmin rangaistusarvoa $P={1,100,1000}$ sekä dynaamisen mallin kohina-arvoa $q={0.75,1.5,2,2.5}$. Signaalin vahvuuden kynnysarvoa ei käytetty, kuten ei käytetty myöskään prediktiivistä siloitinta. Koska rangaistusarvo $P$ oli käytössä ainoastaan karttasovitusalgoritmia käytettäessä, tarkasteltiin toisessa vaiheessa $16$ eri suunnitteluparametrikombinaatiota. Tulokset on esitetty kuvassa $\ref{fig:phase2_results}$ sekä taulukoissa \ref{tab:vaihe-2-tulokset} ja \ref{tab:vaihe-2-tulokset-varianssi}. Ajojen tulokset on esitetty karttapolkuina LIITTEESSÄ A TODO.
+ 
 ```{r vaihe-2-tulokset, tidy=FALSE}
 vaihe2_tulokset <- readr::read_csv("analyysi/data/tulokset_vaihe2_ci.csv", show_col_types = FALSE)
 vaihe2_tulokset <- vaihe2_tulokset %>% dplyr::select(map_matching, P, q, q50_error, q50_error_lo, q50_error_hi, sub_meter_quantile)
@@ -616,6 +624,13 @@ kableExtra::kbl(
 \label{fig:phase2_results}
 \end{figure}
 
+Toisen vaiheen tuloksista huomataan, että karttasovituksen käyttäminen parantaa paikannusvirhettä. Syy tähän on helppo havaita liitteenä olevista karttapoluista. Paikannus ottaa nyt huomioon sisätilaympäristön, eikä enää luo estimaatteja sijainteihin, jotka ovat fyysisesti mahdottomia.  Samoin rangaistusarvo $P$:n lisääminen parantaa paikannusvirhettä. Tämä on odotettua, sillä isomman rangaistusarvon käyttäminen ei ainoastaan estä fyysisesti mahdottomia sijainteja vaan estää myös fyysisesti mahdottomat siirtymät kahden peräkkäisen sijaintiestimaatin välillä.
+
+Vastaavasti liikemallin kohina-arvon $q$ pienentäminen parantaa paikannusvirhettä. Liian pienellä $q$-arvolla algoritmi ei kuitenkaan enää tutki signaaliympäristöä tarpeeksi hyvin ja paikannusvirhe kasvaa, samoin kasvaa estimaattien MC-varianssi. Optimaalinen kohina-arvo on tulosten perusteella $q=1.5$. Tämä vastaa myös hyvin kirjallisuudessa esitettyä keskimääräistä kävelynopeutta ***.
+
+Huomataan lisäksi, että parhaimman paikannusvirheen tuottava rangaistusarvo $P=1000$ on tutkitun parametriavaruuden reunalla, joten mahdollisesti isommalla $P$-arvolla voitaisiin vielä parantaa paikannusvirhettä. Pienempien $P$-arvojen paikannusvirheiden luottamusvälit ovat kuitenkin päällekäisiä arvon $P=1000$ kanssa, joten paikannusvirheeseen saatu lisähyöty ei todennäköisesti olisi tilastollisesti merkityksellistä. Näiden tulosten perusteella valitaan viimeiseen vaiheeseen siis kiinteät arvot *map_matching*$=T$, $P=1000$ sekä $q=1.5$.
+
+Viimeisessä vaiheessa testattiin datan valinnassa käytettävää signaalin vahvuuden kynnysarvoa *rssi_threshold* $={-100,-90,-80}$ sekä prediktiivistä siloitinta *smoothing* $={T,F}$ eli kuutta eri suunnitteluparametrikombinaatiota. Tulokset on esitetty kuvassa $\ref{fig:phase3_results}$ sekä taulukoissa \ref{tab:vaihe-3-tulokset} ja \ref{tab:vaihe-3-tulokset-varianssi}. Ajojen tulokset on esitetty karttapolkuina LIITTEESSÄ A TODO.
 
 ```{r vaihe-3-tulokset, tidy=FALSE}
 vaihe3_tulokset <- readr::read_csv("analyysi/data/tulokset_vaihe3_ci.csv", show_col_types = FALSE)
@@ -646,8 +661,6 @@ kableExtra::kbl(
 \label{fig:phase3_results}
 \end{figure}
 
-Punaiset ympyrät kuvaavat vastaanottimia, sininen neliö testilaitteen todellista sijaintia ja mustat ympyrät partikkelien sijainteja. Molemmat kuvat esittävät uskottaavusotannalla saatuja tuloksia, kun $N=100^2$.  Vaikka partikkelien painoja ei kuvassa olekaan otettu huomioon, on kuvasta helppo huomata otoskoon ehtymisen ongelma. Jälkimmäisessä on käytetty adaptiivista uudelleenotantaa, joka on suoritettu aika-askelilla 1\textendash 6. Tämä ratkaisee otoskoon ehtymisen ja aika-askeleella $10$ kaikki partikkelit approksimoivat haluttua sijaintia.
+Tuloksista huomataan, ettei siloittelun tai signaalin vahvuuden kynnysarvon käyttäminen paranna paikannusvirhettä. Siloittelun osalta tämä on odotettua, kun liikemallina on käytetty satunnaiskulkua. Liitteenä olevista karttapoluista kuitenkin huomataan, että siloittelu tuottaa odotetusti sileämpiä polkuja, mikä saattaa olla käytännössä haluttu ominaisuus. Taulukossa TODO on esitetty 
 
-Tuloksista huomataan, että uskottavuusotannalla ja uudelleenotannalla SMC-menetelmät tuottavat esitetyssä koeasetelmassa halutun tarkkuuden. Tarvittavalla määrällä partikkeleita tässä käytetyt SMC-algoritmit ovat kuitenkin aivan liian hitaita tuotantokäyttöön. Vaikka algoritmit pystyvät tuottamaan hitaimmillaankin noin sijainnin sekunnissa, pitää käytännön toteutuksessa sijainteja laskea joka sekunti sadoista paikantimista. Todennäköisesti yksinkertaisin tapa saavuttaa haluttu alle metrin paikannustarkkuus nopeammalla laskennalla on lisätä triangulaatio-paikannukseen jokin laskennallisesti kevyempi suodin, esimerkiksi EKF-suodin. 
-
-Siloittelu, kiihtyvyysmittaridatan lisääminen dynaamiseen malliin, hybridimallit.
+Tulosten perusteella voidaan todeta, että WB-sisätilapaikannusalgoritmi tuottaa halutun paikannusvirheen. Algoritmia ja järjestelmää voitaisiin mahdollisesti edelleen parantaa TODO.
