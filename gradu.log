@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.5.26)  15 SEP 2024 16:47
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.5.26)  15 SEP 2024 16:53
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1374,22 +1374,24 @@ Underfull \hbox (badness 1472) in paragraph at lines 1528--1529
 tik-ke-lien m‰‰-r‰l-l‰ $\OML/lmm/m/it/12 N \OT1/lmr/m/n/12 (+20) =$
  []
 
-[53] [54]
-<./images//phase1_results_vertical_safe.png, id=724, 622.325pt x 946.53625pt>
+[53] [54] [55]
+<./images//phase1_results_vertical_safe.png, id=728, 622.325pt x 946.53625pt>
 File: ./images//phase1_results_vertical_safe.png Graphic file (type png)
 <use ./images//phase1_results_vertical_safe.png>
 Package pdftex.def Info: ./images//phase1_results_vertical_safe.png  used on in
 put line 1586.
 (pdftex.def)             Requested size: 426.79333pt x 649.13892pt.
 
-Overfull \vbox (308.76096pt too high) has occurred while \output is active []
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[55 <./images//phase1_results_vertical_safe.png>]
+[56
+
+ <./images//phase1_results_vertical_safe.png>]
 Overfull \hbox (15.39037pt too wide) in paragraph at lines 1605--1630
  [][] 
  []
 
-<./images//phase2_results_vertical_safe.png, id=733, 622.325pt x 946.53625pt>
+<./images//phase2_results_vertical_safe.png, id=737, 622.325pt x 946.53625pt>
 File: ./images//phase2_results_vertical_safe.png Graphic file (type png)
 <use ./images//phase2_results_vertical_safe.png>
 Package pdftex.def Info: ./images//phase2_results_vertical_safe.png  used on in
@@ -1398,47 +1400,49 @@ put line 1665.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[56] [57] [58]
+[57] [58] [59]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[59 <./images//phase2_results_vertical_safe.png>]
+[60 <./images//phase2_results_vertical_safe.png>]
 Overfull \hbox (7.56789pt too wide) in paragraph at lines 1682--1695
  [][] 
  []
 
-[60]
-<./images//phase3_results_vertical_safe.png, id=768, 622.325pt x 946.53625pt>
+[61] [62]
+<./images//phase3_results_vertical_safe.png, id=776, 622.325pt x 946.53625pt>
 File: ./images//phase3_results_vertical_safe.png Graphic file (type png)
 <use ./images//phase3_results_vertical_safe.png>
 Package pdftex.def Info: ./images//phase3_results_vertical_safe.png  used on in
 put line 1720.
 (pdftex.def)             Requested size: 426.79333pt x 649.13892pt.
 
-Overfull \vbox (194.13757pt too high) has occurred while \output is active []
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[61 <./images//phase3_results_vertical_safe.png>] [62]
-\bbl@ensure@finnish {Luku} 5.
 [63
 
-] [64
+ <./images//phase3_results_vertical_safe.png>] [64]
+\bbl@ensure@finnish {Luku} 5.
+[65
+
+] [66
 
 ]
 \bbl@ensure@finnish {Luku} 6.
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <24.88> not available
 (Font)              Font shape `T1/lmtt/b/n' tried instead on input line 1759.
 
-LaTeX Warning: Reference `' on page 65 undefined on input line 1761.
+LaTeX Warning: Reference `' on page 67 undefined on input line 1761.
 
-(./gradu.bbl [65] [66
+(./gradu.bbl [67] [68
 
-] [67] [68]) [69] (./gradu.aux)
+] [69] [70]) [71] (./gradu.aux)
 
 LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 31058 strings out of 478268
- 588677 string characters out of 5846347
+ 31060 strings out of 478268
+ 588691 string characters out of 5846347
  938202 words of memory out of 5000000
  48116 multiletter control sequences out of 15000+600000
  546744 words of font info for 206 fonts, out of 8000000 for 9000
@@ -1465,10 +1469,10 @@ ublic/lm/lmsy8.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lm
 tk10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmtt12.pfb><
 /usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.p
 fb>
-Output written on gradu.pdf (73 pages, 4052978 bytes).
+Output written on gradu.pdf (75 pages, 4053540 bytes).
 PDF statistics:
- 1123 PDF objects out of 1200 (max. 8388607)
- 975 compressed objects within 10 object streams
- 300 named destinations out of 1000 (max. 500000)
+ 1132 PDF objects out of 1200 (max. 8388607)
+ 982 compressed objects within 10 object streams
+ 302 named destinations out of 1000 (max. 500000)
  45520 words of extra memory for PDF output out of 51595 (max. 10000000)
 
