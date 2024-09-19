@@ -1,0 +1,6 @@
+Tehdään varianssianalyysi aineistolle `cloth.txt`, jossa on mitattu kankaan valmistumisnopeutta viidellä satunnaisesti valitulla koneella. Kultakin koneella on tehty
+viisi toistoa. 
+
+(a) Ovatko koneet yhtä nopeita kankaan valmistuksessa? Käytetään I tyypin virheenä tasoa $\alpha = 0:05$ 
+(b) Mitkä ovat varianssikomponenttien piste-estimaatit?
+(c) Laske sisäkorrelaation (intra-class correlation)  $\sigma^2_{tau}/(\sigma^2_{tau}+\sigma^2)$ piste-estimaatit ja tarkka 95%:n luottamusväli.

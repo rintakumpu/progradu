@@ -17,25 +17,28 @@ library(terra)
 library(tidyr)
 library(data.table)
 library(raster)
+library(readr)
 library(sf)
 library(sp)
 library(matrixStats)
 library(stats)
+library(pracma)
 # ja paikannusfunktio
-pf_positioning <- source("R/pf_positioning.R")
+source("R/pf_positioning.R")
+source("R/total.R")
 ```
 
 ```{r}
 # Ladataan testipolkudata
-testipolku <- read_csv("data/test_path.csv")
+testipolku <- readr::read_csv("data/test_path.csv")
 # Ilmaistaan testipolku tihennettynä pistejoukkona
 testipolku_s <- as.data.frame(smoothr::smooth_densify(as.matrix(testipolku[,1:2]), n=1000))
 colnames(testipolku_s) <- c("y", "x")
 
 # Ladataan kartta-ggplot, polygonidatakehykset ja itse testidata
-kartta <- read_rds("data/sitemap_bw.RDS") 
-polygonit_F <- read_csv("data/inclusion_polygons.csv")
-polygonit_E <- read_csv("data/exclusion_polygons.csv")
+kartta <- readr::read_rds("data/sitemap_bw.RDS") 
+polygonit_F <- readr::read_csv("data/inclusion_polygons.csv")
+polygonit_E <- readr::read_csv("data/exclusion_polygons.csv")
 y <- read_csv("data/y.csv")
 ```
 
@@ -352,4 +355,30 @@ p3 <- ggplot(phase3_summary, aes(x=rssi_threshold, y=mc_variance)) + geom_point(
 p4 <- ggplot(phase3_summary, aes(x=rssi_threshold, y=run_time)) + geom_point() + geom_line() + ylab("Ajoaika") + facet_wrap(vars(smoothing), labeller= "label_both")
 grid.arrange(p1,p2,p3,p4, ncol=1)
 ```
+
+Luodaan myös triangulaatioestimaatit ToTaL-algoritmilla ja lasketaan näiden keskiarvo.
+
+```{r}
+t <- dplyr::n_distinct(floor(y$ts))
+total_estimates <- as.data.frame(matrix(ncol=4, nrow=t))
+colnames(total_estimates) <- c("x", "y", "D", "positioning_error")
+i <- 1
+for(ts_k in unique(floor(y$ts))) {
+  y_subset <- y %>% dplyr::filter(floor(ts) == ts_k)
+  total_results <- total(y_subset)
+  if(length(total_results)==1) {
+    total_estimates[i,1:3] <- c(NA,NA,NA)
+  } else {
+    total_estimates[i,1:3] <- total_results[1:3]
+  }
+  
+  # Compute distance to the true path i.e. positioning error for this time step
+  total_estimates[i,"positioning_error"] <- min(raster::pointDistance(t(matrix(c(total_estimates[i, "x"],
+                                                              total_estimates[i, "y"]))), 
+                                                   cbind(testipolku_s$x, testipolku_s$y), lonlat=F))
+  
+  i <- i + 1
+}
+```
+
 
