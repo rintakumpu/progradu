@@ -16,7 +16,7 @@ Bayesilaisessa päättelyssä ollaan yleisesti kiinnostuttu laskemaan johonkin p
 \mathbb{E}[g(x)|y_{1:k}]\simeq\frac{1}{N}\sum_{i=1}^N g(x^i).
 \end{align}
 
-Monte Carlo -estimaatti konvergoi keskeisen raja-arvolauseen nojalla ja sen estimointivirheen voidaan osoittaa olevan luokkaa $\mathcal{O}(\frac{1}{\sqrt{N}})$ riippumatta tilamuuttujan $x$ dimensiosta. Hiukassuotimet hyödyntävät Monte Carlo -estimointia sekventiaalisesti, jolloin estimaatti lasketaan rekursiivisesti kullekin ajanhetkelle $k=\{1,\ldots, t\}$. Tähän palataan luvuissa \@ref(hiukkassiloittimet) ja \@ref(paikannusesimerkki).
+Monte Carlo -estimaatti konvergoi keskeisen raja-arvolauseen nojalla ja sen estimointivirheen voidaan osoittaa olevan luokkaa $\mathcal{O}(\frac{1}{\sqrt{N}})$ riippumatta tilamuuttujan $x$ dimensiosta. Hiukassuotimet hyödyntävät Monte Carlo -estimointia sekventiaalisesti, jolloin estimaatti lasketaan rekursiivisesti kullekin aika-askeleelle $k=\{1,\ldots, T\}$. Tähän palataan luvuissa \@ref(hiukkassiloittimet) ja \@ref(paikannusesimerkki).
 
 \subsection{Tärkeytysotanta}
 
@@ -34,7 +34,7 @@ Muodostetaan näin odotusarvo
 \mathbb{E}[g(x)|y_{1:k}]\simeq\frac{1}{N}\sum_{i=1}^N\frac{p(x^i|y_{1:k})}{q(x^i|y_{1:k})}g(x^i)=\sum_{i=1}^Nw^ig(x^i),
 \end{align}
 
-\noindent missä $g(x)$ on jokin estimoinnissa hyödyllinen, mielivaltainen funktio. Tutkielmassa käytetty notaatio $x_k^i$ viittaa ajanhetken $k$ partikkeliin $i$, missä $i=\{1,\ldots,N\}$. Tärkeytysotantaa kuvaa nyt algoritmi (\ref{tarkeytysotanta-algo}). Kun posteriorijakauman estimaatti muodostetaan kyseisellä algoritmilla voidaan tulos kirjoittaa
+\noindent missä $g(x)$ on jokin estimoinnissa hyödyllinen, mielivaltainen funktio. Tutkielmassa käytetty notaatio $x_k^i$ viittaa aika-askeleen $k$ partikkeliin $i$, missä $i=\{1,\ldots,N\}$. Tärkeytysotantaa kuvaa nyt algoritmi \ref{tarkeytysotanta-algo}. Kun posteriorijakauman estimaatti muodostetaan kyseisellä algoritmilla voidaan tulos kirjoittaa
 
 \begin{align}
 \hat{p}(x|y_{1:k})=\sum_{i=1}^{N}w^i \delta(x-x^i),

@@ -1,20 +1,20 @@
 \section{Bayesilainen suodin} \label{bayesilainen-suodin}
 
-Suodinongelmassa ollaan kiinnostuttu tilavektorin posteriorijakauman $p(x_k|y_{1:k})$ estimoinnista. Tässä alaluvussa käydään läpi yleinen rekursiivinen, Bayesilainen posteriorijakauman laskenta. Tällaista suodinongelman ratkaisua kutsutaan myös Bayesilaiseksi suotimeksi. Koska epälineaarisessa, ei-normaalijakautuneessa tilanteessa rekursiota ei voida laskea analyyttisesti, pitää estimoinnissa käyttää numeerisia menetelmiä. SMC-menetelmissä tämä tarkoittaa jakauman sekventiaalista Monte Carlo -approksimointia, jonka toteutus esitetään alaluvun \@ref(paikannusesimerkki) algoritmissa. Molemmat esitykset noudattavat Gustafssonia (2010). 
+Suodinongelmassa ollaan kiinnostuttu tilavektorin posteriorijakauman $p(x_k|y_{1:k})$ estimoinnista. Tässä alaluvussa käydään läpi yleinen rekursiivinen, Bayesilainen posteriorijakauman laskenta. Tällaista suodinongelman ratkaisua kutsutaan myös Bayesilaiseksi suotimeksi. Koska epälineaarisessa, ei-normaalijakautuneessa tilanteessa rekursiota ei voida laskea analyyttisesti, pitää estimoinnissa käyttää numeerisia menetelmiä. SMC-menetelmissä tämä tarkoittaa jakauman sekventiaalista Monte Carlo -approksimointia, jonka toteutus esitetään alaluvun \@ref(paikannusesimerkki) algoritmissa. Molemmat esitykset noudattavat Gustafssonia (2010) [@gustafsson-2010]. 
 
-Bayesilainen ratkaisu tilavektorin posteriorijakauman estimaatille $\hat{p}(x_k|y_{1:k})$ saadaan seuraavalla rekursiolla (käydään läpi jokaiselle ajanhetkelle $k=\{1,\ldots,t\}$). Lasketaan ensin
+Bayesilainen ratkaisu tilavektorin posteriorijakauman estimaatille $\hat{p}(x_k|y_{1:k})$ saadaan seuraavalla rekursiolla (käydään läpi jokaisella aika-askeleella $k=\{1,\ldots,T\}$). Lasketaan ensin
 
 \begin{align}\label{bayes-paivitys}
 p(x_k|y_{1:k}) = \frac{p(y_k|x_k)p(x_k|y_{1:k-1})}{p(y_k|y_{1:k-1})},
 \end{align}
 
-\noindent joka saadaan suoraan Bayesin kaavasta $P(A|B)=P(B|A)P(A)/P(B)$. Normalisointivakio lasketaan integraalina 
+\noindent joka saadaan suoraan Bayesin kaavasta $\mathbb{P}(A|B)=\mathbb{P}(B|A)\mathbb{P}(A)/\mathbb{P}(B)$. Normalisointivakio lasketaan integraalina 
 
 \begin{align}\label{bayes-normalisointi}
 p(y_k|y_{1:k-1})=\int_{\mathbb{R}^{n_x}}p(y_k|x_k)p(x_k|y_{1:k-1})\mathop{dx_k},
 \end{align}
 
-\noindent joka saadaan kokonaistodennäköisyyskaavasta $P(A)=\mathbb{E}[P(A|X)]=\int_{-\infty}^{\infty}P(A|X=x)f_X(x)\mathop{dx}$. Merkintä $\mathbb{R}^{n_x}$ vastaa tässä piilossa olevan tilavektorin dimensiota $n$.
+\noindent joka saadaan kokonaistodennäköisyyskaavasta $mathbb{P}(A)=\mathbb{E}[\mathbb{P}(A|X)]=\int_{-\infty}^{\infty}\mathbb{P}(A|X=x)f_X(x)\mathop{dx}$. Merkintä $\mathbb{R}^{n_x}$ vastaa tässä piilossa olevan tilavektorin dimensiota $n$.
 
 Lopuksi lasketaan päivitysaskel ajalle, joka saadaan edelleen kokonaistodennäköisyydellä
 
@@ -24,27 +24,27 @@ p(x_{k+1}|y_{1:k})=\int_{\mathbb{R}^{n_x}}p(x_{k+1}|x_k)p(x_k|y_{1:k})\mathop{dx
 
 \noindent Rekursion avulla voimme laskea jakauman $p(x_k|y_{1:k})$ estimaatti käymällä rekursion läpi $k$ kertaa.
 
-\section{Kalman-suotimen ja hiukassuotimen yhteydestä ja eroista} \label{kf-yhteydet-erot}
+\section{Kalman-suotimen ja hiukkassuotimen yhteydestä ja eroista} \label{kf-yhteydet-erot}
 
-Tässä alaluvussa käsitellään lyhyesti Kalman-suotimen yhteyttä hiukassuotimeen edellä estitetyn teorian valossa. Esitys noudattaa Särkkää (2013). [@sarkka-2013] Merkitään kuten edellä dynaamista mallia $x_k$ ja havaintomallia $y_k$ ja oletataan toisin kuin edellä, että nämä ovat lineaarisia ja noudattavat normaalijakaumaa. Koska mallit ovat lineaarisia, voidaan ne nyt kirjoittaa muotoon
+Tässä alaluvussa käsitellään lyhyesti Kalman-suotimen yhteyttä hiukkassuotimeen edellä estitetyn teorian valossa. Esitys noudattaa Särkkää (2013). [@sarkka-2013] Merkitään kuten edellä dynaamista mallia $x_k$ ja havaintomallia $y_k$ ja oletataan toisin kuin edellä, että nämä ovat lineaarisia ja noudattavat normaalijakaumaa. Koska mallit ovat lineaarisia, voidaan ne nyt kirjoittaa muotoon
 
 \begin{align}
 &\label{kalman-malli1}x_k=\mathbf{A}_{k-1}x_{k-1}+q_{k-1},\\
-&\label{kalman-malli2}y_k=\mathbf{H}_k x_k + r_k
+&\label{kalman-malli2}y_k=\mathbf{H}_k x_k + r_k,
 \end{align}
 
-missä $\mathbf{A}_{k-1}$ on dynaamisen mallin tilasiirtymään kuvaava matriisi ja $\mathbf{H}_k$ on havaintojen mallimatriisi. Normaalisuusoletuksesta puolestaan seuraa, että sekä mallin että prosessin kohinavektorit noudattavat normaalijakaumia $q_{k-1} \sim \mathbb{N}(0, \mathbf{Q}_{k-1})$ ja $r_k \sim \mathbb{N}(0, \mathbf{R}_k)$, missä $\mathbf{Q}_{k-1}$ ja $\mathbf{R}_k$ ovat kovarianssimatrsiiseja. Lisäksi oletetaan, että prosessin priorijakauma on normaali eli $x_0 \sim \mathbb{N}(m_0, \mathbf{P_0})$. Mallit voidaan nyt kirjoittaa tiheysfunktiomuodossa
+missä $\mathbf{A}_{k-1}$ on dynaamisen mallin tilasiirtymään kuvaava matriisi ja $\mathbf{H}_k$ on havaintojen mallimatriisi. Normaalisuusoletuksesta seuraa, että sekä mallin että prosessin kohinavektorit noudattavat normaalijakaumia $q_{k-1} \sim \mathcal{N}(0, \mathbf{Q}_{k-1})$ ja $r_k \sim \mathcal{N}(0, \mathbf{R}_k)$, missä $\mathbf{Q}_{k-1}$ ja $\mathbf{R}_k$ ovat kovarianssimatrsiiseja. Lisäksi oletetaan, että prosessin priorijakauma on normaali eli $x_0 \sim \mathbb{N}(m_0, \mathbf{P_0})$. Mallit voidaan nyt kirjoittaa tiheysfunktiomuodossa
 
 \begin{align}
-&\label{kalman-malli-pdf1}p(x_k|x_{k-1})=\mathcal{N}(x_k|\mathbf{A}_{k-1}x_{k-1},\mathbf{Q}_{k-1})\\
+&\label{kalman-malli-pdf1}p(x_k|x_{k-1})=\mathcal{N}(x_k|\mathbf{A}_{k-1}x_{k-1},\mathbf{Q}_{k-1}),\\
 &\label{kalman-malli-pdf2}p(y_k|x_k)=\mathcal{N}(y_k|\mathbf{H}_{k}x_{k},\mathbf{R}_{k}),
 \end{align}
 
 joista voidaan edelleen johtaa suodinongelman mallit
 
 \begin{align}
-&\label{kalman-malli-suodin1}p(x_k|y_{1:k-1})=\mathcal{N}(x_k|m_k^* ,\mathbf{P}_k^*)\\
-&\label{kalman-malli-suodin2}p(x_k|y_{1:k})=\mathcal{N}(x_k|m_k ,\mathbf{P}_k)\\
+&\label{kalman-malli-suodin1}p(x_k|y_{1:k-1})=\mathcal{N}(x_k|m_k^* ,\mathbf{P}_k^*),\\
+&\label{kalman-malli-suodin2}p(x_k|y_{1:k})=\mathcal{N}(x_k|m_k ,\mathbf{P}_k),\\
 &\label{kalman-malli-suodin3}p(y_k|y_{1:k-1})=\mathcal{N}(y_k|\mathbf{H}_k m_k^* ,\mathbf{S}_k)
 \end{align}
 
@@ -57,7 +57,7 @@ ja ongelma ratkaista näin algoritmilla $\ref{kf}$.
 \KwResult{Posteriorijakauman $p(x_{1:k}|y_{1:k})$ estimaatti.\;}
 \KwData{Havainnot $y_k$. Priorijakauman $x_0$ keskiarvovektori $m_0$ ja kovarianssimatriisi $\mathbf{P}_0$.\;}
 \Begin{
-  \For{$k=\{1,2,\ldots,t\}$}{
+  \For{$k=\{1,2,\ldots,T\}$}{
     \Begin{Ennusteaskel. \newline $m_k^*= \mathbf{A}_{k-1}m_{k-1}$\;}
     \If{$k < t$}{\Begin{Päivitysaskel. \newline $v_k = y_k - \mathbf{H}_k m_k^*$
     \newline $\mathbf{S}_k = \mathbf{H}_k \mathbf{P}_k^* \mathbf{H}_k^\top + \mathbf{R}_k$
@@ -71,4 +71,4 @@ ja ongelma ratkaista näin algoritmilla $\ref{kf}$.
 
 Esitetty algoritmi on ns. Kalman-suodin, joka selkeästi toimii suodinongelman ratkaisuna, kun mallit ovat haluttua lineaarista normaalimuotoa. Jos tämä oletus ei täyty, on Kalman-suotimesta kehitetty useita versioita, joissa ei-lineaarinen malli voidaan linearisoida tiettyjen ehtojen vallitessa. 
 
-Tämän alaluvun tarkoituksena oli esittää, että Kalman-suotimessa ongelma on samaa muotoa kuin hiukassuotimessa, joten linearisoituja Kalman-suotimia ei tässä käsitellä. Hiukassuodin myös ratkaisee ongelman mille hyvänsä epälineaariselle mallille.
+Tämän alaluvun tarkoituksena oli esittää, että Kalman-suotimessa ongelma on samaa muotoa kuin hiukkassuotimessa, joten linearisoituja Kalman-suotimia ei tässä käsitellä. Hiukkassuodin myös ratkaisee ongelman mille hyvänsä epälineaariselle mallille.
