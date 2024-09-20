@@ -47,7 +47,9 @@ Hiukkassuodin- ja hiukkassiloitinalgoritmien osalta tutkielman esitykset seuraav
 
 \section{Notaatioista}
 
-Tässä tutkielmassa käytetään seuraavia yleisiä notaatioita. Vektoreita merkitään pienellä kursivoidulla kirjaimella, esimerkiksi $z$ (kirjaimet $p$ ja $q$ on kuitenkin varattu todennäköisyysjakaumien tiheysfunktioille). Hiukkassuotimen hiukkaset sisältäviä vektoreita merkitään $x_k^i$, missä alaindeksi viittaa aika-askeleeseen $k, k=\{1,\ldots,T\}$ ja yläindeksi partikkeliin $i$, missä $i=\{1,\ldots,N\}$. Aika-askeleiden $k, k=\{1,\ldots,T\}$ havainnot sisältäviä vektoreita merkitään $\{y_1,\ldots,y_k\}$. Lähtökohtaisesti kaikki tutkielmassa esitetyt muuttujat ovat ylä- ja alaindeksejä lukuunottamatta vektoreita. Skalaareihin pyritään viittaamaan isoilla kursivoiduilla kirjaimilla, esimerkiksi $Z$. Milloin tämä ei ole mahdollista, selviää muuttujan skalaariarvoisuus asiayhtedestä. Joukkoihin viitataan myös isoilla kursivoiduilla kirjaimilla, esimerkiksi $S$. Se, käytetäänkö isoa kursivoitua kirjainta ilmaisemaan skalaaria vai joukkoa ilmenee asiayhteydestä. Matriiseja merkitään isolla lihavoidulla kirjaimella, esimerkiksi $\mathbf{X}$ ja funktiota merkitään pienellä kursivoidulla kirjaimella $f(\cdot)$. Prosesseihin viitataan alaindeksoidulla isolla kirjaimella, esimerkiksi $X_k$.  Taulukossa \@ref(tab:notaatiot) esitetään tarkemmin tutkielman keskeisimmät merkinnät. Taulukossa \@ref(tab:lyhenteet-ja-symbolit) esitetään tutkielmassa käytetyt lyhenteet.
+Tässä tutkielmassa käytetään seuraavia yleisiä notaatioita. Hiukkassuotimien vektoreita merkitään pienellä kursivoidulla kirjaimella $x$, $y$ ja $w$.  Hiukkassuotimen hiukkaset sisältäviä vektoreita merkitään $x_k^i$, missä alaindeksi viittaa aika-askeleeseen $k, k=\{1,\ldots,T\}$ ja yläindeksi partikkeliin $i$, missä $i=\{1,\ldots,N\}$. Vastaavasti aika-askeleiden $k, k=\{1,\ldots,T\}$ havainnot sisältäviä vektoreita merkitään $\{y_1,\ldots,y_k\}$ ja painovektoria $w_k$.
+
+Pienin kursivoiduin kirjaimin viitataan myös funktioihin ja reaaliarvoisiin skalaareihin. Pienet kirjaimet $f$, $h$, $g$, $p$ ja $q$ on varattu ensisijaisesti funktioille, $p$ ja $q$ erityisesti todennäköisyysfunktioille. Skalaareihin viitataan myös isoilla kursivoiduilla kirjaimilla, esimerkiksi $T$ ja $N$. Joukkoihin viitataan myös isoilla kursivoiduilla kirjaimilla, esimerkiksi $S$. Se, käytetäänkö isoa kursivoitua kirjainta ilmaisemaan skalaaria vai joukkoa ilmenee asiayhteydestä. Matriiseja merkitään isolla lihavoidulla kirjaimella, esimerkiksi $\mathbf{X}$ ja funktiota merkitään pienellä kursivoidulla kirjaimella $f(\cdot)$. Prosesseihin viitataan alaindeksoidulla isolla kirjaimella, esimerkiksi $X_k$.  Taulukossa \@ref(tab:notaatiot) esitetään tarkemmin tutkielman keskeisimmät merkinnät. Taulukossa \@ref(tab:lyhenteet-ja-symbolit) esitetään tutkielmassa käytetyt lyhenteet.
 
 ```{r notaatiot, tidy=FALSE}
 notaatiot <- as.data.frame(matrix(ncol=2,nrow=0))
@@ -79,10 +81,8 @@ notaatiot[nrow(notaatiot)+1,] <- linebreak(c("$\\mathbf{X}^\\top$", "Matriisin $
 notaatiot[nrow(notaatiot)+1,] <- linebreak(c("$\\text{Var}(x)$", "Varianssifunktio"))
 notaatiot[nrow(notaatiot)+1,] <- linebreak(c("$\\propto$", "Yhtäsuuruus normalisoivaa vakiota lukuunottamatta"))
 notaatiot[nrow(notaatiot)+1,] <- linebreak(c("$\\lambda$", "Viiveparametri"))
-
-
-
-
+notaatiot[nrow(notaatiot)+1,] <- linebreak(c("$\\emptyset$", "Tyhjä joukko"))
+notaatiot[nrow(notaatiot)+1,] <- linebreak(c("$\\Omega_k$", "Painot aika-askeleella $k$ normalisoiva tekijä"))
 
 kableExtra::kbl(
   notaatiot, caption = 'Symbolit ja notaatiot', format="latex",
