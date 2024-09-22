@@ -701,7 +701,7 @@ Tulosten perusteella voidaan todeta, että WB-sisätilapaikannusalgoritmi tuotta
 
 ```{r tulokset-total, tidy=FALSE}
 tulokset_total <- as.data.frame(matrix(ncol=4,nrow=1))
-colnames(tulokset_total) <- c("Mediaani", "Aritmeettinen keskiarvo", "Keskihajonta", "<1m persentiili")
+colnames(tulokset_total) <- c("Mediaani", "Aritmeettinen keskiarvo", "Otoskeskihajonta", "<1m persentiili")
 rownames(tulokset_total) <- c("ToTaL")
 tulokset_total[1,] <- c(1.61, 2.35, 4.15, 0.34)
 kableExtra::kbl(
@@ -710,7 +710,14 @@ kableExtra::kbl(
 )
 ```
 
-Triangulaatioon verrattuna WB-sisätilapaikannusalgoritmi tuottaa siis huomattavasti parempia tuloksia. Tämän voi havaita myös KUVAN XXX vertaamalla ToTaL-karttapolkua liitteen A LINKKI WB-sisätillapaikannusalgoritmin tuottamiin karttapolkuihin.
+Triangulaatioon verrattuna WB-sisätilapaikannusalgoritmi tuottaa siis huomattavasti parempia tuloksia. Tämän voi havaita myös vertaamalla kuvan \ref{fig:total-karttapolku} ToTaL-karttapolkua liitteen A WB-sisätillapaikannusalgoritmin tuottamiin karttapolkuihin.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=15cm]{total-karttapolku}
+\caption{ToTaL-triangulaatioalgoritmin tuottamat sijaintiestimaatit}
+\label{fig:total-karttapolku}
+\end{figure}
 
 Algoritmia ja järjestelmää voitaisiin mahdollisesti edelleen parantaa esimerkiksi hyödyntämällä paremmin tagin kiihtyvyysmittarin tuottamaa dataa informatiivisen liikemallin luomisessa. Tällöin olisi myös mielekkäämpää toteuttaa varianssiestimaattiin perustuva adaptiivisen viipeen suodin osana paikannusalgoritmia. Lisäksi datan valinta voitaisiin suorittaa esimerkiksi niin, että datasta poistettaisiin kullakin aika-askeleella ne kulmahavainnot, jotka poikkeavat kulmahavaintojen suuntakonsensuksesta.
 

@@ -254,42 +254,43 @@ Pienin kursivoiduin kirjaimin viitataan myös funktioihin ja reaaliarvoisiin ska
 \toprule
 Merkintä & Selitys\\
 \midrule
-$\delta(x)$ & Diracin deltafunktio\\
-$\mathbb{E}[x]$ & x:n odotusarvo\\
+$1:k$ & $1,\ldots,k$\\
 $k$ & Aika-askel, skalaari, $k={1,\ldots,T}$\\
-$\text{log}(x)$ & Luonnollinen logaritmifunktio\\
-$p(x), q(x)$ & $x$:n tiheysfunktioita\\
-\addlinespace
-$\hat{p}(x), \hat{q}(x)$ & $x$: tiheysfunktion estimaatteja\\
 $N$ & Hiukkassuotimen käyttämä partikkelien lukumäärä / otoskoko\\
-$\mathcal{O}(\cdot)$ & \makecell[l]{Algoritmin asymptoottisen suoritusajan Ordo-notaatio,\\suoritusajan mielessä pahin mahdollinen tapaus}\\
 $x^i_k$ & \makecell[l]{Hiukkassuotimen hiukkaset sisältävä vektori,\\alaindeksi $k$ määrittää aika-askeleen,\\yläindeksi $i={1,\ldots,N}$ partikkelin}\\
+$y_k$ & Havainnot sisältävä vektori, $k$ määrittää aika-askeleen\\
+\addlinespace
+$w^i_k$ & Hiukkassuotimen painovektori\\
+$p(x), q(x)$ & $x$:n tiheysfunktioita\\
+$\hat{p}(x), \hat{q}(x)$ & $x$: tiheysfunktion estimaatteja\\
+$p(x|y)$ & $x$:n tiheysfunktio ehdolla $y$\\
+$x_{k|k-1}$ & $x_k$:n arvo ehdollistettuna arvoilla aika-askeleeseen $k-1$ asti\\
+\addlinespace
+$\mathbb{E}[x]$ & x:n odotusarvo\\
+$\mathbf{X}$ & Matriisi\\
+$\mathbf{X}^\top$ & Matriisin $\mathbf{X}$ transpoosi\\
+$\delta(x)$ & Diracin deltafunktio\\
+$\text{log}(x)$ & Luonnollinen logaritmifunktio\\
+\addlinespace
+$\text{Var}(x)$ & Varianssifunktio\\
+$\mathcal{O}(\cdot)$ & \makecell[l]{Algoritmin asymptoottisen suoritusajan Ordo-notaatio,\\suoritusajan mielessä pahin mahdollinen tapaus}\\
+$\mathcal{N}(\mu, \sigma^2)$ & Normaalijakauma, keskiarvoparametri $\mu$, varianssiparametri $\sigma^2$\\
+$\mathcal{U}(a, b)$ & Jatkuva tasajakauma, välin rajaavat parametrit $a$ ja $b$\\
 $X_k$ & Dynaaminen prosessi\\
 \addlinespace
 $\hat{X}_k$ & Dynaamisen prosessin estimaatti\\
-$y_k$ & Havainnot sisältävä vektori, $k$ määrittää aika-askeleen\\
-$w^i_k$ & Hiukkassuotimen painovektori\\
-$\simeq$ & TODO\\
-$\int g(x)p(x|y_{1:k})dx$ & TODO\\
-\addlinespace
+$\int f(x)dx$ & Funktion $f(x)$ Lebesguen integraali yli $\mathbb{R}^n$\\
 $\mathbb{P}$ & Todennäköisyysfunktio $\mathcal{A}\rightarrow\mathbb{R}$\\
-$\mathcal{A},$ TODO & $\sigma$-algebra\\
+$\mathcal{A}$ & $\sigma$-algebra\\
 $\mathbb{R}$ & Reaalilukujen joukko\\
+\addlinespace
 $\mathbb{R}^n$ & n-ulotteinen vektoriavaruus\\
-$\mathcal{N}(0, \sigma^2)$ & Normaalijakauma\\
-\addlinespace
-$\mathcal{U}(a, b)$ & Tasajakauma\\
 $\mathcal{B}(X)$ & Borel-mitta, pienin $X$:n avoimet joukot sisältävä $\sigma$-algebra\\
-$\mathbf{X}$ & Matriisi\\
-$\mathbf{X}^\top$ & Matriisin $\mathbf{X}$ transpoosi\\
-$\text{Var}(x)$ & Varianssifunktio\\
-\addlinespace
 $\propto$ & Yhtäsuuruus normalisoivaa vakiota lukuunottamatta\\
-$\lambda$ & Viiveparametri\\
 $\emptyset$ & Tyhjä joukko\\
 $\Omega_k$ & Painot aika-askeleella $k$ normalisoiva tekijä\\
-$\text{id}(x)$ & Identiteettifunktio\\
 \addlinespace
+$\text{id}(x)$ & Identiteettifunktio\\
 $\text{erf}(x)$ & Virhefunktio\\
 \bottomrule
 \end{tabular}
@@ -1804,14 +1805,21 @@ Tulosten perusteella voidaan todeta, että WB-sisätilapaikannusalgoritmi tuotta
 \centering
 \begin{tabular}[t]{lrrrr}
 \toprule
-  & Mediaani & Aritmeettinen keskiarvo & Keskihajonta & <1m persentiili\\
+  & Mediaani & Aritmeettinen keskiarvo & Otoskeskihajonta & <1m persentiili\\
 \midrule
 ToTaL & 1.61 & 2.35 & 4.15 & 0.34\\
 \bottomrule
 \end{tabular}
 \end{table}
 
-Triangulaatioon verrattuna WB-sisätilapaikannusalgoritmi tuottaa siis huomattavasti parempia tuloksia. Tämän voi havaita myös KUVAN XXX vertaamalla ToTaL-karttapolkua liitteen A LINKKI WB-sisätillapaikannusalgoritmin tuottamiin karttapolkuihin.
+Triangulaatioon verrattuna WB-sisätilapaikannusalgoritmi tuottaa siis huomattavasti parempia tuloksia. Tämän voi havaita myös vertaamalla kuvan \ref{fig:total-karttapolku} ToTaL-karttapolkua liitteen A WB-sisätillapaikannusalgoritmin tuottamiin karttapolkuihin.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=15cm]{total-karttapolku}
+\caption{ToTaL-triangulaatioalgoritmin tuottamat sijaintiestimaatit}
+\label{fig:total-karttapolku}
+\end{figure}
 
 Algoritmia ja järjestelmää voitaisiin mahdollisesti edelleen parantaa esimerkiksi hyödyntämällä paremmin tagin kiihtyvyysmittarin tuottamaa dataa informatiivisen liikemallin luomisessa. Tällöin olisi myös mielekkäämpää toteuttaa varianssiestimaattiin perustuva adaptiivisen viipeen suodin osana paikannusalgoritmia. Lisäksi datan valinta voitaisiin suorittaa esimerkiksi niin, että datasta poistettaisiin kullakin aika-askeleella ne kulmahavainnot, jotka poikkeavat kulmahavaintojen suuntakonsensuksesta.
 
