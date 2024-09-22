@@ -83,6 +83,8 @@ notaatiot[nrow(notaatiot)+1,] <- linebreak(c("$\\propto$", "Yhtäsuuruus normali
 notaatiot[nrow(notaatiot)+1,] <- linebreak(c("$\\lambda$", "Viiveparametri"))
 notaatiot[nrow(notaatiot)+1,] <- linebreak(c("$\\emptyset$", "Tyhjä joukko"))
 notaatiot[nrow(notaatiot)+1,] <- linebreak(c("$\\Omega_k$", "Painot aika-askeleella $k$ normalisoiva tekijä"))
+notaatiot[nrow(notaatiot)+1,] <- linebreak(c("$\\text{id}(x)$", "Identiteettifunktio"))
+notaatiot[nrow(notaatiot)+1,] <- linebreak(c("$\\text{erf}(x)$", "Virhefunktio"))
 
 kableExtra::kbl(
   notaatiot, caption = 'Symbolit ja notaatiot', format="latex",

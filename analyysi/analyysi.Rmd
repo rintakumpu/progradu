@@ -379,6 +379,13 @@ for(ts_k in unique(floor(y$ts))) {
   
   i <- i + 1
 }
+
+total_ecdf <- ecdf(total_estimates$positioning_error[!is.na(total_estimates$positioning_error)])
+total_statistics <- round(c(median(total_estimates$positioning_error, na.rm=T), 
+                            mean(total_estimates$positioning_error, na.rm=T),
+                            sd(total_estimates$positioning_error, na.rm=T),
+                            total_ecdf(1)),2)
+
 ```
 
 

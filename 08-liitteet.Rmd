@@ -1,6 +1,6 @@
 # Liite A - Karttapolut {-}
 
-Liite sisältää tutkielmaan tulososioon liittyvät karttapolut. Kukin kartta käsittää $r=30$ ajoa kullakin suunnitteluparametrikombinaatiolla. Karttojen otsikossa on mainittu ainoastaan testatut suunnitteluparametrit, vakioarvoiset parametrit on esitetty luvussa \ref{tulokset}.
+Liite sisältää tutkielman tulososioon liittyvät karttapolut. Kukin kartta käsittää $r=30$ ajoa kullakin suunnitteluparametrikombinaatiolla. Karttojen otsikossa on mainittu ainoastaan testatut suunnitteluparametrit, vakioarvoiset parametrit on esitetty luvussa \ref{tulokset}.
 
 \section{Vaihe 1} \label{liite-a-vaihe-1}
 
