@@ -117,20 +117,6 @@
 \newcommand{\paaaine}{{Tilastotiede}} 
 \newcommand{\ohjaaja}{{Ohjaajan titteli (Prof./Dos./FT) ja nimi }} %
 \newcommand{\tarkastaja}{{Toisen tarkastajan titteli (Prof./Dos./FT) ja nimi}} 
-\usepackage{booktabs}
-\usepackage{longtable}
-\usepackage{array}
-\usepackage{multirow}
-\usepackage{wrapfig}
-\usepackage{float}
-\usepackage{colortbl}
-\usepackage{pdflscape}
-\usepackage{tabu}
-\usepackage{threeparttable}
-\usepackage{threeparttablex}
-\usepackage[normalem]{ulem}
-\usepackage{makecell}
-\usepackage{xcolor}
 \ifLuaTeX
   \usepackage{selnolig}  % disable illegal ligatures
 \fi
@@ -1578,7 +1564,7 @@ $x_R=x_2+\frac{k^\prime_{31}(y^\prime_{12}-y^\prime_{23})}{D}\hspace{0.5cm}y_R=y
 \hypertarget{tulokset}{%
 \subsection{Tulokset}\label{tulokset}}
 
-Ensimmäisessä vaiheessa suoritettiin paikannus partikkelien määrällä \(N={100,1000,10000}\) sekä uudelleenotannan kynnysarvolla \(resampling={0,1/10,2/3,1}\). Kun kynnysarvo oli \(0\), uudelleenotantaa ei käytetty, jolloin SIR-algoritmin sijaan paikannus suoritettiin SIS-algoritmilla. Kun kynnysarvo oli \(1\), uudelleenotanta suoritettiin jokaisella aika-askeleella. Arvoilla \(1/10\) ja \(2/3\) käytettiin adaptiivista uudelleenotantaa. Tulokset on esitetty kuvassa \(\ref{fig:phase1_results}\) sekä taulukoissa \ref{tab:vaihe-1-tulokset} ja \ref{tab:vaihe-1-tulokset-varianssi}. Ajojen tulokset on esitetty karttapolkuina liitteen A alaluvussa \ref{liite-a-vaihe-1}.
+Ensimmäisessä vaiheessa suoritettiin paikannus partikkelien määrällä \(N={100,1000,10000}\) sekä uudelleenotannan kynnysarvolla \(resampling={0,1/10,2/3,1}\). Kun kynnysarvo oli \(0\), uudelleenotantaa ei käytetty, jolloin SIR-algoritmin sijaan paikannus suoritettiin SIS-algoritmilla. Kun kynnysarvo oli \(1\), uudelleenotanta suoritettiin jokaisella aika-askeleella. Arvoilla \(1/10\) ja \(2/3\) käytettiin adaptiivista uudelleenotantaa. Tulokset on esitetty kuvassa \(\ref{fig:phase1_results}\) sekä taulukoissa \ref{tab:vaihe-1-tulokset} ja \ref{tab:vaihe-1-tulokset-varianssi}. Ajojen tulokset on esitetty karttapolkuina liitteen A alaluvussa \ref{vaihe-1}.
 
 \begin{table}
 
@@ -1649,7 +1635,7 @@ Koska MC-varianssi on laskettu itse sijaintiestimaateista ja ALvar-varianssi kai
 
 Ensimmäisen vaiheen tulosten perusteella valitaan seuraavaan vaiheeseen ne \(N\)- ja \emph{resampling}-parametriarvot, jotka tuottavat parhaimman mediaanipaikannusvirheen. Jos kahden eri paikannusvirheen 95\%-luottamusvälit ovat päällekäiset, valitaan arvoista ensin se, joka tuottaa paremman ALvar-varianssin. Näin päädytään parametriyhdistelmään \(N=10000\) ja \emph{resampling} \(=2/3\). Koska algoritmin ajoaika 10000 partikkelilla on kuitenkin epäkäytännöllinen, valitaan \(N=1000\), vaikka tämä lisääkin hieman estimaatin varianssia.
 
-Toisessa vaiheessa \(N=1000\) ja \emph{resampling}=\(2/3\) pidettiin vakioarvoisina ja testattiin karttasovitusalgoritmia \emph{map\_matching} \(={T,F}\), karttasovitusalgoritmin rangaistusarvoa \(P={1,100,1000}\) sekä dynaamisen mallin kohina-arvoa \(q={0.75,1.5,2,2.5}\). Signaalin vahvuuden kynnysarvoa ei käytetty, kuten ei käytetty myöskään prediktiivistä siloitinta. Koska rangaistusarvo \(P\) oli käytössä ainoastaan karttasovitusalgoritmia käytettäessä, tarkasteltiin toisessa vaiheessa \(16\) eri suunnitteluparametrikombinaatiota. Tulokset on esitetty kuvassa \(\ref{fig:phase2_results}\) sekä taulukoissa \ref{tab:vaihe-2-tulokset} ja \ref{tab:vaihe-2-tulokset-varianssi}. Ajojen tulokset on esitetty karttapolkuina liitteen A alaluvussa \ref{liite-a-vaihe-2}.
+Toisessa vaiheessa \(N=1000\) ja \emph{resampling}=\(2/3\) pidettiin vakioarvoisina ja testattiin karttasovitusalgoritmia \emph{map\_matching} \(={T,F}\), karttasovitusalgoritmin rangaistusarvoa \(P={1,100,1000}\) sekä dynaamisen mallin kohina-arvoa \(q={0.75,1.5,2,2.5}\). Signaalin vahvuuden kynnysarvoa ei käytetty, kuten ei käytetty myöskään prediktiivistä siloitinta. Koska rangaistusarvo \(P\) oli käytössä ainoastaan karttasovitusalgoritmia käytettäessä, tarkasteltiin toisessa vaiheessa \(16\) eri suunnitteluparametrikombinaatiota. Tulokset on esitetty kuvassa \(\ref{fig:phase2_results}\) sekä taulukoissa \ref{tab:vaihe-2-tulokset} ja \ref{tab:vaihe-2-tulokset-varianssi}. Ajojen tulokset on esitetty karttapolkuina liitteen A alaluvussa \ref{vaihe-2}.
 
 \begin{table}
 
@@ -1726,7 +1712,7 @@ Vastaavasti liikemallin kohina-arvon \(q\) pienentäminen parantaa paikannusvirh
 
 Huomataan lisäksi, että parhaimman paikannusvirheen tuottava rangaistusarvo \(P=1000\) on tutkitun parametriavaruuden reunalla, joten mahdollisesti isommalla \(P\)-arvolla voitaisiin vielä parantaa paikannusvirhettä. Pienempien \(P\)-arvojen paikannusvirheiden luottamusvälit ovat kuitenkin päällekäisiä arvon \(P=1000\) kanssa, joten paikannusvirheeseen saatu lisähyöty ei todennäköisesti olisi tilastollisesti merkityksellistä. Näiden tulosten perusteella valitaan viimeiseen vaiheeseen siis kiinteät arvot \emph{map\_matching}\(=T\), \(P=1000\) ja \(q=1.5\).
 
-Viimeisessä vaiheessa testattiin datan valinnassa käytettävää signaalin vahvuuden kynnysarvoa \emph{rssi\_threshold} \(={-100,-90,-80}\) sekä prediktiivistä siloitinta \emph{smoothing} \(={T,F}\) eli kuutta eri suunnitteluparametrikombinaatiota. Tulokset on esitetty kuvassa \(\ref{fig:phase3_results}\) sekä taulukoissa \ref{tab:vaihe-3-tulokset} ja \ref{tab:vaihe-3-tulokset-varianssi}. Ajojen tulokset on esitetty karttapolkuina liitteen A alaluvussa \ref{liite-a-vaihe-3}.
+Viimeisessä vaiheessa testattiin datan valinnassa käytettävää signaalin vahvuuden kynnysarvoa \emph{rssi\_threshold} \(={-100,-90,-80}\) sekä prediktiivistä siloitinta \emph{smoothing} \(={T,F}\) eli kuutta eri suunnitteluparametrikombinaatiota. Tulokset on esitetty kuvassa \(\ref{fig:phase3_results}\) sekä taulukoissa \ref{tab:vaihe-3-tulokset} ja \ref{tab:vaihe-3-tulokset-varianssi}. Ajojen tulokset on esitetty karttapolkuina liitteen A alaluvussa \ref{vaihe-3}.
 
 \begin{table}
 
@@ -1838,11 +1824,23 @@ Tutkielmassa on lisäksi esitetty WB-sisätilapaikannusalgoritmi, joka toteuttaa
 
 Liite sisältää tutkielman tulososioon liittyvät karttapolut. Kukin kartta käsittää \(r=30\) ajoa kullakin suunnitteluparametrikombinaatiolla. Karttojen otsikossa on mainittu ainoastaan testatut suunnitteluparametrit, vakioarvoiset parametrit on esitetty luvussa \ref{tulokset}.
 
-\section{Vaihe 1} \label{liite-a-vaihe-1}
+\hypertarget{vaihe-1}{%
+\section*{Vaihe 1}\label{vaihe-1}}
+\addcontentsline{toc}{section}{Vaihe 1}
 
-\section{Vaihe 2} \label{liite-a-vaihe-2}
+\begin{center}\includegraphics{output/figures/unnamed-chunk-1-1} \includegraphics{output/figures/unnamed-chunk-1-2} \includegraphics{output/figures/unnamed-chunk-1-3} \includegraphics{output/figures/unnamed-chunk-1-4} \includegraphics{output/figures/unnamed-chunk-1-5} \includegraphics{output/figures/unnamed-chunk-1-6} \includegraphics{output/figures/unnamed-chunk-1-7} \includegraphics{output/figures/unnamed-chunk-1-8} \includegraphics{output/figures/unnamed-chunk-1-9} \includegraphics{output/figures/unnamed-chunk-1-10} \includegraphics{output/figures/unnamed-chunk-1-11} \includegraphics{output/figures/unnamed-chunk-1-12} \end{center}
 
-\section{Vaihe 3} \label{liite-a-vaihe-3}
+\hypertarget{vaihe-2}{%
+\section*{Vaihe 2}\label{vaihe-2}}
+\addcontentsline{toc}{section}{Vaihe 2}
+
+\begin{center}\includegraphics{output/figures/unnamed-chunk-2-1} \includegraphics{output/figures/unnamed-chunk-2-2} \includegraphics{output/figures/unnamed-chunk-2-3} \includegraphics{output/figures/unnamed-chunk-2-4} \includegraphics{output/figures/unnamed-chunk-2-5} \includegraphics{output/figures/unnamed-chunk-2-6} \includegraphics{output/figures/unnamed-chunk-2-7} \includegraphics{output/figures/unnamed-chunk-2-8} \includegraphics{output/figures/unnamed-chunk-2-9} \includegraphics{output/figures/unnamed-chunk-2-10} \includegraphics{output/figures/unnamed-chunk-2-11} \includegraphics{output/figures/unnamed-chunk-2-12} \includegraphics{output/figures/unnamed-chunk-2-13} \includegraphics{output/figures/unnamed-chunk-2-14} \includegraphics{output/figures/unnamed-chunk-2-15} \includegraphics{output/figures/unnamed-chunk-2-16} \end{center}
+
+\hypertarget{vaihe-3}{%
+\section*{Vaihe 3}\label{vaihe-3}}
+\addcontentsline{toc}{section}{Vaihe 3}
+
+\begin{center}\includegraphics{output/figures/unnamed-chunk-3-1} \includegraphics{output/figures/unnamed-chunk-3-2} \includegraphics{output/figures/unnamed-chunk-3-3} \includegraphics{output/figures/unnamed-chunk-3-4} \includegraphics{output/figures/unnamed-chunk-3-5} \includegraphics{output/figures/unnamed-chunk-3-6} \end{center}
 
   \bibliography{packages.bib,lahteet.bib}
 
