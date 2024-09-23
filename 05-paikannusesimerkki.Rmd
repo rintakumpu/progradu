@@ -1,3 +1,4 @@
+\addtocontents{toc}{\protect\newpage}
 \chapter{Hiukkassuodin ja -siloitin sisätilapaikannuksessa} \label{paikannusesimerkki}
 
 Sisätilapaikannus tarkoittaa nimensä mukaisesti ihmisten tai esineiden automaattista paikantamista sisätiloissa. Koska GPS-järjestelmät toimivat sisätiloissa huonosti tai eivät lainkaan, tarvitaan rakennusympäristöihin muita paikannusratkaisuja. Tässä luvussa käydään läpi sisätilapaikannuksen yleisiä periaatteita sekä joitakin ehdotettuja ratkaisuja. Tämän jälkeen keskitytään Walkbase-ohjelmistoyrityksen sisätilapaikannusteknologian ympärille kehitettyyn hiukkassuodinalgoritmiin, jonka tarkkuutta ja tehokkuutta testataan koeympäristössä.
@@ -66,7 +67,7 @@ Koska *angler*-sovellus laskee suuntimakulman aina antennielementin määrätyst
 
 Jos IMU-dataa hyödynnetään, tuottaa kalibraatioalgoritmi jokaiselle XR-2-laitteelle rotaatiomatriisin $R_l$. Muussa tapauksessa kalibraatioalgoritmi tuottaa jokaiselle laitteelle atsimuuttiakulman kohdistuksen $\eta$. Kalibraatioalgoritmia ei käsitellä tämän tutkielman puitteissa. Paikannusongelman yksinkertaistamiseksi myöskään IMU-yksikön tuottamaa dataa ei sisällytetä kalibraatioon ja jokaisen XR-2-laitteen oletetaan olevan lattiaan nähden vaakatasossa. Atsimuuttikulman kalibraatiokohdistuksesta lisää luvussa \@ref(datan-kuvaus) alla.
 
-\section{Datan kuvaus} \label{datan-kuvaus}
+\section{Datan kuvaus} \label{datan-kuvaus} 
 
 Koeasetelmaa varten AT-2-tagi on asetettu lähettämään IQ-dataotoksia 6hz taajuudella, joka vastaa järjestelmän tuotantokäyttöä. Parempi sijaintitarkkuus saavutettaisiin korkeammalla taajuudella, mutta käytännön sovellutuksissa ei tagien akun kesto salli 6hz korkeampaa lähetystaajuutta.
 
@@ -412,7 +413,7 @@ Alla esitetään luvun 3 SIR-algoritmiin (\ref{sir}) ja yllä esitettyihin algor
 &p_{x_{0_{\text{lat}}}}\sim\mathcal{U}(\min{\phi},\max{\phi}).
 \end{align}
 
-\noindent Koska järjestelmän on tarkoitus toimia ainoastaan paikantimien muodostaman suorakaiteen sisäpuolella, ovat valitut jakaumien päätepisteet riittävät. Kummastakin jakaumasta otetaan $\sqrt{N}$ otosta, jolloin $N$ partikkelia $x^i_0$ saatiin näiden otosten permutaatioina. Suunnitteluparametrien valinnasta kts. alaluku \@ref(parametrien-valinta) alla.
+\noindent Koska järjestelmän on tarkoitus toimia ainoastaan paikantimien muodostaman suorakaiteen sisäpuolella, ovat valitut jakaumien päätepisteet riittävät. Kummastakin jakaumasta otetaan $\sqrt{N}$ otosta, jolloin $N$ partikkelia $x^i_0$ saatiin näiden otosten permutaatioina. Alaluvussa \@ref(uudelleenotantamenetelman-valinta) määritellyn signaali-kohinasuhteen \ref{SNR} voi todeta olevan hyvin matala, sillä koe-esimerkissä dynaaminen malli on pelkkää kohinaa. Tämän perusteella WB-sisätilapaikannusalgoritmi käyttää ehdotusjakaumanaan tilavektorin ehdollista prioria $p(x_k|x_{k-1})$. Hiukkasten määrän $N$ sekä muiden suunnitteluparametrien valinnasta kts. alaluku \@ref(parametrien-valinta) alla.
 
 \afterpage{ 
 \clearpage
