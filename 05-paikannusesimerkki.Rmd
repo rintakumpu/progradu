@@ -481,6 +481,8 @@ Esimerkissä käyteteään hiukkasalgoritmia Bluetooth-paikannussovelluksessa l�
 
 Paikaunnusesimerkissä lähettimenä toimi 6hz taajuudella havaintoja lähettävä AT-2 paikannustagi (kuva \ref{fig:at2}), vastaanottimena testiympäristöön asennetut $n_s=33$ Walkbase XR-2 -vastaanotinta (kuvat \ref{fig:xr2} ja \ref{fig:xr2_installed}). Jokainen vastaanotin sisältää kuusitoista antennia, joiden vastaanottamien lähetinsignaalien perusteella vastaanottimet laskevat signaalin tulokulman suhteessa vastaanottimeen. Havaintoja on datassa yhteensä $n_{obs}=12379$ kappaletta ja ne kattavat $T=432$ sekuntia. Havaintojen aikaleimat on tallennettu sekunnin tuhannesosan tarkkuudella. 
 
+\newpage
+
 \begin{multicols}{2}
 \begin{figure}[H]
 \centering
@@ -514,6 +516,8 @@ Koeympäristön pohjapiirustus on esitetty kuvassa \ref{fig:testipolku}. Piirust
 \end{figure}
 
 \noindent Tagi kiinnitettiin ostoskärryyn 1.2 metrin korkeudelle (kts. kuvat \ref{fig:at2_cart} ja \ref{fig:at2_cart2}) ja testipolku käveltiin mahdollisimman tasaisella nopeudella. Data kerättiin aikaan, jolloin testiympäristön käyttöaste oli alhainen. Tällä minimoitiin radiosignaalien tielle osuvien ihmisten vaikutus signaaleihin. Kerätty tulokulmadata löytyy osoitteesta\newline https://github.com/rintakumpu/progradu/analyysi/data/y.csv. Pohjapiirustus- ja polkudata löytyy osoitteista\newline https://github.com/rintakumpu/progradu/analyysi/data/exclusion_polygons.csv (ekskluusiopolygonit),\newline https://github.com/rintakumpu/progradu/analyysi/data/inclusion_polygons.csv (lattiapolygoni) ja\newline https://github.com/rintakumpu/progradu/analyysi/data/test_path.csv (testipolku). Datassa koordinaatit on valmiiksi interpoloitu metreiksi, jotta testiympäristön sijaintia ei voi paikallistaa koordinaattien perusteella. Interpolointiin käytetty ohjelmakoodi löytyy osoitteesta \newline https://github.com/rintakumpu/progradu/analyysi/R/interpolate_coordinates.R . Osoitteesta\newline https://github.com/rintakumpu/progradu/analyysi/analyysi.Rmd löytyy itse analyysikoodin sisältävä R Markdown -muistikirja.
+
+\newpage
 
 \begin{multicols}{2}
 \begin{figure}[H]

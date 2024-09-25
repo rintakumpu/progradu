@@ -189,7 +189,7 @@ TURUN YLIOPISTO \newline
 Matematiikan ja tilastotieteen laitos\newline
 
 \noindent \textsc{\tekija}: \otsikko \newline
-\tutkielma-tutkielma, X s. \newline
+\tutkielma-tutkielma, 77 s. \newline
 \paaaine \newline
 \aika
 \par\noindent{\rule{\textwidth}{.2mm}} \newline
@@ -222,15 +222,15 @@ Hiukkassuotimet ovat joukko Monte Carlo -algoritmeja, joiden avulla voidaan ratk
 
 Tämän tutkielman tavoitteena on esittää pääpiirteittään hiukkassuotimien sekä näihin läheisesti liittyvien hiukkassiloittimien teoria. Lisäksi tutkielmassa käsitellään joitakin menetelmäperheeseen kuuluvia algoritmeja ja sovelletaan näitä sisätilapaikannuksessa.
 
-Tutkielman ensimmäisessä luvussa kuvataan yleisellä tasolla sekä suodinongelma että sen ratkaisujen historiaa ja esitetään joitakin Monte Carlo -menetelmiin liittyviä yleisiä tuloksia sekä Bayesilainen viitekehys suodinongelmalle. Toisessa luvussa kuvataan kaksi hiukkassuodinalgoritmia, saapasremmisuodin sekä SIR-algoritmi ja perehdytään hiukkassuotimen varianssin estimointiin. Kolmannessa luvussa tarkastellaan siloitteluongelmaa ja esitetään hiukkassiloitinalgoritmeja tämän ongelman ratkaisemiseksi. Neljäs luku keskittyy hiukkassuotimen käyttöön empiirisessä AoA/Bluetooth-teknologiaan perustuvassa sisätilapaikannussovelluksessa. Luvussa käsitellään lisäksi lyhyesti sisätilapaikannuksessa hyödynnettävää karttasovitusalgoritmia.
+Tutkielman ensimmäisessä luvussa kuvataan yleisellä tasolla sekä suodinongelma että sen ratkaisujen historiaa ja esitetään joitakin Monte Carlo -menetelmiin liittyviä yleisiä tuloksia sekä Bayesilainen viitekehys suodinongelmalle. Toisessa luvussa kuvataan kaksi hiukkassuodinalgoritmia, saapasremmisuodin sekä SIR-algoritmi ja perehdytään hiukkassuotimen varianssin estimointiin. Kolmannessa luvussa tarkastellaan siloitteluongelmaa ja esitetään hiukkassiloitinalgoritmeja ongelman ratkaisemiseksi. Neljäs luku keskittyy hiukkassuotimen käyttöön empiirisessä AoA/BLE-teknologiaan perustuvassa sisätilapaikannussovelluksessa. Luvussa käsitellään lisäksi lyhyesti sisätilapaikannuksessa hyödynnettävää karttasovitusalgoritmia.
 
-Hiukkassuodin- ja hiukkassiloitinalgoritmien osalta tutkielman esitykset seuraavat erityisesti Simo Särkän kirjaa \textit{Bayesian Filtering and Smoothing} (2013) \citep{sarkka-2013}, Fredrik Gustafssonin artikkelia ``Particle Filter Theory and Practice with Positioning Applications'' (2010) \citep{gustafsson-2010} sekä Olivier Cappén, Simon J. Godsillin ja Eric Moulines'n artikkelia ``An overview of existing methods and recent advances in sequential Monte Carlo'' (2007) \citep{cappe-2007}. Hiukkassuotimien varianssin estimointi seuraa erityisesti Nick Whiteleyn ja Anthony Leen artikkelia ``Variance estimation in the particle filter'' (2018) \citep{Lee-2018} sekä Randal Doucin ja Jimmy Olssonin artikkelia ``Numerically stable online estimation of variance in particle filters'' (2019) \citep{olsson-2019}.
+Hiukkassuodin- ja hiukkassiloitinalgoritmien osalta tutkielman esitykset seuraavat erityisesti Simo Särkän kirjaa \textit{Bayesian Filtering and Smoothing} (2013) \citep{sarkka-2013}, Fredrik Gustafssonin artikkelia ``Particle Filter Theory and Practice with Positioning Applications'' (2010) \citep{gustafsson-2010} sekä Olivier Cappén, Simon J. Godsillin ja Eric Moulines'n artikkelia ``An overview of existing methods and recent advances in sequential Monte Carlo'' (2007) \citep{cappe-2007}. Hiukkassuotimien varianssin estimointi seuraa Nick Whiteleyn ja Anthony Leen artikkelia ``Variance estimation in the particle filter'' (2018) \citep{Lee-2018} sekä Randal Doucin ja Jimmy Olssonin artikkelia ``Numerically stable online estimation of variance in particle filters'' (2019) \citep{olsson-2019}.
 
 \section{Notaatioista}
 
-Tässä tutkielmassa käytetään seuraavia yleisiä notaatioita. Hiukkassuotimien vektoreita merkitään pienellä kursivoidulla kirjaimella \(x\), \(y\) ja \(w\). Hiukkassuotimen hiukkaset sisältäviä vektoreita merkitään \(x_k^i\), missä alaindeksi viittaa aika-askeleeseen \(k, k=\{1,\ldots,T\}\) ja yläindeksi partikkeliin \(i\), missä \(i=\{1,\ldots,N\}\). Vastaavasti aika-askeleiden \(k, k=\{1,\ldots,T\}\) havainnot sisältäviä vektoreita merkitään \(\{y_1,\ldots,y_k\}\) ja painovektoria \(w_k\).
+Tässä tutkielmassa käytetään seuraavia yleisiä notaatioita. Hiukkassuotimien vektoreita merkitään pienellä kursivoidulla kirjaimella \(x\), \(y\) ja \(w\). Hiukkassuotimen hiukkaset sisältäviä vektoreita merkitään \(x_k^i\), missä alaindeksi viittaa aika-askeleeseen \(k=\{1,\ldots,T\}\) ja yläindeksi partikkeliin \(i\), missä \(i=\{1,\ldots,N\}\). Vastaavasti aika-askeleiden \(k, k=\{1,\ldots,T\}\) havainnot sisältäviä vektoreita merkitään \(\{y_1,\ldots,y_k\}\) ja painovektoreita \(w_k\).
 
-Pienin kursivoiduin kirjaimin viitataan myös funktioihin ja reaaliarvoisiin skalaareihin. Pienet kirjaimet \(f\), \(h\), \(g\), \(p\) ja \(q\) on varattu ensisijaisesti funktioille, \(p\) ja \(q\) erityisesti todennäköisyysfunktioille. Skalaareihin viitataan myös isoilla kursivoiduilla kirjaimilla, esimerkiksi \(T\) ja \(N\). Joukkoihin viitataan myös isoilla kursivoiduilla kirjaimilla, esimerkiksi \(S\). Se, käytetäänkö isoa kursivoitua kirjainta ilmaisemaan skalaaria vai joukkoa ilmenee asiayhteydestä. Matriiseja merkitään isolla lihavoidulla kirjaimella, esimerkiksi \(\mathbf{X}\) ja funktiota merkitään pienellä kursivoidulla kirjaimella \(f(\cdot)\). Prosesseihin viitataan alaindeksoidulla isolla kirjaimella, esimerkiksi \(X_k\). Taulukossa \ref{tab:notaatiot} esitetään tarkemmin tutkielman keskeisimmät merkinnät. Taulukossa \ref{tab:lyhenteet-ja-symbolit} esitetään tutkielmassa käytetyt lyhenteet.
+Pienin kursivoiduin kirjaimin viitataan myös funktioihin ja reaaliarvoisiin skalaareihin. Pienet kirjaimet \(f\), \(h\), \(g\), \(p\) ja \(q\) on varattu ensisijaisesti funktioille, \(p\) ja \(q\) erityisesti todennäköisyysfunktioille. Skalaareihin viitataan myös isoilla kursivoiduilla kirjaimilla, esimerkiksi \(T\) ja \(N\). Joukkoihin viitataan niin ikään isoilla kursivoiduilla kirjaimilla, esimerkiksi \(S\). Se, käytetäänkö isoa kursivoitua kirjainta ilmaisemaan skalaaria vai joukkoa ilmenee asiayhteydestä. Matriiseja merkitään isolla lihavoidulla kirjaimella, esimerkiksi \(\mathbf{X}\). Prosesseihin viitataan alaindeksoidulla isolla kirjaimella, esimerkiksi \(X_k\). Taulukossa \ref{tab:notaatiot} esitetään tarkemmin tutkielman keskeisimmät merkinnät. Taulukossa \ref{tab:lyhenteet-ja-symbolit} esitetään tutkielmassa käytetyt lyhenteet.
 
 \begin{table}
 
@@ -246,38 +246,39 @@ $N$ & Hiukkassuotimen käyttämä partikkelien lukumäärä / otoskoko\\
 $x^i_k$ & \makecell[l]{Hiukkassuotimen hiukkaset sisältävä vektori,\\alaindeksi $k$ määrittää aika-askeleen,\\yläindeksi $i={1,\ldots,N}$ partikkelin}\\
 $y_k$ & Havainnot sisältävä vektori, $k$ määrittää aika-askeleen\\
 \addlinespace
-$w^i_k$ & Hiukkassuotimen painovektori\\
+$w^i_k$ & Hiukkassuotimen painovektori, indeksit kuten hiukkasvektorissa\\
 $p(x), q(x)$ & $x$:n tiheysfunktioita\\
 $\hat{p}(x), \hat{q}(x)$ & $x$: tiheysfunktion estimaatteja\\
 $p(x|y)$ & $x$:n tiheysfunktio ehdolla $y$\\
 $x_{k|k-1}$ & $x_k$:n arvo ehdollistettuna arvoilla aika-askeleeseen $k-1$ asti\\
 \addlinespace
 $\mathbb{E}[x]$ & x:n odotusarvo\\
+$\mathbb{E}[x|y]$ & x:n ehdollinen odotusarvo ehdolla y\\
 $\mathbf{X}$ & Matriisi\\
 $\mathbf{X}^\top$ & Matriisin $\mathbf{X}$ transpoosi\\
 $\delta(x)$ & Diracin deltafunktio\\
-$\text{log}(x)$ & Luonnollinen logaritmifunktio\\
 \addlinespace
+$\text{log}(x)$ & Luonnollinen logaritmifunktio\\
 $\text{Var}(x)$ & Varianssifunktio\\
+$\text{id}(x)$ & Identiteettifunktio\\
+$\text{erf}(x)$ & Virhefunktio\\
 $\mathcal{O}(\cdot)$ & \makecell[l]{Algoritmin asymptoottisen suoritusajan Ordo-notaatio,\\suoritusajan mielessä pahin mahdollinen tapaus}\\
+\addlinespace
 $\mathcal{N}(\mu, \sigma^2)$ & Normaalijakauma, keskiarvoparametri $\mu$, varianssiparametri $\sigma^2$\\
 $\mathcal{U}(a, b)$ & Jatkuva tasajakauma, välin rajaavat parametrit $a$ ja $b$\\
 $X_k$ & Dynaaminen prosessi\\
-\addlinespace
 $\hat{X}_k$ & Dynaamisen prosessin estimaatti\\
 $\int f(x)dx$ & Funktion $f(x)$ Lebesguen integraali yli $\mathbb{R}^n$\\
+\addlinespace
 $\mathbb{P}$ & Todennäköisyysfunktio $\mathcal{A}\rightarrow\mathbb{R}$\\
 $\mathcal{A}$ & $\sigma$-algebra\\
 $\mathbb{R}$ & Reaalilukujen joukko\\
-\addlinespace
 $\mathbb{R}^n$ & n-ulotteinen vektoriavaruus\\
 $\mathcal{B}(X)$ & Borel-mitta, pienin $X$:n avoimet joukot sisältävä $\sigma$-algebra\\
-$\propto$ & Yhtäsuuruus normalisoivaa vakiota lukuunottamatta\\
+\addlinespace
+$\propto$ & Yhtäsuuruus normalisoivaa vakiota huomioimatta\\
 $\emptyset$ & Tyhjä joukko\\
 $\Omega_k$ & Painot aika-askeleella $k$ normalisoiva tekijä\\
-\addlinespace
-$\text{id}(x)$ & Identiteettifunktio\\
-$\text{erf}(x)$ & Virhefunktio\\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -364,9 +365,9 @@ Mallit voidaan esittää myös yleisemmässä jakaumamuodossa
 &\label{malli-4} y_{k} \sim p(y_k|x_k).
 \end{align}
 
-Tutkielman teoriaosassa käytetään ensisijaisesti yhtälöiden (\ref{malli-3}) ja (\ref{malli-4}) muotoilua. Empiirisessä osassa palataan yhtälöiden (\ref{malli-1}) ja (\ref{malli-2}) muotoiluun.
+\noindent Tutkielman teoriaosassa käytetään ensisijaisesti yhtälöiden (\ref{malli-3}) ja (\ref{malli-4}) muotoilua. Empiirisessä osassa palataan yhtälöiden (\ref{malli-1}) ja (\ref{malli-2}) muotoiluun.
 
-Suodinongelmaa lähellä on myös ns. siloitteluongelma (\emph{smoothing problem}), jossa ollaan kiinnostuneita prosessin \(x_k\) posteriorijakaumasta \(p(x_k|y_k)\) jokaisella aika-askeleena \(\{1,\ldots,k\}\) ei ainoastaan tietyllä aika-askeleella \(k\). Hiukkassuodinalgoritmit näyttävät ratkaisevan siloitteluongelman ilmaiseksi, mutta tähän liittyy kuitenkin joidenkin mallien kohdalla mahdollista epätarkkuutta, joten tarvittaessa tasoitusongelma pitää ratkaista erikseen. Tähän ongelmaan palataan tutkielman luvussa 3. Kuva \ref{fig:suodin_vs_siloitin} selittää suodin- ja siloitteluongelmien eron. Kuva mukailee Särkkää (2013) \citep{sarkka-2013}.
+Suodinongelmaa lähellä on myös ns. siloitteluongelma (\emph{smoothing problem}), jossa ollaan kiinnostuneita prosessin \(x_k\) posteriorijakaumasta \(p(x_k|y_k)\) jokaisella aika-askeleella \(\{1,\ldots,k\}\), ei ainoastaan tietyllä aika-askeleella \(k\). Hiukkassuodinalgoritmit näyttävät ratkaisevan siloitteluongelman ilmaiseksi, mutta tähän liittyy kuitenkin joidenkin mallien kohdalla mahdollista epätarkkuutta, joten tarvittaessa tasoitusongelma pitää ratkaista erikseen. Tähän ongelmaan palataan tutkielman luvussa 3. Kuva \ref{fig:suodin_vs_siloitin} selittää suodin- ja siloitteluongelmien eron. Kuva mukailee Särkkää (2013) \citep{sarkka-2013}.
 
 \begin{figure}[H]
 \centering
@@ -395,7 +396,7 @@ Kenties tärkein ja varmasti tunnetuin lineaariseen suodinongelman ratkaisu on K
 
 Kalman-suodinta voidaan soveltaa myös epälineaarisessa tapauksessa, kunhan suodinongelman funktiot \(f(\cdot)\) ja \(h(\cdot)\) ovat derivoituvia ja niihin liittyvä kohina oletetaan normaalijakautuneeksi. Tätä ratkaisua kutsutaan laajennetuksi Kalman-suotimeksi (\emph{extended Kalman filter}, EKF). Suodin kehitettiin 60-luvulla NASA:n Apollo-ohjelman tarpeisiin, vaikkakin itse avaruusalusten laitteistot hyödynsivät lentoratojen laskennassa Kalman-suotimen perusversiota. Laajennetun Kalman-suotimen toimintaperiaate perustuu epälineaaristen funktioiden linearisointiin Taylorin kehitelmän avulla kulloisenkin estimaatin ympärillä. Laajennettu Kalman-suodin on erityisesti paikannussovellusten \textit{de facto} -suodinstandardi, mutta suodin ei kuitenkaan ole epälineaarisen ongelman optimaalinen estimaattori.
 
-Kalman-suotimesta on lisäksi olemassa lukuisia muita epälineaarisiin ongelmiin soveltuvia laajennuksia, muun muassa paikkaratkaisun Kalman-suodin (\emph{position Kalman filter}, PKF), hajustamaton Kalman-suodin (\emph{unscented Kalman filter}, UKF) sekä tilastollisesti linearisoitu Kalman-suodin (\emph{statistically linearized Kalman filter}, SLF). Kuitenkin jos prosessin \(X_t\) mallia ei tunneta tarkasti tai kohinaa ei voida olettaa normaalijakautuneeksi, ovat hiukkassuotimet eli sekventiaaliset Monte Carlo -menetelmät Kalman-suotimen johdannaisia parempia ratkaisuja. Vaikka tila-avaruuden dimensioiden kasvaessa kasvaa myös hiukkassuotimien vaatima laskentateho, ovat hiukkassuotimet aina sitä parempia mitä epälineaarisempia mallit ovat ja mitä kauempana normaalijakaumasta kohina on. Viimeisten vuosikymmenten aikana myös laskennan teho on kasvanut merkittävästi samalla kun laskennan hinta on vastaavasti romahtanut, mikä puoltaa Monte Carlo -menetelmien käyttöä entistä useammissa ongelmissa.
+Kalman-suotimesta on lisäksi olemassa lukuisia muita epälineaarisiin ongelmiin soveltuvia laajennuksia, muun muassa paikkaratkaisun Kalman-suodin (\emph{position Kalman filter}, PKF), hajustamaton Kalman-suodin (\emph{unscented Kalman filter}, UKF) sekä tilastollisesti linearisoitu Kalman-suodin (\emph{statistically linearized Kalman filter}, SLF). Kuitenkin jos prosessin \(X_t\) mallia ei tunneta tarkasti tai kohinaa ei voida olettaa normaalijakautuneeksi, ovat hiukkassuotimet eli sekventiaaliset Monte Carlo -menetelmät Kalman-suotimen johdannaisia parempia ratkaisuja. Vaikka tila-avaruuden dimensioiden kasvaessa kasvaa myös hiukkassuotimien vaatima laskentateho, ovat hiukkassuotimet aina sitä parempia mitä epälineaarisempia mallit ovat ja mitä kauempana normaalijakaumasta kohina on. Viimeisten vuosikymmenten aikana laskennan teho on kasvanut merkittävästi samalla kun laskennan hinta on vastaavasti romahtanut, mikä puoltaa Monte Carlo -menetelmien käyttöä entistä useammissa ongelmissa.
 
 Joitakin suodinongelman rekursiivisia Monte Carlo -ratkaisuja löytyy jo 1950\textendash 70-luvuilta, erityisesti säätöteoriaan piiristä. Olennainen nykyalgoritmeihin periytynyt oivallus varhaisissa suodinalgoritmeissa oli tärkeytysotannan käyttö halutun jakaumaestimaatin laskennassa. Tärkeytysotanta-algoritmiin voidaan turvautua, kun emme pysty suoraan tekemään havaintoja jostakin jakaumasta \(p\) ja teemme sen sijaan havaintoja jakaumasta \(q\), jota painotamme niin, että tuloksena saadaan jakauman \(p\) harhaton estimaatti. Algoritmi on kuvattu tarkemmin tutkielman luvussa \ref{hiukkassuotimet}.
 
@@ -423,7 +424,7 @@ Bayesilaisessa päättelyssä ollaan yleisesti kiinnostuttu laskemaan johonkin p
 \mathbb{E}[g(x)|y_{1:k}]\simeq\frac{1}{N}\sum_{i=1}^N g(x^i).
 \end{align}
 
-Monte Carlo -estimaatti konvergoi keskeisen raja-arvolauseen nojalla ja sen estimointivirheen voidaan osoittaa olevan luokkaa \(\mathcal{O}(\frac{1}{\sqrt{N}})\) riippumatta tilamuuttujan \(x\) dimensiosta. Hiukassuotimet hyödyntävät Monte Carlo -estimointia sekventiaalisesti, jolloin estimaatti lasketaan rekursiivisesti kullekin aika-askeleelle \(k=\{1,\ldots, T\}\). Tähän palataan luvuissa \ref{hiukkassiloittimet} ja \ref{paikannusesimerkki}.
+Monte Carlo -estimaatti konvergoi keskeisen raja-arvolauseen nojalla ja sen estimointivirheen voidaan osoittaa olevan luokkaa \(\mathcal{O}(\frac{1}{\sqrt{N}})\) riippumatta tilamuuttujan \(x\) dimensiosta. Hiukassuotimet hyödyntävät Monte Carlo -estimointia sekventiaalisesti, jolloin estimaatti lasketaan rekursiivisesti kullekin aika-askeleelle \(k=\{1,\ldots, T\}\). Tähän palataan luvuissa \ref{hiukkassuotimet} ja \ref{paikannusesimerkki}.
 
 \subsection{Tärkeytysotanta}
 
@@ -464,7 +465,7 @@ Muodostetaan näin odotusarvo
 
 \section{Bayesilainen suodin} \label{bayesilainen-suodin}
 
-Suodinongelmassa ollaan kiinnostuttu tilavektorin posteriorijakauman \(p(x_k|y_{1:k})\) estimoinnista. Tässä alaluvussa käydään läpi yleinen rekursiivinen, Bayesilainen posteriorijakauman laskenta. Tällaista suodinongelman ratkaisua kutsutaan myös Bayesilaiseksi suotimeksi. Koska epälineaarisessa, ei-normaalijakautuneessa tilanteessa rekursiota ei voida laskea analyyttisesti, pitää estimoinnissa käyttää numeerisia menetelmiä. SMC-menetelmissä tämä tarkoittaa jakauman sekventiaalista Monte Carlo -approksimointia, jonka toteutus esitetään alaluvun \ref{paikannusesimerkki} algoritmissa. Molemmat esitykset noudattavat Gustafssonia (2010) \citep{gustafsson-2010}.
+Suodinongelmassa ollaan kiinnostuttu tilavektorin posteriorijakauman \(p(x_k|y_{1:k})\) estimoinnista. Tässä alaluvussa käydään läpi yleinen rekursiivinen, Bayesilainen posteriorijakauman laskenta. Tällaista suodinongelman ratkaisua kutsutaan myös Bayesilaiseksi suotimeksi. Koska epälineaarisessa, ei-normaalijakautuneessa tilanteessa rekursiota ei voida laskea analyyttisesti, pitää estimoinnissa käyttää numeerisia menetelmiä. Hiukkassuotimissa tämä tarkoittaa jakauman sekventiaalista Monte Carlo -approksimointia, jonka toteutus esitetään alaluvun \ref{paikannusesimerkki} algoritmissa. Molemmat esitykset noudattavat Gustafssonia (2010) \citep{gustafsson-2010}.
 
 Bayesilainen ratkaisu tilavektorin posteriorijakauman estimaatille \(\hat{p}(x_k|y_{1:k})\) saadaan seuraavalla rekursiolla (käydään läpi jokaisella aika-askeleella \(k=\{1,\ldots,T\}\)). Lasketaan ensin
 
@@ -478,7 +479,7 @@ p(x_k|y_{1:k}) = \frac{p(y_k|x_k)p(x_k|y_{1:k-1})}{p(y_k|y_{1:k-1})},
 p(y_k|y_{1:k-1})=\int_{\mathbb{R}^{n_x}}p(y_k|x_k)p(x_k|y_{1:k-1})\mathop{dx_k},
 \end{align}
 
-\noindent joka saadaan kokonaistodennäköisyyskaavasta \(mathbb{P}(A)=\mathbb{E}[\mathbb{P}(A|X)]=\int_{-\infty}^{\infty}\mathbb{P}(A|X=x)f_X(x)\mathop{dx}\). Merkintä \(\mathbb{R}^{n_x}\) vastaa tässä piilossa olevan tilavektorin dimensiota \(n\).
+\noindent joka saadaan kokonaistodennäköisyyskaavasta \(\mathbb{P}(A)=\mathbb{E}[\mathbb{P}(A|X)]=\int_{-\infty}^{\infty}\mathbb{P}(A|X=x)f_X(x)\mathop{dx}\). Merkintä \(\mathbb{R}^{n_x}\) vastaa tässä piilossa olevan tilavektorin dimensiota \(n\).
 
 Lopuksi lasketaan päivitysaskel ajalle, joka saadaan edelleen kokonaistodennäköisyydellä
 
@@ -486,25 +487,25 @@ Lopuksi lasketaan päivitysaskel ajalle, joka saadaan edelleen kokonaistodennäk
 p(x_{k+1}|y_{1:k})=\int_{\mathbb{R}^{n_x}}p(x_{k+1}|x_k)p(x_k|y_{1:k})\mathop{dx_k}.
 \end{align}
 
-\noindent Rekursion avulla voimme laskea jakauman \(p(x_k|y_{1:k})\) estimaatti käymällä rekursion läpi \(k\) kertaa.
+\noindent Rekursion avulla voimme laskea jakauman \(p(x_k|y_{1:k})\) estimaatin käymällä rekursion läpi \(k\) kertaa.
 
 \section{Kalman-suotimen ja hiukkassuotimen yhteydestä ja eroista} \label{kf-yhteydet-erot}
 
-Tässä alaluvussa käsitellään lyhyesti Kalman-suotimen yhteyttä hiukkassuotimeen edellä estitetyn teorian valossa. Esitys noudattaa Särkkää (2013). \citep{sarkka-2013} Merkitään kuten edellä dynaamista mallia \(x_k\) ja havaintomallia \(y_k\) ja oletataan toisin kuin edellä, että nämä ovat lineaarisia ja noudattavat normaalijakaumaa. Koska mallit ovat lineaarisia, voidaan ne nyt kirjoittaa muotoon
+Tässä alaluvussa käsitellään lyhyesti Kalman-suotimen yhteyttä hiukkassuotimeen edellä estitetyn teorian valossa. Esitys noudattaa Särkkää (2013) \citep{sarkka-2013}. Merkitään kuten edellä dynaamista mallia \(x_k\) ja havaintomallia \(y_k\) ja oletataan toisin kuin edellä, että nämä ovat lineaarisia ja noudattavat normaalijakaumaa. Koska mallit ovat lineaarisia, voidaan ne nyt kirjoittaa muotoon
 
 \begin{align}
 &\label{kalman-malli1}x_k=\mathbf{A}_{k-1}x_{k-1}+q_{k-1},\\
 &\label{kalman-malli2}y_k=\mathbf{H}_k x_k + r_k,
 \end{align}
 
-missä \(\mathbf{A}_{k-1}\) on dynaamisen mallin tilasiirtymään kuvaava matriisi ja \(\mathbf{H}_k\) on havaintojen mallimatriisi. Normaalisuusoletuksesta seuraa, että sekä mallin että prosessin kohinavektorit noudattavat normaalijakaumia \(q_{k-1} \sim \mathcal{N}(0, \mathbf{Q}_{k-1})\) ja \(r_k \sim \mathcal{N}(0, \mathbf{R}_k)\), missä \(\mathbf{Q}_{k-1}\) ja \(\mathbf{R}_k\) ovat kovarianssimatrsiiseja. Lisäksi oletetaan, että prosessin priorijakauma on normaali eli \(x_0 \sim \mathbb{N}(m_0, \mathbf{P_0})\). Mallit voidaan nyt kirjoittaa tiheysfunktiomuodossa
+\noindent missä \(\mathbf{A}_{k-1}\) on dynaamisen mallin tilasiirtymään kuvaava matriisi ja \(\mathbf{H}_k\) on havaintojen mallimatriisi. Normaalisuusoletuksesta seuraa, että sekä mallin että prosessin kohinavektorit noudattavat normaalijakaumia \(q_{k-1} \sim \mathcal{N}(0, \mathbf{Q}_{k-1})\) ja \(r_k \sim \mathcal{N}(0, \mathbf{R}_k)\), missä \(\mathbf{Q}_{k-1}\) ja \(\mathbf{R}_k\) ovat kovarianssimatrsiiseja. Lisäksi oletetaan, että prosessin priorijakauma on normaali eli \(x_0 \sim \mathbb{N}(m_0, \mathbf{P_0})\). Mallit voidaan nyt kirjoittaa tiheysfunktiomuodossa
 
 \begin{align}
 &\label{kalman-malli-pdf1}p(x_k|x_{k-1})=\mathcal{N}(x_k|\mathbf{A}_{k-1}x_{k-1},\mathbf{Q}_{k-1}),\\
 &\label{kalman-malli-pdf2}p(y_k|x_k)=\mathcal{N}(y_k|\mathbf{H}_{k}x_{k},\mathbf{R}_{k}),
 \end{align}
 
-joista voidaan edelleen johtaa suodinongelman mallit
+\noindent joista voidaan edelleen johtaa suodinongelman mallit
 
 \begin{align}
 &\label{kalman-malli-suodin1}p(x_k|y_{1:k-1})=\mathcal{N}(x_k|m_k^* ,\mathbf{P}_k^*),\\
@@ -512,7 +513,7 @@ joista voidaan edelleen johtaa suodinongelman mallit
 &\label{kalman-malli-suodin3}p(y_k|y_{1:k-1})=\mathcal{N}(y_k|\mathbf{H}_k m_k^* ,\mathbf{S}_k)
 \end{align}
 
-ja ongelma ratkaista näin algoritmilla \(\ref{kf}\).
+\noindent ja ongelma ratkaista näin algoritmilla \(\ref{kf}\).
 
 \begin{algorithm}[H]
 \label{kf}
@@ -1476,6 +1477,8 @@ Esimerkissä käyteteään hiukkasalgoritmia Bluetooth-paikannussovelluksessa l�
 
 Paikaunnusesimerkissä lähettimenä toimi 6hz taajuudella havaintoja lähettävä AT-2 paikannustagi (kuva \ref{fig:at2}), vastaanottimena testiympäristöön asennetut \(n_s=33\) Walkbase XR-2 -vastaanotinta (kuvat \ref{fig:xr2} ja \ref{fig:xr2_installed}). Jokainen vastaanotin sisältää kuusitoista antennia, joiden vastaanottamien lähetinsignaalien perusteella vastaanottimet laskevat signaalin tulokulman suhteessa vastaanottimeen. Havaintoja on datassa yhteensä \(n_{obs}=12379\) kappaletta ja ne kattavat \(T=432\) sekuntia. Havaintojen aikaleimat on tallennettu sekunnin tuhannesosan tarkkuudella.
 
+\newpage
+
 \begin{multicols}{2}
 \begin{figure}[H]
 \centering
@@ -1509,6 +1512,8 @@ Koeympäristön pohjapiirustus on esitetty kuvassa \ref{fig:testipolku}. Piirust
 \end{figure}
 
 \noindent Tagi kiinnitettiin ostoskärryyn 1.2 metrin korkeudelle (kts. kuvat \ref{fig:at2_cart} ja \ref{fig:at2_cart2}) ja testipolku käveltiin mahdollisimman tasaisella nopeudella. Data kerättiin aikaan, jolloin testiympäristön käyttöaste oli alhainen. Tällä minimoitiin radiosignaalien tielle osuvien ihmisten vaikutus signaaleihin. Kerätty tulokulmadata löytyy osoitteesta\newline \url{https://github.com/rintakumpu/progradu/analyysi/data/y.csv}. Pohjapiirustus- ja polkudata löytyy osoitteista\newline \url{https://github.com/rintakumpu/progradu/analyysi/data/exclusion_polygons.csv} (ekskluusiopolygonit),\newline \url{https://github.com/rintakumpu/progradu/analyysi/data/inclusion_polygons.csv} (lattiapolygoni) ja\newline \url{https://github.com/rintakumpu/progradu/analyysi/data/test_path.csv} (testipolku). Datassa koordinaatit on valmiiksi interpoloitu metreiksi, jotta testiympäristön sijaintia ei voi paikallistaa koordinaattien perusteella. Interpolointiin käytetty ohjelmakoodi löytyy osoitteesta \newline \url{https://github.com/rintakumpu/progradu/analyysi/R/interpolate_coordinates.R} . Osoitteesta\newline \url{https://github.com/rintakumpu/progradu/analyysi/analyysi.Rmd} löytyy itse analyysikoodin sisältävä R Markdown -muistikirja.
+
+\newpage
 
 \begin{multicols}{2}
 \begin{figure}[H]

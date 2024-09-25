@@ -30,3 +30,12 @@ libgeos
 terra
 Matrix
 lme4
+viridisLite
+viridis
+profvis
+matrixStats
+pracma
+MASS
+microbenchmark
+reshape2
+galoRe
