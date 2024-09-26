@@ -519,7 +519,7 @@ Koeympäristön pohjapiirustus on esitetty kuvassa \ref{fig:testipolku}. Piirust
 \label{fig:testipolku}
 \end{figure}
 
-\noindent Tagi kiinnitettiin ostoskärryyn 1.2 metrin korkeudelle (kts. kuvat \ref{fig:at2_cart} ja \ref{fig:at2_cart2}) ja testipolku käveltiin mahdollisimman tasaisella nopeudella. Data kerättiin aikaan, jolloin testiympäristön käyttöaste oli alhainen. Tällä minimoitiin radiosignaalien tielle osuvien ihmisten vaikutus signaaleihin. Kerätty tulokulmadata löytyy osoitteesta\newline https://github.com/rintakumpu/progradu/analyysi/data/y.csv. Pohjapiirustus- ja polkudata löytyy osoitteista\newline https://github.com/rintakumpu/progradu/analyysi/data/exclusion_polygons.csv (ekskluusiopolygonit),\newline https://github.com/rintakumpu/progradu/analyysi/data/inclusion_polygons.csv (lattiapolygoni) ja\newline https://github.com/rintakumpu/progradu/analyysi/data/test_path.csv (testipolku). Datassa koordinaatit on valmiiksi interpoloitu metreiksi, jotta testiympäristön sijaintia ei voi paikallistaa koordinaattien perusteella. Interpolointiin käytetty ohjelmakoodi löytyy osoitteesta \newline https://github.com/rintakumpu/progradu/analyysi/R/interpolate_coordinates.R . Osoitteesta\newline https://github.com/rintakumpu/progradu/analyysi/analyysi.Rmd löytyy itse analyysikoodin sisältävä R Markdown -muistikirja.
+\noindent Dataa kerättäessä AT-2-tagi kiinnitettiin ostoskärryyn 1.2 metrin korkeudelle (kts. kuvat \ref{fig:at2_cart} ja \ref{fig:at2_cart2}) ja testipolku käveltiin mahdollisimman tasaisella nopeudella. Data kerättiin aikaan, jolloin testiympäristön käyttöaste oli alhainen. Tällä minimoitiin radiosignaalien tielle osuvien ihmisten vaikutus signaaleihin. Kerätty tulokulmadata löytyy osoitteesta\newline https://github.com/rintakumpu/progradu/analyysi/data/y.csv. Pohjapiirustus- ja polkudata löytyvät osoitteista\newline https://github.com/rintakumpu/progradu/analyysi/data/exclusion_polygons.csv (ekskluusiopolygonit),\newline https://github.com/rintakumpu/progradu/analyysi/data/inclusion_polygons.csv (lattiapolygoni) ja\newline https://github.com/rintakumpu/progradu/analyysi/data/test_path.csv (testipolku). Datassa koordinaatit on valmiiksi interpoloitu metreiksi, jotta testiympäristön sijaintia ei voi paikallistaa koordinaattien perusteella. Interpolointiin käytetty ohjelmakoodi löytyy osoitteesta \newline https://github.com/rintakumpu/progradu/analyysi/R/interpolate_coordinates.R . Osoitteesta\newline https://github.com/rintakumpu/progradu/analyysi/analyysi.Rmd löytyy itse analyysikoodin sisältävä R Markdown -muistikirja.
 
 \newpage
 
@@ -541,7 +541,7 @@ Koeympäristön pohjapiirustus on esitetty kuvassa \ref{fig:testipolku}. Piirust
 
 \subsection{Parametrien valinta} \label{parametrien-valinta}
 
-Kokeessa oli tarkoituksena testata kunkin taulukossa \ref{tab:wb-parametrit} esitetyn parametrin vaikutusta paikannusvirheeseen, ajoaikaan sekä varianssiin. Koska kaikkien parametrikombinaatioiden testaaminen ei ollut mahdollista (eikä mielekästä), suoritettiin yllä kerättyyn dataan perustuva paikannus kolmessa vaiheessa. Kussakin vaiheessa paikannusalgoritmi ajettiin jokaisella vaiheeseen liittyvällä suunnitteluparametrikombinaatiolla $r=30$ kertaa ja tulokset laskettiin näiden $30$ ajon aritmeettisena keskiarvona.
+Kokeessa oli tarkoituksena testata kunkin taulukossa \ref{tab:wb-parametrit} esitetyn parametrin vaikutusta paikannusvirheeseen, ajoaikaan sekä varianssiin. Koska kaikkien parametrikombinaatioiden testaaminen ei ollut mahdollista (eikä mielekästä), suoritettiin kerättyyn dataan perustuva paikannus kolmessa vaiheessa. Kussakin vaiheessa paikannusalgoritmi ajettiin jokaisella vaiheeseen liittyvällä suunnitteluparametrikombinaatiolla $r=30$ kertaa ja tulokset laskettiin näiden $30$ ajon aritmeettisena keskiarvona.
 
 Ensimmäisessä vaiheessa tarkasteltiin partikkelien määrän $N={100,1000,10000}$ sekä uudelleenotannan kynnysarvon $resampling={0,1/10,2/3,1}$ vaikutusta paikannuskeskivirheeseen. Karttasovitusalgoritmia ei käytetty, kuten ei myöskään prediktiivistä siloitinta eikä signaalin vahvuuden kynnysarvoa. Dynaamisen mallin kohina-arvo $q=2$ pidettiin vakiona. Ensimmäisessä vaiheessa tarkasteltiin siis $12$ eri suunnitteluparametrikombinaatiota.
 
@@ -549,7 +549,7 @@ Toisessa vaiheessa valittiin edellisen vaiheen tulosten perusteella parhaimman p
 
 Viimeisessä vaiheessa valittiin edellisten vaihdeiden tulosten perusteella parhaimman paikannusvirheen suhteessa suoritusaikaan ja varianssiin tuottavat parametrit testattujen joukosta ja testattiin datan valinnassa käytettävää signaalin vahvuuden kynnysarvoa *rssi_threshold* $={-100,-90,-80}$ sekä prediktiivistä siloitinta *smoothing* $={T,F}$ eli kuutta eri suunnitteluparametrikombinaatiota.
 
-Tulosten vertailukohtana käytettiin Pierlot \&al. artikkelissa "A New Three Object Triangulation Algorithm Based on the Power Center of Three Circles" (2011) esittämää ToTal-triangulaatioalgoritmia. [@Pierlot-2011] Triangulaatio-algoritmia ei käsitellä tässä tarkemmin, mutta se on esitetty algoritmissa $\ref{total}$. Algoritmia varten valittiin kunakin aika-askeleella $k$ ne kolme paikanninta ja kulmahavaintoa, joiden RSSI-arvo oli korkein. Käytetty algoritmin toteutus löytyy osoitteesta \newline  https://github.com/rintakumpu/progradu/analyysi/R/total.R.
+Tulosten vertailukohtana käytettiin Pierlot \&al. artikkelissa "A New Three Object Triangulation Algorithm Based on the Power Center of Three Circles" (2011) esittämää ToTal-triangulaatioalgoritmia. [@Pierlot-2011] Triangulaatio-algoritmia ei käsitellä tässä tarkemmin, mutta se on esitetty algoritmissa $\ref{total}$. Algoritmia varten valittiin kunakin aika-askeleella $k$ ne kolme XR-2-laitetta ja kulmahavaintoa, joiden RSSI-arvo oli korkein. Käytetty algoritmin toteutus löytyy osoitteesta \newline  https://github.com/rintakumpu/progradu/analyysi/R/total.R.
 
 Paikannusalgoritmi ajettiin RStudion versiossa 2023.09.0+463 R-ohjelmointikielen versiolla 4.2.0. Tietokoneena käytettiin vuoden 2021 mallia olevaa MacBook Pro -kannettavaa, jossa oli Apple M1 Pro -prosessori sekä 32 gigatavua LPDDR5-muistia. Suoritusnopeuden mittaamiseen käytettiin `Sys.time()`-funktiota.
 
@@ -577,7 +577,7 @@ $x_R=x_2+\frac{k^\prime_{31}(y^\prime_{12}-y^\prime_{23})}{D}\hspace{0.5cm}y_R=y
 
 ### Tulokset
 
-Ensimmäisessä vaiheessa suoritettiin paikannus partikkelien määrällä $N={100,1000,10000}$ sekä uudelleenotannan kynnysarvolla $resampling={0,1/10,2/3,1}$. Kun kynnysarvo oli $0$, uudelleenotantaa ei käytetty, jolloin SIR-algoritmin sijaan paikannus suoritettiin SIS-algoritmilla. Kun kynnysarvo oli $1$, uudelleenotanta suoritettiin jokaisella aika-askeleella. Arvoilla $1/10$ ja $2/3$ käytettiin adaptiivista uudelleenotantaa. Tulokset on esitetty kuvassa $\ref{fig:phase1_results}$ sekä taulukoissa \ref{tab:vaihe-1-tulokset} ja \ref{tab:vaihe-1-tulokset-varianssi}. Ajojen tulokset on esitetty karttapolkuina liitteen A alaluvussa \ref{vaihe-1}.
+Ensimmäisessä vaiheessa suoritettiin paikannus partikkelien määrällä $N={100,1000,10000}$ sekä uudelleenotannan kynnysarvolla $resampling={0,1/10,2/3,1}$. Kun kynnysarvo oli $0$, uudelleenotantaa ei käytetty, jolloin SIR-algoritmin sijaan paikannus suoritettiin SIS-algoritmilla. Kun kynnysarvo oli $1$, uudelleenotanta suoritettiin jokaisella aika-askeleella. Arvoilla $1/10$ ja $2/3$ käytettiin adaptiivista uudelleenotantaa. Tulokset on esitetty kuvassa $\ref{fig:phase1_results}$ sekä taulukoissa \ref{tab:vaihe-1-tulokset} ja \ref{tab:vaihe-1-tulokset-varianssi}. Tulostaulukon sarake $<1m$ kuvaa suurinta persentiiliä, jolla saavutetaan haluttu metrin paikannusvirhe. Ajojen tulokset on esitetty karttapolkuina liitteen A alaluvussa \ref{vaihe-1}.
 
 ```{r vaihe-1-tulokset, tidy=FALSE}
 vaihe1_tulokset <- readr::read_csv("analyysi/data/tulokset_vaihe1_ci.csv", show_col_types = FALSE)
@@ -614,7 +614,7 @@ Ensimmäisen vaiheen tuloksista huomataan, ettei hiukkasten määrällä ole juu
 
 Se, ettei partikkelien määrän kasvattaminen automaattisesti paranna paikannustarkkuuta viittaa siihen, että koeasetelma on herkkä priorijakauman valinnalle. Tuloksista huomataan lisäksi, että algoritmin aikakompleksisuus on uudelleenotannasta riipumatta luokkaa $\mathcal{O}(N)$, kuten tukielman teoriaosassa todettiin. Samoin hiukkasten määrän kasvattaminen pienentää variansseja, kuten teoriaosassa todettiin. MC-varianssia pienentää myös uudelleenotannan käyttäminen.
 
-Koska MC-varianssi on laskettu itse sijaintiestimaateista ja ALvar-varianssi kaikista partikkeleista, on näiden kahden varianssin suuruusluokka eri. Huomataan kuitenkin, että nämä kaksi varianssiestimaattia ovat hyvin korreloituneita, korrelaatiokertoimilla $\rho_\text{Pearson} \approx 0.86$ ja $\rho_\text{Spearman} \approx 0.88$. Voidaan siis olettaa ALvar-varianssin estimoivan hyvin hiukkassuotimen todellista varianssia.
+Koska MC-varianssi on laskettu itse sijaintiestimaateista ja ALvar-varianssi kaikista partikkeleista, on näiden kahden varianssin suuruusluokka eri. Huomataan kuitenkin, että nämä kaksi varianssiestimaattia ovat hyvin korreloituneita, korrelaatiokertoimilla $\rho_\text{Pearson} \approx 0.86$ ja $\rho_\text{Spearman} \approx 0.88$. Voidaan siis olettaa ALvar-varianssin estimoivan hyvin hiukkassuotimen todellista varianssia. Kun uudelleenotanta ei ole käytössä, ei myöskään ALvar-varianssia voida laskea.
 
 Ensimmäisen vaiheen tulosten perusteella valitaan seuraavaan vaiheeseen ne $N$- ja *resampling*-parametriarvot, jotka tuottavat parhaimman mediaanipaikannusvirheen. Jos kahden eri paikannusvirheen 95%-luottamusvälit ovat päällekäiset, valitaan arvoista ensin se, joka tuottaa paremman ALvar-varianssin. Näin päädytään parametriyhdistelmään $N=10000$ ja *resampling* $=2/3$. Koska algoritmin ajoaika 10000 partikkelilla on kuitenkin epäkäytännöllinen, valitaan $N=1000$, vaikka tämä lisääkin hieman estimaatin varianssia.
 
@@ -649,11 +649,11 @@ kableExtra::kbl(
 \label{fig:phase2_results}
 \end{figure}
 
-Toisen vaiheen tuloksista huomataan, että karttasovituksen käyttäminen parantaa paikannusvirhettä. Syy tähän on helppo havaita liitteenä olevista karttapoluista. Paikannus ottaa nyt huomioon sisätilaympäristön, eikä enää luo estimaatteja sijainteihin, joihin tagin on fyysisesti mahdotonta päästä. Samoin rangaistusarvo $P$:n lisääminen parantaa paikannusvirhettä. Tämä on odotettua, sillä isomman rangaistusarvon käyttäminen ei ainoastaan estä fyysisesti mahdottomia sijainteja vaan estää myös fyysisesti mahdottomat siirtymät kahden peräkkäisen sijaintiestimaatin välillä.
+Toisen vaiheen tuloksista huomataan, että karttasovituksen käyttäminen parantaa paikannusvirhettä. Syy tähän on helppo havaita liitteenä olevista karttapoluista. Paikannus ottaa nyt huomioon sisätilaympäristön, eikä enää luo estimaatteja sijainteihin, joihin tagin on fyysisesti mahdotonta päästä. Samoin rangaistusarvo $P$:n lisääminen parantaa paikannusvirhettä. Tämä on odotettua, sillä isomman rangaistusarvon käyttäminen ei ainoastaan estä fyysisesti mahdottomia sijainteja vaan estää myös osan fyysisesti mahdottomista siirtymistä kahden peräkkäisen sijaintiestimaatin välillä.
 
-Vastaavasti liikemallin kohina-arvon $q$ pienentäminen parantaa paikannusvirhettä. Liian pienellä $q$-arvolla algoritmi ei kuitenkaan enää tutki signaaliympäristöä tarpeeksi tehokkaasti ja paikannusvirhe kasvaa, samoin kasvaa estimaattien MC-varianssi. Optimaalinen kohina-arvo on tulosten perusteella $q=1.5$. Tämä vastaa myös hyvin kirjallisuudessa esitettyjä keskimääräisiä kävelynopeuksia (kts. esim. [@Ho-2016]).
+Vastaavasti liikemallin kohina-arvon $q$ pienentäminen parantaa paikannusvirhettä. Liian pienellä $q$-arvolla algoritmi ei kuitenkaan enää tutki signaaliympäristöä tarpeeksi tehokkaasti ja paikannusvirhe kasvaa, samoin kasvaa estimaattien MC-varianssi. Paikannusvirheen mielessä paras kohina-arvo on tulosten perusteella $q=1.5$. Tämä vastaa myös hyvin kirjallisuudessa esitettyjä keskimääräisiä kävelynopeuksia (kts. esim. [@Ho-2016]).
 
-Huomataan lisäksi, että parhaimman paikannusvirheen tuottava rangaistusarvo $P=1000$ on tutkitun parametriavaruuden reunalla, joten mahdollisesti isommalla $P$-arvolla voitaisiin vielä parantaa paikannusvirhettä. Pienempien $P$-arvojen paikannusvirheiden luottamusvälit ovat kuitenkin päällekäisiä arvon $P=1000$ kanssa, joten paikannusvirheeseen saatu lisähyöty ei todennäköisesti olisi tilastollisesti merkityksellistä. Näiden tulosten perusteella valitaan viimeiseen vaiheeseen siis kiinteät arvot *map_matching*$=T$, $P=1000$ ja $q=1.5$.
+Huomataan lisäksi, että parhaimman paikannusvirheen tuottava rangaistusarvo $P=1000$ on tutkitun parametriavaruuden reunalla, joten mahdollisesti isommalla $P$-arvolla voitaisiin vielä parantaa paikannusvirhettä. Pienempien $P$-arvojen paikannusvirheiden luottamusvälit ovat kuitenkin päällekäisiä arvon $P=1000$ kanssa, joten paikannusvirheeseen saatu lisähyöty ei todennäköisesti olisi tilastollisesti merkityksellistä. Näiden tulosten perusteella valitaan viimeiseen vaiheeseen kiinteät arvot *map_matching*$=T$, $P=1000$ ja $q=1.5$.
 
 Viimeisessä vaiheessa testattiin datan valinnassa käytettävää signaalin vahvuuden kynnysarvoa *rssi_threshold* $={-100,-90,-80}$ sekä prediktiivistä siloitinta *smoothing* $={T,F}$ eli kuutta eri suunnitteluparametrikombinaatiota. Tulokset on esitetty kuvassa $\ref{fig:phase3_results}$ sekä taulukoissa \ref{tab:vaihe-3-tulokset} ja \ref{tab:vaihe-3-tulokset-varianssi}. Ajojen tulokset on esitetty karttapolkuina liitteen A alaluvussa \ref{vaihe-3}.
 
@@ -688,7 +688,7 @@ kableExtra::kbl(
 \label{fig:phase3_results}
 \end{figure}
 
-Tuloksista huomataan, ettei siloittelun tai signaalin vahvuuden kynnysarvon käyttäminen paranna paikannusvirhettä. Siloittelun osalta tämä on odotettua, kun liikemallina on käytetty satunnaiskulkua. Liitteenä olevista karttapoluista kuitenkin huomataan, että siloittelu tuottaa odotetusti sileämpiä polkuja, mikä saattaa olla käytännössä haluttu ominaisuus. Taulukossa \ref{tab:tulokset-final} on esitetty vielä tulosten perusteella valitut suunnitteluparametrit.
+Tuloksista huomataan, ettei siloittelun tai signaalin vahvuuden kynnysarvon käyttäminen paranna paikannusvirhettä. Siloittelun osalta tämä on odotettua, koska liikemallina on käytetty satunnaiskulkua. Liitteenä olevista karttapoluista kuitenkin huomataan, että siloittelu tuottaa odotetusti sileämpiä polkuja, mikä saattaa olla käytännössä haluttu ominaisuus. Taulukossa \ref{tab:tulokset-final} on esitetty vielä tulosten perusteella valitut suunnitteluparametrit.
 
 ```{r tulokset-final, tidy=FALSE}
 tulokset_final <- as.data.frame(matrix(ncol=2,nrow=0))
@@ -714,20 +714,20 @@ colnames(tulokset_total) <- c("Mediaani", "Aritmeettinen keskiarvo", "Otoskeskih
 rownames(tulokset_total) <- c("ToTaL")
 tulokset_total[1,] <- c(1.61, 2.35, 4.15, 0.34)
 kableExtra::kbl(
- tulokset_total, caption = 'ToTaL-triangulaatioalgoritmin tuottamia paikannusvirheen tunnuslukuja', format="latex",
+ tulokset_total, caption = 'ToTal-triangulaatioalgoritmin tuottamia paikannusvirheen tunnuslukuja', format="latex",
   booktabs = TRUE, escape = FALSE, digits=2
 )
 ```
 
-Triangulaatioon verrattuna WB-sisätilapaikannusalgoritmi tuottaa siis huomattavasti parempia tuloksia. Tämän voi havaita myös vertaamalla kuvan \ref{fig:total-karttapolku} ToTaL-karttapolkua liitteen A WB-sisätillapaikannusalgoritmin tuottamiin karttapolkuihin.
+Triangulaatioon verrattuna WB-sisätilapaikannusalgoritmi tuottaa huomattavasti parempia tuloksia. Tämän voi havaita myös vertaamalla kuvan \ref{fig:total-karttapolku} ToTal-karttapolkua liitteen A WB-sisätillapaikannusalgoritmin tuottamiin karttapolkuihin.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=15cm]{total-karttapolku}
-\caption{ToTaL-triangulaatioalgoritmin tuottamat sijaintiestimaatit}
+\caption{ToTal-triangulaatioalgoritmin tuottamat sijaintiestimaatit}
 \label{fig:total-karttapolku}
 \end{figure}
 
 Algoritmia ja järjestelmää voitaisiin mahdollisesti edelleen parantaa esimerkiksi hyödyntämällä paremmin tagin kiihtyvyysmittarin tuottamaa dataa informatiivisen liikemallin luomisessa. Tällöin olisi myös mielekkäämpää toteuttaa varianssiestimaattiin perustuva adaptiivisen viipeen suodin osana paikannusalgoritmia. Lisäksi datan valinta voitaisiin suorittaa esimerkiksi niin, että datasta poistettaisiin kullakin aika-askeleella ne kulmahavainnot, jotka poikkeavat kulmahavaintojen suuntakonsensuksesta.
 
-Liitteenä olevia polkuja tarkastelemalla huomataan, että nyt toteutetun algoritmin sijantiestimaatilla on taipumus jäädä osassa testiympäristöä jälkeen itse tagin sijainnista. Tätä ongelmaa voitaisiin mahdollisesti lieventää käyttämällä esimerkiksi Yi Chenging &al artikkelissa "Improved Particle Filter Algorithm for Multi-Target Detection and Tracking" (2024) [@Cheng-2024] esittämää menetelmää, jossa partikkelit jaetaan ns. seurantahiukkasiin sekä etsintähiukkasiin, joista ainoastaan edellisiä käytetään sijaintiestimaatin luomisessa ja jälkimmäisten annetaan liikkua suuremmilla kohina-arvoilla. Näin mahdollistetaan satunnaiskulkumallilla laajempi signaaliavaruuden tutkinta ja nopeampi ongelmatilanteista toipuminen ilman, että sijaintiestimaatit kärsivät liikemalliin lisätystä kohinasta.
+Liitteenä olevia polkuja tarkastelemalla huomataan, että nyt toteutetun algoritmin sijantiestimaatilla on taipumus jäädä osassa testiympäristöä jälkeen itse tagin sijainnista. Tätä ongelmaa voitaisiin mahdollisesti lieventää käyttämällä esimerkiksi Yi Chenging &al. artikkelissa "Improved Particle Filter Algorithm for Multi-Target Detection and Tracking" (2024) [@Cheng-2024] esittämää menetelmää, jossa partikkelit jaetaan ns. seurantahiukkasiin sekä etsintähiukkasiin, joista ainoastaan edellisiä käytetään sijaintiestimaatin luomisessa ja jälkimmäisten annetaan liikkua suuremmilla kohina-arvoilla. Näin mahdollistetaan satunnaiskulkumallilla laajempi signaaliavaruuden tutkinta ja nopeampi ongelmatilanteista toipuminen ilman, että sijaintiestimaatit kärsivät liikemalliin lisätystä kohinasta.

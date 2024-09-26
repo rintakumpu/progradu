@@ -250,7 +250,7 @@ Varianssiestimaatti voidaan laskea näiden, Leen ja Whitleyn Eeva-indekseiksi ni
 \hat{\sigma}^2_{CLE} = \frac{1}{N^2} \left[ (\sum_{i=1}^N \gamma(x_k^i))^2 - (\frac{N}{N-1})^{n+1} ( \sum_{i=1}^N \sum_{j:E_n^j=i} \gamma(x_k^i) \gamma(x_k^j)) \right]
 ,\end{align}
 
-\noindent missä $\gamma: \mathbf{X}_n \rightarrow \mathbb{R}$ on rajoitettu, $\mathcal{X}_n$-mitallinen funktio, SIR-algoritmin kohdalla jakaumaestimaatti $\hat{p}(x_{1:k}|y_{1:k}))$. Kyseessä on harhaton ja konsistentti asymptoottisen varianssin estimaatti. Tarkemmin $N\hat{\sigma}^2_{CLE}$ konvergoi asymptoottiseen varianssiin \ref{asymptoottinen-varianssi}. Tätä ei tutkielman puitteissa todisteta. 
+\noindent missä $\gamma: \mathbf{X}_n \rightarrow \mathbb{R}$ on rajoitettu, mitallinen funktio, SIR-algoritmin kohdalla jakaumaestimaatti $\hat{p}(x_{1:k}|y_{1:k}))$. Kyseessä on harhaton ja konsistentti asymptoottisen varianssin estimaatti. Tarkemmin $N\hat{\sigma}^2_{CLE}$ konvergoi asymptoottiseen varianssiin \ref{asymptoottinen-varianssi}. Tätä ei tutkielman puitteissa todisteta. 
 
 Yllä esitetty varianssiestimaatti kärsii kuitenkin epätarkkuudesta, sillä kun $k \to \infty$, polveutuvat kaikki hiukkaset lopulta samasta kantaisästä eli indeksit $E_k^i,\ldots,E_k^N$ ovat kaikki yhtäsuuria. Tämän vuoksi on mielekästä johtaa indeksit ainoastaan tietystä aiemmasta aika-askeleesta alkaen. Olsson ja Douc (2019) [@olsson-2019] ehdottavat tähän tarkoitukseen Henok-indeksiä $E_{k,m}^n$, jossa $m$ merkitsee aika-askeleen $m<k$ partikkelia, josta kyseinen partikkeli polveutuu. Partikkelien kantaisien sukupolvi määritetään viipeellä $\lambda$ niin, että $m=k-\lambda$. Kaavio \ref{fig:henok-indeksit} havainnollistaa partikkelien polveutumista, kun $\lambda=1$. 
 
