@@ -822,7 +822,7 @@ Mastrototaro ja Olsson (2023) \citep{Mastrototaro-2023} laajentavat tätä estim
 \lambda_{k+1} \leftarrow \operatorname*{arg\,max}_{\lambda \in [0, \lambda_k + 1]} \hat{\sigma}^2_{k+1,\lambda} (\gamma_{k+1})
 .\end{align}
 
-Tämä perustuu havaintoon, jonka mukaan ehtyneille Henok-indekseille on olemassa \(\lambda^\prime \in [0, \lambda-1]\), joka täyttää ehdon \(\hat{\sigma}^2_{k+1,\lambda} (\gamma_{k+1}) < \hat{\sigma}^2_{k+1,\lambda^\prime} (\gamma_{k+1})\), koska myös ehtyneiden indeksien kantaisät ovat ehtyneitä. Nyt indeksi \(\lambda_{n+1}\) voidaan valita rekursiivisesti niin, että se tuottaa suurimman varianssiestimaatin, joka on kuitenkin rajoitettu ylhäältä arvoon \(\lambda_n+1\). Tämä indeksi ei ole koskaan ehtynyt, joten se on myös parhaan varianssiestimaatin tuottava valinta.
+Tämä perustuu havaintoon, jonka mukaan ehtyneille Henok-indekseille on olemassa \(\lambda^\prime \in [0, \lambda-1]\), joka täyttää ehdon \(\hat{\sigma}^2_{k+1,\lambda} (\gamma_{k+1}) < \hat{\sigma}^2_{k+1,\lambda^\prime} (\gamma_{k+1})\), koska myös ehtyneiden indeksien kantaisät ovat ehtyneitä. Nyt indeksi \(\lambda_{k+1}\) voidaan valita rekursiivisesti niin, että se tuottaa suurimman varianssiestimaatin, joka on kuitenkin rajoitettu ylhäältä arvoon \(\lambda_k+1\). Tämä indeksi ei ole koskaan ehtynyt, joten se on myös parhaan varianssiestimaatin tuottava valinta.
 
 Esitettyjä varianssiestimaatteja voidaan hyödyntää paitsi algoritmien ja parametrivalintojen vertailussa myös mukautuvan viipeen hiukkassiloittimen viipeen valinnassa (kts. luku \ref{hiukkassiloittimet}). Varianssiestimaatti lasketaan luvun \ref{paikannusesimerkki} empiirisessä esimerkissä.
 
@@ -992,31 +992,31 @@ Sisätilapaikannus tarkoittaa nimensä mukaisesti ihmisten tai esineiden automaa
 
 \section{Sisätilapaikannuksesta}
 
-Sisätilapaikannus tarkoittaa teknisiä ratkasija sekä menetelmiä, joilla paikannetaan ihmisiä, laitteita tai esineitä sisätiloissa, joissa perinteinen GPS-signaali ei ole riittävä tai saatavilla. Sisätilapaikannuksessa hyödynnetään useita erilaisia teknologioita, kuten radiotaajuuksia, magneettikenttiä, ultraääntä ja optisia menetelmiä. Kattava esitys sisätilapaikannukseen käytettävistä teknologioista löytyy George Ogunatalan \&al.~artikkelista ``Indoor location identification technologies for real-time IoT-based applications: An inclusive survey'' (2018) \citep{oguntala-2018}, johon myös tämä alaluku perustuu.
+Sisätilapaikannus tarkoittaa teknisiä ratkaisuja ja menetelmiä, joilla paikannetaan ihmisiä, laitteita tai esineitä sisätiloissa, joissa perinteinen GPS-signaali ei ole riittävä tai saatavilla. Sisätilapaikannuksessa hyödynnetään useita erilaisia teknologioita, kuten radiotaajuuksia, magneettikenttiä, ultraääntä ja optisia menetelmiä. Kattava esitys sisätilapaikannukseen käytettävistä teknologioista löytyy George Ogunatalan \&al.~artikkelista ``Indoor location identification technologies for real-time IoT-based applications: An inclusive survey'' (2018) \citep{oguntala-2018}, johon myös tämä alaluku perustuu.
 
-Optisessa paikannuksessa hyödynnetään kameroita tai muita optisia/valoon perustuvia sensoreita, kuten esimerkiksi Lidar-valotutkia, halutun kohteen sijainnin määrittämiseen. Magneettikenttiin perustuvat paikannusratkaisut hyödyntävät rakennusten sisäisten metallirakenteiden maapallon magneettikenttään luomian paikallisia muutoksia. Näitä muutoksia voidaan käyttää vertailutietona paikannuksessa, mittaamalla ympäröivän magneettikentän vahvuutta ja vertaamalla sitä ennalta tallennettuihin karttoihin. Ultraäänipohjainen paikannus puolestaan hyödyntää ääniaaltojen kulkuaikaa lähettimen ja vastaanottimien välillä.
+Optisessa paikannuksessa hyödynnetään kameroita tai muita optisia sensoreita, kuten esimerkiksi Lidar-valotutkia, halutun kohteen sijainnin määrittämiseen. Magneettikenttiin perustuvat paikannusratkaisut hyödyntävät rakennusten sisäisten metallirakenteiden maapallon magneettikenttään luomian paikallisia muutoksia. Näitä muutoksia voidaan käyttää vertailutietona paikannuksessa, mittaamalla ympäröivän magneettikentän vahvuutta ja vertaamalla sitä ennalta tallennettuihin karttoihin. Ultraäänipohjainen paikannus puolestaan hyödyntää ääniaaltojen kulkuaikaa lähettimen ja vastaanottimien välillä.
 
-Yleinen teknologiavalinta sisätilapaikannuksessa ovat erilaiset Bluetooth-standardiin tai muuhun radioteknologiaan (kuten esimerkiksi millimetriaaltoihin) perustuvat lähetin-vastaanotinratkaisut. Näistä suurin osa hyödyntää laitteiden välisiä radiosignaaleja laitteiden välisen etäisyyden tai kulman mittaamiseen. Radioteknologiaan perustuvilla järjestelmillä voidaan kotuullisin kustannuksin saavuttaa jopa senttimetritason paikannustarkkuus sovelluksissa. Radioteknologiaan perustuvat järjestelmät ovat myös yksityisyyden näkökulmasta yksinkertaisempia toteuttaa kuin esimerkiksi kameroiden avulla tapahtuvaan paikannukseen perustuvat järjestelmät.
+Yleinen teknologiavalinta sisätilapaikannuksessa ovat erilaiset Bluetooth-standardiin tai muuhun radioteknologiaan (kuten esimerkiksi millimetriaaltoihin) perustuvat ratkaisut. Näistä suurin osa hyödyntää lähettimen ja vastaanottimen/vastaanottimien välisiä radiosignaaleja laitteiden välisen etäisyyden tai kulman mittaamiseen. Radioteknologiaan perustuvilla järjestelmillä voidaan kotuullisin kustannuksin saavuttaa sovellutuksissa jopa senttimetritason paikannustarkkuus. Radioteknologiaan perustuvat järjestelmät ovat myös yksityisyyden näkökulmasta yksinkertaisempia toteuttaa kuin esimerkiksi kameroiden avulla tapahtuvaan paikannukseen perustuvat järjestelmät.
 
 \section{Teknologian kuvaus}
 
 Turkulainen teknologia- ja analytiikkayritys Walkbase käyttää Bluetooth/BLE-sisätilapaikannusta asiakkaiden käyttäytymistä koskevan datan keräämiseen erityisesti ruokakaupoissa sekä tavarataloissa. Tyypillisessä asennusskenaariossa lähettimet (tagit) kiinnitetään liikkeen ostoskärryihin ja paikantimet kiinnitetään liiketilan kattoripustuksiin.
 
-Walkbase on kehittänyt sisätilapaikannukseen oman laitteisto- ja ohjelmistoratkaisunsa, jonka tavoitteena on tarjota kaikissa ympäristöissä alle metrin paikannustarkkuus. Koska tagit kiinnitetään tunnetulle korkeudelle ostoskärryihin, riittää paikannustarkkuutta laskettaessa tarkastella ainoastaan leveys- ja pituusasteita. Kun tagin todellinen sijainti \(P_k=(P_{\text{lon}_k}, P_{\text{lat}_k})\) tiedetään diskreetillä aika-askeleella \(k\), voidaan sijaintiestimaatin \(\hat{x}_k=(\hat{x}_{\text{lon}_k}, \hat{x}_{\text{lat}_k})\) kyseisen aika-askeleen paikannusvirhe \(\epsilon_{\text{pos}_k}\) laskea yksinkertaisesti
+Walkbase on kehittänyt sisätilapaikannukseen oman laitteisto- ja ohjelmistoratkaisunsa, jonka tavoitteena on tarjota kaikissa ympäristöissä alle metrin paikannustarkkuus. Koska tagit kiinnitetään tunnetulle korkeudelle ostoskärryihin, riittää paikannustarkkuutta laskettaessa tarkastella ainoastaan leveys- ja pituusasteita. Kun tagin todellinen sijainti \(P_k=(P_{\text{lon}_k}, P_{\text{lat}_k})\) tiedetään diskreetillä aika-askeleella \(k\), voidaan sijaintiestimaatin \(\hat{x}_k=(\hat{x}_{\text{lon}_k}, \hat{x}_{\text{lat}_k})\) kyseisen aika-askeleen paikannusvirhe \(\epsilon_{\text{pos}_k}\) laskea
 
 \begin{align}\label{paikannusvirhe}
 \epsilon_{\text{pos}_k} = d(P_k,\hat{x}_k) = \sqrt{(P_{\text{lon}_k}-\hat{x}_{\text{lon}_k})^2+(P_{\text{lat}_k}-\hat{x}_{\text{lat}_k})^2}
 ,\end{align}
 
-eli käytetään paikannusvirheenä yksinkertaisesti euklidista etäisyyttä. Kun hyödynnetään myöhemmin alaluvussa \ref{karttaprojektioista} esitettäbää lineaarista interpolaatiota, antaa tämä paikannusvirheen suoraan metreinä. Haluttu, alle metrin paikannustarkkuus saavutetaan, kun missä hyvänsä testiasetelmassa kaikkien asetelmaan liittyvien paikannusvirheiden \(50.\) persentiili on \(\leq1\)m.
+\noindent eli käyttää paikannusvirheenä yksinkertaisesti Euklidista etäisyyttä. Kun hyödynnetään myöhemmin alaluvussa \ref{karttaprojektioista} esitettävää lineaarista interpolaatiota saadaan näin paikannusvirhe suoraan metreinä. Haluttu, alle metrin paikannustarkkuus saavutetaan, kun missä hyvänsä testiasetelmassa kaikkien asetelmaan liittyvien paikannusvirheiden \(50.\) persentiili on \(\leq1\)m.
 
-Walkbasen paikannusratkaisu koostuu kolmesta eri laitteistokomponentista, AT-2-Bluetooth-lähetin-vastaanottomista, jotka kiinnitetään ostoskärryihin, XR-2-Bluetooth-lähetin-vastaanottomista, jotka kiinnitetään tilan kattoripustuksiin sekä OSCU-laskentayksiköstä, joka luo paikkadataa XR-2.1-vastaanotinten perusteella ja lähettää paikkadatan edelleen palvelinkeskukseen.
+Walkbasen paikannusratkaisu koostuu kolmesta eri laitteistokomponentista, AT-2-Bluetooth-lähetin-vastaanottimesta, jotka kiinnitetään ostoskärryihin, XR-2-Bluetooth-lähetin-vastaanottimista, jotka kiinnitetään tilan kattoripustuksiin sekä OSCU-laskentayksiköstä, joka luo paikkadataa XR-2.1-vastaanotinten perusteella ja lähettää paikkadatan edelleen palvelinkeskukseen.
 
 AT-2 on Bluetooth 5.1 (BLE) -strandardin mukainen lähetin-vastaanotin, joka toimii 2.4Ghz taajuusalueella. Walkbasen suunnitteleman laitteen PCB-kehäantenni kykenee lähettämään GFSK-moduloitua dataa 2Mbps nopeudella. Laite saa virtansa yhdestä CR-2477-paristosta.
 
-XR-2.1 on Bluetooth 5.1 (BLE) -strandardin mukainen lähetin-vastaanotin, joka toimii 2.4Ghz taajuusalueella. Walkbasen suunnitteleman laitteenPCB-kehäantenni kykenee lähettämään GFSK-moduloitua dataa 2Mbps nopeudella. Laite saa virtansa ethernet-lähiverkosta 802.3af-standardin mukaisesti. Laitteen vaatima laskenta tapahtuu Raspberry Pi Compute Module 4 -piirilevytietokoneella. Lisäksi laite sisältää inertiamittausyksikön, jota voidaan käyttää asennetun laitteen kallistumis- ja nyökkäämiskulman (\emph{roll} ja \emph{pitch}) arviomiseen.
+XR-2.1 on Bluetooth 5.1 (BLE) -strandardin mukainen lähetin-vastaanotin, joka toimii 2.4Ghz taajuusalueella. Walkbasen suunnitteleman laitteen PCB-kehäantenni kykenee lähettämään GFSK-moduloitua dataa 2Mbps nopeudella. Laite saa virtansa ethernet-lähiverkosta 802.3af-standardin mukaisesti. Laitteen vaatima laskenta tapahtuu Raspberry Pi Compute Module 4 -piirilevytietokoneella. Lisäksi laite sisältää inertiamittausyksikön, jota voidaan käyttää asennetun laitteen kallistumis- ja nyökkäämiskulman (\emph{roll} ja \emph{pitch}) arviomiseen.
 
-OSCU-laskentayksikkönä käytetään Ubuntu-käyttöjärjestelmällä toimivaa paikannusjärjestelmää varten rakennettua tietokonetta. Koska OSCU-laskentayksikön laskentateho on rajallista, on paikannusalgoritmin aikakompleksisuus yksi käytettävän algoritmin ydinkriteereistä.
+OSCU-laskentayksikkönä käytetään Ubuntu-käyttöjärjestelmällä toimivaa, paikannusjärjestelmää varten rakennettua tietokonetta. Koska OSCU-laskentayksikön laskentateho on rajallista, on paikannusalgoritmin aikakompleksisuus yksi käytettävän algoritmin ydinkriteereistä.
 
 Tarvittavasta laskennasta vastaava ohjelmistojärjestelmä koostuu neljästä ohjelmistokomponentista. C-ohjelmointikielellä toteutettu \emph{angler} laskee AT-2-tagin lähettämän I/Q-datan perusteella signaalien tulokulman, Go-ohjelmointikielellä toteutettu \emph{moonraker} lähettää tulokulmadatan paikallisverkon yli OSCU-laskentayksikölle, jossa Go-ohjelmointikielellä toteutettu \emph{launchpad} luo siitä sijaintidataa, jonka se lähettää edelleen palvelinkeskuksen taustajärjestelmään.
 
@@ -1029,7 +1029,7 @@ Palvelinkeskuksen taustajärjestelmässä Go-ohjelmointikielellä toteutettu \em
 \label{fig:jarjestelmaarkkitehtuuri}
 \end{figure}
 
-Tässä luvussa keskitytään \emph{launchpad}-sovelluksen hyödyntämään paikannusalgoritmiin, mutta sitä ennen käsitellään lyhyesti tulokulman laskentamenetelmiä sekä \emph{angler}-sovelluksen toimintaa. Immateriaalinoikeussyistä tutkielmassa ei hyödynnetä Go-ohjelmointikielellä toteutettua ohjelmakoodia. Sen sijaan paikannusalgoritmi on toteutettu R-ohjelmointikielellä.
+Tässä luvussa keskitytään \emph{launchpad}-sovelluksen hyödyntämään paikannusalgoritmiin, mutta sitä ennen käsitellään lyhyesti tulokulman laskentamenetelmiä ja \emph{angler}-sovelluksen toimintaa. Immateriaalioikeussyistä tutkielmassa ei hyödynnetä Go-ohjelmointikielellä toteutettua ohjelmakoodia. Sen sijaan paikannusalgoritmi on toteutettu R-ohjelmointikielellä.
 
 \subsection{AoA-menetelmistä} \label{aoa}
 
@@ -1046,11 +1046,11 @@ Walkbasen toteuttama paikannusratkaisu perustuu AoA-menetelmään. Tämä on pai
 
 Walkbase hyödyntää radiosignaalien tulokulman estimoinnissa MUSIC-algoritmia (\emph{Multiple Signal Classification}), joka arvioi tulokulmia analysoimalla signaalien autokorrelaatiomatriisia ja etsimällä sen ominaisvektoreita. Esitys MUSIC-algoritmista löytyy esimerkiksi Monson H. Hayesin kirjasta \emph{Statistical Digital Signal Processing and Modeling} (1996) \citep{Hayes-1996}. Marco Guniam \&al (2023) \citep{Gunia-2023} puolestaan esittävät artikkelissa ``Analysis and Design of a MuSiC-Based Angle of Arrival Positioning System'' tapoja optimoida MUSIC-algoritmia soveltumaan monimutkaisiin, heijastuksia sisältäviin sisätilaympäristöihin.
 
-\emph{Angler}-sovellus hyödyntää MUSIC-algoritmin ohella omaa hiukkassuodinalgoritmiaan signaalispektrin analysointiin sekä tulokulmien estimointiin. MUSIC-algoritmia tai \emph{angler}-sovelluksen hiukkassuodinalgoritmia ei käsitellä tarkemmin tämän tutkielman puitteissa.
+\emph{Angler}-sovellus hyödyntää MUSIC-algoritmin toteutuksessa omaa hiukkassuodinalgoritmiaan signaalispektrin analysointiin sekä tulokulmien estimointiin. MUSIC-algoritmia tai \emph{angler}-sovelluksen hiukkassuodinalgoritmia ei käsitellä tarkemmin tämän tutkielman puitteissa.
 
 \subsection{Kalibraatiosta}
 
-Koska \emph{angler}-sovellus laskee suuntimakulman aina antennielementin määrätystä reunasta nähden, on tärkeää, että laitteen asemointi karttapohjoiseen nähden on tiedossa. Koska laitteen tarkan kulman arvioiminen asennusympäristössä on haastavaa eikä laite sisällä kompassia, sovelletaan kunkin laitteen kalibraatioon omaa SIR-algoritmiaan, jonka on mahdollista huomioon myös laitteen IMU-intertiamittausyksiköstä saatavat kallistumis- ja nyökkäämiskulmat.
+Koska \emph{angler}-sovellus laskee suuntimakulman aina antennielementin määrätystä reunasta nähden, on tärkeää, että laitteen asemointi karttapohjoiseen nähden on tiedossa. Koska laitteen tarkan kulman arvioiminen asennusympäristössä on haastavaa eikä laite sisällä kompassia, sovelletaan kunkin laitteen kalibraatioon omaa SIR-algoritmiaan, jonka on mahdollista ottaa huomioon myös laitteen IMU-intertiamittausyksiköstä saatavat kallistumis- ja nyökkäämiskulmat.
 
 Jos IMU-dataa hyödynnetään, tuottaa kalibraatioalgoritmi jokaiselle XR-2-laitteelle rotaatiomatriisin \(R_l\). Muussa tapauksessa kalibraatioalgoritmi tuottaa jokaiselle laitteelle atsimuuttiakulman kohdistuksen \(\eta\). Kalibraatioalgoritmia ei käsitellä tämän tutkielman puitteissa. Paikannusongelman yksinkertaistamiseksi myöskään IMU-yksikön tuottamaa dataa ei sisällytetä kalibraatioon ja jokaisen XR-2-laitteen oletetaan olevan lattiaan nähden vaakatasossa. Atsimuuttikulman kalibraatiokohdistuksesta lisää luvussa \ref{datan-kuvaus} alla.
 
@@ -1065,7 +1065,7 @@ Koeasetelmaa varten AT-2-tagi on asetettu lähettämään IQ-dataotoksia 6hz taa
 &\gamma_{s} \sim \mathcal{N}_{\text{katkaistu}} (\mu_{\gamma_s}, \sigma^2_s).
 \end{align}
 
-Nämä on kuvattu tarkemmin alaluvussa \ref{uskottavuusmallit}. Jokaisen XR-2-laitteen \emph{angler}-sovellus lisää dataan myös sekvenssinumeron, jonka perusteella samasta AT-2-tagin lähettämästä IQ-dataoksesta lasketut usean eri vastaanottimen laskemat tulokulmat voidaan yhdistää samaan IQ-dataotokseen. XR-2-laitteen lähettämä tulokulmadata on kuvattu alla.
+Jakaumat on kuvattu tarkemmin alaluvussa \ref{uskottavuusmallit}. Jokaisen XR-2-laitteen \emph{angler}-sovellus lisää dataan myös sekvenssinumeron, jonka perusteella samasta AT-2-tagin lähettämästä IQ-dataoksesta lasketut usean eri vastaanottimen laskemat tulokulmat voidaan yhdistää samaan IQ-dataotokseen. XR-2-laitteen lähettämä tulokulmadata on kuvattu alla.
 
 \def\arraystretch{1.25} 
 \begin{table}[H]
@@ -1125,7 +1125,7 @@ Atsimuuttikulma \(\theta\) lasketaan aina vastaanottimen tietyltä sivulta, jote
 \Phi=(\theta + \eta \times \frac{\pi}{180^\degree}) \mod 2 \pi.
 \end{align}
 
-Suuntimakulma \(\Phi\) kertoo vastaanottimen ja lähettimen välisen kulman. Lisäksi saatavilla on PostGIS-muotoon tallennettua polygonidataa, joka vastaa koeympäristön pohjapiirrustusta sekä koeympäristössä esiintyviä liikkumisen estäviä kohteita, kuten hyllyjä tai pöytiä. Näitä hyödynnetään karttasovitusalgoritmissa (kts. alaluku \ref{karttasovitusalgoritmi}).
+Lisäksi saatavilla on PostGIS-muotoon tallennettua polygonidataa, joka kuvaa koeympäristön pohjapiirrustusta sekä koeympäristössä esiintyviä liikkumisen estäviä kohteita, kuten hyllyjä tai pöytiä. Näitä hyödynnetään alaluvun \ref{karttasovitusalgoritmi} karttasovitusalgoritmissa.
 
 Havaintomuuttujien ohella koetilanteesta on tallennettu testipolku, jota pitkin AT-2-tagia liikutetaan koetilanteessa. Testipolkudata pitää sisällään karttaan piirretyn janan pääte- ja sisäpisteet. Tallennettu sijainti perustuu koeympäristön lattiaan pohjapiirrustusten sekä laser-mittausten avulla tehtyihin merkintöihin. Näin saadut testimuuttujat on kuvattu taulukossa (\ref{tab:testimuuttujat}).
 
@@ -1144,7 +1144,7 @@ path\_lon & polkupisteen sijainti (pituuspiiri) & 22.29493 \\
 \label{tab:testimuuttujat}
 \end{table}
 
-\noindent Edelleen alaluvussa \ref{karttasovitusalgoritmi} kuvatulla interpolaatiolla metreiksi muutettuja testimuuttujia käytetään paikannusalgoritmien paikannusvirheen laskemisessa. Koska koeasetelmassa (kts. alaluku \ref{koeasetelma}) ei laitteen sijaintia tallenneta mittauksia tehtäessä, laskennetaan paikannusvirhe janojen päätepisteiden joukosta tiivistämällä joukkoa algoritmilla \ref{testipolun-tihennys}.
+\noindent Edelleen alaluvussa \ref{karttasovitusalgoritmi} kuvatulla interpolaatiolla metreiksi muutettuja testimuuttujia käytetään paikannusalgoritmien paikannusvirheen laskemisessa. Koska koeasetelmassa (kts. alaluku \ref{koeasetelma}) ei laitteen sijaintia tallenneta dataa kerättäessä, käytetään paikannusvirhettä laskettaessa janojen päätepisteiden joukosta tiivistettyä joukkoa. Paikannusvirheen laskenta on kuvattu algoritmissa \ref{testipolun-tihennys}.
 
 \begin{algorithm}[H]
 \label{testipolun-tihennys}
@@ -1164,23 +1164,23 @@ path\_lon & polkupisteen sijainti (pituuspiiri) & 22.29493 \\
 \caption{Paikannusvirheen laskeminen}
 \end{algorithm}
 
-Algoritmiin palataan alaluvun \ref{empiirinen-esimerkki} empiirisessä esimerkissä.
+\noindent Algoritmiin palataan alaluvun \ref{empiirinen-esimerkki} empiirisessä esimerkissä.
 
 \subsection{Karttaprojektioista} \label{karttaprojektioista}
 
-Kaikki yllä esitetyssä datassa esiintyvät sijaintikoordinaatit on tallennettu tietokantaan WGS 84 -tasokoordinaattijärjestelmässä. Hiukkassuotimiin perustuvaa paikannusalgoritmia sovellettaessa on kuitenkin monin paikoin tarve syöttää parametereja metrijärjestelmässä. Tästä syystä leveys- ja pituusasteisiin perustuvat koordinaatit muunnetaan laskentaa varten metreiksi ja metreinä esitetyt sijaintitulokset muutetaan tulosten esittämistä varten takaisin WGS 84 -koordinaattijärjestelmään.
+Kaikki yllä esitetyssä datassa esiintyvät sijaintikoordinaatit on tallennettu tietokantaan WGS 84 -tasokoordinaattijärjestelmässä. Hiukkassuotimiin perustuvaa paikannusalgoritmia sovellettaessa on kuitenkin monin paikoin tarve syöttää parametreja metrijärjestelmässä. Tästä syystä leveys- ja pituusasteisiin perustuvat koordinaatit muunnetaan laskentaa varten metreiksi ja metreinä esitetyt sijaintitulokset muutetaan tulosten esittämistä varten takaisin WGS 84 -koordinaattijärjestelmään.
 
-Muunnos tapahtuu lineaarisella interpolaatiolla. Määritellään ensin kerrospolygonin rajausalue. Koska kaikki käytetyt koordinaatit ovat tämän rajausalueen sisällä, voidaan tätä rajausaluetta käyttää metrikonversiossa. Rajausalue koostuu neljästä kulmapisteestä. Poimitaan näistä pisteistä minimit ja maksimit sekä pituus- että leveyskoordinaateille. Näin saadaan neljä arvoa \(B_{\text{lonlat}}=\{\text{lon}_{\text{min}}, \text{lon}_{\text{max}}, \text{lat}_{\text{min}}, \text{lat}_{\text{max}}\}\). Määritellään rajausalueen sivujen pituus metreinä geodeettisen etäisyyden avulla, jolloin saadaan kaksi metreissä laskettua etäisyyttä \(D_{\text{m}}=\{d_{\text{lon}}, d_{\text{lat}}\}\) . Käytetään näitä kulmapisteitä sekä metreinä laskettuja etäisyyksiä interpoloimaan koordinaatit WGS 84 -koordinaattijärjestelmästä metreissä esitetyille arvoalueille \([0, \text{max}(x_m)]\) ja \([0, \text{max}(y_m)]\) seuraavasti:
+Muunnos tapahtuu lineaarisella interpolaatiolla. Määritellään ensin kerrospolygonin rajausalue. Koska kaikki käytetyt koordinaatit ovat tämän rajausalueen sisällä, voidaan tätä rajausaluetta käyttää metrikonversiossa. Rajausalue koostuu neljästä kulmapisteestä. Poimitaan näistä pisteistä minimit ja maksimit sekä pituus- että leveyskoordinaateille. Näin saadaan neljä arvoa \(B_{\text{lonlat}}=\{\text{lon}_{\text{min}}, \text{lon}_{\text{max}}, \text{lat}_{\text{min}}, \text{lat}_{\text{max}}\}\). Määritellään rajausalueen sivujen pituus metreinä geodeettisen etäisyyden avulla, jolloin saadaan kaksi metreissä laskettua etäisyyttä \(D_{\text{m}}=\{d_{\text{lon}}, d_{\text{lat}}\}\). Käytetään näitä kulmapisteitä sekä metreinä laskettuja etäisyyksiä interpoloimaan koordinaatit WGS 84 -koordinaattijärjestelmästä metreissä esitetyille arvoalueille \([0, \text{max}(x_m)]\) ja \([0, \text{max}(y_m)]\) seuraavasti:
 
 \begin{align}\label{wgs84-m}
-x_m = f(x_{\text{lon}}; B_{\text{lonlat}}, D_m) = \frac{x_{\text{lon}} -\text{lon}_{\text{min}}}{\text{lon}_{\text{max}}-\text{lon}_{\text{min}}} \times d_{\text{lon}}   \\
+x_m = f(x_{\text{lon}}; B_{\text{lonlat}}, D_m) = \frac{x_{\text{lon}} -\text{lon}_{\text{min}}}{\text{lon}_{\text{max}}-\text{lon}_{\text{min}}} \times d_{\text{lon}},\\
 y_m = f(y_{\text{lat}}; B_{\text{lonlat}}, D_m) = \frac{y_{\text{lat}} -\text{lat}_{\text{min}}}{\text{lat}_{\text{max}}-\text{lat}_{\text{min}}} \times d_{\text{lat}}
 ,\end{align}
 
-missä \(x_m\) vastaa leveyskoordinaatteja metreissä ja \(y_m\) pituuskoordinaatteja metreissä. Vastaavasti käännös takaisin WGS 84 -koordinaattijärjestelmään tapahtuu seuraavasti:
+\noindent missä \(x_m\) vastaa leveyskoordinaatteja metreissä ja \(y_m\) pituuskoordinaatteja metreissä. Vastaavasti käännös takaisin WGS 84 -koordinaattijärjestelmään tapahtuu seuraavasti:
 
 \begin{align}\label{m-wgs84}
-x_{\text{lon}} = f(x_m; B_{\text{lonlat}}, D_m) = \frac{x_{\text{m}}}{d_{\text{lon}}} \times (\text{lon}_{\text{max}}-\text{lon}_{\text{min}}) + \text{lon}_{\text{min}} \\
+x_{\text{lon}} = f(x_m; B_{\text{lonlat}}, D_m) = \frac{x_{\text{m}}}{d_{\text{lon}}} \times (\text{lon}_{\text{max}}-\text{lon}_{\text{min}}) + \text{lon}_{\text{min}},\\
 y_{\text{lat}} = f(y_m; B_{\text{lonlat}}, D_m) = \frac{y_{\text{m}}}{d_{\text{lat}}} \times (\text{lat}_{\text{max}}-\text{lat}_{\text{min}}) + \text{lat}_{\text{min}}
 .\end{align}
 
@@ -1233,7 +1233,7 @@ x_{k+1}=f(x_k, \nu_k)=x_k+D_k \begin{bmatrix} \cos\psi_k \\ \sin\psi_k \end{bmat
 
 \noindent missä \(D_k\) on AT-2-tagin sekunnin aika-askeleen \(k \rightarrow k+1\) aikana kulkema matka ja \(\psi_k\) AT-2-tagin liikkeen suuntimakulma kyseisellä aika-askeleella. \(\nu_k\) on kohinaa, joka syntyy mittausvirheestä ja jolle voidaan olettaa \(\sim \mathcal{N}(\mu_x,\,\sigma_x^{2})\). Jos laite on paikallaan, yksinkertaistuu malli muotoon \(x_{k+1}=f(x_k)=\text{id}(x_k)=x_k\), missä \(\text{id}(x)\) on identiteettifunktio.
 
-Vastaavasti \(y_{k_{i,j}}=\{y_{k_{1,1}},\ldots,y_{k_{n_s,hz}}\}\) kuvaa AT-2-tagin ja XR-2-laitteiden välillä yhden sekuntin aika-askeleen aikana laskettuja kulmahavaintoja, missä \(i=1,\ldots,n_s\) käy läpi \(n_s\) XR-2-laitetta ja \(j=1,\ldots,hz\) kustakin laitteesta vastaanotetut kulmahavainnot. \(hz\) ilmaisee tässä AT-2-tagin lähetystaajuutta, joka koeasetelmassa on \(hz=6\). Näin ollen jokainen havainto koostuu (maksimissaan) \(6\times n_s\) kulmahavaintoja.
+Vastaavasti \(y_{k_{i,j}}=\{y_{k_{1,1}},\ldots,y_{k_{n_s,hz}}\}\) kuvaa AT-2-tagin ja XR-2-laitteiden välillä yhden sekuntin aika-askeleen aikana laskettuja kulmahavaintoja, missä \(i=1,\ldots,n_s\) käy läpi kaikki \(n_s\) XR-2-laitetta ja \(j=1,\ldots,hz\) kustakin laitteesta vastaanotetut kulmahavainnot. \(hz\) ilmaisee tässä AT-2-tagin lähetystaajuutta, joka koeasetelmassa on \(hz=6\). Näin ollen jokainen havainto koostuu (maksimissaan) \(6\times n_s\) kappaletta kulmahavaintoja.
 
 \noindent Lisäksi tunnetaan XR-2-laitteisiin \(\{s^1,\ldots,s^{n_s}\}\) liittyvät pituus- ja leveyskoordinaatit \((\lambda, \phi)\), jotka on muutettu alaluvussa \ref{karttaprojektioista} esitetyllä interpolaatiolla metreiksi.
 
@@ -1244,7 +1244,7 @@ u=\begin{bmatrix} \lambda^1 & \phi^1 \\  \lambda^1 & \phi^1 \\  \vdots & \vdots 
 \noindent missä jokainen koordinaattipari on toistettu \(hz\) kertaa. Määritellään nyt havaintomalli
 
 \begin{align}\label{havaintomalli}
-y_{k_{i,j}}=h(x_k, u)+e_k=\text{atan2}(\begin{bmatrix}\phi^1-x_k^y\\ \phi^1-x_k^y\\ \vdots \\ \phi^{n_s}-x_k^y\end{bmatrix}, \begin{bmatrix}\lambda^1-x_k^x\\ \lambda^1-x_k^x\\ \vdots \\ \lambda^{n_s}-x_k^x\end{bmatrix})+e_k,
+y_{k_{i,j}}=h(x_k, u)+e_k=\text{atan2} \left( \begin{bmatrix}\phi^1-x_k^y\\ \phi^1-x_k^y\\ \vdots \\ \phi^{n_s}-x_k^y\end{bmatrix}, \begin{bmatrix}\lambda^1-x_k^x\\ \lambda^1-x_k^x\\ \vdots \\ \lambda^{n_s}-x_k^x\end{bmatrix} \right) +e_k,
 \end{align}
 
 \noindent missä
@@ -1255,36 +1255,36 @@ y_{k_{i,j}}=h(x_k, u)+e_k=\text{atan2}(\begin{bmatrix}\phi^1-x_k^y\\ \phi^1-x_k^
 
 \noindent ja kohina noudattaa moniulotteista normaalijakaumaa \(e_k\sim\mathcal{N}(0,{\Sigma})\).
 
-Määrittelemätön \(\text{atan2}\)-tapaus, jossa \(x=0\) ja \(y=0\) on käytetyllä mittaustarkkuudella käytännössä mahdoton. Jos tapaus halutaan välttää, voidaan nolla-arvot tarpeen vaatiessa korvata joillakin hyvin lähellä nollaa olevalla arvolla.
+Määrittelemätön \(\text{atan2}\)-tapaus, jossa \(x=0\) ja \(y=0\) on käytetyllä mittaustarkkuudella käytännössä mahdoton. Jos tapaus halutaan kuitenkin välttää, voidaan nolla-arvot tarpeen vaatiessa korvata joillakin hyvin lähellä nollaa olevalla arvolla.
 
 Kumpikaan funktiosta \(h(\cdot)\) ja \(f(\cdot)\) ei ole lineaarinen, joten SIR-algoritmi on sopiva valinta ongelman ratkaisemiseksi. Koetuloksia arvioidaan ensisijaisesti paikannusvirheen avulla. Paikannusvirhe \(\epsilon_{\text{pos}_k}\) lasketaan jokaisen aika-askeleen \(k\) posteriorijakaumaestimaatista \(\hat{p}_k\) painotettuna keskiarvona
 
 \begin{align}
-\epsilon_{\text{pos}} = d(P, \sum_{i=1}^Nw^k_ix^i_k),
+\epsilon_{\text{pos}} = d\left( P, \sum_{i=1}^Nw^k_ix^i_k \right),
 \end{align}
 
-\noindent missä \(w_i^k\) on ajanketken \(k\) partikkelien normalisoitu paino ja \(d(x^i_k,y_k)\) partikkelien ja testilaitteen todellisen sijainnin \(P\) välisen etäisyyden laskeva algoritmi \ref{testipolun-tihennys}.
+\noindent missä \(w_i^k\) on ajanketken \(k\) partikkelien normalisoitu paino ja \(d(x^i_k,y_k)\) partikkelien ja testilaitteen todellisen sijainnin \(P\) välisen etäisyyden algoritmilla \ref{testipolun-tihennys} laskeva funktio.
 
 \hypertarget{uskottavuusmallit}{%
 \subsection{Uskottavuusmallit}\label{uskottavuusmallit}}
 
 Jokainen yhtä tulokulmaa vastaava \emph{angler}-sovelluksen tuottama havaintodatarivi pitää sisällään neljä parametrimuuttujaa, \texttt{azimuth\_location\_mdf}, \texttt{azimuth\_scale}, \texttt{elevation\_location} ja \texttt{elevation\_scale}. Koska \emph{angler}-sovellus on kirjoitettu varta vasten tuottamaan dataa hiukkassuodinpaikannusalgoritmia varten, ovat nämä suoraan hiukkassuotimen uskottavuusmallin parametreja.
 
-\emph{Angler}-sovelluksessa XR-2-laitteen ja AT-2-tagin välinen atsimuuttikulma simuloidaan von Mises -jakaumasta, jolloin muuttujat \texttt{azimuth\_location\_mdf} ja \texttt{azimuth\_scale} vastaavat tämän jakauman sijainti- ja skaalaparametreja \(\mu\) ja \(\kappa\) ja näistä edellistä voidaan pitää itse atsimuuttikulman estimaattina. Määritellään siis jokaiselle tulokulmalle \(h\) sekä XR-2-laitteelle \(l\) seuraava atsimuuttikulman uskottavuusmalli:
+\emph{Angler}-sovelluksessa XR-2-laitteen ja AT-2-tagin välinen atsimuuttikulma simuloidaan von Mises -jakaumasta, jolloin muuttujat \texttt{azimuth\_location\_mdf} ja \texttt{azimuth\_scale} vastaavat tämän jakauman sijainti- ja skaalaparametreja \(\mu\) ja \(\kappa\). Näistä edellistä voidaan pitää itse atsimuuttikulman estimaattina. Määritellään siis jokaiselle tulokulmalle \(h\) sekä XR-2-laitteelle \(l\) seuraava atsimuuttikulman uskottavuusmalli:
 
 \begin{align}\label{atsimuutti-uskottavuusmalli}
 L_{\theta_{h,l}}(y_{h,l}|x_{h,l}; \mu_{h,l}, \kappa_{h,l})=\frac{e^{\kappa_{h,l} \text{cos}(x_{h,l}-\mu_{h,l})}}{2 \pi I_0(\kappa_{h,l})},
 \end{align}
 
-missä \(I_0\) on 0:s ensimmäisen lajin Bessel-funktio ja \(x_{h,l}\) on jokaisen hiukkasen \(n=1,\ldots,N\) sekä XR-2-laitteen \(l\) välinen suuntimakulma.
+\noindent missä \(I_0\) on 0:s ensimmäisen lajin Bessel-funktio ja \(x_{h,l}\) on jokaisen hiukkasen \(n=1,\ldots,N\) sekä XR-2-laitteen \(l\) välinen suuntimakulma.
 
-Vastaavasti \emph{angler}-sovelluksessa XR-2-laitteen ja AT-2-tagin välinen korkeuskulma simuloidaan katkaistusta normaalijakaumasta, jolle \(a=0\) ja \(b=2 \pi\). Nyt muuttujat \texttt{elevation\_location} ja \texttt{elevation\_scale} vastaavat tämän jakauman sijainti- ja skaalaparametreja \(\mu\) ja \(\sigma^2\) ja näistä edellistä voidaan pitää itse korkeuskulman estimaattina. Määritellään jokaiselle tulokulmalle \(h\) sekä XR-2-laitteelle \(l\) seuraava korkeuskulman uskottavuusmalli:
+Vastaavasti \emph{angler}-sovelluksessa XR-2-laitteen ja AT-2-tagin välinen korkeuskulma simuloidaan katkaistusta normaalijakaumasta, jolle \(a=0\) ja \(b=\pi/2\). Nyt muuttujat \texttt{elevation\_location} ja \texttt{elevation\_scale} vastaavat tämän jakauman sijainti- ja skaalaparametreja \(\mu\) ja \(\sigma^2\) ja näistä edellistä voidaan pitää itse korkeuskulman estimaattina. Määritellään jokaiselle tulokulmalle \(h\) sekä XR-2-laitteelle \(l\) seuraava korkeuskulman uskottavuusmalli:
 
 \begin{align}\label{korkeus-uskottavuusmalli}
-L_{\gamma_{h,l}}(y_{h,l}|x_{h,l}; \mu_{h,l}, \sigma^2_{h,l}, a=0, b=2 \pi)=\frac{1}{\sqrt{2 \pi}} \text{exp}(-\frac{(x_{h,l}-\mu_{h,l})}{2 \sigma^2}) / \sqrt{\sigma^2}Z_{h,l},
+L_{\gamma_{h,l}}(y_{h,l}|x_{h,l}; \mu_{h,l}, \sigma^2_{h,l}, a=0, b=\pi/2)=\frac{1}{\sqrt{2 \pi}} \text{exp}\left(-\frac{(x_{h,l}-\mu_{h,l})}{2 \sigma^2}\right) / \sqrt{\sigma^2}Z_{h,l},
 \end{align}
 
-missä \(Z_{h,l}=\frac{1}{2}(1+\text{erf}(\frac{b-\mu_{h,l}}{\sqrt{\sigma^2}}))-\frac{1}{2}(1+\text{erf}(\frac{a-\mu_{h,l}}{\sqrt{\sigma^2}}))\) ja \(x_{h,l}\) on jokaisen hiukkasen \(n=1,\ldots,N\) sekä XR-2-laitteen \(l\) välinen korkeuskulma.
+\noindent missä \(Z_{h,l}=\frac{1}{2}(1+\text{erf}(\frac{b-\mu_{h,l}}{\sqrt{\sigma^2}}))-\frac{1}{2}(1+\text{erf}(\frac{a-\mu_{h,l}}{\sqrt{\sigma^2}}))\) ja \(x_{h,l}\) on jokaisen hiukkasen \(n=1,\ldots,N\) sekä XR-2-laitteen \(l\) välinen korkeuskulma.
 
 Uskottavuusmallit \ref{atsimuutti-uskottavuusmalli} ja \ref{korkeus-uskottavuusmalli} kertomalla saadaan yhdistetty uskottavuusmalli hiukkassuotimen aika-askeleelle \(k\) sekä XR-2-laitteelle \(l\)
 
@@ -1310,13 +1310,13 @@ Yksinkertaisin tapa valita käytettävät kulmat on asettaa alaraja signaalin va
 \hypertarget{dynaaminen-malli}{%
 \subsection{Dynaaminen malli}\label{dynaaminen-malli}}
 
-Dynaamisen mallin tehtävänä on liikuttaa hiukkasia aika-askeleiden \(k\) ja \(k+1\) välillä. Dynaaminen malli perustuu vektorisuunnistusmalliin \ref{tilamalli-liikkuva}. Vastaavaa mallia hyödyntää muun muassa Solin (2016) \citep{Solin-2016}. Koska AT-2-tagi ei kuitenkaan lähetä nopeus- tai suuntadataa, vektorisuunnistusmallin nopeutta ilmaiseva skalaarimuuttuja \(D_k=0\), jolloin malli yksinkertaistuu satunnaiskävelymalliksi
+Dynaamisen mallin tehtävänä on liikuttaa hiukkasia aika-askeleiden \(k\) ja \(k+1\) välillä. Dynaaminen malli perustuu vektorisuunnistusmalliin \ref{tilamalli-liikkuva}. Vastaavaa mallia hyödyntää muun muassa Solin (2016) \citep{Solin-2016}. Koska AT-2-tagi ei kuitenkaan lähetä nopeus- tai suuntadataa, asetetaan vektorisuunnistusmallin nopeutta ilmaiseva skalaarimuuttuja \(D_k=0\), jolloin malli yksinkertaistuu satunnaiskävelymalliksi
 
 \begin{align}\label{dynaaminen-malli-empiirinen}
 x_{k+1}=x_k + v_k,
 \end{align}
 
-missä \(v_k\) on kohinaa. Kohina luodaan jokaiselle aika-askeleelle seuraavasti. Ensin luodaan etäisyysvektori \(d_k\) katkaistusta normaalijakaumasta, jonka sijaintiparametri on 0, katkaisukohdat \(a=0\) ja \(b=10\) ja jonka keskihajonta \(q\) on paikannusalgoritmin suunnitteluparametri:
+\noindent missä \(v_k\) on kohinaa. Kohina luodaan jokaiselle aika-askeleelle seuraavasti. Ensin luodaan etäisyysvektori \(d_k\) katkaistusta normaalijakaumasta, jonka sijaintiparametri on 0, katkaisukohdat \(a=0\) ja \(b=10\) ja jonka keskihajonta \(q\) on paikannusalgoritmin suunnitteluparametri:
 
 \begin{align}
 &d_k \sim \mathcal{N_{\text{katkaistu}}}(\mu=0, \sigma=q, a=0, b=10).
@@ -1328,26 +1328,26 @@ Tämän jälkeen luodaan suuntavektori \(p\) tasajakaumasta
 &p_k\sim\mathcal{U}(0, 2 \pi)
 \end{align}
 
-ja lopulta kohinavektori
+\noindent ja lopulta kohinavektori
 
 \begin{align}
 &v_k = (\text{cos}(p_k) \times d_k, \text{sin}(p_k) \times d_k),
 \end{align}
 
-missä vektorin ensimmäinen elementti vastaa sijaintien leveysasteiden kohinaa ja toinen elementti pituusasteiden kohinaa.
+\noindent missä vektorin ensimmäinen elementti vastaa sijaintien leveysasteiden kohinaa ja toinen elementti pituusasteiden kohinaa.
 
 \hypertarget{paikallaanolon-havaitseminen}{%
 \subsubsection{Paikallaanolon havaitseminen}\label{paikallaanolon-havaitseminen}}
 
-Virransäästyösyistä AT-2-tagi lähettää dataa ainoastaan liikkuessaan. Jos laite ei ole 10 sekunnin aikana havainnut IMU-yksikkönsä perusteella kiihtyvyyttä, lopettaa laite datan lähettämisen. Laite on tällöin valmiusmoodissa. Tätä tietoa voidaan hyödyntää poistamalla dynaamisesta mallista kohina, kun laitteen tiedetään olevan paikallaan. Jos paikannusalgoritmiin lisätään tarvittava 10 sekunnin viive, voidaan tätä viivettä hyödyntää paikallaolon tehokkaampaan havaitsemiseen.
+Virransäästyösyistä AT-2-tagi lähettää dataa ainoastaan liikkuessaan. Jos laite ei ole 10 sekunnin aikana havainnut IMU-yksikkönsä perusteella kiihtyvyyttä, lopettaa laite datan lähettämisen. Laite on tällöin valmiusmoodissa. Tätä tietoa voidaan hyödyntää poistamalla dynaamisesta mallista kohina, kun laitteen tiedetään olevan paikallaan. Jos paikannusalgoritmiin lisätään tarvittava 10 sekunnin viive, voidaan tätä viivettä hyödyntää paikallaanolon tehokkaampaan havaitsemiseen.
 
-Jos yksikään XR-2-laite ei ole havainnut tagia aika-askeleen aikana, voimme olettaa laitteen olevan valmiusmoodissa ja siten myös paikoillaan. Huomattavaa on kuitenkin, että päinvastainen ei päde. Paikoillaan oleva laite ei välttämättä ole valmisumoodissa, sillä valmiusmoodiin siirtyminen kestää 10 sekuntia. Tähän oletukseen perustuen voidaan havaita paikallaolon ja vaimentaa dynaamista mallia algoritmin \ref{paikallaanoloalgo} avulla. Algoritmi ajetaan jokaisella aika-askeleella \(k\) ennen hiukkasten siirtoa dynaamisen mallin avulla.
+Jos yksikään XR-2-laite ei ole havainnut tagia aika-askeleen \(k\) aikana, voimme olettaa laitteen olevan valmiusmoodissa ja siten myös paikoillaan. Huomattavaa on kuitenkin, ettei päinvastainen päde. Paikoillaan oleva laite ei välttämättä ole valmisumoodissa, sillä valmiusmoodiin siirtyminen kestää 10 sekuntia. Tähän oletukseen perustuen voidaan havaita paikallaanolo ja vaimentaa dynaamista mallia algoritmin \ref{paikallaanoloalgo} avulla. Algoritmi ajetaan jokaisella aika-askeleella \(k\) ennen hiukkasten siirtoa dynaamisen mallin avulla.
 
 \begin{algorithm}[H]
 \label{paikallaanoloalgo}
 \DontPrintSemicolon
 \SetAlgoShortEnd
-\KwResult{Positiivinen kokonaislukumuuttuja $m$, joka osoittaa kuinka moneksi aikahetkeksi dynaamista mallia tulee vaimentaa. Jos $m=0$ mallia ei vaimenneta.;}
+\KwResult{Positiivinen kokonaislukumuuttuja $m$, joka osoittaa kuinka moneksi aika-askeleeksi dynaamista mallia tulee vaimentaa. Jos $m=0$ mallia ei vaimenneta.;}
 \KwData{Tagin tulokulmadata $L+1$ aika-askeleelle (nykyinen aika-askel + $L$ aika-askelta tulevaisuuteen). $L$ tulee asettaa niin, että paikallaan oleva tagi ehtii valmiustilaan. Jos saatavilla, edellinen muuttujan $m$ arvo. Algoritmin ensimmäisellä ajokerralla asetetaan $m=0$;}
 \Begin{
   \Begin{Jos $m>0$, asetetaan $m=f(m)=m-1$ ja pysäytetään algoritmi. Jos $m=0$ jatketaan algoritmin suorittamista.;}
@@ -1363,50 +1363,53 @@ Jos yksikään XR-2-laite ei ole havainnut tagia aika-askeleen aikana, voimme ol
 
 Yllä esitetty algoritmi etsii ensin ensimmäisen aika-askeleen, jonka aikana ei ole tallennettu lainkaan kulmahavaintoja ja asettaa muuttujan \(m\) arvon vastaamaan tätä aika-askelta. Jos algoritmi löytää useita peräkkäisiä aika-askeleita, joiden aikana ei ole tallennettu lainkaan kulmahavaintoija, valitsee se näistä suurimman. Koska koeasetelmassa AT-2-laitteen valmiustila aktivoituu 10 sekunnin kohdalla, valitaan \(L=10\).
 
-Jos paikallaanolon havaitsemisalgoritmin nojalla dynaamista mallia päädytään vaimentamaan (so. \(m>0\)), asetetaan dynaamisen mallin keskihajonta-arvo \(q_{\text{vaimennettu}}=\frac{q}{10}\). Dynaamista mallia ei siis täysin poisteta käytöstä, jotta paikannusalgoritmi pystyy tehokkaammin hyödyntämään myös vaimennettujen aika-askeleiden dataa ja sijaintiestimaatti konvergoi mahdollisimman lähelle todellista sijaintia, johon tagi on pysähtynyt.
+Jos paikallaanolon havaitsemisalgoritmin nojalla dynaamista mallia päädytään vaimentamaan (so. \(m>0\)), asetetaan dynaamisen mallin keskihajonta-arvo \(q_{\text{vaimennettu}}=\frac{q}{10}\). Dynaamista mallia ei siis täysin poisteta käytöstä, jotta paikannusalgoritmi pystyy tehokkaammin hyödyntämään myös vaimennettujen aika-askeleiden dataa. Näin sijaintiestimaatti konvergoi mahdollisimman lähelle todellista sijaintia, johon tagi on pysähtynyt.
 
 \hypertarget{karttasovitusalgoritmi}{%
 \subsubsection{Karttasovitusalgoritmi}\label{karttasovitusalgoritmi}}
 
-Dynaamista mallia sovellettaessa, voimme myös höydyntää saatavilla olevaa sisätilan karttadataa. Määritellään kaksi polygonityyppiä, lattiapolygoni \(F\) sekä estepolygonit \(E=\{E_1,\ldots,E_n\}\). Lattiapolygonit määrittävät alueen, jonka sisällä hiukkassuodinalgoritmien hiukkasten pitää pysyä. Lattiapolygoneja on vain yksi. Vastaavasti estepolygonien joukko määrittää lattiapolygonien sisällä alueet, joiden sisälle hiukkassuodinalgoritmin hiukkaset eivät voi siirtyä ja joiden läpi tagi ei voi kulkea. Käytännössä estepolygonit kuvaavat tilan seiniä sekä tiedossa olevia esteitä, kuten hyllyjä ja pöytiä.
+Dynaamista mallia sovellettaessa voimme myös höydyntää saatavilla olevaa sisätilan karttadataa. Määritellään kaksi polygonityyppiä, lattiapolygoni \(F\) sekä estepolygonit \(E=\{E_1,\ldots,E_n\}\). Lattiapolygonit määrittävät alueen, jonka sisällä hiukkassuodinalgoritmien hiukkasten pitää pysyä. Lattiapolygoneja on vain yksi. Vastaavasti estepolygonien joukko määrittää lattiapolygonien sisällä alueet, joiden sisälle hiukkassuodinalgoritmin hiukkaset eivät voi siirtyä ja joiden läpi tagi ei voi kulkea. Käytännössä estepolygonit kuvaavat tilan seiniä sekä tiedossa olevia esteitä, kuten hyllyjä ja pöytiä.
 
-Tarkastellaan siis ensin jokaisen \(i=1,\ldots,N\) hiukkasen kohdalla, siirtääkö dynaaminen malli hiukkasen polygonin \(F\) ulkopuolelle tai jonkin polygoneista \(E\) sisäpuolelle ja asetetaan näitä hiukkasia vastaava paino nollaan.
+Tarkastellaan ensin jokaisen \(i=1,\ldots,N\) hiukkasen kohdalla, siirtääkö dynaaminen malli hiukkasen polygonin \(F\) ulkopuolelle tai jonkin polygoneista \(E\) sisäpuolelle ja asetetaan näitä hiukkasia vastaava paino nollaan.
 
 \begin{align}\label{inclusion-polygon}
 \displaystyle w^i_{k+1}={\begin{cases}w^i_{k+1}&\text{jos } x^i_{k+1} \in F,\\
-0& \text{jos } x^i_{k+1} \notin F \lor x^i_{k+1} \in E \end{cases}}, \end{align}
+0& \text{jos } x^i_{k+1} \notin F \lor x^i_{k+1} \in E \end{cases}}\end{align}
 
-\noindent jonka jälkeen tarkastellaan jokaisen jäljellä olevan (\(w^i_{k+1} \neq 0\)) mallin siirtämän hiukkasen polkua \(x_{k+1}^i-x_{k}^i\). Jos tämä polku ylittää yhden tai useamman estepolygonin \(E\) asetetaan kyseiselle hiukkaselle rangaistus seuraavasti:
+Tämän jälkeen tarkastellaan jokaisen jäljellä olevan (\(w^i_{k+1} \neq 0\)) mallin siirtämän hiukkasen polkua \(x_{k+1}^i-x_{k}^i\). Jos tämä polku ylittää yhden tai useamman estepolygonin \(E\) asetetaan kyseiselle hiukkaselle rangaistus seuraavasti:
 
 \begin{align}\label{exclusion-polygon}
 \displaystyle w^i_{k+1}={\begin{cases} \frac{1}{P} \times w^i_{k+1}&\text{jos } x^i_{k+1} \text{ ylittää estepolygonin},\\
-w^i_{k+1}& \text{muulloin }\end{cases}},\end{align}
+w^i_{k+1}& \text{muulloin }\end{cases}}\end{align}
 
-\noindent jossa rangaistus \(P\) on algoritmin suunnitteluparametri. Vastaavaa toteutusta ovat hyödyntäneet muun muassa Davidson \&al (2010) \citep{Davidson-2010}, jotka ehdottavat rangaistusarvoa \(P=\frac{1}{1000}\). Rangaistuksen valintaan palataan parametrien valinnan yhteydessä alaluvussa \ref{parametrien-valinta}.
+Tässä rangaistus \(P\) on algoritmin suunnitteluparametri. Vastaavaa toteutusta ovat hyödyntäneet muun muassa Davidson \&al (2010) \citep{Davidson-2010}, jotka ehdottavat rangaistusarvoa \(P=\frac{1}{1000}\). Rangaistuksen valintaan palataan parametrien valinnan yhteydessä alaluvussa \ref{parametrien-valinta}.
 
-Koska erityisesti \ref{inclusion-polygon} asettaa hiukkasten painoja nollaan, eivät karttasovitetut hiukkaset välttämättä enää estimoi suodinjakaumaa tehokkaasti. Bojja \&al \citep{Bojja-2015} ehdottavat suoritettavaksi uudelleenotantaa karttasovituksen jälkeen. Uudellenotanta suoritetaan seuraavasti. Merkitään nollapainoisten hiukkasten lukumäärää \(N_0\). Nyt otetaan uudet \(N_0\) otosta palauttaen joukosta \(\{x_{1:k}^i\}_{i=1}^N\), missä otoksen \(i\) todennäköisyys on \(w^i_{k|k}\). Korvataan nollapainoiset hiukkaset näin saadulla otoksella.
+Koska erityisesti \ref{inclusion-polygon} asettaa hiukkasten painoja nollaan, eivät karttasovitetut hiukkaset välttämättä enää estimoi suodinjakaumaa tehokkaasti. Bojja \&al. \citep{Bojja-2015} ehdottavat suoritettavaksi uudelleenotantaa karttasovituksen jälkeen. Uudellenotanta suoritetaan seuraavasti. Merkitään nollapainoisten hiukkasten lukumäärää \(N_0\). Nyt otetaan uudet \(N_0\) otosta palauttaen joukosta \(\{x_{1:k}^i\}_{i=1}^N\), missä otoksen \(i\) todennäköisyys on \(w^i_{k|k}\). Korvataan nollapainoiset hiukkaset näin saadulla otoksella.
 
-\hypertarget{siloittelumalli}{%
-\subsection{Siloittelumalli}\label{siloittelumalli}}
+\subsection{Siloittelumalli} \label{siloittelumalli}
 
-Koska haluttu sisätilapaikannusalgoritmi on online-algoritmi ja käytössä olevat laskennalliset resurssit ovat rajallisia, käytetään siloitteluun algoritmissa \ref{prediktiivinen-siloitin} esitettyä prediktiivistä siloitinta. Alaluvussa \ref{empiirinen-esimerkki} esitettävässä empiirisessä esimerkissä on tästä huolimatta kaikki data on algoritmin saatavilla, ei viivettä tarvitse lisätä algoritmiin. Siloittelu saavutetaan yksinkertaisesti päivittämällä aika-askeleella \(k < T\) painot seuraavan lauseen mukaan
+Koska haluttu sisätilapaikannusalgoritmi on online-algoritmi ja käytössä olevat laskennalliset resurssit ovat rajallisia, käytetään siloitteluun algoritmissa \ref{prediktiivinen-siloitin} esitettyä prediktiivistä siloitinta. Alaluvussa \ref{empiirinen-esimerkki} esitettävässä empiirisessä esimerkissä on tästä huolimatta kaikki data algoritmin saatavilla, joten viivettä ei tarvitse lisätä itse algoritmiin. Siloittelu saavutetaan yksinkertaisesti päivittämällä aika-askeleella \(k < T\) painot seuraavan lauseen mukaan
 
 \begin{align}
 &w_k = w_k^i \bar{w}^i_{k+1}, \hspace{0.5cm} \text{missä } \bar{w}^i_{k+1} = \frac{\sum_{j=1}^{N}w_{k}^j p(x_{k+1}^i|x_k^j)}{q(x_{k+1}^i|x_k^i,y_{k+1})}
 \end{align}
 
-Partikkelien siirtämiseen käytetty satunnaiskulkumalli ei ole myöskään siloittelualgoritmien kannalta optimaalinen, joten empiirisessä esimerkissä alla hyödynnetään koetarkoituksessa vain tätä yksinkertaista siloittelumallia.
+Partikkelien siirtämiseen käytetty satunnaiskulkumalli ei ole siloittelualgoritmien kannalta optimaalinen, joten empiirisessä esimerkissä alla hyödynnetään koetarkoituksessa vain tätä yksinkertaista siloittelumallia.
+
+\subsection{Algoritmin sisäänajo} \label{sisaanajo}
+
+b=3
 
 \subsection{WB-sisätilapaikannusalgoritmi}
 
-Alla esitetään luvun 3 SIR-algoritmiin (\ref{sir}) ja yllä esitettyihin algoritmeihin perustuva sisätilapaikannusalgoritmi kokonaisuudessaan. Algoritmin priorijakaumana \(p_{x_0}\) käytetään kahta toisistaan riippumatonta otosta tasajakaumista, joista toinen vastaa leveys- ja toinen pituusasteita. Jakaumien alkupisteet valitaan niin, että ne vastasivat pienimpiä paikantimien leveys- ja pituusasteista. Vastaavasti päätepisteet valitaan niin, että ne vastasivat suurimpia paikantimien leveys- ja pituusasteita.
+Alla esitetään luvun 3 SIR-algoritmiin (\ref{sir}) sekä tässä luvussa esitettyihin algoritmeihin perustuva WB-sisätilapaikannusalgoritmi kokonaisuudessaan. Algoritmin priorijakaumana \(p_{x_0}\) käytetään kahta toisistaan riippumatonta otosta tasajakaumista, joista toinen vastaa leveys- ja toinen pituusasteita. Jakaumien alkupisteet valitaan niin, että ne vastaavat pienimpiä paikantimien leveys- ja pituusasteista. Vastaavasti päätepisteet valitaan niin, että ne vastaavat suurimpia paikantimien leveys- ja pituusasteita.
 
 \begin{align} \label{priorijakauma}
 &p_{x_{0_{\text{lon}}}}\sim\mathcal{U}(\min{\lambda},\max{\lambda}),\\
 &p_{x_{0_{\text{lat}}}}\sim\mathcal{U}(\min{\phi},\max{\phi}).
 \end{align}
 
-\noindent Koska järjestelmän on tarkoitus toimia ainoastaan paikantimien muodostaman suorakaiteen sisäpuolella, ovat valitut jakaumien päätepisteet riittävät. Kummastakin jakaumasta otetaan \(\sqrt{N}\) otosta, jolloin \(N\) partikkelia \(x^i_0\) saatiin näiden otosten permutaatioina. Alaluvussa \ref{uudelleenotantamenetelman-valinta} määritellyn signaali-kohinasuhteen \ref{SNR} voi todeta olevan hyvin matala, sillä koe-esimerkissä dynaaminen malli on pelkkää kohinaa. Tämän perusteella WB-sisätilapaikannusalgoritmi käyttää ehdotusjakaumanaan tilavektorin ehdollista prioria \(p(x_k|x_{k-1})\). Hiukkasten määrän \(N\) sekä muiden suunnitteluparametrien valinnasta kts. alaluku \ref{parametrien-valinta} alla.
+\noindent Koska järjestelmän on tarkoitus toimia ainoastaan paikantimien muodostaman suorakaiteen sisäpuolella, ovat valitut jakaumien päätepisteet riittävät. Kummastakin jakaumasta otetaan \(\sqrt{N}\) otosta, jolloin \(N\) partikkelia \(x^i_0\) saadaan näiden otosten permutaatioina. Alaluvussa \ref{uudelleenotantamenetelman-valinta} määritellyn signaali-kohinasuhteen \ref{SNR} voi todeta olevan hyvin matala, sillä koe-esimerkissä dynaaminen malli on pelkkää kohinaa. Tämän perusteella WB-sisätilapaikannusalgoritmi käyttää ehdotusjakaumanaan tilavektorin ehdollista prioria \(p(x_k|x_{k-1})\). Hiukkasten määrän \(N\) sekä muiden suunnitteluparametrien valinnasta kts. alaluku \ref{parametrien-valinta} alla.
 
 \afterpage{ 
 \clearpage
@@ -1441,7 +1444,7 @@ Alla esitetään luvun 3 SIR-algoritmiin (\ref{sir}) ja yllä esitettyihin algor
 \clearpage 
 }
 
-Yllä esitetyn algoritmin suoritusnopeus on perusmuodossaan luokkaa \(\mathcal{O}(N)\). Varianssin estimoinnissa käytetään ALvar-varianssia (kts. lauseet \ref{OD-varianssi} ja \textbackslash ref\{ALvar-lambda). Taulukossa \ref{tab:wb-parametrit} on esitetty algoritmin suunnitteluparametrit, joiden valintaan palataan empiirisessä esimerkissä alla.
+Ohessa esitetyn algoritmin suoritusnopeus on perusmuodossaan luokkaa \(\mathcal{O}(N)\). Varianssin estimoinnissa käytetään ALvar-varianssia (kts. yhtälöt (\ref{OD-varianssi}) ja (\ref{ALvar-lambda}). Taulukossa \ref{tab:wb-parametrit} on esitetty algoritmin suunnitteluparametrit, joiden valintaan palataan empiirisessä esimerkissä alla.
 
 \begin{table}
 
@@ -1467,15 +1470,15 @@ Koeasetelmassa käytetty algoritmin \ref{wb-positioning} toteutus on ohjelmoitu 
 
 Koska algoritmin tuottamat uskottavuudet sekä painot ovat pieniä, on laskentatarkkuusongelmien välttämiseksi toteutuksessa käytetty logaritmoituja painoja ja uskottavuusfunktiota. Tämä ei vaikuta itse algoritmin toimintaan, mutta estää numeeristen ongelmien syntymisen.
 
-Paikannusvirheen laskemisessa on etäisyysfunktiona käytetty \texttt{raster}-kirjaston \texttt{pointDistance()}-funktiota. Algoritmissa \ref{testipolun-tihennys} kuvattu testipolun tihennyt on tehty ennen algoritmin ajoa ja tihennettyä testipolkua käytetään algoritmin syötteenä. Tihennys on tehty \texttt{smoothr}-kirjaston \texttt{smooth\_densify()}-funktiolla. Koodissa on korostettu tiiviyden sijaan luettavuutta ja koodi on kommentoitu kattavasti. Algoritmin R-koodi löytyy osoitteesta \url{https://github.com/rintakumpu/progradu/analyysi/R/pf_positioning.R}.
+Paikannusvirheen laskemisessa on etäisyysfunktiona käytetty \texttt{raster}-kirjaston \texttt{pointDistance()}-funktiota. Algoritmissa \ref{testipolun-tihennys} kuvattu testipolun tihennys on tehty ennen algoritmin ajoa ja tihennettyä testipolkua käytetään algoritmin syötteenä. Tihennys on tehty \texttt{smoothr}-kirjaston \texttt{smooth\_densify()}-funktiolla. Koodissa on korostettu tiiviyden sijaan luettavuutta ja koodi on kommentoitu kattavasti. Algoritmin R-koodi löytyy osoitteesta \url{https://github.com/rintakumpu/progradu/analyysi/R/pf_positioning.R}.
 
 \section{Empiirinen esimerkki} \label{empiirinen-esimerkki}
 
 \subsection{Koeasetelma} \label{koeasetelma}
 
-Esimerkissä käyteteään hiukkasalgoritmia Bluetooth-paikannussovelluksessa lähettimen sijainnin laskemiseen. Paikannukseen käytettävä data kerättiin ruokakauppaympäristössä Bluetooth Low Energy (BLE) -lähettimen sekä kattoon sijoitettujen vastaanottimien avulla. Havainnot koostuvat vastaanottimien lähettimien signaalien perusteella laskemista, BLE5.1-standardin mukaisista signaalin tulokulmista eli AoA-havainnoista (\emph{angle of arrival}). Esimerkissä analysoidaan ja vertaillaan algoritmin eri versioiden suorituskykyä sekä suorituskyvyn että paikannustarkkuuden näkökulmasta. Vertailuarvona käytetään perinteistä triangulaatio-algoritmia.
+Esimerkissä käytettiin edellä kuvattua WB-hiukkassuodinalgoritmia AT-2-lähettimen sijainnin laskemiseen. Paikannukseen käytetty data kerättiin ruokakauppaympäristössä ostoskärryyn kiinnitetyn lähettimen sekä kattoripustuksiin asennettujen vastaanottimien avulla. Paikaunnusesimerkissä lähettimenä toimi 6hz taajuudella havaintoja lähettävä AT-2 paikannustagi (kuva \ref{fig:at2}), vastaanottimena testiympäristöön asennetut \(n_s=33\) Walkbase XR-2 -vastaanotinta (kuvat \ref{fig:xr2} ja \ref{fig:xr2_installed}). Jokainen vastaanotin sisälsi kuusitoista antennia, joiden vastaanottamien lähetinsignaalien perusteella vastaanottimet laskivat signaalin tulokulman suhteessa vastaanottimeen.
 
-Paikaunnusesimerkissä lähettimenä toimi 6hz taajuudella havaintoja lähettävä AT-2 paikannustagi (kuva \ref{fig:at2}), vastaanottimena testiympäristöön asennetut \(n_s=33\) Walkbase XR-2 -vastaanotinta (kuvat \ref{fig:xr2} ja \ref{fig:xr2_installed}). Jokainen vastaanotin sisältää kuusitoista antennia, joiden vastaanottamien lähetinsignaalien perusteella vastaanottimet laskevat signaalin tulokulman suhteessa vastaanottimeen. Havaintoja on datassa yhteensä \(n_{obs}=12379\) kappaletta ja ne kattavat \(T=432\) sekuntia. Havaintojen aikaleimat on tallennettu sekunnin tuhannesosan tarkkuudella.
+Havaintoja kerättiin yhteensä \(n_{obs}=12379\) kappaletta ja ne kattoivat \(T=432\) sekuntia. Havaintojen aikaleimat oli tallennettu sekunnin tuhannesosan tarkkuudella. Jokainen havainto koostui taulukossa \ref{tab:muunnettu-data} kuvatuista muuttujista. Esimerkissä analysoitiin ja vertailtiin algoritmin eri suunnitteluparametrikombinaatioiden suorituskykyä sekä suorituskyvyn että paikannustarkkuuden näkökulmasta. Vertailuarvona käytettiin perinteistä triangulaatio-algoritmia.
 
 \newpage
 
@@ -1502,7 +1505,7 @@ Paikaunnusesimerkissä lähettimenä toimi 6hz taajuudella havaintoja lähettäv
 \label{fig:xr2_installed}
 \end{figure}
 
-Koeympäristön pohjapiirustus on esitetty kuvassa \ref{fig:testipolku}. Piirustuksessa XR-2-paikantimet on kuvattu punaisilla ympyröillä ja kuljettu testipolku on merkitty violetilla janalla. Piirustus on luotu käyttäen \texttt{ggplot2}-kirjastoa ja se löytyy RDS-muotoon tallennettuna osoitteesta \newline \url{https://github.com/rintakumpu/progradu/analyysi/R/data/sitemap.RDS}.
+Koeympäristön pohjapiirustus on esitetty kuvassa \ref{fig:testipolku}. Piirustuksessa XR-2-paikantimet on kuvattu punaisilla ympyröillä ja kuljettu testipolku on merkitty violetilla janalla. Piirustus luotiin käyttäen \texttt{ggplot2}-kirjastoa ja se löytyy RDS-muotoon tallennettuna osoitteesta \newline \url{https://github.com/rintakumpu/progradu/analyysi/R/data/sitemap.RDS}.
 
 \begin{figure}[H]
 \centering
