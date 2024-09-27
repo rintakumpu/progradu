@@ -298,7 +298,7 @@ L_{\gamma_{h,l}}(y_{h,l}|x_{h,l}; \mu_{h,l}, \sigma^2_{h,l}, a=0, b=\pi/2)=\frac
 
 \noindent missä $Z_{h,l}=\frac{1}{2}(1+\text{erf}(\frac{b-\mu_{h,l}}{\sqrt{\sigma^2}}))-\frac{1}{2}(1+\text{erf}(\frac{a-\mu_{h,l}}{\sqrt{\sigma^2}}))$ ja $x_{h,l}$ on jokaisen hiukkasen $n=1,\ldots,N$ sekä XR-2-laitteen $l$ välinen korkeuskulma.
 
-Uskottavuusmallit \ref{atsimuutti-uskottavuusmalli} ja \ref{korkeus-uskottavuusmalli} kertomalla saadaan yhdistetty uskottavuusmalli hiukkassuotimen aika-askeleelle $k$ sekä XR-2-laitteelle $l$
+Uskottavuusmallit (\ref{atsimuutti-uskottavuusmalli}) ja (\ref{korkeus-uskottavuusmalli}) kertomalla saadaan yhdistetty uskottavuusmalli hiukkassuotimen aika-askeleelle $k$ sekä XR-2-laitteelle $l$
 
 \begin{align}\label{yhdistetty-uskottavuusmalli}
 L_{k,l}=\prod_{h=1}^{hz} L_{\theta_{h,l}} \times \prod_{h=1}^{hz} L_{\gamma_{h,l}},
@@ -320,7 +320,7 @@ Yksinkertaisin tapa valita käytettävät kulmat on asettaa alaraja signaalin va
 
 ### Dynaaminen malli
 
-Dynaamisen mallin tehtävänä on liikuttaa hiukkasia aika-askeleiden $k$ ja $k+1$ välillä. Dynaaminen malli perustuu vektorisuunnistusmalliin \ref{tilamalli-liikkuva}. Vastaavaa mallia hyödyntää muun muassa Solin (2016) [@Solin-2016]. Koska AT-2-tagi ei kuitenkaan lähetä nopeus- tai suuntadataa, asetetaan vektorisuunnistusmallin nopeutta ilmaiseva skalaarimuuttuja $D_k=0$, jolloin malli yksinkertaistuu satunnaiskävelymalliksi
+Dynaamisen mallin tehtävänä on liikuttaa hiukkasia aika-askeleiden $k$ ja $k+1$ välillä. Dynaaminen malli perustuu vektorisuunnistusmalliin (\ref{tilamalli-liikkuva}). Vastaavaa mallia hyödyntää muun muassa Solin (2016) [@Solin-2016]. Koska AT-2-tagi ei kuitenkaan lähetä nopeus- tai suuntadataa, asetetaan vektorisuunnistusmallin nopeutta ilmaiseva skalaarimuuttuja $D_k=0$, jolloin malli yksinkertaistuu satunnaiskävelymalliksi
 
 \begin{align}\label{dynaaminen-malli-empiirinen}
 x_{k+1}=x_k + v_k,
@@ -392,7 +392,7 @@ w^i_{k+1}& \text{muulloin }\end{cases}}\end{align}
 
 Tässä rangaistus $P$ on algoritmin suunnitteluparametri. Vastaavaa toteutusta ovat hyödyntäneet muun muassa Davidson &al (2010) [@Davidson-2010], jotka ehdottavat rangaistusarvoa $P=\frac{1}{1000}$. Rangaistuksen valintaan palataan parametrien valinnan yhteydessä alaluvussa \@ref(parametrien-valinta).
 
-Koska erityisesti \ref{inclusion-polygon} asettaa hiukkasten painoja nollaan, eivät karttasovitetut hiukkaset välttämättä enää estimoi suodinjakaumaa tehokkaasti. Bojja &al. [@Bojja-2015] ehdottavat suoritettavaksi uudelleenotantaa karttasovituksen jälkeen. Uudellenotanta suoritetaan seuraavasti. Merkitään nollapainoisten hiukkasten lukumäärää $N_0$. Nyt otetaan uudet $N_0$ otosta palauttaen joukosta $\{x_{1:k}^i\}_{i=1}^N$, missä otoksen $i$ todennäköisyys on $w^i_{k|k}$. Korvataan nollapainoiset hiukkaset näin saadulla otoksella.
+Koska erityisesti (\ref{inclusion-polygon}) asettaa hiukkasten painoja nollaan, eivät karttasovitetut hiukkaset välttämättä enää estimoi suodinjakaumaa tehokkaasti. Bojja &al. [@Bojja-2015] ehdottavat suoritettavaksi uudelleenotantaa karttasovituksen jälkeen. Uudellenotanta suoritetaan seuraavasti. Merkitään nollapainoisten hiukkasten lukumäärää $N_0$. Nyt otetaan uudet $N_0$ otosta palauttaen joukosta $\{x_{1:k}^i\}_{i=1}^N$, missä otoksen $i$ todennäköisyys on $w^i_{k|k}$. Korvataan nollapainoiset hiukkaset näin saadulla otoksella.
 
 \subsection{Siloittelumalli} \label{siloittelumalli}
 
@@ -404,20 +404,18 @@ Koska haluttu sisätilapaikannusalgoritmi on online-algoritmi ja käytössä ole
 
 Partikkelien siirtämiseen käytetty satunnaiskulkumalli ei ole siloittelualgoritmien kannalta optimaalinen, joten empiirisessä esimerkissä alla hyödynnetään koetarkoituksessa vain tätä yksinkertaista siloittelumallia.
 
-\subsection{Algoritmin sisäänajo} \label{sisaanajo}
-
-b=3
-
 \subsection{WB-sisätilapaikannusalgoritmi}
 
-Alla esitetään luvun 3 SIR-algoritmiin (\ref{sir}) sekä tässä luvussa esitettyihin algoritmeihin perustuva WB-sisätilapaikannusalgoritmi kokonaisuudessaan. Algoritmin priorijakaumana $p_{x_0}$ käytetään kahta toisistaan riippumatonta otosta tasajakaumista, joista toinen vastaa leveys- ja toinen pituusasteita. Jakaumien alkupisteet valitaan niin, että ne vastaavat pienimpiä paikantimien leveys- ja pituusasteista. Vastaavasti päätepisteet valitaan niin, että ne vastaavat suurimpia paikantimien leveys- ja pituusasteita. 
+Alla esitetään luvun 3 SIR-algoritmiin (\ref{sir}) sekä tässä luvussa esitettyihin algoritmeihin perustuva WB-sisätilapaikannusalgoritmi kokonaisuudessaan. Luettavuuden parantamiseksi algoritmi on jaettu kahteen osaan niin, että algoritmin runko kuvataan algoritmissa \ref{wb-positioning} ja sijaintiestimaatin luominen algoritmissa \ref{wb-positioning2}. Algoritmin priorijakaumana $p_{x_0}$ käytetään kahta toisistaan riippumatonta otosta tasajakaumista, joista toinen vastaa leveys- ja toinen pituusasteita. Jakaumien alkupisteet valitaan niin, että ne vastaavat pienimpiä paikantimien leveys- ja pituusasteista. Vastaavasti päätepisteet valitaan niin, että ne vastaavat suurimpia paikantimien leveys- ja pituusasteita. 
 
 \begin{align} \label{priorijakauma}
 &p_{x_{0_{\text{lon}}}}\sim\mathcal{U}(\min{\lambda},\max{\lambda}),\\
 &p_{x_{0_{\text{lat}}}}\sim\mathcal{U}(\min{\phi},\max{\phi}).
 \end{align}
 
-\noindent Koska järjestelmän on tarkoitus toimia ainoastaan paikantimien muodostaman suorakaiteen sisäpuolella, ovat valitut jakaumien päätepisteet riittävät. Kummastakin jakaumasta otetaan $\sqrt{N}$ otosta, jolloin $N$ partikkelia $x^i_0$ saadaan näiden otosten permutaatioina. Alaluvussa \@ref(uudelleenotantamenetelman-valinta) määritellyn signaali-kohinasuhteen \ref{SNR} voi todeta olevan hyvin matala, sillä koe-esimerkissä dynaaminen malli on pelkkää kohinaa. Tämän perusteella WB-sisätilapaikannusalgoritmi käyttää ehdotusjakaumanaan tilavektorin ehdollista prioria $p(x_k|x_{k-1})$. Hiukkasten määrän $N$ sekä muiden suunnitteluparametrien valinnasta kts. alaluku \@ref(parametrien-valinta) alla.
+\noindent Koska järjestelmän on tarkoitus toimia ainoastaan paikantimien muodostaman suorakaiteen sisäpuolella, ovat valitut jakaumien päätepisteet riittävät. Kummastakin jakaumasta otetaan $\sqrt{N}$ otosta, jolloin $N$ partikkelia $x^i_0$ saadaan näiden otosten permutaatioina. Alaluvussa \@ref(uudelleenotantamenetelman-valinta) määritellyn signaali-kohinasuhteen (\ref{SNR}) voi todeta olevan hyvin matala, sillä koe-esimerkissä dynaaminen malli on pelkkää kohinaa. Tämän perusteella WB-sisätilapaikannusalgoritmi käyttää ehdotusjakaumanaan tilavektorin ehdollista prioria $p(x_k|x_{k-1})$. Hiukkasten määrän $N$ sekä muiden suunnitteluparametrien valinnasta kts. alaluku \@ref(parametrien-valinta) alla.
+
+Koska esitetty priorijakauma $p_{x_0}$ on epäinformatiivinen ja monimutkainen koeympäristö aiheuttaa monin paikoin heijastuksia, on mahdollista, että ensimmäisten aika-askeleiden aikana algoritmi tuottaa huonoja sijaintiestimaatteja. Tästä syystä algoritmia ajettaessa suoritetaan ensimmäisellä $b=3$ aika-askeleella sisäänajo, jonka aikana karttasovitusta ei käytetä ja jonka aikana kohina-arvona käytetään arvoa $q_{\text{burn\_in}}=q\times10$. Myöskään sijaintiestimaatteja ei sisäänajoaika-askeleilla luoda. Sen sijaan sijaintiestimaatit $\hat{x}_{1:b}$ korvataan ensimmäisellä sisäänajon jälkeisellä sijaintiestimaatilla $\hat{x}_{b+1}$.
 
 \afterpage{ 
 \clearpage
@@ -426,19 +424,16 @@ Alla esitetään luvun 3 SIR-algoritmiin (\ref{sir}) sekä tässä luvussa esite
 \DontPrintSemicolon
 \SetAlgoShortEnd
 \KwResult{Tagin sijaintiestimaatti $\hat{x}$ kullekin aika-askeleelle $k=1,\ldots,T$;}
-\KwData{Taulukossa \ref{tab:muunnettu-data} esitetty data $y_k$ kullekin aika-askeleelle $k=1,\ldots,T$\, alaluvussa \ref{karttasovitusalgoritmi} esitetty polygonimetadata;}
+\KwData{Taulukossa \ref{tab:muunnettu-data} esitetty data $y_k$ kullekin aika-askeleelle $k=1,\ldots,T$\, alaluvussa \ref{karttasovitusalgoritmi} esitetty polygonimetadata. Taulukossa \ref{tab:wb-parametrit} esitetyt parametrit.;}
 \Begin{
-  \Begin{Luodaan priorijakauma $p_{x_0}$ otantana jakaumista \ref{priorijakauma}, asetetaan painot $w_0=1/N$.;}
+  \Begin{Luodaan priorijakauma $p_{x_0}$ otantana jakaumista (\ref{priorijakauma}), asetetaan painot $w_0=1/N$.;}
   \For{$k=\{1,\ldots,T\}$}{
+    \If{$k > b$}{
     \Begin{Ajetaan paikallaanolon havaitsemisalgoritmi \ref{paikallaanoloalgo}. Jos havaitaan paikallaanolo, päivitetään kohina-arvo $q_k=\frac{q}{10}$, muussa tapauksessa $q_k=q$;}
-    \Begin{Sovitetaan partikkeleihin dynaaminen malli \ref{dynaaminen-malli-empiirinen} $x_{k+1}=x_k + v_k$, missä $v_k$ on luotu alaluvussa \ref{dynaaminen-malli} esitetyllä menetelmällä sekä kohina-arvolla $q_k$;}
-    \Begin{Jos karttasovitusalgoritmi on käytössä, päivitetään painot $w_k$ alaluvun \ref{karttasovitusalgoritmi} karttasovitusalgoritmilla ja rangaistusarvolla $P$;}
-    \For{$i=\{1,2,\ldots,N\}$}{
-      \Begin{Päivitetään painot $w_{k|k}$ alaluvun \ref{uskottavuusmallit} uskottavuusmalleilla.\;}
-      \Begin{Estimoidaan $p$ laskemalla tiheydelle approksimaatio $\hat{p}(x_{1:k}|y_{1:k})=\sum_{i=1}^{N}w_{k|k}^i \delta(x_{1:k}-x_{1:k}^i)$.\;}
-      \If{$k < T$}{\Begin{Päivitetään paino $w_k^i$ prediktiivisellä siloittimella $w_k^i = w_k^i \bar{w}^i_{k+1}$.\;}}
-      }
-    \Begin{Luodaan sijaintiestimaatti $\hat{x}_k = \sum_{i=1}^Nw^k_ix^i_k$. Estimaatti lasketaan erikseen pituus- ja leveyskoordinaateille.\;}
+    \Begin{Sovitetaan partikkeleihin dynaaminen malli (\ref{dynaaminen-malli-empiirinen}) $x_{k+1}=x_k + v_k$, missä $v_k$ on luotu alaluvussa \ref{dynaaminen-malli} esitetyllä menetelmällä sekä kohina-arvolla $q_k$;}
+    } \Else{ \Begin {Sovitetaan partikkeleihin dynaaminen malli (\ref{dynaaminen-malli-empiirinen}) $x_{k+1}=x_k + v_k$, missä $v_k$ on luotu alaluvussa \ref{dynaaminen-malli} esitetyllä menetelmällä sekä kohina-arvolla $q_k\times10$;}}
+    \Begin{Jos karttasovitusalgoritmi on käytössä ja $k>b$, päivitetään painot $w_k$ alaluvun \ref{karttasovitusalgoritmi} karttasovitusalgoritmilla ja rangaistusarvolla $P$;}
+    \Begin{Päivitetään painot ja luodaan sijaintiestimaatti algoritmilla \ref{wb-positioning2};}
     \Begin{Lasketaan ALvar-varianssi $\hat{\sigma}^2_{\text{ALvar}_k}$.\;}
     \Begin{Lasketaan efektiivinen otoskoko $\hat{N}_{eff}$.\;}
     \If{$\hat{N}_{eff}< N_{th}$}{\Begin{Otetaan uudet $N$ otosta palauttaen joukosta $\{x_{1:k}^i\}_{i=1}^N$, missä otoksen $i$ todennäköisyys on $w^i_{k|k}$.\;}}
@@ -447,12 +442,34 @@ Alla esitetään luvun 3 SIR-algoritmiin (\ref{sir}) sekä tässä luvussa esite
   }  
 }
 \caption{WB-sisätilapaikannusalgoritmi}
-\thispagestyle{empty}
 \end{algorithm}
-\clearpage 
+}
+\afterpage{ 
+\clearpage
+
+\begin{algorithm}[H]
+\label{wb-positioning2}
+\DontPrintSemicolon
+\SetAlgoShortEnd
+\KwResult{Tagin sijaintiestimaatti $\hat{x}_k$, päivitetyt painot $w_k$;}
+\KwData{Hiukkaset $x_k$, painot $w_k$;}
+\For{$i=\{1,2,\ldots,N\}$}{
+      \Begin{Päivitetään painot $w_{k|k}$ alaluvun \ref{uskottavuusmallit} uskottavuusmalleilla.\;}
+      \Begin{Estimoidaan $p$ laskemalla tiheydelle approksimaatio $\hat{p}(x_{1:k}|y_{1:k})=\sum_{i=1}^{N}w_{k|k}^i \delta(x_{1:k}-x_{1:k}^i)$.\;}
+      \If{$k < T$}{\Begin{Päivitetään paino $w_k^i$ prediktiivisellä siloittimella $w_k^i = w_k^i \bar{w}^i_{k+1}$.\;}}
+      }
+    \If{$k > b$}{
+    \Begin{Luodaan sijaintiestimaatti $\hat{x}_k = \sum_{i=1}^Nw^k_ix^i_k$. Estimaatti lasketaan erikseen pituus- ja leveyskoordinaateille.\;} }
+    \If{$k = b$}{
+      \Begin{Asetetaan sijaintiestimaatit $\hat{x}_{1:b} = \hat{x}_k$.\;} 
+      }
+\caption{WB-sisätilapaikannusalgoritmin sijaintiestimaatin luominen}
+\end{algorithm}
+
 }
 
-Ohessa esitetyn algoritmin suoritusnopeus on perusmuodossaan luokkaa $\mathcal{O}(N)$. Varianssin estimoinnissa käytetään ALvar-varianssia (kts. yhtälöt (\ref{OD-varianssi}) ja (\ref{ALvar-lambda}). Taulukossa \ref{tab:wb-parametrit} on esitetty algoritmin suunnitteluparametrit, joiden valintaan palataan empiirisessä esimerkissä alla.
+
+Ohessa esitetyn algoritmin suoritusnopeus on perusmuodossaan luokkaa $\mathcal{O}(N)$. Varianssin estimoinnissa käytetään ALvar-varianssiestimaattia (kts. yhtälöt (\ref{CLE-varianssi}) ja (\ref{ALvar-lambda}). Taulukossa \ref{tab:wb-parametrit} on esitetty algoritmin suunnitteluparametrit, joiden valintaan palataan empiirisessä esimerkissä alla.
 
 ```{r wb-parametrit, tidy=FALSE}
 parametrit <- as.data.frame(matrix(ncol=2,nrow=0))
@@ -464,6 +481,7 @@ parametrit[nrow(parametrit)+1,] <- linebreak(c("$P$", "Jos karttasovitusalgoritm
 parametrit[nrow(parametrit)+1,] <- linebreak(c("$\\text{resampling}$", "Adaptiivisen uudelleenotannat kynnysarvo,\n liukuluku välillä $[0,1]$. Jos $0$, uudelleenotantaa ei käytetä."))
 parametrit[nrow(parametrit)+1,] <- linebreak(c("$\\text{rssi\\_threshold}$", "Datan valinnassa käytettävä\n signaalin vahvuuden kynnysarvo, kokonaisluku"))
 parametrit[nrow(parametrit)+1,] <- linebreak(c("$\\text{smoothing}$", "Käytetäänkö prediktiivistä siloitinta, T/F"))
+parametrit[nrow(parametrit)+1,] <- linebreak(c("$b$", "Sisäänajoaika-askeleiden lukumäärä, pidetään vakioarvoisena $b=3$"))
 
 kableExtra::kbl(
   parametrit, caption = 'WB-sisätilapaikannusalgoritmin suunnitteluparametrit', format="latex",
@@ -475,7 +493,9 @@ Koeasetelmassa käytetty algoritmin \ref{wb-positioning} toteutus on ohjelmoitu 
 
 Koska algoritmin tuottamat uskottavuudet sekä painot ovat pieniä, on laskentatarkkuusongelmien välttämiseksi toteutuksessa käytetty logaritmoituja painoja ja uskottavuusfunktiota. Tämä ei vaikuta itse algoritmin toimintaan, mutta estää numeeristen ongelmien syntymisen.
 
-Paikannusvirheen laskemisessa on etäisyysfunktiona  käytetty `raster`-kirjaston `pointDistance()`-funktiota. Algoritmissa \ref{testipolun-tihennys} kuvattu testipolun tihennys on tehty ennen algoritmin ajoa ja tihennettyä testipolkua käytetään algoritmin syötteenä. Tihennys on tehty `smoothr`-kirjaston `smooth_densify()`-funktiolla. Koodissa on korostettu tiiviyden sijaan luettavuutta ja koodi on kommentoitu kattavasti. Algoritmin R-koodi löytyy osoitteesta https://github.com/rintakumpu/progradu/analyysi/R/pf_positioning.R.
+Paikannusvirheen laskemisessa on etäisyysfunktiona  käytetty `raster`-kirjaston `pointDistance()`-funktiota. Algoritmissa \ref{testipolun-tihennys} kuvattu testipolun tihennys on tehty ennen algoritmin ajoa ja tihennettyä testipolkua käytetään algoritmin syötteenä. Tihennys on tehty `smoothr`-kirjaston `smooth_densify()`-funktiolla. Koodissa on korostettu tiiviyden sijaan luettavuutta ja koodi on kommentoitu kattavasti. 
+
+Algoritmin R-koodi löytyy osoitteesta https://github.com/rintakumpu/progradu/analyysi/R/pf_positioning.R.
 
 \section{Empiirinen esimerkki} \label{empiirinen-esimerkki}
 

@@ -1,0 +1,3 @@
+\begin{align}\label{OD-varianssi}
+\hat{\sigma}^2_{OD} = \frac{1}{N} \sum_{i=1}^N \left( \sum_{j:E_{n,k(\lambda)}^j=i} \gamma(x_k^i) - \gamma(x_k^j) \right)^2
+,\end{align}

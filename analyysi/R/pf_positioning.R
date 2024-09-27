@@ -220,9 +220,9 @@ pf_positioning <- function(y,
   I[[1]] <- 1:N
   E <- list() # List of lists. Enoch indices for each time step.
   E[[1]] <- I
-  E_lambda <- rep(20, t) # Lambda value corresponding to each Enoch index run, size of the list stored in E. Let's start with
+  E_l <- rep(20, t) # Lambda value corresponding to each Enoch index run, size of the list stored in E. Let's start with
   # fixed lambda.
-  r <- rep(1, t) # How many times we have resampled
+  r <- rep(0, t) # How many times we have resampled
 
   # List to store the position estimates & candidates
   position_estimates <- list()
@@ -699,45 +699,24 @@ pf_positioning <- function(y,
     # STEP 7: Variance estimation. #
     ################################
     
-    if(resampling > 0 && k>1) {
-      #E_k <- E[[(k-1)]][[length(E[[(k-1)]])]] # E_k <- E[[(k)]][[length(E[[(k)]])]]
-      #print(E)
-      #omega_j_k <- exp(w_k[E_k])
-      #Omega_k <- sum(exp(w_k))
-      #c_lon <- position_estimates[[k]][[2]]
-      #c_lat <- position_estimates[[k]][[1]]
-      
-      # Compute longitudinal and latitudinal variance 
-      # This is the actual CLE
-      #v_lon[k] <- mean(sum((omega_j_k/Omega_k) * (x_lon_previous[E_k] - c_lon))^2)
-      #v_lat[k] <- mean(sum((omega_j_k/Omega_k) * (x_lat_previous[E_k] - c_lat))^2)
-      # And variance
-      #v[k] <- mean(sum((omega_j_k/Omega_k) * (raster::pointDistance(matrix(c(x_lon_previous[E_k], 
-       #                                                                      x_lat_previous[E_k]), ncol=2), c(c_lon, c_lat), 
-      #                                                              lonlat = F)))^2)
-      
-      #E_lambda[(k+1)] <- E_lambda
-      
-      
+    if(resampling > 0 && k>1 && k>burn_in) {
       v[k] <- 0
       c_lon <- position_estimates[[k]][[2]]
       c_lat <- position_estimates[[k]][[1]]
-      for(E_index in 1:length(E[[(k-1)]])) {
+      for(E_index in 1:length(E[[(k)]])) {
         
-        E_k <- E[[(k-1)]][[E_index]]
-        
-        # And variance
-        o <- exp(c_k_vector[E_k])/sum(exp(c_k_vector[E_k]))
-        v_current <- o*raster::pointDistance(matrix(c(x_lon[E_k], x_lat[E_k]), ncol=2), c(c_lon, c_lat), lonlat = F)
-        v_current <- mean(sum(v_current)^2)
+        E_k <- E[[(k)]][[E_index]]
+        mu_k <- exp(w_k)*matrix(c(x_lon[E_k], x_lat[E_k]), ncol=2)
+        v_current <- sum((raster::pointDistance(matrix(c(x_lon[E_k], x_lat[E_k]), 
+                                                       ncol=2), mu_k, lonlat=F))^2 * exp(w_k))/(N-1)-
+          sum((raster::pointDistance(matrix(c(x_lon[E_k], x_lat[E_k]), 
+                                            ncol=2), mu_k, lonlat=F))^2 * exp(w_k)^2)/(N-1)
         if(is.na(v_current)) v_current <- 0
-        
         # Check if maximizes variance
         if(v_current >= v[k]) {
           v[k] <- v_current
-          # As E_index starts from 
-          # current_lambda + 2 - E_index
-          E_lambda[[(k)]] <- length(E[[(k-1)]]) - E_index + 1
+          # The lambda was stored as a name
+          E_l[k] <- as.numeric(names(E[[(k)]])[[E_index]])[[1]]
         }
       }
     }
@@ -775,7 +754,7 @@ pf_positioning <- function(y,
           if(k > 1) {
             r[k] <- r[(k-1)] + 1
           } else {
-            r[k] <- 1
+            r[k] <- 0
           }
           
           # Store descendants
@@ -807,32 +786,64 @@ pf_positioning <- function(y,
     ######################################################
     
     if(resampling > 0) {
-      # Get current lambda
-      current_lambda <- E_lambda[k]
-      
+      # Get current (max) lambda + 1 (so that it doesn't get stuck
+      # to perpetual 1)
+      current_lambda <- E_l[k] + 1
       if((k-current_lambda)<1) current_lambda <- (k - 1)
+      
       if(current_lambda > 0) {
-        
-        # This list is created always
-        E_current <- list()
-        
-        # Use Enoch index, starting from k-current_lambda
+        E_lambda <- list()
+        # Compute Enoch index, starting from m=k-current_lambda
+        m <- k-current_lambda # This is the furthest time step from which the indices
+        # are computed, we also need to compute the indices for more recent lambdas
         j <- 1
-        for(i in unique(r[(k-current_lambda):k])) {
-          if(i==unique(r[(k-current_lambda):k])[1]) {
-            E_current[[j]] <- I[[i]]
-          } else {
-            E_current[[j]] <- E_current[[(j-1)]][I[[i]]]
+        
+        # Compute Enoch indices, each item of the list E_current
+        # will include a list for a certain lambda,
+        # the outmost loop will go through lambdas (note l denotes the
+        # actual time step, so it's not a lambda i.e. a lag parameter
+        # but rather k-current_lambda)
+        for(l in m:(k-1)) {
+          
+          ###############################################################
+          # And the inmost loop will actually compute the Enoch indices #
+          # with any given l                                            #
+          ###############################################################
+          ij <- 1
+          E_current <- list()
+          for(i in l:k) {
+            if(l==i) {
+              # For the furthest case we simply use the particle indices,
+              # this is the index case for this lambda
+              E_current[[ij]] <- 1:N
+            } else {
+              # Otherwise we will check whether resampling was done and 
+              # act accordingly
+              if(r[i]==0) {
+                # If no resampling, we can just propagate the previous indices
+                E_current[[ij]] <- E_current[[ij-1]]
+              } else {
+                # If resampling was done, use the resampling indices
+                # for that time step, i.e. select the previous E_current
+                # and pick the resampling index from there
+                E_current[[ij]] <- E_current[[ij-1]][I[[i]]]
+              }
+            }
+            ij <- ij + 1
           }
+          # Then we can pick the last E_current as the index for this lambda
+          E_lambda[[j]] <- E_current[[length(E_current)]]
+          names(E_lambda)[j] <- k-l # Compute and use lag parameter
           j <- j + 1
         }
         
         # Store index list (of lists)
-        #print(E_current)
-        E[[k+1]] <- E_current
+        E[[k+1]] <- E_lambda
       } else {
-        # If lambda zero, we don't store the eve indices at all
+        # If lambda zero, we don't store the eve indices at all, just use the
+        # current resampling indices
         E[[k+1]] <- list(I[[k]])
+        names(E[[k+1]]) <- 1 # Lambda is one
       }
     }
     

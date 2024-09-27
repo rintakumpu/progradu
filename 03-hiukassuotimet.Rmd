@@ -35,7 +35,7 @@ x_{k+1}^i\sim q(x_{k+1}|x_k^i,y_{k+1})
 \begin{align}\label{tarkeytys} w_{k+1|k}^i=w_{k|k}^i\frac{p(x_{k+1}^i|x_k^i)}{q(x_{k+1}^i|x_k^i,y_{k+1})}.
 \end{align}
 
-\noindent Vaiheet \ref{ehdotusjakauma} ja \ref{tarkeytys} vastaavat Bayes-suotimen aikapäivitystä (\ref{bayes-aikapaivitys}). 
+\noindent Vaiheet (\ref{ehdotusjakauma}) ja (\ref{tarkeytys}) vastaavat Bayes-suotimen aikapäivitystä (\ref{bayes-aikapaivitys}). 
 
 Alla käsitellään algoritmiin liittyvän uudelleenotantamenetelmän, partikkelien määrän ja ehdotusjakauman valinta. Lopuksi esiteetään algoritmin konvergenssia, marginaalijakaumaa sekä aikakompleksisuutta koskevia tuloksia ja käsitellään algoritmin tuottaman jakaumaestimaatin varianssin estimointia.
 
@@ -90,7 +90,7 @@ Näin laskettu efektiivinen otoskoko maksimoituu ($N_{eff}=N$), kun kaikille pai
 \hat{N}_{eff}=\frac{1}{\sum_{i=1}^N(w^i_{k|k})^2}.
 \end{align}
 
-Määritelmille $\ref{N-eff}$ ja $\ref{N-hat-eff}$ pätee $1 \leq \hat{N}_{eff} \leq N$. Yläraja saavutetaan, kun jokaisen partikkelin paino on sama. Alarajalle päädytään, kun kaikki paino keskittyy yksittäiselle partikkelille. Tästä saadaan määriteltyä algoritmille SIR-uudelleenotantaehto $\hat{N}_{eff}< N_{th}$. Gustafsson (2010) [@gustafsson-2010] esittää uudelleenotannan kynnysarvoksi esimerkiksi $\hat{N}_{th}=2N/3$. 
+Määritelmille ($\ref{N-eff}$) ja ($\ref{N-hat-eff}$) pätee $1 \leq \hat{N}_{eff} \leq N$. Yläraja saavutetaan, kun jokaisen partikkelin paino on sama. Alarajalle päädytään, kun kaikki paino keskittyy yksittäiselle partikkelille. Tästä saadaan määriteltyä algoritmille SIR-uudelleenotantaehto $\hat{N}_{eff}< N_{th}$. Gustafsson (2010) [@gustafsson-2010] esittää uudelleenotannan kynnysarvoksi esimerkiksi $\hat{N}_{th}=2N/3$. 
 
 Uudelleenotanta ei muuta approksimoitavan jakauma $p$ odotusarvoa, mutta se lisää jakauman Monte Carlo -varianssia. On kuitenkin olemassa esimerkiksi osittamiseen perustuvia uudelleenotantamenetelmiä, jotka pyrkivät minimoimaan varianssin lisäyksen. Varianssin pienennysmenetelmät jätetään tämän tutkielman ulkopuolelle.
 
@@ -224,10 +224,10 @@ Saapasremmisuodin on edellä esitettyä SIR-algoritmia yksinkertaisempi toteutta
 Hiukkassuotimen varianssin estimoinnissa ollaan kiinnostuneita jakaumaestimaatin $\hat{p}(x_{1:k}|y_{1:k})$ varianssista. Yksinkertaisin tapa estimoida hiukkassuodinalgoritmin varianssia on ajaa algoritmi $M > 1$ kertaa. Koska ajot ovat toisistaan riippumattomia, voidaan estimaatin varianssi laskea kullekin aika-askeleelle $k$ näiden ajojen $k$-hetken estimaattien otosvarianssina: 
 
 \begin{align}\label{MC-varianssi}
-\hat{\sigma}^2_{MC} = \text{Var}_{\text{MC}}(\hat{p}(x_{1:k}|y_{1:k})) = \frac{1}{M-1} \sum_{i=1}^{M}(x_k^i-\bar{x}_k)^2.
+\hat{\sigma}^2_{MC} = \text{Var}_{\text{MC}}(\hat{p}(x_{1:k}|y_{1:k})) = \frac{1}{M-1} \sum_{i=1}^{M}(x_k^i-\bar{x}_k)^2
 ,\end{align}
 
-\noindent missä $x_k^i$ on $k$:nen aika-askeleen piste-estimaatti ajolle  $i=1,\ldots,M$ ja $\bar{x}_k$ piste-estimaattien aritmeettinen keskiarvo laskettuna kaikkien $M$ ajojen yli. Tällaisen Monte Carlo -varianssin estimoiminen on kuitenkin laskennallisesti tehotonta. Monissa käytännön sovellutuksissa jo yhden hiukkassuodinalgoritmin ajaminen vaatii runsaasti laskentatehoa, jolloin Monte Carlo -varianssin laskeminen ei ole mahdollista. Varianssia ei voida myöskään laskea analyyttisesti, mutta koska keskeisen raja-arvolauseen \ref{CLT} nojalla tiedetään, että asymptoottinen varianssi 
+\noindent missä $x_k^i$ on $k$:nen aika-askeleen piste-estimaatti ajolle  $i=1,\ldots,M$ ja $\bar{x}_k$ piste-estimaattien aritmeettinen keskiarvo laskettuna kaikkien $M$ ajojen yli. Tällaisen Monte Carlo -varianssin estimoiminen on kuitenkin laskennallisesti tehotonta. Monissa käytännön sovellutuksissa jo yhden hiukkassuodinalgoritmin ajaminen vaatii runsaasti laskentatehoa, jolloin Monte Carlo -varianssin laskeminen ei ole mahdollista. Varianssia ei voida myöskään laskea analyyttisesti, mutta koska keskeisen raja-arvolauseen (\ref{CLT}) nojalla tiedetään, että asymptoottinen varianssi 
 
 \begin{align}\label{asymptoottinen-varianssi}
 \lim_{N\to \infty} N \text {Var}(\hat{g}(x_k^i))
@@ -244,13 +244,19 @@ Ajetaan SIR-algoritmi kuten esitetty algoritmissa \ref{sir}, mutta merkitään k
 \label{fig:eeva-indeksit}
 \end{figure}
 
-Varianssiestimaatti voidaan laskea näiden, Leen ja Whitleyn Eeva-indekseiksi nimeämien indeksien perusteella seuraavasti:
+Varianssiestimaatti voidaan laskea näiden, Leen ja Whitleyn Eeva-indekseiksi nimeämien indeksien perusteella seuraavasti. Merkitään ensin Eeva-indekseillä painotettua summaa
 
-\begin{align}\label{CLE-varianssi}
-\hat{\sigma}^2_{CLE} = \frac{1}{N^2} \left[ (\sum_{i=1}^N \gamma(x_k^i))^2 - (\frac{N}{N-1})^{n+1} ( \sum_{i=1}^N \sum_{j:E_n^j=i} \gamma(x_k^i) \gamma(x_k^j)) \right]
+\begin{align}\label{CLE-sum}
+\hat{\mu}_k=\sum_{i=1}^N w_k^i x_k^i[E_k]
 ,\end{align}
 
-\noindent missä $\gamma: \mathbf{X}_n \rightarrow \mathbb{R}$ on rajoitettu, mitallinen funktio, SIR-algoritmin kohdalla jakaumaestimaatti $\hat{p}(x_{1:k}|y_{1:k}))$. Kyseessä on harhaton ja konsistentti asymptoottisen varianssin estimaatti. Tarkemmin $N\hat{\sigma}^2_{CLE}$ konvergoi asymptoottiseen varianssiin \ref{asymptoottinen-varianssi}. Tätä ei tutkielman puitteissa todisteta. 
+\noindent missä merkintä $x_k^i[E_k]$ tarkoittaa, että partikkeleista $x_k$ valitaan Eeva-indeksien osoittamat partikkelit eli ne partikkelit joille $i=E_k^j$, kun $j=1,\ldots,N$. Sama partikkeli voidaan luonnollisesti valita summaan useamman kerran. Tämän perusteella lasketaan edelleen varianssi
+
+\begin{align}\label{CLE-varianssi}
+\hat{\sigma}^2_{CLE} = \frac{1}{N-1} \sum_{i=1}^N w_k^i (x_k^i[E_k]-\hat{\mu}_k)^2 - \frac{1}{N-1} \sum_{i=1}^N (w_k^i)^2 (x_k^i[E_k]-\hat{\mu}_k)^2
+.\end{align}
+
+\noindent Kyseessä on harhaton ja konsistentti asymptoottisen varianssin estimaatti. Tarkemmin $\hat{\sigma}^2_{CLE}$ konvergoi asymptoottiseen varianssiin (\ref{asymptoottinen-varianssi}). Tätä ei tutkielman puitteissa todisteta. 
 
 Yllä esitetty varianssiestimaatti kärsii kuitenkin epätarkkuudesta, sillä kun $k \to \infty$, polveutuvat kaikki hiukkaset lopulta samasta kantaisästä eli indeksit $E_k^i,\ldots,E_k^N$ ovat kaikki yhtäsuuria. Tämän vuoksi on mielekästä johtaa indeksit ainoastaan tietystä aiemmasta aika-askeleesta alkaen. Olsson ja Douc (2019) [@olsson-2019] ehdottavat tähän tarkoitukseen Henok-indeksiä $E_{k,m}^n$, jossa $m$ merkitsee aika-askeleen $m<k$ partikkelia, josta kyseinen partikkeli polveutuu. Partikkelien kantaisien sukupolvi määritetään viipeellä $\lambda$ niin, että $m=k-\lambda$. Kaavio \ref{fig:henok-indeksit} havainnollistaa partikkelien polveutumista, kun $\lambda=1$. 
 
@@ -261,15 +267,15 @@ Yllä esitetty varianssiestimaatti kärsii kuitenkin epätarkkuudesta, sillä ku
 \label{fig:henok-indeksit}
 \end{figure}
 
-Nyt varianssi saadaan muotoon
+Nyt varianssi voidaan laskeat kuten yhtälössä (\ref{CLE-varianssi}) edellä, kun Eeva-indeksit korvataan Henok-indekseillä
 
-\begin{align}\label{OD-varianssi}
-\hat{\sigma}^2_{OD} = \frac{1}{N^2} \left[ (\sum_{i=1}^N \gamma(x_k^i))^2 - (\frac{N}{N-1})^{n+1} ( \sum_{i=1}^N \sum_{j:E_{n,k(\lambda)}^j=i} \gamma(x_k^i) \gamma(x_k^j)) \right]
-,\end{align}
+\begin{align}\label{OD-sum}
+\hat{\mu}_k=\sum_{i=1}^N w_k^i x_k^i[E_{n,k(\lambda)}],
+\end{align}
 
-\noindent missä $k(\lambda) \vcentcolon= k-\lambda$. Viive $\lambda$ on varianssiestimaatin suunnitteluparametri. Pienillä viipeillä estimaatti on harhainen, mutta harha laskee viipeen kasvaessa. Olsson ja Douc suosittavat viipeen ylärajaksi arvoa $\lambda=20$, jolloin estimaattorin harha on käytännössä kokonaan hävitetty. Tämän jälkeen estimaatti voi myös alkaa kärsiä samasta epätarkkuudesta kuin Eeva-indekseihin perustuva CLE-estimaatti.
+\noindent missä $k(\lambda) \vcentcolon= k-\lambda$ eli se aika-askel, jota käytetään hiukkasten kantaisänä. Viive $\lambda$ on varianssiestimaatin suunnitteluparametri. Pienillä viipeillä estimaatti on harhainen, mutta harha laskee viipeen kasvaessa. Olsson ja Douc suosittavat viipeen ylärajaksi arvoa $\lambda=20$, jolloin estimaattorin harha on käytännössä kokonaan hävitetty. Tämän jälkeen estimaatti voi myös alkaa kärsiä samasta epätarkkuudesta kuin Eeva-indekseihin perustuva CLE-estimaatti.
 
-Mastrototaro ja Olsson (2023) [@Mastrototaro-2023] laajentavat tätä estimaattia edelleen niin, että viive $\lambda$ valitaan mukautuvasti. Mastrototaron ja Olssonin ALvar-estimaatti (*Adaptive-Lag variance*) lasketaan kuten OD-varianssi edellä \ref{OD-varianssi}, mutta kunkin algoritmin ajokerran jälkeen asetetaan seuraavan ajanhetken $\lambda$ seuraavasti:
+Mastrototaro ja Olsson (2023) [@Mastrototaro-2023] laajentavat tätä estimaattia edelleen niin, että viive $\lambda$ valitaan mukautuvasti. Mastrototaron ja Olssonin ALvar-estimaatti (*Adaptive-Lag variance*) lasketaan kuten OD-varianssi edellä, mutta kunkin algoritmin ajokerran jälkeen asetetaan seuraavan ajanhetken $\lambda$ seuraavasti:
 
 \begin{align}\label{ALvar-lambda}
 \lambda_{k+1} \leftarrow \operatorname*{arg\,max}_{\lambda \in [0, \lambda_k + 1]} \hat{\sigma}^2_{k+1,\lambda} (\gamma_{k+1})

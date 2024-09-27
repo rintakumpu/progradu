@@ -68,7 +68,7 @@ Nyt siloittelujakaumaa voidaan estimoida seuraavasti:
 p(x_{0:T}|y_{1:T}) \approx \frac{1}{S} \sum_{i=1}^N \delta (x_{0:T}-\tilde{x}_{0:T}^j),
 \end{align}
 
-\noindent missä $S, j=1,\ldots,S$ on algoritmin \ref{BSPS} toistokertojen määrä. Koska $\tilde{x}_{0:T}^j$ pitää sisällään kaikki otospolut, saadaan marginaalijakauma aika-askeleella $k$ yhtälöstä \ref{siloitin-BSPS} yksinkertaisesti valitsemalla sen $k$:net elementit. Sekä algoritmin aikakompleksisuus että muistivaade on $\mathcal{O}(STN)$.
+\noindent missä $S, j=1,\ldots,S$ on algoritmin \ref{BSPS} toistokertojen määrä. Koska $\tilde{x}_{0:T}^j$ pitää sisällään kaikki otospolut, saadaan marginaalijakauma aika-askeleella $k$ yhtälöstä (\ref{siloitin-BSPS}) yksinkertaisesti valitsemalla sen $k$:net elementit. Sekä algoritmin aikakompleksisuus että muistivaade on $\mathcal{O}(STN)$.
 
 \subsection{Uudelleenpainottava hiukkassiloitin}
 
@@ -97,13 +97,13 @@ Yllä esitetyt offline-algoritmit ratkaisevat siloitinongelman niin, että kaikk
 
 \subsection{Kiinteän viipeen siloitin}
 
-Yksinkertaisin tapa toteuttaa kiinteän viipeen siloitin on käyttää SIR-siloitinta niin, että maksimiaika-askel $T$ korvataan valitulla viipeellä $k+L \le T$ [@kitagawa-1996]. Nyt yhtälön \ref{siloitin-posteriori} jakauma saadaan muotoon 
+Yksinkertaisin tapa toteuttaa kiinteän viipeen siloitin on käyttää SIR-siloitinta niin, että maksimiaika-askel $T$ korvataan valitulla viipeellä $k+L \le T$ [@kitagawa-1996]. Nyt yhtälön (\ref{siloitin-posteriori}) jakauma saadaan muotoon 
 
 \begin{align}\label{siloitin-posteriori-viive}
 p(x_{0:(k+L)}|y_{1:(k+L)}) \approx \sum_{i=1}^N w_{k+L}^i \delta (x_{0:(k+L)}-x_{0:(k+L)}^i)
 \end{align}
 
-\noindent ja nykyisen aika-askeleen $k$ siloitinjakauma lasketaan tästä jakaumasta kuten SIR-siloittimessa (kts. yhtälö \ref{siloitin-posteriori-k}). Kiinteän viipeen siloitin välttää SIR-siloittimen approksimaatio-ongelmat. Kun viipeelle $L$ pätee $k+L \ll T$ parantaa viipeen pidentäminen tiettyyn pisteeseen asti jakauman approksimaatiota. Kitagawa (1996) suosittelee 10\textendash 20 aika-askeleen viivettä ja esittää 50 aika-askelta viipeen ylärajaksi [@kitagawa-1996]. Paremman estimaatin vastapainona pidemmän viipeen valinta lisää myös viivettä, joka dataa tuottavaan järjestelmään pitää lisätä. Siloittimien tulokset ovat saatavilla vasta $L$:n aika-askeleen jälkeen, mikä ei aina ole käytännössä mahdollista tai haluttua. Pidempi viive myös lisää algoritmin muistivaatimuksia, joskin muistivaatimukset pysyvät aina pienempinä kuin SIR-siloittimessa.
+\noindent ja nykyisen aika-askeleen $k$ siloitinjakauma lasketaan tästä jakaumasta kuten SIR-siloittimessa (kts. yhtälö (\ref{siloitin-posteriori-k})). Kiinteän viipeen siloitin välttää SIR-siloittimen approksimaatio-ongelmat. Kun viipeelle $L$ pätee $k+L \ll T$ parantaa viipeen pidentäminen tiettyyn pisteeseen asti jakauman approksimaatiota. Kitagawa (1996) suosittelee 10\textendash 20 aika-askeleen viivettä ja esittää 50 aika-askelta viipeen ylärajaksi [@kitagawa-1996]. Paremman estimaatin vastapainona pidemmän viipeen valinta lisää myös viivettä, joka dataa tuottavaan järjestelmään pitää lisätä. Siloittimien tulokset ovat saatavilla vasta $L$:n aika-askeleen jälkeen, mikä ei aina ole käytännössä mahdollista tai haluttua. Pidempi viive myös lisää algoritmin muistivaatimuksia, joskin muistivaatimukset pysyvät aina pienempinä kuin SIR-siloittimessa.
 
 Kiinteän viipeen siloitinta (viipeellä $L=1$) voidaan hyödyntää myös prediktiivisenä siloittimena, jossa siloittelujakaumaa $p(x_{0:(k+1)}|y_{1:(k+1)})$ käytetään suodinjakauman $p(x_{1:(k)}|y_{1:k})$ laskennassa [@Nyobe-2021]. Ydinajatuksena on muokata SIR-algoritmia \ref{sir} niin, että aika-askeleen $k$ painoja $w_k^i$ painotetaan edelleen seuraavasta aika-askeleesta $k+1$ lasketuilla painoilla. Näin algoritmi painottaa jo nykyhetkessä niitä hiukkasia, joiden uskottavuus on seuraavalla aika-askeleella suurempi. Tämä prediktiivinen siloitin voidaan toteuttaa lisäämällä SIR-algoritmiin painotusvaiheen jälkeen seuraava ala-algoritmi:
 
@@ -149,7 +149,7 @@ Yksinkertaisin versio siloittimesta on esitetty algoritmissa \ref{mukautuva-silo
       \Begin{Ajetaan SIR-algoritmi \ref{sir} aika-askeleella $t$\;}
       \Begin{Jokaiselle $s \in S$ lasketaan painovektori kuten algoritmissa \ref{rwps}.\;}
       \Begin{$S \leftarrow S \cup \{s\}$Jokaiselle $s \in S$ lasketaan painovektori kuten algoritmissa \ref{rwps}.\;}
-      \Begin{Jokaiselle $s$ lasketaan varianssi $\sigma^2_{s|t}$ kuten yhtälössä \ref{siloitin-varianssi}. Jos $\sigma^2_{s|t} < \epsilon$ poistetaan $s$ joukosta $S$ ja käytetään siloitinjaukauman estimaattia $\sum_i^N w_t^i \tilde{x}_{s|t}^i \Omega_t$ kaikille aika-askeleilla $t^\prime \ge t$.\;}
+      \Begin{Jokaiselle $s$ lasketaan varianssi $\sigma^2_{s|t}$ kuten yhtälössä (\ref{siloitin-varianssi}). Jos $\sigma^2_{s|t} < \epsilon$ poistetaan $s$ joukosta $S$ ja käytetään siloitinjaukauman estimaattia $\sum_i^N w_t^i \tilde{x}_{s|t}^i \Omega_t$ kaikille aika-askeleilla $t^\prime \ge t$.\;}
     }
   }  
 \caption{Mukautuvan viipeen siloitin}

@@ -287,7 +287,7 @@ for(i in 1:nrow(phase3_values)) {
   for(j in 1:r) {
    print(paste("Algoritmin ajokerta ", j, "/", r, sep=""))
    start_time <- Sys.time()
-   phase3_runs[[j]] <- pf_positioning(y, N = 1000,
+   phase3_runs[[j]] <- pf_positioning(y, N = 100,
                                 resampling = 2/3,
                                 exclusion_polygons = polygonit_E,
                                 inclusion_polygons = polygonit_F,
@@ -318,8 +318,8 @@ for(i in 1:nrow(phase3_values)) {
   
 }
 phase3_summary <- cbind(phase3_values, phase3_results)
-#write_csv(phase3_summary, "data/tulokset_vaihe3.csv")
-#write_rds(phase3_results_list, "data/tulokset_vaihe3.RDS")
+#write_csv(phase3_summary, "data/tulokset_vaihe3_uusi_varianssi.csv")
+#write_rds(phase3_results_list, "data/tulokset_vaihe3_uusi_varianssi.RDS")
 
 # Compute CI for each statistic and parameter combination
 for(i in 1:length(phase3_results_list)) {
@@ -337,10 +337,10 @@ for(i in 1:length(phase3_results_list)) {
   phase3_results[i,"sub_meter_quantile_hi"] <- phase3_results[i,"sub_meter_quantile"] + (stats::qt(persentiili/100, df=(r-1)) * sd(unlist(lapply(phase3_results_list[[i]], function(x) ecdf(x$positioning_error[!is.na(x$positioning_error)])(1))),na.rm=T) / sqrt(r))
 }
 phase3_summary <- cbind(phase3_values, phase3_results)
-#write_csv(phase3_summary, "data/tulokset_vaihe3_ci.csv")
+write_csv(phase3_summary, "data/tulokset_vaihe3_ci_uusi_varianssi.csv")
 
-phase3_summary <- read_csv("data/tulokset_vaihe3_ci.csv")
-phase3_results_list <- read_rds("data/tulokset_vaihe3.RDS")
+#phase3_summary <- read_csv("data/tulokset_vaihe3_ci.csv")
+#phase3_results_list <- read_rds("data/tulokset_vaihe3.RDS")
 phase3_maps <- list()
 for(i in 1:nrow(phase3_summary)) {
   phase3_maps[[i]] <- kartta
