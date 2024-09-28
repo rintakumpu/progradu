@@ -374,7 +374,7 @@ pf_positioning <- function(y,
         # However now these particles don't estimate the position anymore
         # This can be side-stepped by re-sampling (which cannot be done
         # if all probabilities -Inf)
-        if(w_sum_exp!=0 && sum(intersecting_particles!=0)>0) {
+        if(w_sum_exp!=0 && sum(intersecting_particles!=0)>0 && 1==2) {
           # We draw from the original particles a sample with the weights
           # where intersecting_particles are removed, the sample size is
           # sum(intersecting_particles) i.e. the amount of TRUEs in that vector
@@ -706,11 +706,26 @@ pf_positioning <- function(y,
       for(E_index in 1:length(E[[(k)]])) {
         
         E_k <- E[[(k)]][[E_index]]
-        mu_k <- exp(w_k)*matrix(c(x_lon[E_k], x_lat[E_k]), ncol=2)
-        v_current <- sum((raster::pointDistance(matrix(c(x_lon[E_k], x_lat[E_k]), 
-                                                       ncol=2), mu_k, lonlat=F))^2 * exp(w_k))/(N-1)-
-          sum((raster::pointDistance(matrix(c(x_lon[E_k], x_lat[E_k]), 
-                                            ncol=2), mu_k, lonlat=F))^2 * exp(w_k)^2)/(N-1)
+        #mu_k <- exp(w_k)*matrix(c(x_lon[E_k], x_lat[E_k]), ncol=2)
+        #v_current <- sum((raster::pointDistance(matrix(c(x_lon[E_k], x_lat[E_k]), 
+        #                                               ncol=2), mu_k, lonlat=F))^2 * exp(w_k))/(N-1)-
+        #  sum((raster::pointDistance(matrix(c(x_lon[E_k], x_lat[E_k]), 
+        #                                    ncol=2), mu_k, lonlat=F))^2 * exp(w_k)^2)/(N-1)
+        
+        mu_lon <- sum(x_lon[E_k] * exp(w_k))
+        mu_lat <- sum(x_lat[E_k] * exp(w_k))
+        v_current_lon <- sum(exp(w_k)*(x_lon-mu_lon)^2)*1/(N-1)-sum(exp(w_k)^2*(x_lon-mu_lon)^2)*1/(N-1)
+        v_current_lat <- sum(exp(w_k)*(x_lat-mu_lat)^2)*1/(N-1)-sum(exp(w_k)^2*(x_lat-mu_lat)^2)*1/(N-1)
+        #v_current_cov <- sum(exp(w_k)*(x_lon[E_k]-mu_lon)*(x_lat[E_k]-mu_lat))
+        #Sigma <- matrix(data=c(v_current_lon, v_current_cov, 
+        #                       v_current_cov, v_current_lat), ncol=2,nrow=2)
+        
+        
+        # Use norm
+        #v_current <- sqrt(sum(Sigma*Sigma))
+        
+        # Trace (or mean)
+        v_current <- (v_current_lon+v_current_lat)
         if(is.na(v_current)) v_current <- 0
         # Check if maximizes variance
         if(v_current >= v[k]) {
