@@ -267,15 +267,21 @@ Yllä esitetty varianssiestimaatti kärsii kuitenkin epätarkkuudesta, sillä ku
 \label{fig:henok-indeksit}
 \end{figure}
 
-Nyt varianssi voidaan laskeat kuten yhtälössä (\ref{CLE-varianssi}) edellä, kun Eeva-indeksit korvataan Henok-indekseillä
+Nyt varianssi voidaan laskeat kuten yhtälössä (\ref{CLE-varianssi}) edellä, kun Eeva-indeksit korvataan Henok-indekseillä. Saadaan painotettu summa
 
 \begin{align}\label{OD-sum}
-\hat{\mu}_k=\sum_{i=1}^N w_k^i x_k^i[E_{n,k(\lambda)}],
+\hat{\mu}_k=\sum_{i=1}^N w_k^i x_k^i[E_{k(\lambda)}]
 \end{align}
+
+\noindent ja varianssi
+
+\begin{align}\label{OD-varianssi}
+\hat{\sigma}^2_{OD} = \frac{1}{N-1} \sum_{i=1}^N w_k^i (x_k^i[E_{k(\lambda)}]-\hat{\mu}_k)^2 - \frac{1}{N-1} \sum_{i=1}^N (w_k^i)^2 (x_k^i[E_{k(\lambda)}]-\hat{\mu}_k)^2
+,\end{align}
 
 \noindent missä $k(\lambda) \vcentcolon= k-\lambda$ eli se aika-askel, jota käytetään hiukkasten kantaisänä. Viive $\lambda$ on varianssiestimaatin suunnitteluparametri. Pienillä viipeillä estimaatti on harhainen, mutta harha laskee viipeen kasvaessa. Olsson ja Douc suosittavat viipeen ylärajaksi arvoa $\lambda=20$, jolloin estimaattorin harha on käytännössä kokonaan hävitetty. Tämän jälkeen estimaatti voi myös alkaa kärsiä samasta epätarkkuudesta kuin Eeva-indekseihin perustuva CLE-estimaatti.
 
-Mastrototaro ja Olsson (2023) [@Mastrototaro-2023] laajentavat tätä estimaattia edelleen niin, että viive $\lambda$ valitaan mukautuvasti. Mastrototaron ja Olssonin ALvar-estimaatti (*Adaptive-Lag variance*) lasketaan kuten OD-varianssi edellä, mutta kunkin algoritmin ajokerran jälkeen asetetaan seuraavan ajanhetken $\lambda$ seuraavasti:
+Mastrototaro ja Olsson (2023) [@Mastrototaro-2023] laajentavat tätä estimaattia edelleen niin, että viive $\lambda$ valitaan mukautuvasti. Mastrototaron ja Olssonin ALvar-estimaatti (*Adaptive-Lag variance*) lasketaan kuten OD-varianssi (\ref{OD-varianssi}) edellä, mutta kunkin algoritmin ajokerran jälkeen asetetaan seuraavan ajanhetken $\lambda$ seuraavasti:
 
 \begin{align}\label{ALvar-lambda}
 \lambda_{k+1} \leftarrow \operatorname*{arg\,max}_{\lambda \in [0, \lambda_k + 1]} \hat{\sigma}^2_{k+1,\lambda} (\gamma_{k+1})

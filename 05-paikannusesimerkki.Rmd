@@ -417,6 +417,28 @@ Alla esitetään luvun 3 SIR-algoritmiin (\ref{sir}) sekä tässä luvussa esite
 
 Koska esitetty priorijakauma $p_{x_0}$ on epäinformatiivinen ja monimutkainen koeympäristö aiheuttaa monin paikoin heijastuksia, on mahdollista, että ensimmäisten aika-askeleiden aikana algoritmi tuottaa huonoja sijaintiestimaatteja. Tästä syystä algoritmia ajettaessa suoritetaan ensimmäisellä $b=3$ aika-askeleella sisäänajo, jonka aikana karttasovitusta ei käytetä ja jonka aikana kohina-arvona käytetään arvoa $q_{\text{burn\_in}}=q\times10$. Myöskään sijaintiestimaatteja ei sisäänajoaika-askeleilla luoda. Sen sijaan sijaintiestimaatit $\hat{x}_{1:b}$ korvataan ensimmäisellä sisäänajon jälkeisellä sijaintiestimaatilla $\hat{x}_{b+1}$.
 
+Algoritmin tuottamien estimaattien varianssi estimoidaan käyttäen ALvar-varianssiestimaattia. Käytännössä tämä tarkoittaa varianssin estimointia käyttäen OD-varianssiestimaattia (\ref{OD-varianssi}) niin, että viiveparametri $\lambda$ valitaan mukautuvasti käyttäen yhtälöä (\ref{ALvar-lambda}). Koska empiirisessä esimerkissä estimoitavia ulottuvuuksia on kaksi, leveys- ja pituuskoordinaatit, lasketaan varianssi kummallekin näistä erikseen. Saadaan pituuskoordinaattien varianssiestimaatti $\hat{\sigma}^2_{k_x}$ ja leveyskoordinaattien varianssiestimaatti $\hat{\sigma}^2_{k_y}$. 
+
+Lasketaan lisäksi kovarianssiestimaatti
+
+\begin{align}\label{ALvar-kovarianssi}
+\hat{\text{Cov}}_k = \frac{1}{N-1} \sum_{i=1}^N w_k^i (x_{k_{x}}^i[E_{k(\lambda)}]-\hat{\mu}_{x_k})(x_{k_y}^i[E_{k(\lambda)}]-\hat{\mu}_{k_y}) \ - \frac{1}{N-1} \sum_{i=1}^N (w_k^i)^2 (x_{k_{x}}^i[E_{k(\lambda)}]-\hat{\mu}_{x_k})(x_{k_y}^i[E_{k(\lambda)}]-\hat{\mu}_{k_y}),
+\end{align}
+
+\noindent missä $\hat{\mu}_{x_k}$ on painotettu summa (\ref{OD-sum}) laskettuna pituuskoordinaateille ja $\hat{\mu}_{y_k}$ painotettu summa (\ref{OD-sum}) laskettuna leveyskoordinaateille. Viiveparametri $\lambda$ on edelleen valittu mukautuvasti käyttäen yhtälöä (\ref{ALvar-lambda}). Yhdistetään estimoidut varianssit ja kovarianssi kovarianssimatriisin estimaatiksi
+
+\begin{align}\label{ALvar-kovarianssimatriisi}
+\hat{\mathbf{\Sigma}}_k = \begin{bmatrix} \hat{\sigma}^2_{k_x} \hat{\text{Cov}}_k \\ \hat{\text{Cov}}_k \hat{\sigma}^2_{k_y} \end{bmatrix}
+\end{align}
+
+\noindent ja lasketaan aika-askeleen $k$ varianssiestimaatti kovarianssimatriisin Frobeniuksen normina
+
+\begin{align}\label{WB-varianssi}
+\hat{\sigma}_k = \norm{ \hat{\mathbf{\Sigma}}_k } = \sqrt{ \text{tr}\left(\hat{\mathbf{\Sigma}}_k * \hat{\mathbf{\Sigma}}_k\right)}
+\end{align}
+
+\noindent jolloin jokaiselle aika-askeleelle saadaan yksi skalaariarvoinen varianssiestimaatti.
+
 \afterpage{ 
 \clearpage
 \begin{algorithm}[H]
@@ -434,7 +456,7 @@ Koska esitetty priorijakauma $p_{x_0}$ on epäinformatiivinen ja monimutkainen k
     } \Else{ \Begin {Sovitetaan partikkeleihin dynaaminen malli (\ref{dynaaminen-malli-empiirinen}) $x_{k+1}=x_k + v_k$, missä $v_k$ on luotu alaluvussa \ref{dynaaminen-malli} esitetyllä menetelmällä sekä kohina-arvolla $q_k\times10$;}}
     \Begin{Jos karttasovitusalgoritmi on käytössä ja $k>b$, päivitetään painot $w_k$ alaluvun \ref{karttasovitusalgoritmi} karttasovitusalgoritmilla ja rangaistusarvolla $P$;}
     \Begin{Päivitetään painot ja luodaan sijaintiestimaatti algoritmilla \ref{wb-positioning2};}
-    \Begin{Lasketaan ALvar-varianssi $\hat{\sigma}^2_{\text{ALvar}_k}$.\;}
+    \Begin{Lasketaan ALvar-varianssi $\hat{\sigma}^2_k$.\;}
     \Begin{Lasketaan efektiivinen otoskoko $\hat{N}_{eff}$.\;}
     \If{$\hat{N}_{eff}< N_{th}$}{\Begin{Otetaan uudet $N$ otosta palauttaen joukosta $\{x_{1:k}^i\}_{i=1}^N$, missä otoksen $i$ todennäköisyys on $w^i_{k|k}$.\;}}
     \Begin{Asetetaan painot $w^i_{k|k}=1/N$.\;}
@@ -468,8 +490,7 @@ Koska esitetty priorijakauma $p_{x_0}$ on epäinformatiivinen ja monimutkainen k
 
 }
 
-
-Ohessa esitetyn algoritmin suoritusnopeus on perusmuodossaan luokkaa $\mathcal{O}(N)$. Varianssin estimoinnissa käytetään ALvar-varianssiestimaattia (kts. yhtälöt (\ref{CLE-varianssi}) ja (\ref{ALvar-lambda}). Taulukossa \ref{tab:wb-parametrit} on esitetty algoritmin suunnitteluparametrit, joiden valintaan palataan empiirisessä esimerkissä alla.
+Ohessa esitetyn WB-sisätilapaikannusalgoritmin suoritusnopeus on perusmuodossaan luokkaa $\mathcal{O}(N)$. Taulukossa \ref{tab:wb-parametrit} on esitetty algoritmin suunnitteluparametrit, joiden valintaan palataan empiirisessä esimerkissä alla.
 
 ```{r wb-parametrit, tidy=FALSE}
 parametrit <- as.data.frame(matrix(ncol=2,nrow=0))
