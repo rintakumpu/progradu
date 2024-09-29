@@ -84,7 +84,7 @@ Ilman uudelleenotantaa on mahdollista, että algoritmi alkaa kärsiä SIS-algori
 N_{eff}= \frac{N}{1+c_\nu^2(w^i_{k|k})} = \frac{N}{1+\frac{\text{Var}(w^i_{k|k})}{(\mathbb{E}[w^i_{k|k}])^2}} =\frac{N}{1+N^2\text{Var}(w^i_{k|k})}.
 \end{align}
 
-Näin laskettu efektiivinen otoskoko maksimoituu ($N_{eff}=N$), kun kaikille painoille pätee $w^i_{k|k}=1/N$ ja minimoituu ($N_{eff}=1$), kun $w^i_{k|k}=1$ todennäköisyydellä $1/N$ ja $w^i_{k|k}=0$ todennäköisyydellä $(N-1)/N$. Normalisoitujen painojen avulla saadaan effektiiviselle otoskoolle aika-askeleella $k$ laskennallinen approksimaatio
+Näin laskettu efektiivinen otoskoko maksimoituu ($N_{eff}=N$), kun kaikille painoille pätee $w^i_{k|k}=1/N$ ja minimoituu ($N_{eff}=1$), kun $w^i_{k|k}=1$ todennäköisyydellä $1/N$ ja $w^i_{k|k}=0$ todennäköisyydellä $(N-1)/N$. Normalisoitujen painojen avulla saadaan efektiiviselle otoskoolle aika-askeleella $k$ laskennallinen approksimaatio
 
 \begin{align}\label{N-hat-eff}
 \hat{N}_{eff}=\frac{1}{\sum_{i=1}^N(w^i_{k|k})^2}.
@@ -92,7 +92,7 @@ Näin laskettu efektiivinen otoskoko maksimoituu ($N_{eff}=N$), kun kaikille pai
 
 Määritelmille ($\ref{N-eff}$) ja ($\ref{N-hat-eff}$) pätee $1 \leq \hat{N}_{eff} \leq N$. Yläraja saavutetaan, kun jokaisen partikkelin paino on sama. Alarajalle päädytään, kun kaikki paino keskittyy yksittäiselle partikkelille. Tästä saadaan määriteltyä algoritmille SIR-uudelleenotantaehto $\hat{N}_{eff}< N_{th}$. Gustafsson (2010) [@gustafsson-2010] esittää uudelleenotannan kynnysarvoksi esimerkiksi $\hat{N}_{th}=2N/3$. 
 
-Uudelleenotanta ei muuta approksimoitavan jakauma $p$ odotusarvoa, mutta se lisää jakauman Monte Carlo -varianssia. On kuitenkin olemassa esimerkiksi osittamiseen perustuvia uudelleenotantamenetelmiä, jotka pyrkivät minimoimaan varianssin lisäyksen. Varianssin pienennysmenetelmät jätetään tämän tutkielman ulkopuolelle.
+Uudelleenotanta ei muuta approksimoitavan jakauman $p$ odotusarvoa, mutta se lisää jakauman Monte Carlo -varianssia. On kuitenkin olemassa esimerkiksi osittamiseen perustuvia uudelleenotantamenetelmiä, jotka pyrkivät minimoimaan varianssin lisäyksen. Varianssin pienennysmenetelmät jätetään tämän tutkielman ulkopuolelle.
 
 \subsubsection{Ehdotusjakauman valinta}
 
@@ -134,13 +134,13 @@ Kun signaali-kohinasuhde on kohtalainen tai korkea, on parempi käyttää ehdotu
 p(x_k|x^i_{k-1},y_k)=p(y_k|x_k)\frac{p(x_k|x^i_{k-1})}{p(y_k|x^i_{k-1})}.
 \end{align}
 
-\noindent Kun SNR on korkea ja uskottavuusfunktio on integroituva pätee $p(x_k|x^i_{k-1},y_{k}) \propto p(y_k|x_k)$, jolloin voidaan asettaa (\ref{uskottavuusotanta-q})
+\noindent Kun SNR on korkea ja uskottavuusfunktio on integroituva pätee $p(x_k|x^i_{k-1},y_{k}) \propto p(y_k|x_k)$, jolloin voidaan asettaa
 
 \begin{align}\label{uskottavuusotanta-q}
 q(x_k|x^i_{k-1},y_{k}) \propto p(y_k|x_k).
 \end{align}
 
-\noindent Yhtälön (\ref{uskottavuusotanta-q}) perusteella saadaan edelleen uskottavuusotannan painoiksi (\ref{uskottavuusotanta-w}).
+\noindent Yhtälön (\ref{uskottavuusotanta-q}) perusteella saadaan edelleen uskottavuusotannan painoiksi 
 
 \begin{align}\label{uskottavuusotanta-w}
 w^i_{k|k} = w^i_{k-1|k-1}p(x^i_k|x^i_{k-1}).
@@ -148,7 +148,7 @@ w^i_{k|k} = w^i_{k-1|k-1}p(x^i_k|x^i_{k-1}).
 
 \subsection{Konvergenssituloksia}
 
-Alla esitetään kaksi SIR-algoritmiin liittyvää konvergenssitulosta. Se, kuinka hyvin esitetyllä algoritmilla arvioitu posterioritiheys $\hat{p}(x_{1:k}|y_{1:k})$ approksimoi todellista tiheysfunktiota $p(x_{1:k}|y_{1:k})$ sekä mikä on approksimaation keskineliövirhe. Tulokset 1\textendash 2 noudattavat Crisanin ja Doucet'n artikkeleita "Convergence of Sequential Monte Carlo Methods" (2000) [@crisan-2000] ja "A Survey of Convergence Results on Particle Filtering Methods for Practitioners" (2002) [@crisan-2002], tulos 3 Chopinin artikkelia "Central limit theorem for sequential Monte Carlo methods and its application to Bayesian inference" (2004) [@chopin-2004].
+Alla esitetään kolme SIR-algoritmiin liittyvää konvergenssitulosta. Se, kuinka hyvin esitetyllä algoritmilla arvioitu posterioritiheys $\hat{p}(x_{1:k}|y_{1:k})$ approksimoi todellista tiheysfunktiota $p(x_{1:k}|y_{1:k})$, se mikä on approksimaation keskineliövirhe sekä keskeinen raja-arvolause. Tulokset 1\textendash 2 noudattavat Crisanin ja Doucet'n artikkeleita "Convergence of Sequential Monte Carlo Methods" (2000) [@crisan-2000] ja "A Survey of Convergence Results on Particle Filtering Methods for Practitioners" (2002) [@crisan-2002], tulos 3 Chopinin artikkelia "Central limit theorem for sequential Monte Carlo methods and its application to Bayesian inference" (2004) [@chopin-2004].
 
 \textit{Konvergenssitulos 1}: Kun $N \to \infty$ algoritmille pätee kaikille aika-askeleille $k$ tulos (\ref{jakaumakonvergenssi}).
 
@@ -227,7 +227,7 @@ Hiukkassuotimen varianssin estimoinnissa ollaan kiinnostuneita jakaumaestimaatin
 \hat{\sigma}^2_{MC} = \text{Var}_{\text{MC}}(\hat{p}(x_{1:k}|y_{1:k})) = \frac{1}{M-1} \sum_{i=1}^{M}(x_k^i-\bar{x}_k)^2
 ,\end{align}
 
-\noindent missä $x_k^i$ on $k$:nen aika-askeleen piste-estimaatti ajolle  $i=1,\ldots,M$ ja $\bar{x}_k$ piste-estimaattien aritmeettinen keskiarvo laskettuna kaikkien $M$ ajojen yli. Tällaisen Monte Carlo -varianssin estimoiminen on kuitenkin laskennallisesti tehotonta. Monissa käytännön sovellutuksissa jo yhden hiukkassuodinalgoritmin ajaminen vaatii runsaasti laskentatehoa, jolloin Monte Carlo -varianssin laskeminen ei ole mahdollista. Varianssia ei voida myöskään laskea analyyttisesti, mutta koska keskeisen raja-arvolauseen (\ref{CLT}) nojalla tiedetään, että asymptoottinen varianssi 
+\noindent missä $x_k^i$ on $k$:nen aika-askeleen piste-estimaatti ajolle  $i=1,\ldots,M$ ja $\bar{x}_k$ piste-estimaattien aritmeettinen keskiarvo laskettuna kaikkien $M$ ajon yli. Tällaisen Monte Carlo -varianssin estimoiminen on kuitenkin laskennallisesti tehotonta. Monissa käytännön sovellutuksissa jo yhden hiukkassuodinalgoritmin ajaminen vaatii runsaasti laskentatehoa, jolloin Monte Carlo -varianssin laskeminen ei ole mahdollista. Varianssia ei voida myöskään laskea analyyttisesti, mutta koska keskeisen raja-arvolauseen (\ref{CLT}) nojalla tiedetään, että asymptoottinen varianssi 
 
 \begin{align}\label{asymptoottinen-varianssi}
 \lim_{N\to \infty} N \text {Var}(\hat{g}(x_k^i))
@@ -289,4 +289,4 @@ Mastrototaro ja Olsson (2023) [@Mastrototaro-2023] laajentavat tätä estimaatti
 
 Tämä perustuu havaintoon, jonka mukaan ehtyneille Henok-indekseille on olemassa $\lambda^\prime \in [0, \lambda-1]$, joka täyttää ehdon $\hat{\sigma}^2_{k+1,\lambda} (\gamma_{k+1}) < \hat{\sigma}^2_{k+1,\lambda^\prime} (\gamma_{k+1})$, koska myös ehtyneiden indeksien kantaisät ovat ehtyneitä. Nyt indeksi $\lambda_{k+1}$ voidaan valita rekursiivisesti niin, että se tuottaa suurimman varianssiestimaatin, joka on kuitenkin rajoitettu ylhäältä arvoon $\lambda_k+1$. Tämä indeksi ei ole koskaan ehtynyt, joten se on myös parhaan varianssiestimaatin tuottava valinta.
 
-Esitettyjä varianssiestimaatteja voidaan hyödyntää paitsi algoritmien ja parametrivalintojen vertailussa myös mukautuvan viipeen hiukkassiloittimen viipeen valinnassa (kts. luku \@ref(hiukkassiloittimet)). Varianssiestimaatti lasketaan luvun \@ref(paikannusesimerkki) empiirisessä esimerkissä.
+Esitettyjä varianssiestimaatteja voidaan hyödyntää paitsi algoritmien ja parametrivalintojen vertailussa myös mukautuvan viipeen hiukkassiloittimen viipeen valinnassa (kts. luku \@ref(hiukkassiloittimet)). Varianssiestimaatti lasketaan myös luvun \@ref(paikannusesimerkki) empiirisessä esimerkissä.
