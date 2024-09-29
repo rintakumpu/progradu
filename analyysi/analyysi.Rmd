@@ -244,9 +244,9 @@ for(i in 1:nrow(phase2_summary)) {
 }
 
 #do.call("grid.arrange", c(phase2_maps, ncol=4))
-#write_rds(phase2_maps, "data/tulokset_vaihe2_kartat.RDS")
-#write_csv(phase2_summary, "data/tulokset_vaihe2_ci.csv")
-#write_rds(phase2_results_list, "data/tulokset_vaihe2_ci.RDS")
+write_rds(phase2_maps, "data/tulokset_vaihe2_kartat.RDS")
+write_csv(phase2_summary, "data/tulokset_vaihe2_ci.csv")
+write_rds(phase2_results_list, "data/tulokset_vaihe2_ci.RDS")
 ```
 
 

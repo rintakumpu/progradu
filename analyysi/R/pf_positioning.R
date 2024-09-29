@@ -714,9 +714,9 @@ pf_positioning <- function(y,
         
         mu_lon <- sum(x_lon[E_k] * exp(w_k))
         mu_lat <- sum(x_lat[E_k] * exp(w_k))
-        v_current_lon <- sum(exp(w_k)*(x_lon-mu_lon)^2)*1/(N-1)-sum(exp(w_k)^2*(x_lon-mu_lon)^2)*1/(N-1)
-        v_current_lat <- sum(exp(w_k)*(x_lat-mu_lat)^2)*1/(N-1)-sum(exp(w_k)^2*(x_lat-mu_lat)^2)*1/(N-1)
-        v_current_cov <- sum(exp(w_k)*(x_lon[E_k]-mu_lon)*(x_lat[E_k]-mu_lat))*1/(N-1)-sum(exp(w_k)^2*(x_lon[E_k]-mu_lon)*(x_lat[E_k]-mu_lat))*1/(N-1)
+        v_current_lon <- sum(exp(w_k)*(x_lon-mu_lon)^2)*1/(N-1) #-sum(exp(w_k)^2*(x_lon-mu_lon)^2)*1/(N-1)
+        v_current_lat <- sum(exp(w_k)*(x_lat-mu_lat)^2)*1/(N-1) #-sum(exp(w_k)^2*(x_lat-mu_lat)^2)*1/(N-1)
+        v_current_cov <- sum(exp(w_k)*(x_lon[E_k]-mu_lon)*(x_lat[E_k]-mu_lat))*1/(N-1) #-sum(exp(w_k)^2*(x_lon[E_k]-mu_lon)*(x_lat[E_k]-mu_lat))*1/(N-1)
         Sigma <- matrix(data=c(v_current_lon, v_current_cov, 
                                v_current_cov, v_current_lat), ncol=2,nrow=2)
         

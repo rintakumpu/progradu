@@ -233,7 +233,7 @@ Hiukkassuotimen varianssin estimoinnissa ollaan kiinnostuneita jakaumaestimaatin
 \lim_{N\to \infty} N \text {Var}(\hat{g}(x_k^i))
 \end{align}
 
-\noindent on olemassa, on sen estimointiin kehitetty lähivuosina joitakin approksimatiivisia menetelmiä. Alla käsitellään Leen ja Whitleyn (2018) ehdottamaa varianssin estimointitapaa [@Lee-2018].
+\noindent on olemassa, on sen estimointiin kehitetty lähivuosina joitakin approksimatiivisia menetelmiä. Alla käsitellään Chan ja Lain (2013) [@Chan-2013] sekä Leen ja Whitleyn (2018) ehdottamaa varianssin estimointitapaa [@Lee-2018].
 
 Ajetaan SIR-algoritmi kuten esitetty algoritmissa \ref{sir}, mutta merkitään kullakin algoritmin suorituskerralla $k=1,\ldots,T$ ja jokaisen partikkelin $n=1,\ldots,N$ kohdalla indeksillä $E_k^n$ kunkin partikkelin kantaisää eli sitä partikkelia, josta kyseinen partikkeli on uudelleenotantojen kautta polveutunut aika-askeleesta $k=1$ lähtien. Kaavio \ref{fig:eeva-indeksit} havainnollistaa partikkelien polveutumista. 
 
@@ -253,12 +253,12 @@ Varianssiestimaatti voidaan laskea näiden, Leen ja Whitleyn Eeva-indekseiksi ni
 \noindent missä merkintä $x_k^i[E_k]$ tarkoittaa, että partikkeleista $x_k$ valitaan Eeva-indeksien osoittamat partikkelit eli ne partikkelit joille $i=E_k^j$, kun $j=1,\ldots,N$. Sama partikkeli voidaan luonnollisesti valita summaan useamman kerran. Tämän perusteella lasketaan edelleen varianssi
 
 \begin{align}\label{CLE-varianssi}
-\hat{\sigma}^2_{CLE} = \frac{1}{N-1} \sum_{i=1}^N w_k^i (x_k^i[E_k]-\hat{\mu}_k)^2 - \frac{1}{N-1} \sum_{i=1}^N (w_k^i)^2 (x_k^i[E_k]-\hat{\mu}_k)^2
+\hat{\sigma}^2_{CLE} = \frac{1}{N(N-1)} \sum_{i=1}^N w_k^i (x_k^i[E_k]-\hat{\mu}_k)^2
 .\end{align}
 
-\noindent Kyseessä on harhaton ja konsistentti asymptoottisen varianssin estimaatti. Tarkemmin $\hat{\sigma}^2_{CLE}$ konvergoi asymptoottiseen varianssiin (\ref{asymptoottinen-varianssi}). Tätä ei tutkielman puitteissa todisteta. 
+\noindent Kyseessä harhaton ja konsistentti asymptoottisen varianssin estimaatti. Tarkemmin $N\hat{\sigma}^2_{CLE}$ konvergoi asymptoottiseen varianssiin (\ref{asymptoottinen-varianssi}). Tätä ei tutkielman puitteissa todisteta. 
 
-Yllä esitetty varianssiestimaatti kärsii kuitenkin epätarkkuudesta, sillä kun $k \to \infty$, polveutuvat kaikki hiukkaset lopulta samasta kantaisästä eli indeksit $E_k^i,\ldots,E_k^N$ ovat kaikki yhtäsuuria. Tämän vuoksi on mielekästä johtaa indeksit ainoastaan tietystä aiemmasta aika-askeleesta alkaen. Olsson ja Douc (2019) [@olsson-2019] ehdottavat tähän tarkoitukseen Henok-indeksiä $E_{k,m}^n$, jossa $m$ merkitsee aika-askeleen $m<k$ partikkelia, josta kyseinen partikkeli polveutuu. Partikkelien kantaisien sukupolvi määritetään viipeellä $\lambda$ niin, että $m=k-\lambda$. Kaavio \ref{fig:henok-indeksit} havainnollistaa partikkelien polveutumista, kun $\lambda=1$. 
+Yllä esitetty varianssiestimaatti saattaa kuitenkin kärsiä indeksien ehtymisestä, sillä kun $k \to \infty$, polveutuvat kaikki hiukkaset lopulta samasta kantaisästä eli indeksit $E_k^i,\ldots,E_k^N$ ovat kaikki yhtäsuuria. Tämän vuoksi on mielekästä johtaa indeksit ainoastaan tietystä aiemmasta aika-askeleesta alkaen. Olsson ja Douc (2019) [@olsson-2019] ehdottavat tähän tarkoitukseen Henok-indeksiä $E_{k,m}^n$, jossa $m$ merkitsee aika-askeleen $m<k$ partikkelia, josta kyseinen partikkeli polveutuu. Partikkelien kantaisien sukupolvi määritetään viipeellä $\lambda$ niin, että $m=k-\lambda$. Kaavio \ref{fig:henok-indeksit} havainnollistaa partikkelien polveutumista, kun $\lambda=1$. 
 
 \begin{figure}[H]
 \centering
@@ -267,7 +267,7 @@ Yllä esitetty varianssiestimaatti kärsii kuitenkin epätarkkuudesta, sillä ku
 \label{fig:henok-indeksit}
 \end{figure}
 
-Nyt varianssi voidaan laskeat kuten yhtälössä (\ref{CLE-varianssi}) edellä, kun Eeva-indeksit korvataan Henok-indekseillä. Saadaan painotettu summa
+Nyt varianssi voidaan laskea kuten yhtälössä (\ref{CLE-varianssi}) edellä, kun Eeva-indeksit korvataan Henok-indekseillä. Saadaan painotettu summa
 
 \begin{align}\label{OD-sum}
 \hat{\mu}_k=\sum_{i=1}^N w_k^i x_k^i[E_{k(\lambda)}]
@@ -276,7 +276,7 @@ Nyt varianssi voidaan laskeat kuten yhtälössä (\ref{CLE-varianssi}) edellä, 
 \noindent ja varianssi
 
 \begin{align}\label{OD-varianssi}
-\hat{\sigma}^2_{OD} = \frac{1}{N-1} \sum_{i=1}^N w_k^i (x_k^i[E_{k(\lambda)}]-\hat{\mu}_k)^2 - \frac{1}{N-1} \sum_{i=1}^N (w_k^i)^2 (x_k^i[E_{k(\lambda)}]-\hat{\mu}_k)^2
+\hat{\sigma}^2_{OD} = \frac{1}{N-1} \sum_{i=1}^N w_k^i (x_k^i[E_{k(\lambda)}]-\hat{\mu}_k)^2
 ,\end{align}
 
 \noindent missä $k(\lambda) \vcentcolon= k-\lambda$ eli se aika-askel, jota käytetään hiukkasten kantaisänä. Viive $\lambda$ on varianssiestimaatin suunnitteluparametri. Pienillä viipeillä estimaatti on harhainen, mutta harha laskee viipeen kasvaessa. Olsson ja Douc suosittavat viipeen ylärajaksi arvoa $\lambda=20$, jolloin estimaattorin harha on käytännössä kokonaan hävitetty. Tämän jälkeen estimaatti voi myös alkaa kärsiä samasta epätarkkuudesta kuin Eeva-indekseihin perustuva CLE-estimaatti.

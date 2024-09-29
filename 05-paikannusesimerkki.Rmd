@@ -424,10 +424,8 @@ Algoritmin tuottamien estimaattien varianssi estimoidaan käyttäen ALvar-varian
 Lasketaan lisäksi kovarianssiestimaatti
 
 \begin{align}\label{ALvar-kovarianssi}
-\begin{split}
-\hat{\text{Cov}}_k = \frac{1}{N-1} \sum_{i=1}^N w_k^i (x_{k_{x}}^i[E_{k(\lambda)}]-\hat{\mu}_{k_x})(x_{k_y}^i[E_{k(\lambda)}]-\hat{\mu}_{k_y}) \\ - \frac{1}{N-1} \sum_{i=1}^N (w_k^i)^2 (x_{k_{x}}^i[E_{k(\lambda)}]-\hat{\mu}_{k_x})(x_{k_y}^i[E_{k(\lambda)}]-\hat{\mu}_{k_y}),
-\end{split}
-\end{align}
+\hat{\text{Cov}}_k = \frac{1}{N-1} \sum_{i=1}^N w_k^i (x_{k_{x}}^i[E_{k(\lambda)}]-\hat{\mu}_{k_x})(x_{k_y}^i[E_{k(\lambda)}]-\hat{\mu}_{k_y})
+,\end{align}
 
 \noindent missä $\hat{\mu}_{k_x}$ on painotettu summa (\ref{OD-sum}) laskettuna pituuskoordinaateille ja $\hat{\mu}_{k_y}$ painotettu summa (\ref{OD-sum}) laskettuna leveyskoordinaateille. Viiveparametri $\lambda$ on edelleen valittu mukautuvasti käyttäen yhtälöä (\ref{ALvar-lambda}). Yhdistetään estimoidut varianssit ja kovarianssi kovarianssimatriisin estimaatiksi
 
