@@ -422,22 +422,24 @@ Algoritmin tuottamien estimaattien varianssi estimoidaan käyttäen ALvar-varian
 Lasketaan lisäksi kovarianssiestimaatti
 
 \begin{align}\label{ALvar-kovarianssi}
-\hat{\text{Cov}}_k = \frac{1}{N-1} \sum_{i=1}^N w_k^i (x_{k_{x}}^i[E_{k(\lambda)}]-\hat{\mu}_{x_k})(x_{k_y}^i[E_{k(\lambda)}]-\hat{\mu}_{k_y}) \ - \frac{1}{N-1} \sum_{i=1}^N (w_k^i)^2 (x_{k_{x}}^i[E_{k(\lambda)}]-\hat{\mu}_{x_k})(x_{k_y}^i[E_{k(\lambda)}]-\hat{\mu}_{k_y}),
+\begin{split}
+\hat{\text{Cov}}_k = \frac{1}{N-1} \sum_{i=1}^N w_k^i (x_{k_{x}}^i[E_{k(\lambda)}]-\hat{\mu}_{k_x})(x_{k_y}^i[E_{k(\lambda)}]-\hat{\mu}_{k_y}) \\ - \frac{1}{N-1} \sum_{i=1}^N (w_k^i)^2 (x_{k_{x}}^i[E_{k(\lambda)}]-\hat{\mu}_{k_x})(x_{k_y}^i[E_{k(\lambda)}]-\hat{\mu}_{k_y}),
+\end{split}
 \end{align}
 
-\noindent missä $\hat{\mu}_{x_k}$ on painotettu summa (\ref{OD-sum}) laskettuna pituuskoordinaateille ja $\hat{\mu}_{y_k}$ painotettu summa (\ref{OD-sum}) laskettuna leveyskoordinaateille. Viiveparametri $\lambda$ on edelleen valittu mukautuvasti käyttäen yhtälöä (\ref{ALvar-lambda}). Yhdistetään estimoidut varianssit ja kovarianssi kovarianssimatriisin estimaatiksi
+\noindent missä $\hat{\mu}_{k_x}$ on painotettu summa (\ref{OD-sum}) laskettuna pituuskoordinaateille ja $\hat{\mu}_{k_y}$ painotettu summa (\ref{OD-sum}) laskettuna leveyskoordinaateille. Viiveparametri $\lambda$ on edelleen valittu mukautuvasti käyttäen yhtälöä (\ref{ALvar-lambda}). Yhdistetään estimoidut varianssit ja kovarianssi kovarianssimatriisin estimaatiksi
 
 \begin{align}\label{ALvar-kovarianssimatriisi}
-\hat{\mathbf{\Sigma}}_k = \begin{bmatrix} \hat{\sigma}^2_{k_x} \hat{\text{Cov}}_k \\ \hat{\text{Cov}}_k \hat{\sigma}^2_{k_y} \end{bmatrix}
+\hat{\mathbf{\Sigma}}_k = \begin{bmatrix} \hat{\sigma}^2_{k_x} & \hat{\text{Cov}}_k \\ \hat{\text{Cov}}_k & \hat{\sigma}^2_{k_y} \end{bmatrix}
 \end{align}
 
 \noindent ja lasketaan aika-askeleen $k$ varianssiestimaatti kovarianssimatriisin Frobeniuksen normina
 
 \begin{align}\label{WB-varianssi}
 \hat{\sigma}_k = \norm{ \hat{\mathbf{\Sigma}}_k } = \sqrt{ \text{tr}\left(\hat{\mathbf{\Sigma}}_k * \hat{\mathbf{\Sigma}}_k\right)}
-\end{align}
+,\end{align}
 
-\noindent jolloin jokaiselle aika-askeleelle saadaan yksi skalaariarvoinen varianssiestimaatti.
+\noindent jolloin saadaan jokaiselle aika-askeleelle yksi skalaariarvoinen varianssiestimaatti.
 
 \afterpage{ 
 \clearpage

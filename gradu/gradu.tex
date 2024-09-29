@@ -256,26 +256,27 @@ $\mathbb{E}[x]$ & x:n odotusarvo\\
 $\mathbb{E}[x|y]$ & x:n ehdollinen odotusarvo ehdolla y\\
 $\mathbf{X}$ & Matriisi\\
 $\mathbf{X}^\top$ & Matriisin $\mathbf{X}$ transpoosi\\
-$\delta(x)$ & Diracin deltafunktio\\
+$\mathbf{\Sigma}$ & Kovarianssimatriisi\\
 \addlinespace
+$\delta(x)$ & Diracin deltafunktio\\
 $\text{log}(x)$ & Luonnollinen logaritmifunktio\\
 $\text{Var}(x)$ & Varianssifunktio\\
 $\text{id}(x)$ & Identiteettifunktio\\
 $\text{erf}(x)$ & Virhefunktio\\
-$\mathcal{O}(\cdot)$ & \makecell[l]{Algoritmin asymptoottisen suoritusajan Ordo-notaatio,\\suoritusajan mielessä pahin mahdollinen tapaus}\\
 \addlinespace
+$\mathcal{O}(\cdot)$ & \makecell[l]{Algoritmin asymptoottisen suoritusajan Ordo-notaatio,\\suoritusajan mielessä pahin mahdollinen tapaus}\\
 $\mathcal{N}(\mu, \sigma^2)$ & Normaalijakauma, keskiarvoparametri $\mu$, varianssiparametri $\sigma^2$\\
 $\mathcal{U}(a, b)$ & Jatkuva tasajakauma, välin rajaavat parametrit $a$ ja $b$\\
 $X_k$ & Dynaaminen prosessi\\
 $\hat{X}_k$ & Dynaamisen prosessin estimaatti\\
-$\int f(x)dx$ & Funktion $f(x)$ Lebesguen integraali yli $\mathbb{R}^n$\\
 \addlinespace
+$\int f(x)dx$ & Funktion $f(x)$ Lebesguen integraali yli $\mathbb{R}^n$\\
 $\mathbb{P}$ & Todennäköisyysfunktio $\mathcal{A}\rightarrow\mathbb{R}$\\
 $\mathcal{A}$ & $\sigma$-algebra\\
 $\mathbb{R}$ & Reaalilukujen joukko\\
 $\mathbb{R}^n$ & n-ulotteinen vektoriavaruus\\
-$\mathcal{B}(X)$ & Borel-mitta, pienin $X$:n avoimet joukot sisältävä $\sigma$-algebra\\
 \addlinespace
+$\mathcal{B}(X)$ & Borel-mitta, pienin $X$:n avoimet joukot sisältävä $\sigma$-algebra\\
 $\propto$ & Yhtäsuuruus normalisoivaa vakiota huomioimatta\\
 $\emptyset$ & Tyhjä joukko\\
 $\Omega_k$ & Painot aika-askeleella $k$ normalisoiva tekijä\\
@@ -1426,13 +1427,15 @@ Algoritmin tuottamien estimaattien varianssi estimoidaan käyttäen ALvar-varian
 Lasketaan lisäksi kovarianssiestimaatti
 
 \begin{align}\label{ALvar-kovarianssi}
-\hat{\text{Cov}}_k = \frac{1}{N-1} \sum_{i=1}^N w_k^i (x_{k_{x}}^i[E_{k(\lambda)}]-\hat{\mu}_{x_k})(x_{k_y}^i[E_{k(\lambda)}]-\hat{\mu}_{k_y}) \ - \frac{1}{N-1} \sum_{i=1}^N (w_k^i)^2 (x_{k_{x}}^i[E_{k(\lambda)}]-\hat{\mu}_{x_k})(x_{k_y}^i[E_{k(\lambda)}]-\hat{\mu}_{k_y}),
+\begin{split}
+\hat{\text{Cov}}_k = \frac{1}{N-1} \sum_{i=1}^N w_k^i (x_{k_{x}}^i[E_{k(\lambda)}]-\hat{\mu}_{k_x})(x_{k_y}^i[E_{k(\lambda)}]-\hat{\mu}_{k_y}) \\ - \frac{1}{N-1} \sum_{i=1}^N (w_k^i)^2 (x_{k_{x}}^i[E_{k(\lambda)}]-\hat{\mu}_{k_x})(x_{k_y}^i[E_{k(\lambda)}]-\hat{\mu}_{k_y}),
+\end{split}
 \end{align}
 
-\noindent missä \(\hat{\mu}_{x_k}\) on painotettu summa (\ref{OD-sum}) laskettuna pituuskoordinaateille ja \(\hat{\mu}_{y_k}\) painotettu summa (\ref{OD-sum}) laskettuna leveyskoordinaateille. Viiveparametri \(\lambda\) on edelleen valittu mukautuvasti käyttäen yhtälöä (\ref{ALvar-lambda}). Yhdistetään estimoidut varianssit ja kovarianssi kovarianssimatriisin estimaatiksi
+\noindent missä \(\hat{\mu}_{k_x}\) on painotettu summa (\ref{OD-sum}) laskettuna pituuskoordinaateille ja \(\hat{\mu}_{k_y}\) painotettu summa (\ref{OD-sum}) laskettuna leveyskoordinaateille. Viiveparametri \(\lambda\) on edelleen valittu mukautuvasti käyttäen yhtälöä (\ref{ALvar-lambda}). Yhdistetään estimoidut varianssit ja kovarianssi kovarianssimatriisin estimaatiksi
 
 \begin{align}\label{ALvar-kovarianssimatriisi}
-\hat{\mathbf{\Sigma}}_k = \begin{bmatrix} \hat{\sigma}^2_{k_x} \hat{\text{Cov}}_k \\ \hat{\text{Cov}}_k \hat{\sigma}^2_{k_y} \end{bmatrix}
+\hat{\mathbf{\Sigma}}_k = \begin{bmatrix} \hat{\sigma}^2_{k_x} & \hat{\text{Cov}}_k \\ \hat{\text{Cov}}_k & \hat{\sigma}^2_{k_y} \end{bmatrix}
 \end{align}
 
 \noindent ja lasketaan aika-askeleen \(k\) varianssiestimaatti kovarianssimatriisin Frobeniuksen normina
