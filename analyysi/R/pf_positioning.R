@@ -906,5 +906,5 @@ pf_positioning <- function(y,
                                                                            cbind(test_path$x, test_path$y), lonlat=F))
     }
   }
-  return(path_df)
+  return(list(path_df,x))
 }

@@ -117,6 +117,20 @@
 \newcommand{\paaaine}{{Tilastotiede}} 
 \newcommand{\ohjaaja}{{Ohjaajan titteli (Prof./Dos./FT) ja nimi }} %
 \newcommand{\tarkastaja}{{Toisen tarkastajan titteli (Prof./Dos./FT) ja nimi}} 
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
 \ifLuaTeX
   \usepackage{selnolig}  % disable illegal ligatures
 \fi
@@ -815,7 +829,7 @@ Yllä esitetty varianssiestimaatti saattaa kuitenkin kärsiä indeksien ehtymise
 \label{fig:henok-indeksit}
 \end{figure}
 
-Nyt varianssi voidaan laskeat kuten yhtälössä (\ref{CLE-varianssi}) edellä, kun Eeva-indeksit korvataan Henok-indekseillä. Saadaan painotettu summa
+Nyt varianssi voidaan laskea kuten yhtälössä (\ref{CLE-varianssi}) edellä, kun Eeva-indeksit korvataan Henok-indekseillä. Saadaan painotettu summa
 
 \begin{align}\label{OD-sum}
 \hat{\mu}_k=\sum_{i=1}^N w_k^i x_k^i[E_{k(\lambda)}]
@@ -829,13 +843,24 @@ Nyt varianssi voidaan laskeat kuten yhtälössä (\ref{CLE-varianssi}) edellä, 
 
 \noindent missä \(k(\lambda) \vcentcolon= k-\lambda\) eli se aika-askel, jota käytetään hiukkasten kantaisänä. Viive \(\lambda\) on varianssiestimaatin suunnitteluparametri. Pienillä viipeillä estimaatti on harhainen, mutta harha laskee viipeen kasvaessa. Olsson ja Douc suosittavat viipeen ylärajaksi arvoa \(\lambda=20\), jolloin estimaattorin harha on käytännössä kokonaan hävitetty. Tämän jälkeen estimaatti voi myös alkaa kärsiä samasta epätarkkuudesta kuin Eeva-indekseihin perustuva CLE-estimaatti.
 
-Mastrototaro ja Olsson (2023) \citep{Mastrototaro-2023} laajentavat tätä estimaattia edelleen niin, että viive \(\lambda\) valitaan mukautuvasti. Mastrototaron ja Olssonin ALvar-estimaatti (\emph{Adaptive-Lag variance}) lasketaan kuten OD-varianssi (\ref{OD-varianssi}) edellä, mutta kunkin algoritmin ajokerran jälkeen asetetaan seuraavan ajanhetken \(\lambda\) seuraavasti:
+Mastrototaro ja Olsson (2023) \citep{Mastrototaro-2023} laajentavat tätä estimaattia edelleen niin, että viive \(\lambda\) valitaan mukautuvasti. Mastrototaron ja Olssonin ALVar-estimaatti (\emph{Adaptive-Lag variance}) lasketaan kuten OD-varianssi (\ref{OD-varianssi}) edellä, mutta kunkin algoritmin ajokerran jälkeen asetetaan seuraavan ajanhetken \(\lambda\) seuraavasti:
 
-\begin{align}\label{ALvar-lambda}
+\begin{align}\label{ALVar-lambda}
 \lambda_{k+1} \leftarrow \operatorname*{arg\,max}_{\lambda \in [0, \lambda_k + 1]} \hat{\sigma}^2_{k+1,\lambda} (\gamma_{k+1})
 .\end{align}
 
-Tämä perustuu havaintoon, jonka mukaan ehtyneille Henok-indekseille on olemassa \(\lambda^\prime \in [0, \lambda-1]\), joka täyttää ehdon \(\hat{\sigma}^2_{k+1,\lambda} (\gamma_{k+1}) < \hat{\sigma}^2_{k+1,\lambda^\prime} (\gamma_{k+1})\), koska myös ehtyneiden indeksien kantaisät ovat ehtyneitä. Nyt indeksi \(\lambda_{k+1}\) voidaan valita rekursiivisesti niin, että se tuottaa suurimman varianssiestimaatin, joka on kuitenkin rajoitettu ylhäältä arvoon \(\lambda_k+1\). Tämä indeksi ei ole koskaan ehtynyt, joten se on myös parhaan varianssiestimaatin tuottava valinta.
+ja ehtyneet Henok-indeksit määritellään niin, että indeksi on ehtynyt (so. kaikki indeksivektorin indeksit ovat yhtäsuuria) jos jompikumpi ehdoista
+
+\begin{enumerate}
+\def\labelenumi{\roman{enumi})}
+\tightlist
+\item
+  Henok-indeksit \(E^i_{m,k-1}\) ovat ehtyneet, \newline
+\item
+  Henok-indeksit \(E^i_{m-1,k}\) ovat ehtyneet ja on olemassa \(\lambda^\prime \in [0, \lambda-1]\), joka täyttää ehdon \(\hat{\sigma}^2_{k+1,\lambda} (\gamma_{k+1}) < \hat{\sigma}^2_{k+1,\lambda^\prime} (\gamma_{k+1})\), koska myös ehtyneiden indeksien kantaisät ovat ehtyneitä.
+\end{enumerate}
+
+\noindent Nyt indeksi \(\lambda_{k+1}\) voidaan valita rekursiivisesti niin, että se tuottaa suurimman varianssiestimaatin, joka on kuitenkin rajoitettu ylhäältä arvoon \(\lambda_k+1\). Tämä indeksi ei ole koskaan ehtynyt, joten se on myös parhaan varianssiestimaatin tuottava valinta.
 
 Esitettyjä varianssiestimaatteja voidaan hyödyntää paitsi algoritmien ja parametrivalintojen vertailussa myös mukautuvan viipeen hiukkassiloittimen viipeen valinnassa (kts. luku \ref{hiukkassiloittimet}). Varianssiestimaatti lasketaan myös luvun \ref{paikannusesimerkki} empiirisessä esimerkissä.
 
@@ -1424,17 +1449,17 @@ Algoritmin priorijakaumana \(p_{x_0}\) käytetään kahta toisistaan riippumaton
 
 Koska esitetty priorijakauma \(p_{x_0}\) on epäinformatiivinen ja monimutkainen koeympäristö aiheuttaa monin paikoin heijastuksia, on mahdollista, että ensimmäisten aika-askeleiden aikana algoritmi tuottaa huonoja sijaintiestimaatteja. Tästä syystä algoritmia ajettaessa suoritetaan ensimmäisellä \(b=3\) aika-askeleella sisäänajo, jonka aikana karttasovitusta ei käytetä ja jonka aikana kohina-arvona käytetään arvoa \(q_{\text{burn\_in}}=q\times10\). Myöskään sijaintiestimaatteja ei sisäänajoaika-askeleilla luoda. Sisäänajon jälkeen sijaintiestimaatit \(\hat{x}_{1:b}\) korvataan ensimmäisellä sisäänajon jälkeisellä sijaintiestimaatilla \(\hat{x}_{b+1}\).
 
-Algoritmin tuottamien estimaattien varianssi estimoidaan käyttäen ALvar-varianssiestimaattia. Käytännössä tämä tarkoittaa varianssin estimointia käyttäen OD-varianssiestimaattia (\ref{OD-varianssi}) niin, että viiveparametri \(\lambda\) valitaan mukautuvasti käyttäen yhtälöä (\ref{ALvar-lambda}). Koska empiirisessä esimerkissä estimoitavia ulottuvuuksia on kaksi, leveys- ja pituuskoordinaatit, lasketaan varianssi kummallekin näistä erikseen. Saadaan pituuskoordinaattien varianssiestimaatti \(\hat{\sigma}^2_{k_x}\) ja leveyskoordinaattien varianssiestimaatti \(\hat{\sigma}^2_{k_y}\).
+Algoritmin tuottamien estimaattien varianssi estimoidaan käyttäen ALVar-varianssiestimaattia. Käytännössä tämä tarkoittaa varianssin estimointia käyttäen OD-varianssiestimaattia (\ref{OD-varianssi}) niin, että viiveparametri \(\lambda\) valitaan mukautuvasti käyttäen yhtälöä (\ref{ALVar-lambda}). Koska empiirisessä esimerkissä estimoitavia ulottuvuuksia on kaksi, leveys- ja pituuskoordinaatit, lasketaan varianssi kummallekin näistä erikseen. Saadaan pituuskoordinaattien varianssiestimaatti \(\hat{\sigma}^2_{k_x}\) ja leveyskoordinaattien varianssiestimaatti \(\hat{\sigma}^2_{k_y}\).
 
 Lasketaan lisäksi kovarianssiestimaatti
 
-\begin{align}\label{ALvar-kovarianssi}
+\begin{align}\label{ALVar-kovarianssi}
 \hat{\text{Cov}}_k = \frac{1}{N-1} \sum_{i=1}^N w_k^i (x_{k_{x}}^i[E_{k(\lambda)}]-\hat{\mu}_{k_x})(x_{k_y}^i[E_{k(\lambda)}]-\hat{\mu}_{k_y})
 ,\end{align}
 
-\noindent missä \(\hat{\mu}_{k_x}\) on painotettu summa (\ref{OD-sum}) laskettuna pituuskoordinaateille ja \(\hat{\mu}_{k_y}\) painotettu summa (\ref{OD-sum}) laskettuna leveyskoordinaateille. Viiveparametri \(\lambda\) on edelleen valittu mukautuvasti käyttäen yhtälöä (\ref{ALvar-lambda}). Yhdistetään estimoidut varianssit ja kovarianssi kovarianssimatriisin estimaatiksi
+\noindent missä \(\hat{\mu}_{k_x}\) on painotettu summa (\ref{OD-sum}) laskettuna pituuskoordinaateille ja \(\hat{\mu}_{k_y}\) painotettu summa (\ref{OD-sum}) laskettuna leveyskoordinaateille. Viiveparametri \(\lambda\) on edelleen valittu mukautuvasti käyttäen yhtälöä (\ref{ALVar-lambda}). Yhdistetään estimoidut varianssit ja kovarianssi kovarianssimatriisin estimaatiksi
 
-\begin{align}\label{ALvar-kovarianssimatriisi}
+\begin{align}\label{ALVar-kovarianssimatriisi}
 \hat{\mathbf{\Sigma}}_k = \begin{bmatrix} \hat{\sigma}^2_{k_x} & \hat{\text{Cov}}_k \\ \hat{\text{Cov}}_k & \hat{\sigma}^2_{k_y} \end{bmatrix}
 \end{align}
 
@@ -1463,7 +1488,7 @@ Lasketaan lisäksi kovarianssiestimaatti
     } \Else{ \Begin {Sovitetaan partikkeleihin dynaaminen malli (\ref{dynaaminen-malli-empiirinen}) $x_{k+1}=x_k + v_k$, missä $v_k$ on luotu alaluvussa \ref{dynaaminen-malli} esitetyllä menetelmällä sekä kohina-arvolla $q_k=q\times10$;}}
     \Begin{Jos karttasovitusalgoritmi on käytössä ja $k>b$, päivitetään painot $w_k$ alaluvun \ref{karttasovitusalgoritmi} karttasovitusalgoritmilla ja rangaistusarvolla $P$;}
     \Begin{Päivitetään painot ja luodaan sijaintiestimaatti algoritmilla \ref{wb-positioning2};}
-    \Begin{Lasketaan ALvar-varianssi $\hat{\sigma}^2_k$.\;}
+    \Begin{Lasketaan ALVar-varianssi $\hat{\sigma}^2_k$.\;}
     \Begin{Lasketaan efektiivinen otoskoko $\hat{N}_{eff}$.\;}
     \If{$\hat{N}_{eff}< N_{th}$}{\Begin{Otetaan uudet $N$ otosta palauttaen joukosta $\{x_{1:k}^i\}_{i=1}^N$, missä otoksen $i$ todennäköisyys on $w^i_{k|k}$.\;}}
     \Begin{Asetetaan painot $w^i_{k|k}=1/N$.\;}
@@ -1639,7 +1664,7 @@ Ensimmäisessä vaiheessa suoritettiin paikannus partikkelien määrällä \(N={
 \toprule
 N & resampling & Mediaani (m) & Mediaanin 95\%-luottamusväli & <1m\\
 \midrule
-100 & 0.00 & 1.93 & {}[1.86, 2.01] & 0.28\\
+100 & 0.00 & 1.95 & {}[1.87, 2.03] & 0.28\\
 1000 & 0.00 & 1.05 & {}[1.03, 1.07] & 0.48\\
 10000 & 0.00 & 0.88 & {}[0.87, 0.88] & 0.55\\
 100 & 0.10 & 0.86 & {}[0.86, 0.87] & 0.57\\
@@ -1665,20 +1690,20 @@ N & resampling & Mediaani (m) & Mediaanin 95\%-luottamusväli & <1m\\
 \toprule
 N & resampling & Varianssi & MC-varianssi & Ajoaika (s)\\
 \midrule
-100 & 0.00 & NA & 15.92 & 7.99\\
-1000 & 0.00 & NA & 1.41 & 15.92\\
-10000 & 0.00 & NA & 0.09 & 1.67\\
-100 & 0.10 & 3.28 & 0.10 & 8.11\\
-1000 & 0.10 & 1.36 & 0.02 & 16.45\\
+100 & 0.00 & NA & 16.02 & 7.64\\
+1000 & 0.00 & NA & 1.41 & 15.35\\
+10000 & 0.00 & NA & 0.09 & 85.44\\
+100 & 0.10 & 0.07 & 0.10 & 6.97\\
+1000 & 0.10 & 0.00 & 0.02 & 14.40\\
 \addlinespace
-10000 & 0.10 & 0.62 & 0.00 & 1.60\\
-100 & 0.67 & 1.09 & 0.06 & 7.79\\
-1000 & 0.67 & 0.37 & 0.01 & 15.49\\
-10000 & 0.67 & 0.26 & 0.00 & 1.56\\
-100 & 1.00 & 1.10 & 0.06 & 7.89\\
+10000 & 0.10 & 0.00 & 0.00 & 82.68\\
+100 & 0.67 & 0.06 & 0.06 & 7.16\\
+1000 & 0.67 & 0.00 & 0.01 & 14.50\\
+10000 & 0.67 & 0.00 & 0.00 & 81.78\\
+100 & 1.00 & 0.06 & 0.06 & 7.19\\
 \addlinespace
-1000 & 1.00 & 0.38 & 0.01 & 15.43\\
-10000 & 1.00 & 0.26 & 0.00 & 1.56\\
+1000 & 1.00 & 0.00 & 0.01 & 14.48\\
+10000 & 1.00 & 0.00 & 0.00 & 83.31\\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -1698,9 +1723,9 @@ Ensimmäisen vaiheen tuloksista huomataan, ettei hiukkasten määrällä ole juu
 
 Se, ettei partikkelien määrän kasvattaminen automaattisesti paranna paikannustarkkuuta viittaa siihen, että koeasetelma on herkkä priorijakauman valinnalle. Tuloksista huomataan lisäksi, että algoritmin aikakompleksisuus on uudelleenotannasta riipumatta luokkaa \(\mathcal{O}(N)\), kuten tukielman teoriaosassa todettiin. Samoin hiukkasten määrän kasvattaminen pienentää variansseja, kuten teoriaosassa todettiin.
 
-Koska MC-varianssi on laskettu itse sijaintiestimaateista ja ALvar-varianssi kaikista partikkeleista, on näiden kahden varianssin suuruusluokka eri. Huomataan kuitenkin, että nämä kaksi varianssiestimaattia ovat hyvin korreloituneita, korrelaatiokertoimilla \(\rho_\text{Pearson} \approx 0.97\) ja \(\rho_\text{Spearman} \approx 0.97\). Voidaan siis olettaa ALvar-varianssin estimoivan hyvin hiukkassuotimen todellista varianssia. Kun uudelleenotanta ei ole käytössä, ei myöskään ALvar-varianssia voida laskea.
+Koska MC-varianssi on laskettu itse sijaintiestimaateista ja ALVar-varianssi kaikista partikkeleista, on näiden kahden varianssin suuruusluokka eri. Huomataan kuitenkin, että nämä kaksi varianssiestimaattia ovat hyvin korreloituneita, korrelaatiokertoimilla \(\rho_\text{Pearson} \approx 0.98\) ja \(\rho_\text{Spearman} \approx 0.97\). Voidaan siis olettaa ALVar-varianssin estimoivan hyvin hiukkassuotimen todellista varianssia. Kun uudelleenotanta ei ole käytössä, ALVar-varianssia ei lasketa.
 
-Ensimmäisen vaiheen tulosten perusteella valitaan seuraavaan vaiheeseen ne \(N\)- ja \emph{resampling}-parametriarvot, jotka tuottavat parhaimman mediaanipaikannusvirheen. Jos kahden eri paikannusvirheen 95\%-luottamusvälit ovat päällekäiset, valitaan arvoista ensin se, joka tuottaa paremman ALvar-varianssin. Näin päädytään parametriyhdistelmään \(N=10000\) ja \emph{resampling} \(=2/3\). Koska algoritmin ajoaika 10000 partikkelilla on kuitenkin epäkäytännöllinen, valitaan \(N=1000\), vaikka tämä lisääkin hieman estimaatin varianssia.
+Ensimmäisen vaiheen tulosten perusteella valitaan seuraavaan vaiheeseen ne \(N\)- ja \emph{resampling}-parametriarvot, jotka tuottavat parhaimman mediaanipaikannusvirheen. Jos kahden eri paikannusvirheen 95\%-luottamusvälit ovat päällekäiset, valitaan arvoista ensin se, joka tuottaa paremman ALVar-varianssin. Näin päädytään parametriyhdistelmään \(N=10000\) ja \emph{resampling} \(=2/3\). Koska algoritmin ajoaika 10000 partikkelilla on kuitenkin epäkäytännöllinen, valitaan \(N=1000\), vaikka tämä lisääkin hieman estimaatin varianssia.
 
 Toisessa vaiheessa \(N=1000\) ja \emph{resampling}=\(2/3\) pidettiin vakioarvoisina ja testattiin karttasovitusalgoritmia \emph{map\_matching} \(={T,F}\), karttasovitusalgoritmin rangaistusarvoa \(P={1,100,1000}\) sekä dynaamisen mallin kohina-arvoa \(q={0.75,1.5,2,2.5}\). Signaalin vahvuuden kynnysarvoa ei käytetty, kuten ei käytetty myöskään prediktiivistä siloitinta. Koska rangaistusarvo \(P\) oli käytössä ainoastaan karttasovitusalgoritmia käytettäessä, tarkasteltiin toisessa vaiheessa \(16\) eri suunnitteluparametrikombinaatiota. Tulokset on esitetty kuvassa \(\ref{fig:phase2-results}\) sekä taulukoissa \ref{tab:vaihe-2-tulokset} ja \ref{tab:vaihe-2-tulokset-varianssi}. Ajojen tulokset on esitetty karttapolkuina liitteen A alaluvussa \nameref{vaihe-2}.
 
@@ -1712,20 +1737,20 @@ Toisessa vaiheessa \(N=1000\) ja \emph{resampling}=\(2/3\) pidettiin vakioarvois
 \toprule
 map\_matching & P & q & Mediaani (m) & Mediaanin 95\%-luottamusväli & <1m\\
 \midrule
-TRUE & 0 & 0.75 & 0.74 & {}[0.73, 0.74] & 0.66\\
-TRUE & 100 & 0.75 & 0.73 & {}[0.72, 0.74] & 0.66\\
-TRUE & 1000 & 0.75 & 0.72 & {}[0.71, 0.72] & 0.67\\
-TRUE & 0 & 1.50 & 0.72 & {}[0.71, 0.72] & 0.68\\
-TRUE & 100 & 1.50 & 0.71 & {}[0.7, 0.72] & 0.68\\
+TRUE & 0 & 0.75 & 0.79 & {}[0.78, 0.79] & 0.63\\
+TRUE & 100 & 0.75 & 0.77 & {}[0.77, 0.78] & 0.63\\
+TRUE & 1000 & 0.75 & 0.77 & {}[0.76, 0.77] & 0.63\\
+TRUE & 0 & 1.50 & 0.79 & {}[0.79, 0.79] & 0.61\\
+TRUE & 100 & 1.50 & 0.79 & {}[0.78, 0.79] & 0.62\\
 \addlinespace
-TRUE & 1000 & 1.50 & 0.69 & {}[0.69, 0.7] & 0.68\\
-TRUE & 0 & 2.00 & 0.71 & {}[0.7, 0.72] & 0.68\\
-TRUE & 100 & 2.00 & 0.70 & {}[0.69, 0.7] & 0.68\\
-TRUE & 1000 & 2.00 & 0.70 & {}[0.69, 0.71] & 0.68\\
-TRUE & 0 & 2.50 & 0.71 & {}[0.71, 0.72] & 0.68\\
+TRUE & 1000 & 1.50 & 0.78 & {}[0.77, 0.78] & 0.62\\
+TRUE & 0 & 2.00 & 0.79 & {}[0.79, 0.79] & 0.61\\
+TRUE & 100 & 2.00 & 0.79 & {}[0.78, 0.79] & 0.62\\
+TRUE & 1000 & 2.00 & 0.78 & {}[0.78, 0.79] & 0.62\\
+TRUE & 0 & 2.50 & 0.79 & {}[0.79, 0.8] & 0.61\\
 \addlinespace
-TRUE & 100 & 2.50 & 0.69 & {}[0.69, 0.7] & 0.68\\
-TRUE & 1000 & 2.50 & 0.70 & {}[0.69, 0.71] & 0.67\\
+TRUE & 100 & 2.50 & 0.79 & {}[0.79, 0.79] & 0.62\\
+TRUE & 1000 & 2.50 & 0.79 & {}[0.78, 0.79] & 0.62\\
 FALSE & 0 & 0.75 & 0.88 & {}[0.88, 0.89] & 0.57\\
 FALSE & 0 & 1.50 & 0.87 & {}[0.87, 0.87] & 0.57\\
 FALSE & 0 & 2.00 & 0.86 & {}[0.86, 0.87] & 0.58\\
@@ -1743,25 +1768,25 @@ FALSE & 0 & 2.50 & 0.86 & {}[0.85, 0.86] & 0.57\\
 \toprule
 map\_matching & P & q & Varianssi & MC-varianssi & Ajoaika (s)\\
 \midrule
-TRUE & 0 & 0.75 & 0.46 & 1.35 & 16.22\\
-TRUE & 100 & 0.75 & 0.49 & 2.10 & 16.22\\
-TRUE & 1000 & 0.75 & 0.52 & 2.24 & 16.22\\
-TRUE & 0 & 1.50 & 0.43 & 0.14 & 16.22\\
-TRUE & 100 & 1.50 & 0.43 & 0.58 & 16.22\\
+TRUE & 0 & 0.75 & 0 & 0.04 & 43.41\\
+TRUE & 100 & 0.75 & 0 & 0.06 & 51.29\\
+TRUE & 1000 & 0.75 & 0 & 0.08 & 51.31\\
+TRUE & 0 & 1.50 & 0 & 0.02 & 44.12\\
+TRUE & 100 & 1.50 & 0 & 0.02 & 51.75\\
 \addlinespace
-TRUE & 1000 & 1.50 & 0.47 & 0.92 & 16.22\\
-TRUE & 0 & 2.00 & 0.47 & 0.11 & 16.22\\
-TRUE & 100 & 2.00 & 0.48 & 0.66 & 16.22\\
-TRUE & 1000 & 2.00 & 0.52 & 1.15 & 16.22\\
-TRUE & 0 & 2.50 & 0.52 & 0.12 & 16.22\\
+TRUE & 1000 & 1.50 & 0 & 0.03 & 53.26\\
+TRUE & 0 & 2.00 & 0 & 0.01 & 45.06\\
+TRUE & 100 & 2.00 & 0 & 0.01 & 54.35\\
+TRUE & 1000 & 2.00 & 0 & 0.03 & 54.59\\
+TRUE & 0 & 2.50 & 0 & 0.01 & 45.97\\
 \addlinespace
-TRUE & 100 & 2.50 & 0.53 & 0.73 & 16.22\\
-TRUE & 1000 & 2.50 & 0.58 & 1.08 & 16.22\\
-FALSE & 0 & 0.75 & 0.42 & 0.04 & 16.22\\
-FALSE & 0 & 1.50 & 0.35 & 0.01 & 16.22\\
-FALSE & 0 & 2.00 & 0.37 & 0.01 & 16.22\\
+TRUE & 100 & 2.50 & 0 & 0.01 & 53.70\\
+TRUE & 1000 & 2.50 & 0 & 0.02 & 54.39\\
+FALSE & 0 & 0.75 & 0 & 0.04 & 16.24\\
+FALSE & 0 & 1.50 & 0 & 0.01 & 15.75\\
+FALSE & 0 & 2.00 & 0 & 0.01 & 15.02\\
 \addlinespace
-FALSE & 0 & 2.50 & 0.41 & 0.01 & 16.22\\
+FALSE & 0 & 2.50 & 0 & 0.01 & 15.28\\
 \bottomrule
 \end{tabular}
 \end{table}

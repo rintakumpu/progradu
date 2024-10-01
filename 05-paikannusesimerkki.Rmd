@@ -419,17 +419,17 @@ Algoritmin priorijakaumana $p_{x_0}$ käytetään kahta toisistaan riippumatonta
 
 Koska esitetty priorijakauma $p_{x_0}$ on epäinformatiivinen ja monimutkainen koeympäristö aiheuttaa monin paikoin heijastuksia, on mahdollista, että ensimmäisten aika-askeleiden aikana algoritmi tuottaa huonoja sijaintiestimaatteja. Tästä syystä algoritmia ajettaessa suoritetaan ensimmäisellä $b=3$ aika-askeleella sisäänajo, jonka aikana karttasovitusta ei käytetä ja jonka aikana kohina-arvona käytetään arvoa $q_{\text{burn\_in}}=q\times10$. Myöskään sijaintiestimaatteja ei sisäänajoaika-askeleilla luoda. Sisäänajon jälkeen sijaintiestimaatit $\hat{x}_{1:b}$ korvataan ensimmäisellä sisäänajon jälkeisellä sijaintiestimaatilla $\hat{x}_{b+1}$.
 
-Algoritmin tuottamien estimaattien varianssi estimoidaan käyttäen ALvar-varianssiestimaattia. Käytännössä tämä tarkoittaa varianssin estimointia käyttäen OD-varianssiestimaattia (\ref{OD-varianssi}) niin, että viiveparametri $\lambda$ valitaan mukautuvasti käyttäen yhtälöä (\ref{ALvar-lambda}). Koska empiirisessä esimerkissä estimoitavia ulottuvuuksia on kaksi, leveys- ja pituuskoordinaatit, lasketaan varianssi kummallekin näistä erikseen. Saadaan pituuskoordinaattien varianssiestimaatti $\hat{\sigma}^2_{k_x}$ ja leveyskoordinaattien varianssiestimaatti $\hat{\sigma}^2_{k_y}$. 
+Algoritmin tuottamien estimaattien varianssi estimoidaan käyttäen ALVar-varianssiestimaattia. Käytännössä tämä tarkoittaa varianssin estimointia käyttäen OD-varianssiestimaattia (\ref{OD-varianssi}) niin, että viiveparametri $\lambda$ valitaan mukautuvasti käyttäen yhtälöä (\ref{ALVar-lambda}). Koska empiirisessä esimerkissä estimoitavia ulottuvuuksia on kaksi, leveys- ja pituuskoordinaatit, lasketaan varianssi kummallekin näistä erikseen. Saadaan pituuskoordinaattien varianssiestimaatti $\hat{\sigma}^2_{k_x}$ ja leveyskoordinaattien varianssiestimaatti $\hat{\sigma}^2_{k_y}$. 
 
 Lasketaan lisäksi kovarianssiestimaatti
 
-\begin{align}\label{ALvar-kovarianssi}
+\begin{align}\label{ALVar-kovarianssi}
 \hat{\text{Cov}}_k = \frac{1}{N-1} \sum_{i=1}^N w_k^i (x_{k_{x}}^i[E_{k(\lambda)}]-\hat{\mu}_{k_x})(x_{k_y}^i[E_{k(\lambda)}]-\hat{\mu}_{k_y})
 ,\end{align}
 
-\noindent missä $\hat{\mu}_{k_x}$ on painotettu summa (\ref{OD-sum}) laskettuna pituuskoordinaateille ja $\hat{\mu}_{k_y}$ painotettu summa (\ref{OD-sum}) laskettuna leveyskoordinaateille. Viiveparametri $\lambda$ on edelleen valittu mukautuvasti käyttäen yhtälöä (\ref{ALvar-lambda}). Yhdistetään estimoidut varianssit ja kovarianssi kovarianssimatriisin estimaatiksi
+\noindent missä $\hat{\mu}_{k_x}$ on painotettu summa (\ref{OD-sum}) laskettuna pituuskoordinaateille ja $\hat{\mu}_{k_y}$ painotettu summa (\ref{OD-sum}) laskettuna leveyskoordinaateille. Viiveparametri $\lambda$ on edelleen valittu mukautuvasti käyttäen yhtälöä (\ref{ALVar-lambda}). Yhdistetään estimoidut varianssit ja kovarianssi kovarianssimatriisin estimaatiksi
 
-\begin{align}\label{ALvar-kovarianssimatriisi}
+\begin{align}\label{ALVar-kovarianssimatriisi}
 \hat{\mathbf{\Sigma}}_k = \begin{bmatrix} \hat{\sigma}^2_{k_x} & \hat{\text{Cov}}_k \\ \hat{\text{Cov}}_k & \hat{\sigma}^2_{k_y} \end{bmatrix}
 \end{align}
 
@@ -458,7 +458,7 @@ Lasketaan lisäksi kovarianssiestimaatti
     } \Else{ \Begin {Sovitetaan partikkeleihin dynaaminen malli (\ref{dynaaminen-malli-empiirinen}) $x_{k+1}=x_k + v_k$, missä $v_k$ on luotu alaluvussa \ref{dynaaminen-malli} esitetyllä menetelmällä sekä kohina-arvolla $q_k=q\times10$;}}
     \Begin{Jos karttasovitusalgoritmi on käytössä ja $k>b$, päivitetään painot $w_k$ alaluvun \ref{karttasovitusalgoritmi} karttasovitusalgoritmilla ja rangaistusarvolla $P$;}
     \Begin{Päivitetään painot ja luodaan sijaintiestimaatti algoritmilla \ref{wb-positioning2};}
-    \Begin{Lasketaan ALvar-varianssi $\hat{\sigma}^2_k$.\;}
+    \Begin{Lasketaan ALVar-varianssi $\hat{\sigma}^2_k$.\;}
     \Begin{Lasketaan efektiivinen otoskoko $\hat{N}_{eff}$.\;}
     \If{$\hat{N}_{eff}< N_{th}$}{\Begin{Otetaan uudet $N$ otosta palauttaen joukosta $\{x_{1:k}^i\}_{i=1}^N$, missä otoksen $i$ todennäköisyys on $w^i_{k|k}$.\;}}
     \Begin{Asetetaan painot $w^i_{k|k}=1/N$.\;}
@@ -665,9 +665,9 @@ Ensimmäisen vaiheen tuloksista huomataan, ettei hiukkasten määrällä ole juu
 
 Se, ettei partikkelien määrän kasvattaminen automaattisesti paranna paikannustarkkuuta viittaa siihen, että koeasetelma on herkkä priorijakauman valinnalle. Tuloksista huomataan lisäksi, että algoritmin aikakompleksisuus on uudelleenotannasta riipumatta luokkaa $\mathcal{O}(N)$, kuten tukielman teoriaosassa todettiin. Samoin hiukkasten määrän kasvattaminen pienentää variansseja, kuten teoriaosassa todettiin.
 
-Koska MC-varianssi on laskettu itse sijaintiestimaateista ja ALvar-varianssi kaikista partikkeleista, on näiden kahden varianssin suuruusluokka eri. Huomataan kuitenkin, että nämä kaksi varianssiestimaattia ovat hyvin korreloituneita, korrelaatiokertoimilla $\rho_\text{Pearson} \approx 0.97$ ja $\rho_\text{Spearman} \approx 0.97$. Voidaan siis olettaa ALvar-varianssin estimoivan hyvin hiukkassuotimen todellista varianssia. Kun uudelleenotanta ei ole käytössä, ei myöskään ALvar-varianssia voida laskea.
+Koska MC-varianssi on laskettu itse sijaintiestimaateista ja ALVar-varianssi kaikista partikkeleista, on näiden kahden varianssin suuruusluokka eri. Huomataan kuitenkin, että nämä kaksi varianssiestimaattia ovat hyvin korreloituneita, korrelaatiokertoimilla $\rho_\text{Pearson} \approx 0.98$ ja $\rho_\text{Spearman} \approx 0.97$. Voidaan siis olettaa ALVar-varianssin estimoivan hyvin hiukkassuotimen todellista varianssia. Kun uudelleenotanta ei ole käytössä, ALVar-varianssia ei lasketa.
 
-Ensimmäisen vaiheen tulosten perusteella valitaan seuraavaan vaiheeseen ne $N$- ja *resampling*-parametriarvot, jotka tuottavat parhaimman mediaanipaikannusvirheen. Jos kahden eri paikannusvirheen 95%-luottamusvälit ovat päällekäiset, valitaan arvoista ensin se, joka tuottaa paremman ALvar-varianssin. Näin päädytään parametriyhdistelmään $N=10000$ ja *resampling* $=2/3$. Koska algoritmin ajoaika 10000 partikkelilla on kuitenkin epäkäytännöllinen, valitaan $N=1000$, vaikka tämä lisääkin hieman estimaatin varianssia.
+Ensimmäisen vaiheen tulosten perusteella valitaan seuraavaan vaiheeseen ne $N$- ja *resampling*-parametriarvot, jotka tuottavat parhaimman mediaanipaikannusvirheen. Jos kahden eri paikannusvirheen 95%-luottamusvälit ovat päällekäiset, valitaan arvoista ensin se, joka tuottaa paremman ALVar-varianssin. Näin päädytään parametriyhdistelmään $N=10000$ ja *resampling* $=2/3$. Koska algoritmin ajoaika 10000 partikkelilla on kuitenkin epäkäytännöllinen, valitaan $N=1000$, vaikka tämä lisääkin hieman estimaatin varianssia.
 
 Toisessa vaiheessa $N=1000$ ja *resampling*=$2/3$ pidettiin vakioarvoisina ja testattiin karttasovitusalgoritmia *map_matching* $={T,F}$, karttasovitusalgoritmin rangaistusarvoa $P={1,100,1000}$ sekä dynaamisen mallin kohina-arvoa $q={0.75,1.5,2,2.5}$. Signaalin vahvuuden kynnysarvoa ei käytetty, kuten ei käytetty myöskään prediktiivistä siloitinta. Koska rangaistusarvo $P$ oli käytössä ainoastaan karttasovitusalgoritmia käytettäessä, tarkasteltiin toisessa vaiheessa $16$ eri suunnitteluparametrikombinaatiota. Tulokset on esitetty kuvassa $\ref{fig:phase2-results}$ sekä taulukoissa \ref{tab:vaihe-2-tulokset} ja \ref{tab:vaihe-2-tulokset-varianssi}. Ajojen tulokset on esitetty karttapolkuina liitteen A alaluvussa \nameref{vaihe-2}.
  
