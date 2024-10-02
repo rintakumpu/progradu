@@ -149,7 +149,7 @@ Yksinkertaisin versio siloittimesta on esitetty algoritmissa \ref{mukautuva-silo
       \Begin{Ajetaan SIR-algoritmi \ref{sir} aika-askeleella $t$\;}
       \Begin{Jokaiselle $s \in S$ lasketaan painovektori kuten algoritmissa \ref{rwps}.\;}
       \Begin{$S \leftarrow S \cup \{s\}$Jokaiselle $s \in S$ lasketaan painovektori kuten algoritmissa \ref{rwps}.\;}
-      \Begin{Jokaiselle $s$ lasketaan varianssi $\sigma^2_{s|t}$ kuten yhtälössä (\ref{siloitin-varianssi}). Jos $\sigma^2_{s|t} < \epsilon$ poistetaan $s$ joukosta $S$ ja käytetään siloitinjaukauman estimaattia $\sum_i^N w_t^i \tilde{x}_{s|t}^i \Omega_t$ kaikille aika-askeleilla $t^\prime \ge t$.\;}
+      \Begin{Jokaiselle $s$ lasketaan varianssiestimaatti $\hat{\sigma}^2_{s|t}$ kuten yhtälössä (\ref{siloitin-varianssi}). Jos $\hat{\sigma}^2_{s|t} < \epsilon$ poistetaan $s$ joukosta $S$ ja käytetään siloitinjaukauman estimaattia $\sum_i^N w_t^i \tilde{x}_{s|t}^i \Omega_t$ kaikille aika-askeleilla $t^\prime \ge t$.\;}
     }
   }  
 \caption{Mukautuvan viipeen siloitin}

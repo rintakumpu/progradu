@@ -281,16 +281,18 @@ Nyt varianssi voidaan laskea kuten yhtälössä (\ref{CLE-varianssi}) edellä, k
 
 \noindent missä $k(\lambda) \vcentcolon= k-\lambda$ eli se aika-askel, jota käytetään hiukkasten kantaisänä. Viive $\lambda$ on varianssiestimaatin suunnitteluparametri. Pienillä viipeillä estimaatti on harhainen, mutta harha laskee viipeen kasvaessa. Olsson ja Douc suosittavat viipeen ylärajaksi arvoa $\lambda=20$, jolloin estimaattorin harha on käytännössä kokonaan hävitetty. Tämän jälkeen estimaatti voi myös alkaa kärsiä samasta epätarkkuudesta kuin Eeva-indekseihin perustuva CLE-estimaatti.
 
-Mastrototaro ja Olsson (2023) [@Mastrototaro-2023] laajentavat tätä estimaattia edelleen niin, että viive $\lambda$ valitaan mukautuvasti. Mastrototaron ja Olssonin ALVar-estimaatti (*Adaptive-Lag variance*) lasketaan kuten OD-varianssi (\ref{OD-varianssi}) edellä, mutta kunkin algoritmin ajokerran jälkeen asetetaan seuraavan ajanhetken $\lambda$ seuraavasti:
+Mastrototaro ja Olsson (2023) [@Mastrototaro-2023] laajentavat tätä estimaattia edelleen niin, että viive $\lambda$ valitaan mukautuvasti. Mastrototaron ja Olssonin ALVar-estimaatti (*Adaptive-Lag Variance*) lasketaan kuten OD-varianssi (\ref{OD-varianssi}) edellä, mutta kunkin algoritmin ajokerran jälkeen asetetaan seuraavan ajanhetken $\lambda$ seuraavasti:
 
 \begin{align}\label{ALVar-lambda}
-\lambda_{k+1} \leftarrow \operatorname*{arg\,max}_{\lambda \in [0, \lambda_k + 1]} \hat{\sigma}^2_{k+1,\lambda} (\gamma_{k+1})
+\lambda_{k+1} \leftarrow \operatorname*{arg\,max}_{\lambda \in [0, \lambda_k + 1]} \hat{\sigma}^2_{k+1,\lambda}
 .\end{align}
 
 \noindent ja ehtyneet Henok-indeksit määritellään niin, että indeksi on ehtynyt (so. kaikki indeksivektorin indeksit ovat yhtäsuuria) jos jompikumpi seuraavista ehdoista täyttyy:
 
-i) Henok-indeksit $E^i_{m,k-1}$ ovat ehtyneet, \\
-ii) Henok-indeksit $E^i_{m-1,k}$ ovat ehtyneet ja on olemassa $\lambda^\prime \in [0, \lambda-1]$, joka täyttää ehdon $\hat{\sigma}^2_{k+1,\lambda} (\gamma_{k+1}) < \hat{\sigma}^2_{k+1,\lambda^\prime} (\gamma_{k+1})$, koska myös ehtyneiden indeksien kantaisät ovat ehtyneitä.
+\
+i) Henok-indeksit $E^i_{m,k-1}$ ovat ehtyneet, \
+ii) Henok-indeksit $E^i_{m-1,k}$ ovat ehtyneet ja on olemassa $\lambda^\prime \in [0, \lambda-1]$, joka täyttää ehdon $\hat{\sigma}^2_{k+1,\lambda} < \hat{\sigma}^2_{k+1,\lambda^\prime}$, koska myös ehtyneiden indeksien kantaisät ovat ehtyneitä.
+\
 
 Nyt indeksi $\lambda_{k+1}$ voidaan valita rekursiivisesti niin, että se tuottaa suurimman varianssiestimaatin, joka on kuitenkin rajoitettu ylhäältä arvoon $\lambda_k+1$. Tämä indeksi ei ole koskaan ehtynyt, joten se on myös parhaan varianssiestimaatin tuottava valinta.
 
