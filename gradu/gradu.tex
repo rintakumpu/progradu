@@ -189,7 +189,7 @@ TURUN YLIOPISTO \newline
 Matematiikan ja tilastotieteen laitos\newline
 
 \noindent \textsc{\tekija}: \otsikko \newline
-\tutkielma-tutkielma, 79 s. \newline
+\tutkielma-tutkielma, 81 s. \newline
 \paaaine \newline
 \aika
 \par\noindent{\rule{\textwidth}{.2mm}} \newline
@@ -1671,19 +1671,19 @@ N & resampling & Mediaani (m) & Mediaanin 95\%-luottamusväli & <1m\\
 \toprule
 N & resampling & Varianssi & MC-varianssi & Ajoaika (s)\\
 \midrule
-100 & 0.00 & NA & 16.02 & 7.64\\
-1000 & 0.00 & NA & 1.41 & 15.35\\
-10000 & 0.00 & NA & 0.09 & 85.44\\
-100 & 0.10 & 0.07 & 0.10 & 6.97\\
-1000 & 0.10 & 0.00 & 0.02 & 14.40\\
+100 & 0.00 & NA & 22.54 & 7.64\\
+1000 & 0.00 & NA & 2.02 & 15.35\\
+10000 & 0.00 & NA & 0.13 & 85.44\\
+100 & 0.10 & 0.07 & 0.14 & 6.97\\
+1000 & 0.10 & 0.00 & 0.03 & 14.40\\
 \addlinespace
-10000 & 0.10 & 0.00 & 0.00 & 82.68\\
-100 & 0.67 & 0.06 & 0.06 & 7.16\\
-1000 & 0.67 & 0.00 & 0.01 & 14.50\\
+10000 & 0.10 & 0.00 & 0.01 & 82.68\\
+100 & 0.67 & 0.06 & 0.09 & 7.16\\
+1000 & 0.67 & 0.00 & 0.02 & 14.50\\
 10000 & 0.67 & 0.00 & 0.00 & 81.78\\
-100 & 1.00 & 0.06 & 0.06 & 7.19\\
+100 & 1.00 & 0.06 & 0.09 & 7.19\\
 \addlinespace
-1000 & 1.00 & 0.00 & 0.01 & 14.48\\
+1000 & 1.00 & 0.00 & 0.02 & 14.48\\
 10000 & 1.00 & 0.00 & 0.00 & 83.31\\
 \bottomrule
 \end{tabular}
@@ -1718,23 +1718,23 @@ Toisessa vaiheessa \(N=1000\) ja \emph{resampling}=\(2/3\) pidettiin vakioarvois
 \toprule
 map\_matching & P & q & Mediaani (m) & Mediaanin 95\%-luottamusväli & <1m\\
 \midrule
-TRUE & 0 & 0.75 & 0.79 & {}[0.78, 0.79] & 0.63\\
-TRUE & 100 & 0.75 & 0.77 & {}[0.77, 0.78] & 0.63\\
+TRUE & 0 & 0.75 & 0.78 & {}[0.77, 0.79] & 0.63\\
+TRUE & 100 & 0.75 & 0.77 & {}[0.76, 0.77] & 0.63\\
 TRUE & 1000 & 0.75 & 0.77 & {}[0.76, 0.77] & 0.63\\
 TRUE & 0 & 1.50 & 0.79 & {}[0.79, 0.79] & 0.61\\
 TRUE & 100 & 1.50 & 0.79 & {}[0.78, 0.79] & 0.62\\
 \addlinespace
-TRUE & 1000 & 1.50 & 0.78 & {}[0.77, 0.78] & 0.62\\
+TRUE & 1000 & 1.50 & 0.77 & {}[0.77, 0.78] & 0.62\\
 TRUE & 0 & 2.00 & 0.79 & {}[0.79, 0.79] & 0.61\\
 TRUE & 100 & 2.00 & 0.79 & {}[0.78, 0.79] & 0.62\\
 TRUE & 1000 & 2.00 & 0.78 & {}[0.78, 0.79] & 0.62\\
-TRUE & 0 & 2.50 & 0.79 & {}[0.79, 0.8] & 0.61\\
+TRUE & 0 & 2.50 & 0.79 & {}[0.79, 0.79] & 0.61\\
 \addlinespace
-TRUE & 100 & 2.50 & 0.79 & {}[0.79, 0.79] & 0.62\\
-TRUE & 1000 & 2.50 & 0.79 & {}[0.78, 0.79] & 0.62\\
+TRUE & 100 & 2.50 & 0.79 & {}[0.78, 0.79] & 0.62\\
+TRUE & 1000 & 2.50 & 0.79 & {}[0.78, 0.79] & 0.61\\
 FALSE & 0 & 0.75 & 0.88 & {}[0.88, 0.89] & 0.57\\
 FALSE & 0 & 1.50 & 0.87 & {}[0.87, 0.87] & 0.57\\
-FALSE & 0 & 2.00 & 0.86 & {}[0.86, 0.87] & 0.58\\
+FALSE & 0 & 2.00 & 0.86 & {}[0.86, 0.86] & 0.58\\
 \addlinespace
 FALSE & 0 & 2.50 & 0.86 & {}[0.85, 0.86] & 0.57\\
 \bottomrule
@@ -1783,11 +1783,11 @@ FALSE & 0 & 2.50 & 0.004 & 0.320 & 27.642\\
 
 Toisen vaiheen tuloksista huomataan, että karttasovituksen käyttäminen parantaa paikannusvirhettä. Syy tähän on helppo havaita liitteenä olevista karttapoluista. Paikannus ottaa nyt huomioon sisätilaympäristön, eikä enää luo estimaatteja sijainteihin, joihin tagin on fyysisesti mahdotonta päästä. Samoin rangaistusarvo \(P\):n lisääminen parantaa paikannusvirhettä. Tämä on odotettua, sillä isomman rangaistusarvon käyttäminen ei ainoastaan estä fyysisesti mahdottomia sijainteja vaan estää myös osan fyysisesti mahdottomista siirtymistä kahden peräkkäisen sijaintiestimaatin välillä.
 
-Vastaavasti liikemallin kohina-arvon \(q\) pienentäminen parantaa paikannusvirhettä. Liian pienellä \(q\)-arvolla algoritmi ei kuitenkaan enää tutki signaaliympäristöä tarpeeksi tehokkaasti ja paikannusvirhe kasvaa. Samoin kasvaa estimaattien MC-varianssi. Paikannusvirheen mielessä paras kohina-arvo on tulosten perusteella \(q=0.75\). Tämä vastaa hyvin kirjallisuudessa esitettyjä keskimääräisiä kävelynopeuksia (kts. esim. \citep{Ho-2016}), kun huomioidaan, että kyse on kauppaympäristöstä.
+Vastaavasti liikemallin kohina-arvon \(q\) pienentäminen parantaa paikannusvirhettä. Liian pienellä \(q\)-arvolla algoritmi ei kuitenkaan enää tutki signaaliympäristöä tarpeeksi tehokkaasti ja paikannusvirhe kasvaa. Samoin kasvaa estimaattien MC-varianssi. Paikannusvirheen mielessä paras kohina-arvo on tulosten perusteella \(q=0.75\). Tämä vastaa hyvin kirjallisuudessa esitettyjä keskimääräisiä kävelynopeuksia (kts. esim. \citep{Ho-2016}), kun huomioidaan, että kyse on kauppaympäristöstä. Vaikka parametri on tutkitun parametriavaruuden reunalla, ei tästä syystä alempia \(q\)-arvoja ole enää tarpeen tutkia, sillä alemmat arvot eivät enää vastaisi realistisia kävelynopeuksia.
 
 Huomataan lisäksi, että parhaimman paikannusvirheen tuottava rangaistusarvo \(P=1000\) on tutkitun parametriavaruuden reunalla, joten mahdollisesti isommalla \(P\)-arvolla voitaisiin vielä parantaa paikannusvirhettä. Pienempien \(P\)-arvojen paikannusvirheiden luottamusvälit ovat kuitenkin päällekäisiä arvon \(P=1000\) kanssa, joten paikannusvirheeseen saatu lisähyöty ei todennäköisesti olisi tilastollisesti merkitsevää. Näiden tulosten perusteella valitaan viimeiseen vaiheeseen kiinteät arvot \emph{map\_matching}\(=T\), \(P=1000\) ja \(q=0.75\).
 
-Viimeisessä vaiheessa testattiin datan valinnassa käytettävää signaalin vahvuuden kynnysarvoa \emph{rssi\_threshold} \(={-100,-90,-80}\) sekä prediktiivistä siloitinta \emph{smoothing} \(={T,F}\) eli kuutta eri suunnitteluparametrikombinaatiota. Tulokset on esitetty kuvassa \(\ref{fig:phase3-results}\) sekä taulukoissa \ref{tab:vaihe-3-tulokset} ja \ref{tab:vaihe-3-tulokset-varianssi}. Ajojen tulokset on esitetty karttapolkuina liitteen A alaluvussa \nameref{vaihe-3}.
+Viimeisessä vaiheessa testattiin datan valinnassa käytettävää signaalin vahvuuden kynnysarvoa \emph{rssi\_threshold} \(={-120, -100,-90,-80}\) sekä prediktiivistä siloitinta \emph{smoothing} \(={T,F}\) eli kahdeksaa eri suunnitteluparametrikombinaatiota. Tulokset on esitetty kuvassa \(\ref{fig:phase3-results}\) sekä taulukoissa \ref{tab:vaihe-3-tulokset} ja \ref{tab:vaihe-3-tulokset-varianssi}. Ajojen tulokset on esitetty karttapolkuina liitteen A alaluvussa \nameref{vaihe-3}.
 
 \begin{table}
 
@@ -1797,13 +1797,15 @@ Viimeisessä vaiheessa testattiin datan valinnassa käytettävää signaalin vah
 \toprule
 rssi\_threshold & smoothing & Mediaani (m) & Mediaanin 95\%-luottamusväli & <1m\\
 \midrule
--100 & TRUE & 0.72 & {}[0.72, 0.73] & 0.65\\
--90 & TRUE & 0.73 & {}[0.72, 0.74] & 0.65\\
--80 & TRUE & 0.70 & {}[0.69, 0.71] & 0.62\\
--100 & FALSE & 0.69 & {}[0.69, 0.7] & 0.68\\
--90 & FALSE & 0.70 & {}[0.7, 0.71] & 0.68\\
+-120 & TRUE & 0.78 & {}[0.77, 0.79] & 0.60\\
+-100 & TRUE & 0.78 & {}[0.77, 0.79] & 0.60\\
+-90 & TRUE & 0.78 & {}[0.77, 0.78] & 0.61\\
+-80 & TRUE & 0.81 & {}[0.8, 0.81] & 0.59\\
+-120 & FALSE & 0.77 & {}[0.76, 0.77] & 0.63\\
 \addlinespace
--80 & FALSE & 0.70 & {}[0.7, 0.71] & 0.65\\
+-100 & FALSE & 0.77 & {}[0.76, 0.77] & 0.63\\
+-90 & FALSE & 0.76 & {}[0.76, 0.77] & 0.62\\
+-80 & FALSE & 0.79 & {}[0.78, 0.79] & 0.59\\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -1816,13 +1818,15 @@ rssi\_threshold & smoothing & Mediaani (m) & Mediaanin 95\%-luottamusväli & <1m
 \toprule
 rssi\_threshold & smoothing & Varianssi & MC-varianssi & Ajoaika (s)\\
 \midrule
--100 & TRUE & 0.35 & 0.68 & 61.3\\
--90 & TRUE & 0.34 & 0.76 & 61.3\\
--80 & TRUE & 0.40 & 0.86 & 61.3\\
--100 & FALSE & 0.47 & 0.92 & 61.3\\
--90 & FALSE & 0.48 & 0.81 & 61.3\\
+-120 & TRUE & 0 & 0.04 & 59.12\\
+-100 & TRUE & 0 & 0.04 & 58.73\\
+-90 & TRUE & 0 & 0.07 & 57.52\\
+-80 & TRUE & 0 & 0.07 & 51.68\\
+-120 & FALSE & 0 & 0.08 & 49.35\\
 \addlinespace
--80 & FALSE & 0.56 & 1.75 & 61.3\\
+-100 & FALSE & 0 & 0.08 & 49.32\\
+-90 & FALSE & 0 & 0.08 & 48.90\\
+-80 & FALSE & 0 & 0.12 & 46.35\\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -1838,7 +1842,9 @@ rssi\_threshold & smoothing & Varianssi & MC-varianssi & Ajoaika (s)\\
 \caption{Vaiheen 3 tulokset}\label{fig:phase3-results}
 \end{figure}
 
-Tuloksista huomataan, ettei siloittelun tai signaalin vahvuuden kynnysarvon käyttäminen paranna paikannusvirhettä. Siloittelun osalta tämä on odotettua, koska liikemallina on käytetty satunnaiskulkua. Liitteenä olevista karttapoluista kuitenkin huomataan, että siloittelu tuottaa odotetusti sileämpiä polkuja, mikä saattaa olla käytännössä haluttu ominaisuus. Taulukossa \ref{tab:tulokset-final} on esitetty yhteenvetona tulosten perusteella valitut suunnitteluparametrit.
+Tuloksista huomataan, ettei siloittelun käyttäminen paranna paikannusvirhettä. Tämä on odotettua, koska liikemallina on käytetty satunnaiskulkua. Liitteenä olevista karttapoluista kuitenkin huomataan, että siloittelu tuottaa odotetusti sileämpiä polkuja, mikä saattaa olla käytännössä haluttu ominaisuus. Sen sijaan signaalin vahvuuden kynnysarvon nostaminen arvoon \emph{rssi\_threshold} \(=-90\) parantaa hieman paikannustarkkuutta. Kynnysarvon käyttö myös nopeuttaa algoritmin ajoaikaa, sillä kynnysarvoa käytettäessä uskottavuusfunktio (\ref{lopullinen-uskottavuusmalli}) lasketaan pienemmästä määrästä otoksia. Valitaan näin kolmannen vaiheen tulosten perusteella parametrit \emph{smoothing=F} ja \emph{rssi\_threshold}=\(-90\).
+
+Taulukossa \ref{tab:tulokset-final} on esitetty yhteenvetona kaikkien koevaiheiden tulosten perusteella valitut suunnitteluparametrit. Täydet eri koevaiheiden tulokset löytyvät csv-muodossa osoitteista \newline \url{https://github.com/rintakumpu/progradu/blob/main/analyysi/data/tulokset_vaihe1_ci.csv} (vaihe 1) \newline \url{https://github.com/rintakumpu/progradu/blob/main/analyysi/data/tulokset_vaihe2_ci.csv} (vaihe 2) ja \newline \url{https://github.com/rintakumpu/progradu/blob/main/analyysi/data/tulokset_vaihe3_ci.csv} (vaihe 3). Kansio \url{https://github.com/rintakumpu/progradu/blob/main/analyysi/data/} sisältää lisäksi RDS-muotoon tallennettuna kaikkien ajojen tulokset.
 
 \begin{table}
 
@@ -1852,10 +1858,10 @@ N & 1000\\
 resampling & 0.67\\
 map\_matching & TRUE\\
 P & 1000\\
-q & 1.5\\
+q & 0.75\\
 \addlinespace
 smoothing & FALSE\\
-rssi\_threshold & -120\\
+rssi\_threshold & -90\\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -1917,7 +1923,7 @@ Liite sisältää tutkielman tulososioon liittyvät karttapolut. Kukin kartta k�
 \section*{Vaihe 3}\label{vaihe-3}}
 \addcontentsline{toc}{section}{Vaihe 3}
 
-\begin{center}\includegraphics{output/figures/unnamed-chunk-3-1} \includegraphics{output/figures/unnamed-chunk-3-2} \includegraphics{output/figures/unnamed-chunk-3-3} \includegraphics{output/figures/unnamed-chunk-3-4} \includegraphics{output/figures/unnamed-chunk-3-5} \includegraphics{output/figures/unnamed-chunk-3-6} \end{center}
+\begin{center}\includegraphics{output/figures/unnamed-chunk-3-1} \includegraphics{output/figures/unnamed-chunk-3-2} \includegraphics{output/figures/unnamed-chunk-3-3} \includegraphics{output/figures/unnamed-chunk-3-4} \includegraphics{output/figures/unnamed-chunk-3-5} \includegraphics{output/figures/unnamed-chunk-3-6} \includegraphics{output/figures/unnamed-chunk-3-7} \includegraphics{output/figures/unnamed-chunk-3-8} \end{center}
 
   \bibliography{packages.bib,lahteet.bib}
 

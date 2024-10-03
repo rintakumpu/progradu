@@ -711,11 +711,11 @@ grid.arrange(p1,p2,p3,p4, ncol=1)
 
 Toisen vaiheen tuloksista huomataan, että karttasovituksen käyttäminen parantaa paikannusvirhettä. Syy tähän on helppo havaita liitteenä olevista karttapoluista. Paikannus ottaa nyt huomioon sisätilaympäristön, eikä enää luo estimaatteja sijainteihin, joihin tagin on fyysisesti mahdotonta päästä. Samoin rangaistusarvo $P$:n lisääminen parantaa paikannusvirhettä. Tämä on odotettua, sillä isomman rangaistusarvon käyttäminen ei ainoastaan estä fyysisesti mahdottomia sijainteja vaan estää myös osan fyysisesti mahdottomista siirtymistä kahden peräkkäisen sijaintiestimaatin välillä.
 
-Vastaavasti liikemallin kohina-arvon $q$ pienentäminen parantaa paikannusvirhettä. Liian pienellä $q$-arvolla algoritmi ei kuitenkaan enää tutki signaaliympäristöä tarpeeksi tehokkaasti ja paikannusvirhe kasvaa. Samoin kasvaa estimaattien MC-varianssi. Paikannusvirheen mielessä paras kohina-arvo on tulosten perusteella $q=0.75$. Tämä vastaa hyvin kirjallisuudessa esitettyjä keskimääräisiä kävelynopeuksia (kts. esim. [@Ho-2016]), kun huomioidaan, että kyse on kauppaympäristöstä.
+Vastaavasti liikemallin kohina-arvon $q$ pienentäminen parantaa paikannusvirhettä. Liian pienellä $q$-arvolla algoritmi ei kuitenkaan enää tutki signaaliympäristöä tarpeeksi tehokkaasti ja paikannusvirhe kasvaa. Samoin kasvaa estimaattien MC-varianssi. Paikannusvirheen mielessä paras kohina-arvo on tulosten perusteella $q=0.75$. Tämä vastaa hyvin kirjallisuudessa esitettyjä keskimääräisiä kävelynopeuksia (kts. esim. [@Ho-2016]), kun huomioidaan, että kyse on kauppaympäristöstä. Vaikka parametri on tutkitun parametriavaruuden reunalla, ei tästä syystä alempia $q$-arvoja ole enää tarpeen tutkia, sillä alemmat arvot eivät enää vastaisi realistisia kävelynopeuksia.
 
 Huomataan lisäksi, että parhaimman paikannusvirheen tuottava rangaistusarvo $P=1000$ on tutkitun parametriavaruuden reunalla, joten mahdollisesti isommalla $P$-arvolla voitaisiin vielä parantaa paikannusvirhettä. Pienempien $P$-arvojen paikannusvirheiden luottamusvälit ovat kuitenkin päällekäisiä arvon $P=1000$ kanssa, joten paikannusvirheeseen saatu lisähyöty ei todennäköisesti olisi tilastollisesti merkitsevää. Näiden tulosten perusteella valitaan viimeiseen vaiheeseen kiinteät arvot *map_matching*$=T$, $P=1000$ ja $q=0.75$.
 
-Viimeisessä vaiheessa testattiin datan valinnassa käytettävää signaalin vahvuuden kynnysarvoa *rssi_threshold* $={-100,-90,-80}$ sekä prediktiivistä siloitinta *smoothing* $={T,F}$ eli kuutta eri suunnitteluparametrikombinaatiota. Tulokset on esitetty kuvassa $\ref{fig:phase3-results}$ sekä taulukoissa \ref{tab:vaihe-3-tulokset} ja \ref{tab:vaihe-3-tulokset-varianssi}. Ajojen tulokset on esitetty karttapolkuina liitteen A alaluvussa \nameref{vaihe-3}.
+Viimeisessä vaiheessa testattiin datan valinnassa käytettävää signaalin vahvuuden kynnysarvoa *rssi_threshold* $={-120, -100,-90,-80}$ sekä prediktiivistä siloitinta *smoothing* $={T,F}$ eli kahdeksaa eri suunnitteluparametrikombinaatiota. Tulokset on esitetty kuvassa $\ref{fig:phase3-results}$ sekä taulukoissa \ref{tab:vaihe-3-tulokset} ja \ref{tab:vaihe-3-tulokset-varianssi}. Ajojen tulokset on esitetty karttapolkuina liitteen A alaluvussa \nameref{vaihe-3}.
 
 ```{r vaihe-3-tulokset, tidy=FALSE}
 vaihe3_tulokset <- readr::read_csv("analyysi/data/tulokset_vaihe3_ci.csv", show_col_types = FALSE)
@@ -750,7 +750,9 @@ p4 <- ggplot(phase3_summary, aes(x=rssi_threshold, y=run_time)) + geom_point() +
 grid.arrange(p1,p2,p3,p4, ncol=1)
 ```
 
-Tuloksista huomataan, ettei siloittelun tai signaalin vahvuuden kynnysarvon käyttäminen paranna paikannusvirhettä. Siloittelun osalta tämä on odotettua, koska liikemallina on käytetty satunnaiskulkua. Liitteenä olevista karttapoluista kuitenkin huomataan, että siloittelu tuottaa odotetusti sileämpiä polkuja, mikä saattaa olla käytännössä haluttu ominaisuus. Taulukossa \ref{tab:tulokset-final} on esitetty yhteenvetona tulosten perusteella valitut suunnitteluparametrit.
+Tuloksista huomataan, ettei siloittelun käyttäminen paranna paikannusvirhettä. Tämä on odotettua, koska liikemallina on käytetty satunnaiskulkua. Liitteenä olevista karttapoluista kuitenkin huomataan, että siloittelu tuottaa odotetusti sileämpiä polkuja, mikä saattaa olla käytännössä haluttu ominaisuus. Sen sijaan signaalin vahvuuden kynnysarvon nostaminen arvoon *rssi_threshold* $=-90$ parantaa hieman paikannustarkkuutta. Kynnysarvon käyttö myös nopeuttaa algoritmin ajoaikaa, sillä kynnysarvoa käytettäessä uskottavuusfunktio (\ref{lopullinen-uskottavuusmalli}) lasketaan pienemmästä määrästä otoksia. Valitaan näin kolmannen vaiheen tulosten perusteella parametrit *smoothing=F* ja *rssi_threshold*=$-90$. 
+
+Taulukossa \ref{tab:tulokset-final} on esitetty yhteenvetona kaikkien koevaiheiden tulosten perusteella valitut suunnitteluparametrit. Täydet eri koevaiheiden tulokset löytyvät csv-muodossa osoitteista \newline https://github.com/rintakumpu/progradu/blob/main/analyysi/data/tulokset_vaihe1_ci.csv (vaihe 1) \newline https://github.com/rintakumpu/progradu/blob/main/analyysi/data/tulokset_vaihe2_ci.csv (vaihe 2) ja \newline https://github.com/rintakumpu/progradu/blob/main/analyysi/data/tulokset_vaihe3_ci.csv (vaihe 3). Kansio https://github.com/rintakumpu/progradu/blob/main/analyysi/data/ sisältää lisäksi RDS-muotoon tallennettuna kaikkien ajojen tulokset.
 
 ```{r tulokset-final, tidy=FALSE}
 tulokset_final <- as.data.frame(matrix(ncol=2,nrow=0))
@@ -759,9 +761,9 @@ tulokset_final[nrow(tulokset_final)+1,] <- c("N", 1000)
 tulokset_final[nrow(tulokset_final)+1,] <- c("resampling", 0.67)
 tulokset_final[nrow(tulokset_final)+1,] <- c("map\\_matching", TRUE)
 tulokset_final[nrow(tulokset_final)+1,] <- c("P", 1000)
-tulokset_final[nrow(tulokset_final)+1,] <- c("q", 1.5)
+tulokset_final[nrow(tulokset_final)+1,] <- c("q", 0.75)
 tulokset_final[nrow(tulokset_final)+1,] <- c("smoothing", FALSE)
-tulokset_final[nrow(tulokset_final)+1,] <- c("rssi\\_threshold", -120)
+tulokset_final[nrow(tulokset_final)+1,] <- c("rssi\\_threshold", -90)
 kableExtra::kbl(
  tulokset_final, caption = 'Tulosten perusteella valitut suunnitteluparametrit', format="latex",
   booktabs = TRUE, escape = FALSE, digits=2
