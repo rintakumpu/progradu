@@ -6,7 +6,7 @@ Tässä alaluvussa esitetään epälineaarisen suodinongelman ratkaisemiseksi SI
 
 Algoritmi alustetaan jakaumasta $x_1^i\sim p_{x_0}$ generoiduilla $N$ kappaleella partikkeleita. Jokaiselle partikkelille annetaan alustuksessa sama paino $w_{1|0}^i=1/N$. Algoritmi suoritetaan jokaiselle partikkelille $i=\{1,2,\ldots,N\}$ jokaisella aika-askeleella $k=\{1,2,\ldots,T\}$.
 
-Seuraava toistetaan jokaisella aika-askeleella $k=\{1,2,\ldots,T\}$. Algoritmin ensimmäisessä vaiheessa päivitetään painot yhtälön (\ref{painopaivitys}) mukaan.
+Algoritmin ensimmäisessä vaiheessa päivitetään painot yhtälön (\ref{painopaivitys}) mukaan.
 
 \begin{align}\label{painopaivitys}
 w^i_{k|k}=\frac{1}{c_k}w^i_{k|k-1}p(y_k|x^i_k).
@@ -60,7 +60,7 @@ Alla käsitellään algoritmiin liittyvän uudelleenotantamenetelmän, partikkel
 \caption{SIR}
 \end{algorithm}
 
-\subsection{Parametrien valinta}
+\subsection{Suunnitteluparametrien valinta}
 
 Ennen algoritmin suorittamista valitaan ehdotusjakauma $q(x_{k+1}|x_{1:k},y_{k+1})$, uudelleenotantamenetelmä sekä partikkelien määrä $N$. Ehdotusjakauman ja uudelleenotantamenetelmän valinnassa tärkeimpänä päämääränä on välttää otosten ehtymistä, kun taas partikkelien määrä säätelee kompromissia algoritmin suorituskyvyn ja sen tarkkuuden sekä varianssin välillä.
 
@@ -78,7 +78,7 @@ Yleisesti ottaen $N$ kannattaa asettaa sellaiseksi, että se paitsi tuottaa riit
 
 \subsubsection{Uudelleenotantamenetelmän valinta} \label{uudelleenotantamenetelman-valinta}
 
-Ilman uudelleenotantaa on mahdollista, että algoritmi alkaa kärsiä SIS-algoritmille ominaisesta otosten ehtymisestä. Toisin sanoen kaikki painot alkavat keskittyä vain muutamalle partikkelille eikä algoritmi enää approksimoi tehokkaasti haluttua jakaumaa. Uudelleenotanta tarjoaa osittaisen ratkaisun tähän ongelmaan, mutta hävittää samalla informaatiota ja lisää siten satunnaisotantaan liittyvää epävarmuutta. Yleisesti ottaen uudelleenotanta kannattaa aloittaa vasta siinä vaiheessa algoritmin suorittamista, kun siitä on otosten ehtymisen kannalta hyötyä, esimerkiksi efektiivisen otoskoon pudottua jonkin kynnysarvon alapuolelle (adaptiivinen uudelleenotanta). Efektiivinen otoskoko saadaan laskettua variaatiokertoimesta $c_\nu$ kaavalla
+Ilman uudelleenotantaa on mahdollista, että algoritmi alkaa kärsiä SIS-algoritmille tyypillisestä otosten ehtymisestä. Toisin sanoen kaikki painot alkavat keskittyä vain muutamalle partikkelille eikä algoritmi enää approksimoi tehokkaasti haluttua jakaumaa. Uudelleenotanta tarjoaa osittaisen ratkaisun tähän ongelmaan, mutta hävittää samalla informaatiota ja lisää siten satunnaisotantaan liittyvää epävarmuutta. Yleisesti ottaen uudelleenotanta kannattaa aloittaa vasta siinä vaiheessa algoritmin suorittamista, kun siitä on otosten ehtymisen kannalta hyötyä, esimerkiksi efektiivisen otoskoon pudottua jonkin kynnysarvon alapuolelle (adaptiivinen uudelleenotanta). Efektiivinen otoskoko saadaan laskettua variaatiokertoimesta $c_\nu$ kaavalla
 
 \begin{align}\label{N-eff}
 N_{eff}= \frac{N}{1+c_\nu^2(w^i_{k|k})} = \frac{N}{1+\frac{\text{Var}(w^i_{k|k})}{(\mathbb{E}[w^i_{k|k}])^2}} =\frac{N}{1+N^2\text{Var}(w^i_{k|k})}.
@@ -102,7 +102,7 @@ Yksinkertaisin muoto ehdotusjakaumalle on $q(x_{1:k}|y_{1:k})$ eli jokaisella al
 q(x_{1:k}|y_{1:k})=q(x_k|x_{1:k-1},y_{1:k})q(x_{1:k-1}|y_{1:k}).
 \end{align}
 
-Jos yhtälöstä (\ref{proposal-factorization}) poimitaan ehdotusjakaumaksi ainoastaan termi $q(x_k|x_{1:k-1},y_{1:k})$ voidaan tämä kirjoittaa edelleen Markov-ominaisuuden nojalla muotoon $q(x_k|x_{k-1},y_{k})$. Tämä on suodinongelman kannalta riittävää, koska olemme kiinnostuneita posteriorijakaumasta ja arvosta $x$ ainoastaan aika-askeleella $k$ (siloitinongelmassa tarvitsisimme koko polun $x_{1:k}$). Alla tarkastellaan edelleen Gustafssonia (2010) [@gustafsson-2010] seuraten kahta ehdotusjakauman valintatapaa, prioriotantaa (*prior sampling*) sekä uskottavuusotantaa (*likelihood sampling*).
+Jos yhtälöstä (\ref{proposal-factorization}) poimitaan ehdotusjakaumaksi ainoastaan termi $q(x_k|x_{1:k-1},y_{1:k})$, voidaan tämä kirjoittaa edelleen Markov-ominaisuuden nojalla muotoon $q(x_k|x_{k-1},y_{k})$. Tämä on suodinongelman kannalta riittävää, koska olemme kiinnostuneita posteriorijakaumasta ja arvosta $x$ ainoastaan aika-askeleella $k$ (siloitinongelmassa tarvitsisimme koko polun $x_{1:k}$). Alla tarkastellaan edelleen Gustafssonia (2010) [@gustafsson-2010] seuraten kahta ehdotusjakauman valintatapaa, prioriotantaa (*prior sampling*) sekä uskottavuusotantaa (*likelihood sampling*).
 
 Ennen ehdotusjakauman tarkastelua määritellään mallille signaali-kohinasuhde uskottavuuden maksimin ja priorin maksimin välisenä suhteena
 
@@ -159,7 +159,7 @@ Alla esitetään kolme SIR-algoritmiin liittyvää konvergenssitulosta. Se, kuin
 \textit{Konvergenssitulos 2}: Keskineliövirheelle pätee asymptoottinen konvergenssi (\ref{MSE-konvergenssi}).
 
 \begin{align}\label{MSE-konvergenssi}
-\mathbb{E}(\hat{g}(x_k)-\mathbb{E}(g(x_k)))^2\leq\frac{p_k\norm{g(x_k)}}{N},
+\mathbb{E}\left[\hat{g}(x_k)-\mathbb{E}\left[g(x_k)\right]\right]^2\leq\frac{p_k\norm{g(x_k)}}{N},
 \end{align}
 
 \noindent missä $g$ on mikä hyvänsä piilossa olevan tila-avaruuden rajoitettu Borel-mitallinen funktio ($g \in \mathcal{B}(\mathbb{R}^{n_x})$), $\norm{g(\cdot)}$ kyseisen funktion supremum-normi ja $p_k$ jokin äärellinen vakio, jolle pätee ajanhetkestä $k$ riippumatta $p_k=p<\infty$. 
@@ -167,7 +167,7 @@ Alla esitetään kolme SIR-algoritmiin liittyvää konvergenssitulosta. Se, kuin
 \textit{Konvergenssitulos 3}: Keskeinen raja-arvolause (\ref{CLT}).
 
 \begin{align}\label{CLT}
-\text{Kun } N \to \infty: \sqrt{N} \left\{ \frac{1}{N} \sum_{i=1}^N \hat{g}(x_k^i) -\mathbb{E}(g(x_k^i)) \right\} \xrightarrow{D} \mathcal{N}(0,\sigma^2 < \infty),
+\text{Kun } N \to \infty: \sqrt{N} \left\{ \frac{1}{N} \sum_{i=1}^N \hat{g}(x_k^i) -\mathbb{E}\left[g(x_k^i)\right] \right\} \xrightarrow{D} \mathcal{N}(0,\sigma^2 < \infty),
 \end{align}
 
 \noindent missä $g$ on jälleen mikä hyvänsä piilossa olevan tila-avaruuden rajoitettu Borel-mitallinen funktio ($g \in \mathcal{B}(\mathbb{R}^{n_x})$). Konvergenssituloksia ei tämän tutkielman puitteissa todisteta.
@@ -186,13 +186,13 @@ Toinen, tarkempi vaihtoehto on käyttää laskennassa tärkeytyspainoa
 w_{k+1|k}^i=\frac{\sum_{j=1}^{N}w_{k|k}^jp(x_{k+1}^i|x_k^j)}{q(x_{k+1}^i|x_k^i,y_{k+1})}
 \end{align}
 
-\noindent painon (\ref{tarkeytys}) sijaan. Tällöin jokaisella aikapäivitysaskeleella lasketaan painot kaikkien mahdollisten tila-aika-avaruuspolkujen yli. Samoin kuin uudelleenotanta tämä pienentää painojen varianssia.
+\noindent painon (\ref{tarkeytys}) sijaan. Tällöin jokaisella aikapäivitysaskeleella lasketaan painot kaikkien mahdollisten tila-aika-avaruuspolkujen yli. Samoin kuin uudelleenotanta tämä pienentää painojen varianssia, mutta lisää algoritmin aikakompleksisuutta.
 
 \subsection{Aikakompleksisuus}
 
 Algoritmin perusmuodon aikakompleksisuus on $\mathcal{O}(N)$. Uudelleenotantamenetelmän tai ehdotusjakauman valinta ei suoraan vaikuta aikakompleksisuuteen. Sen sijaan marginalisointi tärkeytyspainolla (\ref{marginaalitarkeytys}) lisää algoritmin aikakompleksisuutta $\mathcal{O}(N)\rightarrow\mathcal{O}(N^2)$, koska jokaisen partikkelin kohdalla painot lasketaan jokaisen tila-aika-avaruuspolun yli. On selvää, että erityisesti isoilla otoskoon $N$ arvoilla ei yllä esitetty marginalisointi enää ole mielekästä. 
 
-Tällaisia tilanteita varten algoritmista on olemassa $\mathcal{O}(N\text{log}(N))$ -versioita, jotka perustuvat esimerkiksi N:n kappaleen oppimiseen (*N-body learning*). Näiden algoritmien käsittely jää tämän tutkielman ulkopuolelle, mutta katsauksen algoritmeista ovat esittäneet esimerkiksi Klaas \&al. artikkelissa "Toward Practical $N^2$ Monte Carlo: the Marginal Particle Filter" (2005) [@klaas-2005].
+Tällaisia tilanteita varten algoritmista on olemassa $\mathcal{O}(N\text{log}(N))$-versioita, jotka perustuvat esimerkiksi N:n kappaleen oppimiseen (*N-body learning*). Näiden algoritmien käsittely jää tämän tutkielman ulkopuolelle, mutta katsauksen algoritmeista ovat esittäneet esimerkiksi Klaas \&al. artikkelissa "Toward Practical $N^2$ Monte Carlo: the Marginal Particle Filter" (2005) [@klaas-2005].
 
 \section{Saapasremmisuodin}
 
@@ -224,10 +224,12 @@ Saapasremmisuodin on edellä esitettyä SIR-algoritmia yksinkertaisempi toteutta
 Hiukkassuotimen varianssin estimoinnissa ollaan kiinnostuneita jakaumaestimaatin $\hat{p}(x_{1:k}|y_{1:k})$ varianssista. Yksinkertaisin tapa estimoida hiukkassuodinalgoritmin varianssia on ajaa algoritmi $M > 1$ kertaa. Koska ajot ovat toisistaan riippumattomia, voidaan estimaatin varianssi laskea kullekin aika-askeleelle $k$ näiden ajojen $k$-hetken estimaattien otosvarianssina: 
 
 \begin{align}\label{MC-varianssi}
-\hat{\sigma}^2_{MC} = \text{Var}_{\text{MC}}(\hat{p}(x_{1:k}|y_{1:k})) = \frac{1}{M-1} \sum_{i=1}^{M}(x_k^i-\bar{x}_k)^2
+\hat{\sigma}^2_{MC} = \text{Var}(\hat{p}(x_{1:k}|y_{1:k})) = \frac{1}{M-1} \sum_{i=1}^{M}(x_k^i-\bar{x}_k)^2
 ,\end{align}
 
-\noindent missä $x_k^i$ on $k$:nen aika-askeleen piste-estimaatti ajolle  $i=1,\ldots,M$ ja $\bar{x}_k$ piste-estimaattien aritmeettinen keskiarvo laskettuna kaikkien $M$ ajon yli. Tällaisen Monte Carlo -varianssin estimoiminen on kuitenkin laskennallisesti tehotonta. Monissa käytännön sovellutuksissa jo yhden hiukkassuodinalgoritmin ajaminen vaatii runsaasti laskentatehoa, jolloin Monte Carlo -varianssin laskeminen ei ole mahdollista. Varianssia ei voida myöskään laskea analyyttisesti, mutta koska keskeisen raja-arvolauseen (\ref{CLT}) nojalla tiedetään, että asymptoottinen varianssi 
+\noindent missä $x_k^i$ on $k$:nen aika-askeleen piste-estimaatti ajolle  $i=1,\ldots,M$ ja $\bar{x}_k$ piste-estimaattien aritmeettinen keskiarvo laskettuna kaikkien $M$ ajon yli. Tällaisen Monte Carlo -varianssin estimoiminen on kuitenkin laskennallisesti tehotonta. Monissa käytännön sovellutuksissa jo yhden hiukkassuodinalgoritmin ajaminen vaatii runsaasti laskentatehoa, jolloin Monte Carlo -varianssin laskeminen ei ole mahdollista.
+
+Varianssia ei voida myöskään laskea analyyttisesti, mutta koska keskeisen raja-arvolauseen (\ref{CLT}) nojalla tiedetään, että asymptoottinen varianssi 
 
 \begin{align}\label{asymptoottinen-varianssi}
 \lim_{N\to \infty} N \text {Var}(\hat{g}(x_k^i))
@@ -235,7 +237,7 @@ Hiukkassuotimen varianssin estimoinnissa ollaan kiinnostuneita jakaumaestimaatin
 
 \noindent on olemassa, on sen estimointiin kehitetty lähivuosina joitakin approksimatiivisia menetelmiä. Alla käsitellään Chan ja Lain (2013) [@Chan-2013] sekä Leen ja Whitleyn (2018) ehdottamaa varianssin estimointitapaa [@Lee-2018].
 
-Ajetaan SIR-algoritmi kuten esitetty algoritmissa \ref{sir}, mutta merkitään kullakin algoritmin suorituskerralla $k=1,\ldots,T$ ja jokaisen partikkelin $n=1,\ldots,N$ kohdalla indeksillä $E_k^n$ kunkin partikkelin kantaisää eli sitä partikkelia, josta kyseinen partikkeli on uudelleenotantojen kautta polveutunut aika-askeleesta $k=1$ lähtien. Kaavio \ref{fig:eeva-indeksit} havainnollistaa partikkelien polveutumista. 
+Ajetaan SIR-algoritmi kuten esitetty algoritmissa \ref{sir}, mutta merkitään kullakin aika-askeleella $k=1,\ldots,T$ jokaisen partikkelin $n=1,\ldots,N$ kohdalla indeksillä $E_k^n$ kunkin partikkelin kantaisää eli sitä partikkelia, josta kyseinen partikkeli on uudelleenotantojen kautta polveutunut aika-askeleesta $k=1$ lähtien. Kaavio \ref{fig:eeva-indeksit} havainnollistaa tätä partikkelien polveutumista. 
 
 \begin{figure}[H]
 \centering
@@ -258,7 +260,7 @@ Varianssiestimaatti voidaan laskea näiden, Leen ja Whitleyn Eeva-indekseiksi ni
 
 \noindent Kyseessä harhaton ja konsistentti asymptoottisen varianssin estimaatti. Tarkemmin $N\hat{\sigma}^2_{CLE}$ konvergoi asymptoottiseen varianssiin (\ref{asymptoottinen-varianssi}). Tätä ei tutkielman puitteissa todisteta. 
 
-Yllä esitetty varianssiestimaatti saattaa kuitenkin kärsiä indeksien ehtymisestä, sillä kun $k \to \infty$, polveutuvat kaikki hiukkaset lopulta samasta kantaisästä eli indeksit $E_k^i,\ldots,E_k^N$ ovat kaikki yhtäsuuria. Tämän vuoksi on mielekästä johtaa indeksit ainoastaan tietystä aiemmasta aika-askeleesta alkaen. Olsson ja Douc (2019) [@olsson-2019] ehdottavat tähän tarkoitukseen Henok-indeksiä $E_{m,k}^n$, jossa $m$ merkitsee aika-askeleen $m\leq k$ partikkelia, josta kyseinen partikkeli polveutuu. Partikkelien kantaisien sukupolvi määritetään viipeellä $\lambda$ niin, että $m=k-\lambda$. Kaavio \ref{fig:henok-indeksit} havainnollistaa partikkelien polveutumista, kun $\lambda=1$. 
+Yllä esitetty varianssiestimaatti saattaa kuitenkin kärsiä indeksien ehtymisestä. Toisin sanoen kun $k \to \infty$, polveutuvat kaikki hiukkaset lopulta samasta kantaisästä eli indeksit $E_k^i,\ldots,E_k^N$ ovat kaikki yhtäsuuria. Tämän vuoksi on mielekästä johtaa indeksit ainoastaan tietystä aiemmasta aika-askeleesta aika-askeleen $k=1$ sijaan. Olsson ja Douc (2019) [@olsson-2019] ehdottavat tähän tarkoitukseen Henok-indeksiä $E_{m,k}^n$, jossa $m$ merkitsee aika-askeleen $m\leq k$ partikkelia, josta kyseinen partikkeli polveutuu. Partikkelien kantaisien sukupolvi määritetään viipeellä $\lambda$ niin, että $m=k-\lambda$. Kaavio \ref{fig:henok-indeksit} havainnollistaa partikkelien polveutumista, kun $\lambda=1$. 
 
 \begin{figure}[H]
 \centering
@@ -267,7 +269,7 @@ Yllä esitetty varianssiestimaatti saattaa kuitenkin kärsiä indeksien ehtymise
 \label{fig:henok-indeksit}
 \end{figure}
 
-Nyt varianssi voidaan laskea kuten yhtälössä (\ref{CLE-varianssi}) edellä, kun Eeva-indeksit korvataan Henok-indekseillä. Saadaan painotettu summa
+Nyt varianssi voidaan laskea kuten yhtälössä (\ref{CLE-varianssi}) edellä, mutta Eeva-indeksit korvataan Henok-indekseillä. Saadaan painotettu summa
 
 \begin{align}\label{OD-sum}
 \hat{\mu}_k=\sum_{i=1}^N w_k^i x_k^i[E_{k(\lambda)}]
@@ -279,15 +281,15 @@ Nyt varianssi voidaan laskea kuten yhtälössä (\ref{CLE-varianssi}) edellä, k
 \hat{\sigma}^2_{OD} = \frac{1}{N-1} \sum_{i=1}^N w_k^i (x_k^i[E_{k(\lambda)}]-\hat{\mu}_k)^2
 ,\end{align}
 
-\noindent missä $k(\lambda) \vcentcolon= k-\lambda$ eli se aika-askel, jota käytetään hiukkasten kantaisänä. Viive $\lambda$ on varianssiestimaatin suunnitteluparametri. Pienillä viipeillä estimaatti on harhainen, mutta harha laskee viipeen kasvaessa. Olsson ja Douc suosittavat viipeen ylärajaksi arvoa $\lambda=20$, jolloin estimaattorin harha on käytännössä kokonaan hävitetty. Tämän jälkeen estimaatti voi myös alkaa kärsiä samasta epätarkkuudesta kuin Eeva-indekseihin perustuva CLE-estimaatti.
+\noindent missä $k(\lambda) \vcentcolon= k-\lambda$ eli se aika-askel, jota käytetään hiukkasten kantaisänä. Viive $\lambda$ on varianssiestimaatin suunnitteluparametri. Pienillä viipeillä estimaatti on harhainen, mutta harha laskee viipeen kasvaessa. Olsson ja Douc suosittavat viipeen ylärajaksi arvoa $\lambda=20$, jolloin estimaattorin harha on käytännössä kokonaan hävitetty. Tätä suuremmilla viivearvoilla estimaatti voi alkaa kärsiä samasta epätarkkuudesta kuin Eeva-indekseihin perustuva CLE-estimaatti.
 
-Mastrototaro ja Olsson (2023) [@Mastrototaro-2023] laajentavat tätä estimaattia edelleen niin, että viive $\lambda$ valitaan mukautuvasti. Mastrototaron ja Olssonin ALVar-estimaatti (*Adaptive-Lag Variance*) lasketaan kuten OD-varianssi (\ref{OD-varianssi}) edellä, mutta kunkin algoritmin ajokerran jälkeen asetetaan seuraavan ajanhetken $\lambda$ seuraavasti:
+Mastrototaro ja Olsson (2023) [@Mastrototaro-2023] laajentavat estimaattia edelleen niin, että viive $\lambda$ valitaan mukautuvasti. Mastrototaron ja Olssonin ALVar-estimaatti (*Adaptive-Lag Variance*) lasketaan kuten OD-varianssi (\ref{OD-varianssi}) edellä, mutta kunkin algoritmin ajokerran jälkeen asetetaan seuraavan ajanhetken $\lambda$ seuraavasti:
 
 \begin{align}\label{ALVar-lambda}
 \lambda_{k+1} \leftarrow \operatorname*{arg\,max}_{\lambda \in [0, \lambda_k + 1]} \hat{\sigma}^2_{k+1,\lambda}
-.\end{align}
+\end{align}
 
-\noindent ja ehtyneet Henok-indeksit määritellään niin, että indeksi on ehtynyt (so. kaikki indeksivektorin indeksit ovat yhtäsuuria) jos jompikumpi seuraavista ehdoista täyttyy:
+\noindent ja ehtyneet Henok-indeksit määritellään niin, että indeksi on ehtynyt (so. kaikki indeksivektorin indeksit ovat yhtäsuuria), jos jompikumpi seuraavista ehdoista täyttyy:
 
 \
 i) Henok-indeksit $E^i_{m,k-1}$ ovat ehtyneet, \

@@ -73,6 +73,7 @@ notaatiot[nrow(notaatiot)+1,] <- linebreak(c("$\\mathbb{E}[x|y]$", "$x$:n ehdoll
 notaatiot[nrow(notaatiot)+1,] <- linebreak(c("$\\mathbf{X}$", "Matriisi"))
 notaatiot[nrow(notaatiot)+1,] <- linebreak(c("$\\mathbf{X}^\\top$", "Matriisin $\\mathbf{X}$ transpoosi"))
 notaatiot[nrow(notaatiot)+1,] <- linebreak(c("$\\mathbf{\\Sigma}$", "Kovarianssimatriisi"))
+notaatiot[nrow(notaatiot)+1,] <- linebreak(c("$\\text{tr}(\\mathbf{X})$", "Matriisin $\\mathbf{X}$ jälki"))
 notaatiot[nrow(notaatiot)+1,] <- linebreak(c("$\\delta(x)$", "Diracin deltafunktio"))
 notaatiot[nrow(notaatiot)+1,] <- linebreak(c("$\\text{log}(x)$", "Luonnollinen logaritmifunktio"))
 notaatiot[nrow(notaatiot)+1,] <- linebreak(c("$\\text{Var}(x)$", "Varianssifunktio"))

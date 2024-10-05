@@ -117,20 +117,6 @@
 \newcommand{\paaaine}{{Tilastotiede}} 
 \newcommand{\ohjaaja}{{Ohjaajan titteli (Prof./Dos./FT) ja nimi }} %
 \newcommand{\tarkastaja}{{Toisen tarkastajan titteli (Prof./Dos./FT) ja nimi}} 
-\usepackage{booktabs}
-\usepackage{longtable}
-\usepackage{array}
-\usepackage{multirow}
-\usepackage{wrapfig}
-\usepackage{float}
-\usepackage{colortbl}
-\usepackage{pdflscape}
-\usepackage{tabu}
-\usepackage{threeparttable}
-\usepackage{threeparttablex}
-\usepackage[normalem]{ulem}
-\usepackage{makecell}
-\usepackage{xcolor}
 \ifLuaTeX
   \usepackage{selnolig}  % disable illegal ligatures
 \fi
@@ -236,13 +222,13 @@ Hiukkassuotimet ovat joukko Monte Carlo -algoritmeja, joiden avulla voidaan ratk
 
 Tämän tutkielman tavoitteena on esittää pääpiirteittään hiukkassuotimien sekä näihin läheisesti liittyvien hiukkassiloittimien teoria. Lisäksi tutkielmassa käsitellään joitakin menetelmäperheeseen kuuluvia algoritmeja ja sovelletaan näitä sisätilapaikannuksessa.
 
-Tutkielman ensimmäisessä luvussa kuvataan yleisellä tasolla sekä suodinongelma että sen ratkaisujen historiaa ja esitetään joitakin Monte Carlo -menetelmiin liittyviä yleisiä tuloksia sekä Bayesilainen viitekehys suodinongelmalle. Toisessa luvussa kuvataan kaksi hiukkassuodinalgoritmia, saapasremmisuodin sekä SIR-algoritmi ja sivutaan hiukkassuotimen varianssin estimointiin. Kolmannessa luvussa tarkastellaan siloitteluongelmaa ja esitetään hiukkassiloitinalgoritmeja ongelman ratkaisemiseksi. Neljäs luku keskittyy hiukkassuotimen käyttöön empiirisessä AoA/BLE-teknologiaan perustuvassa sisätilapaikannussovelluksessa. Luvussa käsitellään lisäksi lyhyesti sisätilapaikannuksessa hyödynnettävää karttasovitusalgoritmia.
+Tutkielman ensimmäisessä luvussa kuvataan yleisellä tasolla sekä suodinongelma että sen ratkaisujen historiaa. Lisäksi esitetään joitakin Monte Carlo -menetelmiin liittyviä yleisiä tuloksia sekä Bayesilainen viitekehys suodinongelmalle. Toisessa luvussa kuvataan kaksi hiukkassuodinalgoritmia, saapasremmisuodin sekä SIR-algoritmi ja käsitellään hiukkassuotimen varianssin estimointia. Kolmannessa luvussa tarkastellaan siloitteluongelmaa ja esitetään hiukkassiloitinalgoritmeja ongelman ratkaisemiseksi. Neljäs luku keskittyy hiukkassuotimen käyttöön empiirisessä BLE/AoA-teknologiaan perustuvassa sisätilapaikannussovelluksessa. Luvussa käsitellään lisäksi sisätilapaikannuksessa hyödynnettävää karttasovitusalgoritmia.
 
-Hiukkassuodin- ja hiukkassiloitinalgoritmien osalta tutkielman esitykset seuraavat erityisesti Simo Särkän kirjaa \textit{Bayesian Filtering and Smoothing} (2013) \citep{sarkka-2013}, Fredrik Gustafssonin artikkelia ``Particle Filter Theory and Practice with Positioning Applications'' (2010) \citep{gustafsson-2010} sekä Olivier Cappén, Simon J. Godsillin ja Eric Moulines'n artikkelia ``An overview of existing methods and recent advances in sequential Monte Carlo'' (2007) \citep{cappe-2007}. Hiukkassuotimien varianssin estimointi seuraa Nick Whiteleyn ja Anthony Leen artikkelia ``Variance estimation in the particle filter'' (2018) \citep{Lee-2018} sekä Randal Doucin ja Jimmy Olssonin artikkelia ``Numerically stable online estimation of variance in particle filters'' (2019) \citep{olsson-2019}.
+Hiukkassuodin- ja hiukkassiloitinalgoritmien osalta tutkielman esitykset seuraavat erityisesti Särkän kirjaa \textit{Bayesian Filtering and Smoothing} (2013) \citep{sarkka-2013}, Gustafssonin artikkelia ``Particle Filter Theory and Practice with Positioning Applications'' (2010) \citep{gustafsson-2010} sekä Cappén, Godsillin ja Moulines'n artikkelia ``An overview of existing methods and recent advances in sequential Monte Carlo'' (2007) \citep{cappe-2007}. Hiukkassuotimien varianssin estimointi seuraa Whiteleyn ja Leen artikkelia ``Variance estimation in the particle filter'' (2018) \citep{Lee-2018} sekä Doucin ja Olssonin artikkelia ``Numerically stable online estimation of variance in particle filters'' (2019) \citep{olsson-2019}.
 
 \section{Notaatioista}
 
-Tässä tutkielmassa käytetään seuraavia yleisiä notaatioita. Hiukkassuotimien vektoreita merkitään pienellä kursivoidulla kirjaimella \(x\), \(y\) ja \(w\). Hiukkassuotimen hiukkaset sisältäviä vektoreita merkitään \(x_k^i\), missä alaindeksi viittaa aika-askeleeseen \(k=\{1,\ldots,T\}\) ja yläindeksi partikkeliin \(i\), missä \(i=\{1,\ldots,N\}\). Vastaavasti aika-askeleiden \(k, k=\{1,\ldots,T\}\) havainnot sisältäviä vektoreita merkitään \(\{y_1,\ldots,y_k\}\) ja painovektoreita \(w_k\).
+Tutkielmassa käytetään seuraavia yleisiä notaatioita. Hiukkassuotimien vektoreita merkitään pienellä kursivoidulla kirjaimella \(x\), \(y\) ja \(w\). Hiukkassuotimen hiukkaset sisältäviä vektoreita merkitään \(x_k^i\), missä alaindeksi viittaa aika-askeleeseen \(k=\{1,\ldots,T\}\) ja yläindeksi partikkeliin \(i\), missä \(i=\{1,\ldots,N\}\). Vastaavasti aika-askeleiden \(k, k=\{1,\ldots,T\}\) havainnot sisältäviä vektoreita merkitään \(\{y_1,\ldots,y_k\}\) ja painovektoreita \(w_k\).
 
 Pienin kursivoiduin kirjaimin viitataan myös funktioihin ja reaaliarvoisiin skalaareihin. Pienet kirjaimet \(f\), \(h\), \(g\), \(p\) ja \(q\) on varattu ensisijaisesti funktioille, \(p\) ja \(q\) erityisesti tiheysfunktioille. Skalaareihin viitataan myös isoilla kursivoiduilla kirjaimilla, esimerkiksi \(T\) ja \(N\). Joukkoihin viitataan niin ikään isoilla kursivoiduilla kirjaimilla, esimerkiksi \(S\). Se, käytetäänkö isoa kursivoitua kirjainta ilmaisemaan skalaaria vai joukkoa ilmenee asiayhteydestä. Matriiseja merkitään isolla lihavoidulla kirjaimella, esimerkiksi \(\mathbf{X}\). Prosesseihin viitataan alaindeksoidulla isolla kirjaimella, esimerkiksi \(X_k\). Taulukossa \ref{tab:notaatiot} esitetään tarkemmin tutkielman keskeisimmät merkinnät. Taulukossa \ref{tab:lyhenteet-ja-symbolit} esitetään tutkielmassa käytetyt lyhenteet.
 
@@ -266,30 +252,31 @@ $\hat{p}(x), \hat{q}(x)$ & $x$: tiheysfunktion estimaatteja\\
 $p(x|y)$ & $x$:n tiheysfunktio ehdolla $y$\\
 $x_{k|k-1}$ & $x_k$:n arvo ehdollistettuna arvoilla aika-askeleeseen $k-1$ asti\\
 \addlinespace
-$\mathbb{E}[x]$ & x:n odotusarvo\\
-$\mathbb{E}[x|y]$ & x:n ehdollinen odotusarvo ehdolla y\\
+$\mathbb{E}[x]$ & $x$:n odotusarvo\\
+$\mathbb{E}[x|y]$ & $x$:n ehdollinen odotusarvo ehdolla y\\
 $\mathbf{X}$ & Matriisi\\
 $\mathbf{X}^\top$ & Matriisin $\mathbf{X}$ transpoosi\\
 $\mathbf{\Sigma}$ & Kovarianssimatriisi\\
 \addlinespace
+$\text{tr}(\mathbf{X})$ & Matriisin $\mathbf{X}$ jälki\\
 $\delta(x)$ & Diracin deltafunktio\\
 $\text{log}(x)$ & Luonnollinen logaritmifunktio\\
 $\text{Var}(x)$ & Varianssifunktio\\
 $\text{id}(x)$ & Identiteettifunktio\\
-$\text{erf}(x)$ & Virhefunktio\\
 \addlinespace
+$\text{erf}(x)$ & Virhefunktio\\
 $\mathcal{O}(\cdot)$ & \makecell[l]{Algoritmin asymptoottisen suoritusajan Ordo-notaatio,\\suoritusajan mielessä pahin mahdollinen tapaus}\\
 $\mathcal{N}(\mu, \sigma^2)$ & Normaalijakauma, keskiarvoparametri $\mu$, varianssiparametri $\sigma^2$\\
 $\mathcal{U}(a, b)$ & Jatkuva tasajakauma, välin rajaavat parametrit $a$ ja $b$\\
 $X_k$ & Dynaaminen prosessi\\
-$\hat{X}_k$ & Dynaamisen prosessin estimaatti\\
 \addlinespace
+$\hat{X}_k$ & Dynaamisen prosessin estimaatti\\
 $\int f(x)dx$ & Funktion $f(x)$ Lebesguen integraali yli $\mathbb{R}^n$\\
 $\mathbb{P}(X)$ & Todennäköisyysfunktio $\mathcal{A}\rightarrow\mathbb{R}$\\
 $\mathcal{A}$ & $\sigma$-algebra\\
 $\mathbb{R}$ & Reaalilukujen joukko\\
-$\mathbb{R}^n$ & n-ulotteinen vektoriavaruus\\
 \addlinespace
+$\mathbb{R}^n$ & n-ulotteinen vektoriavaruus\\
 $\mathcal{B}(X)$ & Borel-mitta, pienin $X$:n avoimet joukot sisältävä $\sigma$-algebra\\
 $\propto$ & Yhtäsuuruus normalisoivaa vakiota huomioimatta\\
 $\emptyset$ & Tyhjä joukko\\
@@ -364,7 +351,7 @@ y_1  & y_2  & y_3  & \ldots & \makebox[\widthof{$ \text{havainnot}$}]{$\text{hav
 \end{tikzcd}
 \end{equation}
 
-Tässä tutkielmassa keskitytään erityisesti epälineaarisen, ns. Markovin piilomallin posteriorijakauman Bayesilaiseen ratkaisuun. Ongelmassa tiedetään, miten havaitut muuttujat \(y_k\) kytkeytyvät ``piilossa oleviin'' tilamuuttujiin \(x_k\) sekä osataan sanoa jotain tilamuuttujien todennäköisyyksistä. Oletetaan myös, että piilossa oleville tiloille \(X_k\) pätee Markov-ominaisuus, jolloin kutakin hetkeä seuraava tila \(x_{k+1}\) riippuu menneistä tiloista \(x_{1:k}\) ainoastaan tilan \(x_k\) välityksellä. Lisäksi havaittu tila \(y_k\) riippuu tiloista \(x_{k}\) ainoastaan jonkin \(x_k\):n funktion kautta. Kun aika-avaruus on diskreetti ja aika-askeleella \(k=\{1,\ldots,T\}\) piilossa olevan prosessin tilaa merkitään \(x_k\) ja havaittua prosessia \(y_k\), saadaan ongelma kuvattua malleilla
+Tässä tutkielmassa keskitytään erityisesti epälineaarisen, ns. Markovin piilomallin posteriorijakauman Bayesilaiseen ratkaisuun. Ongelmassa tiedetään, miten havaitut muuttujat \(y_k\) kytkeytyvät ``piilossa oleviin'' tilamuuttujiin \(x_k\) sekä osataan sanoa jotain tilamuuttujien todennäköisyyksistä. Oletetaan myös, että piilossa oleville tiloille \(X_k\) pätee Markov-ominaisuus, jolloin kutakin hetkeä seuraava tila \(x_{k+1}\) riippuu menneistä tiloista \(x_{1:k-1}\) ainoastaan tilan \(x_k\) välityksellä. Lisäksi havaittu tila \(y_k\) riippuu tiloista \(x_{k}\) ainoastaan jonkin \(x_k\):n funktion kautta. Kun aika-avaruus on diskreetti ja aika-askeleella \(k=\{1,\ldots,T\}\) piilossa olevan prosessin tilaa merkitään \(x_k\) ja havaittua prosessia \(y_k\), saadaan ongelma kuvattua malleilla
 
 \begin{align}
 &\label{malli-1} x_{k+1} = f(x_k, \nu_k),\\
@@ -393,7 +380,7 @@ Suodinongelmaa lähellä on myös ns. siloitteluongelma (\emph{smoothing problem
 
 \section{Suodin- ja siloitteluongelmien historiaa}
 
-Tämä alaluku esittää pääpiirteittään suodinongelmalle esitettyjen ratkaisujen historian. Lineaarisen suodinongelman osalta alaluku noudattaa Dan Crisanin artikkelia ``The stochastic filtering problem: a brief historical account'' (2014) \citep{crisan-2014} sekä Mohinder S. Grewalin ja Angus P. Andrewsin artikkelia ``Applications of Kalman Filtering in Aerospace 1960 to the Present'' (2010) \citep{Grewal-2010}. Hiukkassuotimien osalta lähteenä toimii Cappé \&al (2007) \citep{cappe-2007}.
+Tämä alaluku esittää pääpiirteittään suodinongelmalle esitettyjen ratkaisujen historian. Lineaarisen suodinongelman osalta alaluku noudattaa Crisanin artikkelia ``The stochastic filtering problem: a brief historical account'' (2014) \citep{crisan-2014} sekä Grewalin ja Andrewsin artikkelia ``Applications of Kalman Filtering in Aerospace 1960 to the Present'' (2010) \citep{Grewal-2010}. Hiukkassuotimien osalta lähteenä toimii Cappé \&al (2007) \citep{cappe-2007}.
 
 Suodinongelma nousi esille insinööritieteiden sekä sotateollisuuden käytännön ongelmista 2. maailmansodan aikana, vaikkakin suodinongelman diskreetin ajan ratkaisut juontavat jo Andrei N. Kolmogorovin 30-luvun artikkeleihin. Jatkuvan ajan tilanteessa ensimmäisen optimaalisen, kohinan sallivan suotimen esitti kybernetiikan kehittäjä, matemaatikko Norbert Wiener. Wiener-suotimena tunnettua ratkaisuaan varten Wiener muotoili seuraavat kolme ominaisuutta, jotka prosessin \(X_k\) estimaatin \(\hat{X}_k\) pitää toteuttaa.
 
@@ -405,7 +392,7 @@ Suodinongelma nousi esille insinööritieteiden sekä sotateollisuuden käytänn
 \vspace{\baselineskip}
 \end{enumerate}
 
-Wiener sovelsi ratkaisussaan stationaaristen prosessien spektriteoriaa. Tulokset julkaistiin salaisina Yhdysvaltojen asevoimien tutkimuksesta vastanneen National Defense Research Committeen (NDRC) raportissa vuonna 1942. Tutkimus tunnettiin sodan aikana lempinimellä ``Keltainen vaara'' sekä painopaperinsa värin että vaikeaselkoisuutensa vuoksi. Myöhemmin Wiener esitti tuloksensa julkisesti kirjassaan \textit{Extrapolation, Interpolation and Smoothing of Stationary Time Series} (1949). Wienerin alkuperäiset kolme perusperiaatetta päteveät edelleen kaikille suodinongelman ratkaisuille, myös hiukkassuotimille.
+Wiener sovelsi ratkaisussaan stationaaristen prosessien spektriteoriaa. Tulokset julkaistiin salaisina Yhdysvaltojen asevoimien tutkimuksesta vastanneen National Defense Research Committeen (NDRC) raportissa vuonna 1942. Tutkimus tunnettiin sodan aikana lempinimellä ``Keltainen vaara'', sekä painopaperinsa värin että vaikeaselkoisuutensa vuoksi. Myöhemmin Wiener esitti tuloksensa julkisesti kirjassaan \textit{Extrapolation, Interpolation and Smoothing of Stationary Time Series} (1949). Wienerin alkuperäiset kolme perusperiaatetta päteveät edelleen kaikille suodinongelman ratkaisuille, myös hiukkassuotimille.
 
 Kenties tärkein ja varmasti tunnetuin lineaariseen suodinongelman ratkaisu on Kalman-suodin. Suotimen kehittivät R.E. Kalman ja R.S. Bucy 1950- ja 60-lukujen taitteessa Yhdysvaltain kylmän sodan kilpavarustelutarpeisiin perustetussa Research Institute for Advanced Studies -tutkimuslaitoksessa (RIAS). Kalman-suodin on suodinongelman diskreetin ajan ratkaisu, kun taas Kalman-Bucy-suodin on jatkuvan ajan ratkaisu. Kohinan ollessa normaalijakautunutta on Kalman-suodin Wiener-suotimen tavoin lineaarisen suodinongelman optimaalinen ratkaisu. Wiener-suotimella ja Kalman-suotimella on kuitenkin erilaiset oletukset, minkä vuoksi erityisesti säätö- ja paikannussovelluksissa Kalman-suotimen käyttö on luontevampaa. Suotimien oletuksia ja oletusten välisiä eroja ei käsitellä tässä tutkielmassa, mutta alaluvussa \ref{kf-yhteydet-erot} käsitellään Kalman-suotimen formaalia yhteyttä hiukkassuotimiin.
 
@@ -417,9 +404,9 @@ Joitakin suodinongelman rekursiivisia Monte Carlo -ratkaisuja löytyy jo 1950\te
 
 Tärkeytysotantaa käyttävä suodinongelman ratkaiseva SIS-algoritmi (\emph{sequential importance sampling}) ei kuitenkaan vielä 70-luvulla löytänyt suurta käytännön suosiota. Osin tämä johtui puutteellisesta laskentatehosta, mutta algoritmi kärsi myös otosten ehtymisenä (\emph{sample impoverishment}) tunnetusta ongelmasta. Monissa ongelmissa SIS-algoritmia käytettäessä suuri osa painoista päätyy vain tietyille partikkeleille, jolloin vastaavasti suuri osa partikkeleista ei enää estimoi haluttua jakaumaa. Tähän ongelmaan palataan myöhemmin tutkielmassa.
 
-Merkittävän ratkaisun ehtymisongelmaan esittivät Gordon, Salmond ja Smith artikkelissaan ``Novel approach to nonlinear/non-Gaussian Bayesian state estimation'' (1993) \citep{Gordon-1993}. Artikkelin ratkaisu kulki nimellä \emph{bootstrap filter}, saapasremmisuodin. Saapasremmisuodin vältti ehtymisen uudellenotannalla, jossa matalapainoiset partikkelit korvattiin otoksilla korkeapainoisemmista partikkeleista. Ratkaisussa painot eivät myöskään riippuneet partikkelien aiemmista poluista vaan ainoastaan havaintojen uskottavuusfunktiosta. Vastaavaa ratkaisua käytetään tämän tutkielman uudemmassa SIR-algoritmissa (\emph{sampling importance resampling}), jossa myös uudelleenotantaan sovelletaan tärkeytysotantaa.
+Merkittävän ratkaisun ehtymisongelmaan esittivät Gordon, Salmond ja Smith artikkelissaan ``Novel approach to nonlinear/non-Gaussian Bayesian state estimation'' (1993) \citep{Gordon-1993}. Artikkelin ratkaisu kulki nimellä \emph{bootstrap filter}, saapasremmisuodin. Saapasremmisuodin vältti otosten ehtymisen uudellenotannalla, jossa matalapainoiset partikkelit korvattiin otoksilla korkeapainoisemmista partikkeleista. Ratkaisussa painot eivät myöskään riippuneet partikkelien aiemmista poluista vaan ainoastaan havaintojen uskottavuusfunktiosta. Vastaavaa ratkaisua käytetään tämän tutkielman uudemmassa SIR-algoritmissa (\emph{sampling importance resampling}), jossa myös uudelleenotantaan sovelletaan tärkeytysotantaa.
 
-Sekventiaalisissa Monte Carlo -menetelmissä stokastisen prosessin posteriorijakauman esittämiseen käytettyjä otoksia kutsutaan myös partikkeleiksi tai hiukkasiksi ja menetelmiä siten hiukkassuotimiksi. Erityisesti myöhemmin esitettävää SIR-algoritmia kutsutaan usein hiukkassuotimeksi. Termiä hiukkassuodin käytti ensimmäisen kerran Del Moral artikkelissa ``Nonlinear Filtering: Interacting Particle Resolution'' (1996) \citep{DelMoral-1996}, SMC-menetelmät termiä Liu ja Chen artikkelissa ``Sequential Monte Carlo Methods for Dynamic Systems'' (1998) \citep{Liu-1998}. Tässä tutkielmassa käytetään yleisemmin käytettyä termiä hiukkassuotimet.
+Sekventiaalisissa Monte Carlo -menetelmissä stokastisen prosessin posteriorijakauman esittämiseen käytettyjä otoksia kutsutaan partikkeleiksi tai hiukkasiksi ja menetelmiä siten hiukkassuotimiksi. Erityisesti myöhemmin esitettävää SIR-algoritmia kutsutaan usein hiukkassuotimeksi. Termiä hiukkassuodin käytti ensimmäisen kerran Del Moral artikkelissa ``Nonlinear Filtering: Interacting Particle Resolution'' (1996) \citep{DelMoral-1996}, SMC-menetelmät termiä Liu ja Chen artikkelissa ``Sequential Monte Carlo Methods for Dynamic Systems'' (1998) \citep{Liu-1998}. Tässä tutkielmassa käytetään yleisemmin käytettyä termiä hiukkassuotimet.
 
 \section{Monte Carlo -menetelmistä}
 
@@ -433,7 +420,7 @@ Bayesilaisessa päättelyssä ollaan yleisesti kiinnostuttu laskemaan johonkin p
 \mathbb{E}[g(x)|y_{1:k}]=\int g(x)p(x|y_{1:k})dx,
 \end{align}
 
-\noindent missä \(g\) on tila-avaruuden mielivaltainen funktio ja \(p(x|y_{1:t})\) on havaintoihin \(\{y_1,\ldots,y_k\}\) liittyvä \(x\):n posterioritiheysjakauma. Odotusarvo on laskettavissa suljetussa muodossa vain harvoissa tapauksissa, suodinongelman kohdalla silloin, kun kyseessä on lineaarinen ja Gaussinen malli. Odotusarvoa voidaan kuitenkin approksimoida niin sanoituilla Monte Carlo -menetelmillä. Menetelmien perusperiaate on tehdä riippumattomia otoksia estimoitavasta jakaumasta ja laskea haluttu odotusarvo otosten avulla. Jos tehdään \(N\) otosta jakaumasta \(x^i\sim p(x|y_{1:t})\), missä \(i=\{1,\ldots,N\}\) saadaan näiden otosten avulla laskettua odotusarvon estimaatti
+\noindent missä \(g\) on tila-avaruuden mielivaltainen funktio ja \(p(x|y_{1:k})\) on havaintoihin \(\{y_1,\ldots,y_k\}\) liittyvä \(x\):n posterioritiheysjakauma. Odotusarvo on laskettavissa suljetussa muodossa vain harvoissa tapauksissa, suodinongelman kohdalla silloin, kun kyseessä on lineaarinen ja Gaussinen malli. Odotusarvoa voidaan kuitenkin approksimoida niin sanoituilla Monte Carlo -menetelmillä. Menetelmien perusperiaate on tehdä riippumattomia otoksia estimoitavasta jakaumasta ja laskea haluttu odotusarvo otosten avulla. Jos tehdään \(N\) otosta jakaumasta \(x^i\sim p(x|y_{1:k})\), missä \(i=\{1,\ldots,N\}\) saadaan näiden otosten avulla laskettua odotusarvon estimaatti
 
 \begin{align}
 \mathbb{E}[g(x)|y_{1:k}]\simeq\frac{1}{N}\sum_{i=1}^N g(x^i).
@@ -551,7 +538,7 @@ Tässä alaluvussa käsitellään lyhyesti Kalman-suotimen yhteyttä hiukkassuot
 
 Esitetty algoritmi on ns. Kalman-suodin, joka selkeästi toimii suodinongelman ratkaisuna, kun mallit ovat haluttua lineaarista normaalimuotoa. Jos tämä oletus ei täyty, on Kalman-suotimesta kehitetty useita versioita, joissa ei-lineaarinen malli voidaan linearisoida tiettyjen ehtojen vallitessa.
 
-Tämän alaluvun tarkoituksena oli esittää, että Kalman-suotimessa ongelma on samaa muotoa kuin hiukkassuotimessa, joten linearisoituja Kalman-suotimia ei tässä käsitellä. Hiukkassuodin myös ratkaisee ongelman mille hyvänsä epälineaariselle mallille.
+Tämän alaluvun tarkoituksena oli esittää, että Kalman-suotimessa ongelma on samaa muotoa kuin hiukkassuotimessa, joten linearisoituja Kalman-suotimia ei tässä käsitellä. Hiukkassuodin myös ratkaisee suodinongelman mille hyvänsä epälineaariselle mallille.
 
 \chapter{Hiukkassuotimet} \label{hiukkassuotimet}
 
@@ -561,7 +548,7 @@ Tässä alaluvussa esitetään epälineaarisen suodinongelman ratkaisemiseksi SI
 
 Algoritmi alustetaan jakaumasta \(x_1^i\sim p_{x_0}\) generoiduilla \(N\) kappaleella partikkeleita. Jokaiselle partikkelille annetaan alustuksessa sama paino \(w_{1|0}^i=1/N\). Algoritmi suoritetaan jokaiselle partikkelille \(i=\{1,2,\ldots,N\}\) jokaisella aika-askeleella \(k=\{1,2,\ldots,T\}\).
 
-Seuraava toistetaan jokaisella aika-askeleella \(k=\{1,2,\ldots,T\}\). Algoritmin ensimmäisessä vaiheessa päivitetään painot yhtälön (\ref{painopaivitys}) mukaan.
+Algoritmin ensimmäisessä vaiheessa päivitetään painot yhtälön (\ref{painopaivitys}) mukaan.
 
 \begin{align}\label{painopaivitys}
 w^i_{k|k}=\frac{1}{c_k}w^i_{k|k-1}p(y_k|x^i_k).
@@ -615,7 +602,7 @@ Alla käsitellään algoritmiin liittyvän uudelleenotantamenetelmän, partikkel
 \caption{SIR}
 \end{algorithm}
 
-\subsection{Parametrien valinta}
+\subsection{Suunnitteluparametrien valinta}
 
 Ennen algoritmin suorittamista valitaan ehdotusjakauma \(q(x_{k+1}|x_{1:k},y_{k+1})\), uudelleenotantamenetelmä sekä partikkelien määrä \(N\). Ehdotusjakauman ja uudelleenotantamenetelmän valinnassa tärkeimpänä päämääränä on välttää otosten ehtymistä, kun taas partikkelien määrä säätelee kompromissia algoritmin suorituskyvyn ja sen tarkkuuden sekä varianssin välillä.
 
@@ -640,7 +627,7 @@ Yleisesti ottaen \(N\) kannattaa asettaa sellaiseksi, että se paitsi tuottaa ri
 
 \subsubsection{Uudelleenotantamenetelmän valinta} \label{uudelleenotantamenetelman-valinta}
 
-Ilman uudelleenotantaa on mahdollista, että algoritmi alkaa kärsiä SIS-algoritmille ominaisesta otosten ehtymisestä. Toisin sanoen kaikki painot alkavat keskittyä vain muutamalle partikkelille eikä algoritmi enää approksimoi tehokkaasti haluttua jakaumaa. Uudelleenotanta tarjoaa osittaisen ratkaisun tähän ongelmaan, mutta hävittää samalla informaatiota ja lisää siten satunnaisotantaan liittyvää epävarmuutta. Yleisesti ottaen uudelleenotanta kannattaa aloittaa vasta siinä vaiheessa algoritmin suorittamista, kun siitä on otosten ehtymisen kannalta hyötyä, esimerkiksi efektiivisen otoskoon pudottua jonkin kynnysarvon alapuolelle (adaptiivinen uudelleenotanta). Efektiivinen otoskoko saadaan laskettua variaatiokertoimesta \(c_\nu\) kaavalla
+Ilman uudelleenotantaa on mahdollista, että algoritmi alkaa kärsiä SIS-algoritmille tyypillisestä otosten ehtymisestä. Toisin sanoen kaikki painot alkavat keskittyä vain muutamalle partikkelille eikä algoritmi enää approksimoi tehokkaasti haluttua jakaumaa. Uudelleenotanta tarjoaa osittaisen ratkaisun tähän ongelmaan, mutta hävittää samalla informaatiota ja lisää siten satunnaisotantaan liittyvää epävarmuutta. Yleisesti ottaen uudelleenotanta kannattaa aloittaa vasta siinä vaiheessa algoritmin suorittamista, kun siitä on otosten ehtymisen kannalta hyötyä, esimerkiksi efektiivisen otoskoon pudottua jonkin kynnysarvon alapuolelle (adaptiivinen uudelleenotanta). Efektiivinen otoskoko saadaan laskettua variaatiokertoimesta \(c_\nu\) kaavalla
 
 \begin{align}\label{N-eff}
 N_{eff}= \frac{N}{1+c_\nu^2(w^i_{k|k})} = \frac{N}{1+\frac{\text{Var}(w^i_{k|k})}{(\mathbb{E}[w^i_{k|k}])^2}} =\frac{N}{1+N^2\text{Var}(w^i_{k|k})}.
@@ -664,7 +651,7 @@ Yksinkertaisin muoto ehdotusjakaumalle on \(q(x_{1:k}|y_{1:k})\) eli jokaisella 
 q(x_{1:k}|y_{1:k})=q(x_k|x_{1:k-1},y_{1:k})q(x_{1:k-1}|y_{1:k}).
 \end{align}
 
-Jos yhtälöstä (\ref{proposal-factorization}) poimitaan ehdotusjakaumaksi ainoastaan termi \(q(x_k|x_{1:k-1},y_{1:k})\) voidaan tämä kirjoittaa edelleen Markov-ominaisuuden nojalla muotoon \(q(x_k|x_{k-1},y_{k})\). Tämä on suodinongelman kannalta riittävää, koska olemme kiinnostuneita posteriorijakaumasta ja arvosta \(x\) ainoastaan aika-askeleella \(k\) (siloitinongelmassa tarvitsisimme koko polun \(x_{1:k}\)). Alla tarkastellaan edelleen Gustafssonia (2010) \citep{gustafsson-2010} seuraten kahta ehdotusjakauman valintatapaa, prioriotantaa (\emph{prior sampling}) sekä uskottavuusotantaa (\emph{likelihood sampling}).
+Jos yhtälöstä (\ref{proposal-factorization}) poimitaan ehdotusjakaumaksi ainoastaan termi \(q(x_k|x_{1:k-1},y_{1:k})\), voidaan tämä kirjoittaa edelleen Markov-ominaisuuden nojalla muotoon \(q(x_k|x_{k-1},y_{k})\). Tämä on suodinongelman kannalta riittävää, koska olemme kiinnostuneita posteriorijakaumasta ja arvosta \(x\) ainoastaan aika-askeleella \(k\) (siloitinongelmassa tarvitsisimme koko polun \(x_{1:k}\)). Alla tarkastellaan edelleen Gustafssonia (2010) \citep{gustafsson-2010} seuraten kahta ehdotusjakauman valintatapaa, prioriotantaa (\emph{prior sampling}) sekä uskottavuusotantaa (\emph{likelihood sampling}).
 
 Ennen ehdotusjakauman tarkastelua määritellään mallille signaali-kohinasuhde uskottavuuden maksimin ja priorin maksimin välisenä suhteena
 
@@ -721,7 +708,7 @@ Alla esitetään kolme SIR-algoritmiin liittyvää konvergenssitulosta. Se, kuin
 \textit{Konvergenssitulos 2}: Keskineliövirheelle pätee asymptoottinen konvergenssi (\ref{MSE-konvergenssi}).
 
 \begin{align}\label{MSE-konvergenssi}
-\mathbb{E}(\hat{g}(x_k)-\mathbb{E}(g(x_k)))^2\leq\frac{p_k\norm{g(x_k)}}{N},
+\mathbb{E}\left[\hat{g}(x_k)-\mathbb{E}\left[g(x_k)\right]\right]^2\leq\frac{p_k\norm{g(x_k)}}{N},
 \end{align}
 
 \noindent missä \(g\) on mikä hyvänsä piilossa olevan tila-avaruuden rajoitettu Borel-mitallinen funktio (\(g \in \mathcal{B}(\mathbb{R}^{n_x})\)), \(\norm{g(\cdot)}\) kyseisen funktion supremum-normi ja \(p_k\) jokin äärellinen vakio, jolle pätee ajanhetkestä \(k\) riippumatta \(p_k=p<\infty\).
@@ -729,7 +716,7 @@ Alla esitetään kolme SIR-algoritmiin liittyvää konvergenssitulosta. Se, kuin
 \textit{Konvergenssitulos 3}: Keskeinen raja-arvolause (\ref{CLT}).
 
 \begin{align}\label{CLT}
-\text{Kun } N \to \infty: \sqrt{N} \left\{ \frac{1}{N} \sum_{i=1}^N \hat{g}(x_k^i) -\mathbb{E}(g(x_k^i)) \right\} \xrightarrow{D} \mathcal{N}(0,\sigma^2 < \infty),
+\text{Kun } N \to \infty: \sqrt{N} \left\{ \frac{1}{N} \sum_{i=1}^N \hat{g}(x_k^i) -\mathbb{E}\left[g(x_k^i)\right] \right\} \xrightarrow{D} \mathcal{N}(0,\sigma^2 < \infty),
 \end{align}
 
 \noindent missä \(g\) on jälleen mikä hyvänsä piilossa olevan tila-avaruuden rajoitettu Borel-mitallinen funktio (\(g \in \mathcal{B}(\mathbb{R}^{n_x})\)). Konvergenssituloksia ei tämän tutkielman puitteissa todisteta.
@@ -748,13 +735,13 @@ Toinen, tarkempi vaihtoehto on käyttää laskennassa tärkeytyspainoa
 w_{k+1|k}^i=\frac{\sum_{j=1}^{N}w_{k|k}^jp(x_{k+1}^i|x_k^j)}{q(x_{k+1}^i|x_k^i,y_{k+1})}
 \end{align}
 
-\noindent painon (\ref{tarkeytys}) sijaan. Tällöin jokaisella aikapäivitysaskeleella lasketaan painot kaikkien mahdollisten tila-aika-avaruuspolkujen yli. Samoin kuin uudelleenotanta tämä pienentää painojen varianssia.
+\noindent painon (\ref{tarkeytys}) sijaan. Tällöin jokaisella aikapäivitysaskeleella lasketaan painot kaikkien mahdollisten tila-aika-avaruuspolkujen yli. Samoin kuin uudelleenotanta tämä pienentää painojen varianssia, mutta lisää algoritmin aikakompleksisuutta.
 
 \subsection{Aikakompleksisuus}
 
 Algoritmin perusmuodon aikakompleksisuus on \(\mathcal{O}(N)\). Uudelleenotantamenetelmän tai ehdotusjakauman valinta ei suoraan vaikuta aikakompleksisuuteen. Sen sijaan marginalisointi tärkeytyspainolla (\ref{marginaalitarkeytys}) lisää algoritmin aikakompleksisuutta \(\mathcal{O}(N)\rightarrow\mathcal{O}(N^2)\), koska jokaisen partikkelin kohdalla painot lasketaan jokaisen tila-aika-avaruuspolun yli. On selvää, että erityisesti isoilla otoskoon \(N\) arvoilla ei yllä esitetty marginalisointi enää ole mielekästä.
 
-Tällaisia tilanteita varten algoritmista on olemassa \(\mathcal{O}(N\text{log}(N))\) -versioita, jotka perustuvat esimerkiksi N:n kappaleen oppimiseen (\emph{N-body learning}). Näiden algoritmien käsittely jää tämän tutkielman ulkopuolelle, mutta katsauksen algoritmeista ovat esittäneet esimerkiksi Klaas \&al.~artikkelissa ``Toward Practical \(N^2\) Monte Carlo: the Marginal Particle Filter'' (2005) \citep{klaas-2005}.
+Tällaisia tilanteita varten algoritmista on olemassa \(\mathcal{O}(N\text{log}(N))\)-versioita, jotka perustuvat esimerkiksi N:n kappaleen oppimiseen (\emph{N-body learning}). Näiden algoritmien käsittely jää tämän tutkielman ulkopuolelle, mutta katsauksen algoritmeista ovat esittäneet esimerkiksi Klaas \&al.~artikkelissa ``Toward Practical \(N^2\) Monte Carlo: the Marginal Particle Filter'' (2005) \citep{klaas-2005}.
 
 \section{Saapasremmisuodin}
 
@@ -786,10 +773,12 @@ Saapasremmisuodin on edellä esitettyä SIR-algoritmia yksinkertaisempi toteutta
 Hiukkassuotimen varianssin estimoinnissa ollaan kiinnostuneita jakaumaestimaatin \(\hat{p}(x_{1:k}|y_{1:k})\) varianssista. Yksinkertaisin tapa estimoida hiukkassuodinalgoritmin varianssia on ajaa algoritmi \(M > 1\) kertaa. Koska ajot ovat toisistaan riippumattomia, voidaan estimaatin varianssi laskea kullekin aika-askeleelle \(k\) näiden ajojen \(k\)-hetken estimaattien otosvarianssina:
 
 \begin{align}\label{MC-varianssi}
-\hat{\sigma}^2_{MC} = \text{Var}_{\text{MC}}(\hat{p}(x_{1:k}|y_{1:k})) = \frac{1}{M-1} \sum_{i=1}^{M}(x_k^i-\bar{x}_k)^2
+\hat{\sigma}^2_{MC} = \text{Var}(\hat{p}(x_{1:k}|y_{1:k})) = \frac{1}{M-1} \sum_{i=1}^{M}(x_k^i-\bar{x}_k)^2
 ,\end{align}
 
-\noindent missä \(x_k^i\) on \(k\):nen aika-askeleen piste-estimaatti ajolle \(i=1,\ldots,M\) ja \(\bar{x}_k\) piste-estimaattien aritmeettinen keskiarvo laskettuna kaikkien \(M\) ajon yli. Tällaisen Monte Carlo -varianssin estimoiminen on kuitenkin laskennallisesti tehotonta. Monissa käytännön sovellutuksissa jo yhden hiukkassuodinalgoritmin ajaminen vaatii runsaasti laskentatehoa, jolloin Monte Carlo -varianssin laskeminen ei ole mahdollista. Varianssia ei voida myöskään laskea analyyttisesti, mutta koska keskeisen raja-arvolauseen (\ref{CLT}) nojalla tiedetään, että asymptoottinen varianssi
+\noindent missä \(x_k^i\) on \(k\):nen aika-askeleen piste-estimaatti ajolle \(i=1,\ldots,M\) ja \(\bar{x}_k\) piste-estimaattien aritmeettinen keskiarvo laskettuna kaikkien \(M\) ajon yli. Tällaisen Monte Carlo -varianssin estimoiminen on kuitenkin laskennallisesti tehotonta. Monissa käytännön sovellutuksissa jo yhden hiukkassuodinalgoritmin ajaminen vaatii runsaasti laskentatehoa, jolloin Monte Carlo -varianssin laskeminen ei ole mahdollista.
+
+Varianssia ei voida myöskään laskea analyyttisesti, mutta koska keskeisen raja-arvolauseen (\ref{CLT}) nojalla tiedetään, että asymptoottinen varianssi
 
 \begin{align}\label{asymptoottinen-varianssi}
 \lim_{N\to \infty} N \text {Var}(\hat{g}(x_k^i))
@@ -797,7 +786,7 @@ Hiukkassuotimen varianssin estimoinnissa ollaan kiinnostuneita jakaumaestimaatin
 
 \noindent on olemassa, on sen estimointiin kehitetty lähivuosina joitakin approksimatiivisia menetelmiä. Alla käsitellään Chan ja Lain (2013) \citep{Chan-2013} sekä Leen ja Whitleyn (2018) ehdottamaa varianssin estimointitapaa \citep{Lee-2018}.
 
-Ajetaan SIR-algoritmi kuten esitetty algoritmissa \ref{sir}, mutta merkitään kullakin algoritmin suorituskerralla \(k=1,\ldots,T\) ja jokaisen partikkelin \(n=1,\ldots,N\) kohdalla indeksillä \(E_k^n\) kunkin partikkelin kantaisää eli sitä partikkelia, josta kyseinen partikkeli on uudelleenotantojen kautta polveutunut aika-askeleesta \(k=1\) lähtien. Kaavio \ref{fig:eeva-indeksit} havainnollistaa partikkelien polveutumista.
+Ajetaan SIR-algoritmi kuten esitetty algoritmissa \ref{sir}, mutta merkitään kullakin aika-askeleella \(k=1,\ldots,T\) jokaisen partikkelin \(n=1,\ldots,N\) kohdalla indeksillä \(E_k^n\) kunkin partikkelin kantaisää eli sitä partikkelia, josta kyseinen partikkeli on uudelleenotantojen kautta polveutunut aika-askeleesta \(k=1\) lähtien. Kaavio \ref{fig:eeva-indeksit} havainnollistaa tätä partikkelien polveutumista.
 
 \begin{figure}[H]
 \centering
@@ -820,7 +809,7 @@ Varianssiestimaatti voidaan laskea näiden, Leen ja Whitleyn Eeva-indekseiksi ni
 
 \noindent Kyseessä harhaton ja konsistentti asymptoottisen varianssin estimaatti. Tarkemmin \(N\hat{\sigma}^2_{CLE}\) konvergoi asymptoottiseen varianssiin (\ref{asymptoottinen-varianssi}). Tätä ei tutkielman puitteissa todisteta.
 
-Yllä esitetty varianssiestimaatti saattaa kuitenkin kärsiä indeksien ehtymisestä, sillä kun \(k \to \infty\), polveutuvat kaikki hiukkaset lopulta samasta kantaisästä eli indeksit \(E_k^i,\ldots,E_k^N\) ovat kaikki yhtäsuuria. Tämän vuoksi on mielekästä johtaa indeksit ainoastaan tietystä aiemmasta aika-askeleesta alkaen. Olsson ja Douc (2019) \citep{olsson-2019} ehdottavat tähän tarkoitukseen Henok-indeksiä \(E_{m,k}^n\), jossa \(m\) merkitsee aika-askeleen \(m\leq k\) partikkelia, josta kyseinen partikkeli polveutuu. Partikkelien kantaisien sukupolvi määritetään viipeellä \(\lambda\) niin, että \(m=k-\lambda\). Kaavio \ref{fig:henok-indeksit} havainnollistaa partikkelien polveutumista, kun \(\lambda=1\).
+Yllä esitetty varianssiestimaatti saattaa kuitenkin kärsiä indeksien ehtymisestä. Toisin sanoen kun \(k \to \infty\), polveutuvat kaikki hiukkaset lopulta samasta kantaisästä eli indeksit \(E_k^i,\ldots,E_k^N\) ovat kaikki yhtäsuuria. Tämän vuoksi on mielekästä johtaa indeksit ainoastaan tietystä aiemmasta aika-askeleesta aika-askeleen \(k=1\) sijaan. Olsson ja Douc (2019) \citep{olsson-2019} ehdottavat tähän tarkoitukseen Henok-indeksiä \(E_{m,k}^n\), jossa \(m\) merkitsee aika-askeleen \(m\leq k\) partikkelia, josta kyseinen partikkeli polveutuu. Partikkelien kantaisien sukupolvi määritetään viipeellä \(\lambda\) niin, että \(m=k-\lambda\). Kaavio \ref{fig:henok-indeksit} havainnollistaa partikkelien polveutumista, kun \(\lambda=1\).
 
 \begin{figure}[H]
 \centering
@@ -829,7 +818,7 @@ Yllä esitetty varianssiestimaatti saattaa kuitenkin kärsiä indeksien ehtymise
 \label{fig:henok-indeksit}
 \end{figure}
 
-Nyt varianssi voidaan laskea kuten yhtälössä (\ref{CLE-varianssi}) edellä, kun Eeva-indeksit korvataan Henok-indekseillä. Saadaan painotettu summa
+Nyt varianssi voidaan laskea kuten yhtälössä (\ref{CLE-varianssi}) edellä, mutta Eeva-indeksit korvataan Henok-indekseillä. Saadaan painotettu summa
 
 \begin{align}\label{OD-sum}
 \hat{\mu}_k=\sum_{i=1}^N w_k^i x_k^i[E_{k(\lambda)}]
@@ -841,15 +830,15 @@ Nyt varianssi voidaan laskea kuten yhtälössä (\ref{CLE-varianssi}) edellä, k
 \hat{\sigma}^2_{OD} = \frac{1}{N-1} \sum_{i=1}^N w_k^i (x_k^i[E_{k(\lambda)}]-\hat{\mu}_k)^2
 ,\end{align}
 
-\noindent missä \(k(\lambda) \vcentcolon= k-\lambda\) eli se aika-askel, jota käytetään hiukkasten kantaisänä. Viive \(\lambda\) on varianssiestimaatin suunnitteluparametri. Pienillä viipeillä estimaatti on harhainen, mutta harha laskee viipeen kasvaessa. Olsson ja Douc suosittavat viipeen ylärajaksi arvoa \(\lambda=20\), jolloin estimaattorin harha on käytännössä kokonaan hävitetty. Tämän jälkeen estimaatti voi myös alkaa kärsiä samasta epätarkkuudesta kuin Eeva-indekseihin perustuva CLE-estimaatti.
+\noindent missä \(k(\lambda) \vcentcolon= k-\lambda\) eli se aika-askel, jota käytetään hiukkasten kantaisänä. Viive \(\lambda\) on varianssiestimaatin suunnitteluparametri. Pienillä viipeillä estimaatti on harhainen, mutta harha laskee viipeen kasvaessa. Olsson ja Douc suosittavat viipeen ylärajaksi arvoa \(\lambda=20\), jolloin estimaattorin harha on käytännössä kokonaan hävitetty. Tätä suuremmilla viivearvoilla estimaatti voi alkaa kärsiä samasta epätarkkuudesta kuin Eeva-indekseihin perustuva CLE-estimaatti.
 
-Mastrototaro ja Olsson (2023) \citep{Mastrototaro-2023} laajentavat tätä estimaattia edelleen niin, että viive \(\lambda\) valitaan mukautuvasti. Mastrototaron ja Olssonin ALVar-estimaatti (\emph{Adaptive-Lag Variance}) lasketaan kuten OD-varianssi (\ref{OD-varianssi}) edellä, mutta kunkin algoritmin ajokerran jälkeen asetetaan seuraavan ajanhetken \(\lambda\) seuraavasti:
+Mastrototaro ja Olsson (2023) \citep{Mastrototaro-2023} laajentavat estimaattia edelleen niin, että viive \(\lambda\) valitaan mukautuvasti. Mastrototaron ja Olssonin ALVar-estimaatti (\emph{Adaptive-Lag Variance}) lasketaan kuten OD-varianssi (\ref{OD-varianssi}) edellä, mutta kunkin algoritmin ajokerran jälkeen asetetaan seuraavan ajanhetken \(\lambda\) seuraavasti:
 
 \begin{align}\label{ALVar-lambda}
 \lambda_{k+1} \leftarrow \operatorname*{arg\,max}_{\lambda \in [0, \lambda_k + 1]} \hat{\sigma}^2_{k+1,\lambda}
-.\end{align}
+\end{align}
 
-\noindent ja ehtyneet Henok-indeksit määritellään niin, että indeksi on ehtynyt (so. kaikki indeksivektorin indeksit ovat yhtäsuuria) jos jompikumpi seuraavista ehdoista täyttyy:
+\noindent ja ehtyneet Henok-indeksit määritellään niin, että indeksi on ehtynyt (so. kaikki indeksivektorin indeksit ovat yhtäsuuria), jos jompikumpi seuraavista ehdoista täyttyy:
 
 \hfill\break
 i) Henok-indeksit \(E^i_{m,k-1}\) ovat ehtyneet,\\
@@ -863,7 +852,7 @@ Esitettyjä varianssiestimaatteja voidaan hyödyntää paitsi algoritmien ja par
 
 Tässä luvussa käsitellään suodinongelmaan läheisesti liittyvän siloitteluongelman ratkaisemista hiukkassiloitinalgoritmien avulla. Kuten hiukkassuotimien kohdalla, myös tässä luvussa esitetään ongelma ensin yleisessä Bayesilaisessa muodossa, jonka jälkeen siirrytään käsittelemään hiukkasmenetelmiin pohjautuvia siloitinalgoritmeja. Luvussa käsiteltävät algoritmit jaetaan kahteen pääkategoriaan, offline-algoritmeihin, joita sovelletaan hiukkassuodinalgoritmin ajon jälkeen ja online-algoritmeihin, jotka suoritetaan hiukkassuodinalgoritmin rinnalla.
 
-Siloitinongelman esittely seuraa Särkkää (2013) \citep{sarkka-2013}. Algoritmien käsittely pohjautuu SIR- ja BS-PS-siloittimien osalta Särkkään (2013) \citep{sarkka-2013} ja SIR-siloittimen osalta Genshiro Kitagawan artikkeliin ``Monte Carlo filter and smoother for non-Gaussian nonlinear state space models'' (1996) \citep{kitagawa-1996}. Kiinteän viipeen silotin seuraa niin ikään Kitagawaa (1996) \citep{kitagawa-1996}. Uudelleenpainottava siloitin perustuu Doucetin \&al.~artikkeliin ``On sequential Monte Carlo sampling methods for Bayesian filtering'' (2000) \citep{Doucet-2000}. Mukautuvan viipeen siloitin seuraa puolestaan Alenlövin ja Olssonin artikkelia ``Particle-Based Adaptive-Lag Online Marginal Smoothing in General State-Space Models'' (2019) \citep{alenlov-2019}.
+Siloitinongelman esittely seuraa Särkkää (2013) \citep{sarkka-2013}. Algoritmien käsittely pohjautuu SIR- ja BS-PS-siloittimien osalta Särkkään (2013) \citep{sarkka-2013} ja SIR-siloittimen osalta Kitagawan artikkeliin ``Monte Carlo filter and smoother for non-Gaussian nonlinear state space models'' (1996) \citep{kitagawa-1996}. Kiinteän viipeen silotin seuraa niin ikään Kitagawaa (1996) \citep{kitagawa-1996}. Uudelleenpainottava siloitin perustuu Doucetin \&al.~artikkeliin ``On sequential Monte Carlo sampling methods for Bayesian filtering'' (2000) \citep{Doucet-2000}. Mukautuvan viipeen siloitin seuraa puolestaan Alenlövin ja Olssonin artikkelia ``Particle-Based Adaptive-Lag Online Marginal Smoothing in General State-Space Models'' (2019) \citep{alenlov-2019}.
 
 \section{Bayesilainen siloitin}
 
@@ -879,7 +868,7 @@ ja
 p(x_k|y_{1:T}) = p(x_k|y_{1:k}) \int \frac{p(x_{k+1}|x_k)p(x_{k+1}|y_{1:T})}{p(x_{k+1}|y_{1:k})} \mathop{dx_{k+1}},
 \end{align}
 
-\noindent missä \(p(x_k|y_{1:k})\) on suodintiheys aika-askeleella \(k\) ja \(p(x_{k+1}|y_{1:k})\) prediktiivinen jakauma ajanhetkelle \(k+1\). Kuten suodinongelman kohdalla, voidaan ongelma ratkaista suljetussa muodossa, kun mallit ovat lineaarisia. Tällöin kyseessä on Rauch-Turn-Striebel-siloitin (RTSS), josta käytetään myös nimitystä Kalman-siloitin. Samoin kuten Kalman-suotimen kohdalla, ongelma voidaan tiettyjen ehtojen vallitessa linearisoida. Näitä linearisoituja siloittimia ei käsitellä tässä tutkielmassa. Hiukkassuotimen tavoin hiukkassiloitin ratkaisee ongelman mille hyvänsä epälineaariselle mallille.
+\noindent missä \(p(x_k|y_{1:k})\) on suodintiheys aika-askeleella \(k\) ja \(p(x_{k+1}|y_{1:k})\) prediktiivinen jakauma ajanhetkelle \(k+1\). Kuten suodinongelman kohdalla, voidaan ongelma ratkaista suljetussa muodossa, kun mallit ovat lineaarisia. Tällöin kyseessä on Rauch-Turn-Striebel-siloitin (RTSS), josta käytetään myös nimitystä Kalman-siloitin. Samoin kuten Kalman-suotimen kohdalla, ongelma voidaan tiettyjen ehtojen vallitessa linearisoida. Näitä linearisoituja siloittimia ei käsitellä tässä tutkielmassa. Hiukkassuotimen tavoin hiukkassiloitin ratkaisee siloitteluongelman mille hyvänsä epälineaariselle mallille.
 
 \section{Offline-algoritmit}
 
@@ -940,7 +929,7 @@ Uudelleenpainottavassa hiukkassiloittimessa (tunnetaan myös nimellä marginaali
 \DontPrintSemicolon
 \SetAlgoShortEnd
 \KwResult{Posteriorisiloitinjakauman $p(x_{k}|y_{1:T})$ estimaatti.\;}
-\KwData{Suodinjakaumia edustavat hiukkaset $x_k^i$ ja näihin liittyvät painot ${w_k^i}$, missä $i=1,\ldots,N$ ja $k=1,\ldots,T$\;}
+\KwData{Suodinjakaumia edustavat hiukkaset $x_k^i$ ja näihin liittyvät painot ${w_k^i}$, missä $i=1,\ldots,N$ ja $k=1,\ldots,T$.\;}
 \Begin{
   \Begin{Asetetaan $w_{T|T}^i = w_T^i$, jokaiselle $i=1,\ldots,N$;}
   \For{$k=\{T-1,\ldots,0\}$}{
@@ -954,7 +943,7 @@ Halutun siloitinjakauma estimaatti aika-askeleella \(k\) saadaan painotettuna ke
 
 \section{Online-algoritmit}
 
-Yllä esitetyt offline-algoritmit ratkaisevat siloitinongelman niin, että kaikki data ajanhetkeen \(T\) asti on saatavilla. Käytännössä siloitin siis ajetaan suodinalgoritmin jälkeen. Käytännön sovellutuksissa tämä ei ole aina mahdollista, jos siloittelujakauman pitää olla saatavilla reaaliaikaisesti. Online-siloittimet ratkaisevat siloitinongelman niin, että saatavilla on dataa aika-askeleeseen \(k+L \le T\) asti, missä \(L\) on dataan lisätty \(L\):n aika-askeleen viive. Online-algoritmit voidaan edelleen jakaa kiinteän viipeen siloittimiin (\emph{fixed-lag smoother}) ja mukautuvan viipeen siloittimiin (\emph{adaptive-lag smoother}). Nimensä mukaisesta kiinteän viipeen siloitinalgoritmeissa viive \(L\) valitaan suunnitteluparametrina, kun taas mukautuvan viipeen siloittimet pyrkivät valitsemaan parhaan tai optimaalisen viipeen johonkin laskennalliseen kriteeriin perustuen.
+Yllä esitetyt offline-algoritmit ratkaisevat siloitinongelman niin, että kaikki data ajanhetkeen \(T\) asti on saatavilla. Käytännössä siloitin siis ajetaan suodinalgoritmin jälkeen. Käytännön sovellutuksissa tämä ei ole aina mahdollista, jos siloittelujakauman pitää olla saatavilla reaaliaikaisesti. Online-siloittimet ratkaisevat siloitinongelman niin, että saatavilla on dataa aika-askeleeseen \(k+L \le T\) asti, missä \(L\) on dataan lisätty \(L\):n aika-askeleen viive. Online-algoritmit voidaan edelleen jakaa kiinteän viipeen siloittimiin (\emph{fixed-lag smoother}) ja mukautuvan viipeen siloittimiin (\emph{adaptive-lag smoother}). Nimensä mukaisesta kiinteän viipeen siloitinalgoritmeissa viive \(L\) valitaan suunnitteluparametrina, kun taas mukautuvan viipeen siloittimet pyrkivät valitsemaan optimaalisen viipeen johonkin laskennalliseen kriteeriin perustuen.
 
 \subsection{Kiinteän viipeen siloitin}
 
@@ -973,7 +962,7 @@ Kiinteän viipeen siloitinta (viipeellä \(L=1\)) voidaan hyödyntää myös pre
 \DontPrintSemicolon
 \SetAlgoShortEnd
 \KwResult{Prediktiivisellä siloittimella lasketut painot painotettu $\tilde{w}_{k}^i$.\;}
-\KwData{Viipeen $L=1$ avulla saadut havainnot $y_{k+1}$. Partikkelit $x_k^i$ ja niitä vastaavat painot $w_k^i$\;}
+\KwData{Viipeen $L=1$ avulla saadut havainnot $y_{k+1}$. Partikkelit $x_k^i$ ja niitä vastaavat painot $w_k^i$.\;}
 \Begin{
   \For{$i=\{1,2,\ldots,N\}$}{
       \Begin{Luodaan simuloidut hiukkaset $\tilde{x}_{k+1}^i$ ehdotusjakaumsta $q(\tilde{x}_{k+1}|x^i_k,y_{k+1})$\;}
@@ -991,26 +980,26 @@ Kun hiukkasten määrä \(N\) pysyy samana, lisää prediktiivinen siloitin suod
 
 Yllä esitetyssä kiinteän viipeen siloittimessa on valittu viive \(L\) algoritmin suunnitteluparametri. Valittu viive on aina kompromissi: liian suuri viive kasvattaa siloitinjakauman estimaatin epätarkkuutta ja hidastaa laskentaa, kun taas liian pieni viive saattaa johtaa niin ikään epätarkkuuteen. Lisäksi valittu viive ei välttämättä johda jokaisella aika-askeleella optimaaliseen tai edes hyvään laskentatulokseen. Mukautuvan viipeen siloittimet yrittävät ratkaista tämän ongelman mukauttamalla kunakin ajanhetkenä valittua viivettä johonkin laskennalliseen kriteeriin perustuen. Erään version mukautuvan viipeen siloittimesta esittävät Alenlöv ja Olsson artikkelissa ``Particle-Based Adaptive-Lag Online Marginal Smoothing in General State-Space Models'' (2019) \citep{alenlov-2019}. Siloitin hyödyntää hiukkassuotimen varianssiestimaattia viipeen valinnassa.
 
-Yksinkertaisin versio siloittimesta on esitetty algoritmissa \ref{mukautuva-siloitin}. Perusidea on viivästyttää siloitinjakauman luomista aika-askeleella \(k\), kunnes tarjolla on viipeet \(S=1,\ldots,s\), joiden varianssi
+Yksinkertaisin versio siloittimesta on esitetty algoritmissa \ref{mukautuva-siloitin}. Perusidea on viivästyttää aika-askeleen \(k\) siloitinjakauman luomista, kunnes tarjolla on viipeet \(S=1,\ldots,s\), joiden varianssi
 
 \begin{align}\label{siloitin-varianssi}
-\sigma^2_{s|t} = \sum_{i=1}^N \frac{w_t^i}{\Omega_t}\left\{\tilde{x}_{s|t} - \sum_{j=1}^N \frac{w_t^j}{\Omega_t}\tilde{x}_{s|t} \right\}^2
+\sigma^2_{s|k} = \sum_{i=1}^N \frac{w_k^i}{\Omega_k}\left\{\tilde{x}_{s|k} - \sum_{j=1}^N \frac{w_k^j}{\Omega_k}\tilde{x}_{s|k} \right\}^2
 \end{align}
 
-\noindent pysyy tietyn valitun rajan \(\epsilon\) yläpuolella, missä \(\tilde{x}_{s|t}\) on kyseiselle viipeellä laskettu marginaalisiloitinjakauman painovektori (kts. algoritmi \ref{rwps}). Kun tämä ehto ei enää täyty, käytetään suurimmalle kriteerin \(\sigma^2_{s|t} < \epsilon\) täyttämälle viipeelle laskettuja painoja siloitinjakauman estimointiin kaikilla \(t^\prime \ge t\). Varianssin estimoinnista kts. alaluku \ref{varianssin-estimointi}.
+\noindent pysyy tietyn valitun rajan \(\epsilon\) yläpuolella, missä \(\tilde{x}_{s|k}\) on kyseiselle viipeellä laskettu marginaalisiloitinjakauman painovektori (kts. algoritmi \ref{rwps}). Kun tämä ehto ei enää täyty, käytetään suurimmalle kriteerin \(\sigma^2_{s|k} < \epsilon\) täyttämälle viipeelle laskettuja painoja siloitinjakauman estimointiin kaikilla \(k^\prime \ge k\). Varianssin estimoinnista kts. alaluku \ref{varianssin-estimointi}.
 
 \begin{algorithm}[H]
 \label{mukautuva-siloitin}
 \DontPrintSemicolon
 \SetAlgoShortEnd
-\KwResult{Siloittelujakauman estimaatti viipeellä $s$, tarkemmin $\sum_i^N w_t^i \tilde{x}_{s|t}^i \Omega_t$.\;}
-\KwData{Olkoon $S$ joukko kullakin viipeellä $s$ laskettuja painoja $\tilde{x}_{s|t}^i$. Alustetaan $S \leftarrow \emptyset$.\;}
+\KwResult{Siloittelujakauman estimaatti viipeellä $s$, tarkemmin $\sum_i^N w_k^i \tilde{x}_{s|k}^i \Omega_k$.\;}
+\KwData{Olkoon $S$ joukko kullakin viipeellä $s$ laskettuja painoja $\tilde{x}_{s|k}^i$. Alustetaan $S \leftarrow \emptyset$.\;}
 \Begin{
-  \For{$t=\{1,2,\ldots,T\}$}{
-      \Begin{Ajetaan SIR-algoritmi \ref{sir} aika-askeleella $t$\;}
+  \For{$k=\{1,2,\ldots,T\}$}{
+      \Begin{Ajetaan SIR-algoritmi \ref{sir} aika-askeleella $k$\;}
       \Begin{Jokaiselle $s \in S$ lasketaan painovektori kuten algoritmissa \ref{rwps}.\;}
       \Begin{$S \leftarrow S \cup \{s\}$Jokaiselle $s \in S$ lasketaan painovektori kuten algoritmissa \ref{rwps}.\;}
-      \Begin{Jokaiselle $s$ lasketaan varianssiestimaatti $\hat{\sigma}^2_{s|t}$ kuten yhtälössä (\ref{siloitin-varianssi}). Jos $\hat{\sigma}^2_{s|t} < \epsilon$ poistetaan $s$ joukosta $S$ ja käytetään siloitinjaukauman estimaattia $\sum_i^N w_t^i \tilde{x}_{s|t}^i \Omega_t$ kaikille aika-askeleilla $t^\prime \ge t$.\;}
+      \Begin{Jokaiselle $s$ lasketaan varianssiestimaatti $\hat{\sigma}^2_{s|k}$. Jos $\hat{\sigma}^2_{s|k} < \epsilon$ poistetaan $s$ joukosta $S$ ja käytetään siloitinjaukauman estimaattia $\sum_i^N w_k^i \tilde{x}_{s|k}^i \Omega_k$ kaikille aika-askeleilla $k^\prime \ge k$.\;}
     }
   }  
 \caption{Mukautuvan viipeen siloitin}
@@ -1025,7 +1014,7 @@ Sisätilapaikannus tarkoittaa nimensä mukaisesti ihmisten tai esineiden automaa
 
 \section{Sisätilapaikannuksesta}
 
-Sisätilapaikannus tarkoittaa teknisiä ratkaisuja ja menetelmiä, joilla paikannetaan ihmisiä, laitteita tai esineitä sisätiloissa, joissa perinteinen GPS-signaali ei ole riittävä tai saatavilla. Sisätilapaikannuksessa hyödynnetään useita erilaisia teknologioita, kuten radiotaajuuksia, magneettikenttiä, ultraääntä ja optisia menetelmiä. Kattava esitys sisätilapaikannukseen käytettävistä teknologioista löytyy George Ogunatalan \&al.~artikkelista ``Indoor location identification technologies for real-time IoT-based applications: An inclusive survey'' (2018) \citep{oguntala-2018}, johon myös tämä alaluku perustuu.
+Sisätilapaikannus tarkoittaa teknisiä ratkaisuja ja menetelmiä, joilla paikannetaan ihmisiä, laitteita tai esineitä sisätiloissa, joissa perinteinen GPS-signaali ei ole riittävä tai saatavilla. Sisätilapaikannuksessa hyödynnetään useita erilaisia teknologioita, kuten radiotaajuuksia, magneettikenttiä, ultraääntä ja optisia menetelmiä. Kattava esitys sisätilapaikannukseen käytettävistä teknologioista löytyy Oguntala \&al.~artikkelista ``Indoor location identification technologies for real-time IoT-based applications: An inclusive survey'' (2018) \citep{oguntala-2018}, johon myös tämä alaluku perustuu.
 
 Optisessa paikannuksessa hyödynnetään kameroita tai muita optisia sensoreita, kuten esimerkiksi Lidar-valotutkia halutun kohteen sijainnin määrittämiseen. Magneettikenttiin perustuvat paikannusratkaisut hyödyntävät rakennusten sisäisten metallirakenteiden maapallon magneettikenttään luomia paikallisia muutoksia. Näitä muutoksia voidaan käyttää vertailutietona paikannuksessa, mittaamalla ympäröivän magneettikentän vahvuutta ja vertaamalla sitä ennalta tallennettuihin karttoihin. Ultraäänipohjainen paikannus puolestaan hyödyntää ääniaaltojen kulkuaikaa lähettimen ja vastaanottimien välillä.
 
@@ -1035,15 +1024,15 @@ Yleinen teknologiavalinta sisätilapaikannuksessa ovat erilaiset Bluetooth-stand
 
 Turkulainen teknologia- ja analytiikkayritys Walkbase käyttää Bluetooth/BLE-sisätilapaikannusta asiakkaiden käyttäytymistä koskevan datan keräämiseen erityisesti ruokakaupoissa sekä tavarataloissa. Tyypillisessä asennusskenaariossa lähettimet (tagit) kiinnitetään liikkeen ostoskärryihin ja paikantimet kiinnitetään liiketilan kattoripustuksiin.
 
-Walkbase on kehittänyt sisätilapaikannukseen oman laitteisto- ja ohjelmistoratkaisunsa, jonka tavoitteena on tarjota kaikissa ympäristöissä alle metrin paikannustarkkuus. Koska tagit kiinnitetään tunnetulle korkeudelle ostoskärryihin, riittää paikannustarkkuutta laskettaessa tarkastella ainoastaan leveys- ja pituusasteita. Kun tagin todellinen sijainti \(P_k=(P_{\text{lon}_k}, P_{\text{lat}_k})\) tiedetään diskreetillä aika-askeleella \(k\), voidaan sijaintiestimaatin \(\hat{x}_k=(\hat{x}_{\text{lon}_k}, \hat{x}_{\text{lat}_k})\) kyseisen aika-askeleen paikannusvirhe \(\epsilon_{\text{pos}_k}\) laskea
+Walkbase on kehittänyt sisätilapaikannukseen oman laitteisto- ja ohjelmistoratkaisunsa, jonka tavoitteena on tarjota kaikissa ympäristöissä alle metrin paikannustarkkuus. Koska tagit kiinnitetään tunnetulle korkeudelle ostoskärryihin, riittää paikannustarkkuutta laskettaessa tarkastella ainoastaan leveys- ja pituusasteita. Kun tagin todellinen sijainti \(P_k=(P_{\text{lon}_k}, P_{\text{lat}_k})\) tiedetään diskreetillä aika-askeleella \(k\), voidaan sijaintiestimaatin \(\hat{x}_k=(\hat{x}_{\text{lon}_k}, \hat{x}_{\text{lat}_k})\) paikannusvirhe \(\epsilon_{\text{pos}_k}\) laskea
 
 \begin{align}\label{paikannusvirhe}
 \epsilon_{\text{pos}_k} = d(P_k,\hat{x}_k) = \sqrt{(P_{\text{lon}_k}-\hat{x}_{\text{lon}_k})^2+(P_{\text{lat}_k}-\hat{x}_{\text{lat}_k})^2}
 ,\end{align}
 
-\noindent eli käyttää paikannusvirheenä yksinkertaisesti Euklidista etäisyyttä. Kun hyödynnetään myöhemmin alaluvussa \ref{karttaprojektioista} esitettävää lineaarista interpolaatiota saadaan näin paikannusvirhe suoraan metreinä. Haluttu, alle metrin paikannustarkkuus saavutetaan, kun missä hyvänsä testiasetelmassa kaikkien asetelmaan liittyvien paikannusvirheiden \(50.\) persentiili on \(\leq1\)m.
+\noindent eli käyttää paikannusvirheenä yksinkertaisesti Euklidista etäisyyttä. Kun hyödynnetään myöhemmin alaluvussa \ref{karttaprojektioista} esitettävää lineaarista interpolaatiota, saadaan näin paikannusvirhe suoraan metreinä. Haluttu, alle metrin paikannustarkkuus saavutetaan, kun missä hyvänsä testiasetelmassa kaikkien asetelmaan liittyvien paikannusvirheiden \(50.\) persentiili on \(\leq1\)m.
 
-Walkbasen paikannusratkaisu koostuu kolmesta eri laitteistokomponentista, AT-2-Bluetooth-lähetin-vastaanottimesta, jotka kiinnitetään ostoskärryihin, XR-2-Bluetooth-lähetin-vastaanottimista, jotka kiinnitetään tilan kattoripustuksiin sekä OSCU-laskentayksiköstä, joka luo paikkadataa XR-2.1-vastaanotinten perusteella ja lähettää paikkadatan edelleen palvelinkeskukseen.
+Walkbasen paikannusratkaisu koostuu kolmesta eri laitteistokomponentista, AT-2-Bluetooth-lähetin-vastaanottimesta, jotka kiinnitetään ostoskärryihin, XR-2-Bluetooth-lähetin-vastaanottimista, jotka kiinnitetään tilan kattoripustuksiin sekä OSCU-laskentayksiköstä, joka luo paikkadataa XR-2-vastaanotinten tuottaman datan perusteella ja lähettää paikkadatan edelleen palvelinkeskukseen.
 
 AT-2 on Bluetooth 5.1 (BLE) -strandardin mukainen lähetin-vastaanotin, joka toimii 2.4Ghz taajuusalueella. Walkbasen suunnitteleman laitteen PCB-kehäantenni kykenee lähettämään GFSK-moduloitua dataa 2Mbps nopeudella. Laite saa virtansa yhdestä CR-2477-paristosta. XR-2.1 on Bluetooth 5.1 (BLE) -strandardin mukainen lähetin-vastaanotin, joka toimii 2.4Ghz taajuusalueella. Walkbasen suunnitteleman laitteen 16 antennista koostuva antenniryhmä kykenee lähettämään GFSK-moduloitua dataa 2Mbps nopeudella. Laite saa virtansa ethernet-lähiverkosta 802.3af-standardin mukaisesti. Laitteen vaatima laskenta tapahtuu Raspberry Pi Compute Module 4 -piirilevytietokoneella. Lisäksi laite sisältää inertiamittausyksikön, jota voidaan käyttää asennetun laitteen kallistumis- ja nyökkäämiskulman (\emph{roll} ja \emph{pitch}) arviomiseen.
 
@@ -1075,19 +1064,19 @@ Riippuen käytetystä teknologiasta ja teknologian tuottamasta datasta, voidaan 
 
 Walkbasen toteuttama paikannusratkaisu perustuu AoA-menetelmään. Tämä on paikannusteknologia, joissa lähettimen ja vastaanottimen välinen kulma estimoidaan signaalin saapumiskulman perusteella. Tässä estimoinnissa hyödynnetään signaalin vaihe-eroja, kun sama signaali vastaanotetaan usealla eri antennilla.
 
-Walkbase käyttää radiosignaalien tulokulman estimoinnissa MUSIC-algoritmia (\emph{Multiple Signal Classification}), joka arvioi tulokulmia analysoimalla signaalien autokorrelaatiomatriisia ja etsimällä sen ominaisvektoreita. Esitys MUSIC-algoritmista löytyy esimerkiksi Monson H. Hayesin kirjasta \emph{Statistical Digital Signal Processing and Modeling} (1996) \citep{Hayes-1996}. Marco Guniam \&al (2023) \citep{Gunia-2023} puolestaan esittävät artikkelissa ``Analysis and Design of a MuSiC-Based Angle of Arrival Positioning System'' tapoja optimoida MUSIC-algoritmia soveltumaan monimutkaisiin, heijastuksia sisältäviin sisätilaympäristöihin.
+Walkbase käyttää radiosignaalien tulokulman estimoinnissa MUSIC-algoritmia (\emph{Multiple Signal Classification}), joka arvioi tulokulmia analysoimalla signaalien autokorrelaatiomatriisia ja etsimällä sen ominaisvektoreita. Esitys MUSIC-algoritmista löytyy esimerkiksi Hayesin kirjasta \emph{Statistical Digital Signal Processing and Modeling} (1996) \citep{Hayes-1996}. Guniam \&al (2023) \citep{Gunia-2023} puolestaan esittävät artikkelissa ``Analysis and Design of a MuSiC-Based Angle of Arrival Positioning System'' tapoja optimoida MUSIC-algoritmia soveltumaan monimutkaisiin, heijastuksia sisältäviin sisätilaympäristöihin.
 
 \emph{Angler}-sovellus hyödyntää MUSIC-algoritmin toteutuksessa omaa hiukkassuodinalgoritmiaan signaalispektrin analysointiin sekä tulokulmien estimointiin. MUSIC-algoritmia tai \emph{angler}-sovelluksen hiukkassuodinalgoritmia ei käsitellä tarkemmin tämän tutkielman puitteissa.
 
 \subsection{Kalibraatiosta}
 
-Koska \emph{angler}-sovellus laskee suuntimakulman aina antennielementin määrätystä reunasta nähden, on tärkeää, että laitteen asemointi karttapohjoiseen nähden on tiedossa. Koska laitteen tarkan kulman arvioiminen asennusympäristössä on haastavaa eikä laite sisällä kompassia, sovelletaan kunkin laitteen kalibraatioon omaa SIR-algoritmiaan, jonka on mahdollista ottaa huomioon myös laitteen IMU-intertiamittausyksiköstä saatavat kallistumis- ja nyökkäämiskulmat.
+Koska \emph{angler}-sovellus laskee suuntimakulman aina antenniryhmän määrätystä reunasta nähden, on tärkeää, että laitteen asemointi karttapohjoiseen nähden on tiedossa. Koska laitteen tarkan kulman arvioiminen asennusympäristössä on haastavaa eikä laite sisällä kompassia, kalibroidaan kukin laite SIR-kalibraatioalgoritmilla, jonka on mahdollista ottaa huomioon myös laitteen IMU-intertiamittausyksiköstä saatavat kallistumis- ja nyökkäämiskulmat.
 
 Jos IMU-dataa hyödynnetään, tuottaa kalibraatioalgoritmi jokaiselle XR-2-laitteelle rotaatiomatriisin \(\mathbf{R}_l\). Muussa tapauksessa kalibraatioalgoritmi tuottaa jokaiselle laitteelle atsimuuttiakulman kohdistuksen \(\eta\). Kalibraatioalgoritmia ei käsitellä tämän tutkielman puitteissa. Paikannusongelman yksinkertaistamiseksi myöskään IMU-yksikön tuottamaa dataa ei sisällytetä kalibraatioon ja jokaisen XR-2-laitteen oletetaan olevan lattiaan nähden vaakatasossa. Atsimuuttikulman kalibraatiokohdistuksesta lisää seuraavassa alaluvussa \ref{datan-kuvaus}.
 
 \section{Datan kuvaus} \label{datan-kuvaus}
 
-Koeasetelmaa varten AT-2-tagi on asetettu lähettämään IQ-dataotoksia 6hz taajuudella, joka vastaa järjestelmän tuotantokäyttöä. Parempi sijaintitarkkuus saavutettaisiin korkeammalla taajuudella, mutta käytännön sovellutuksissa ei tagien akun kesto salli 6hz korkeampaa lähetystaajuutta.
+Koeasetelmaa varten AT-2-tagi on asetettu lähettämään I/Q-dataotoksia 6hz taajuudella, joka vastaa järjestelmän tuotantokäyttöä. Parempi sijaintitarkkuus saavutettaisiin korkeammalla taajuudella, mutta käytännön sovellutuksissa ei tagien akun kesto salli 6hz korkeampaa lähetystaajuutta.
 
 \emph{Angler}-sovellus koostaa jokaisesta tagin lähettämästä dataotoksesta \(s\) atsimuutti- eli suuntimakulman \(\theta_s\) ja korkeuskulman \(\gamma_s\), jotka noudattavat suuntimakulman osalta von Mises -jakaumaa ja korkeuskulman osalta katkaistua normaalijakaumaa:
 
@@ -1096,7 +1085,7 @@ Koeasetelmaa varten AT-2-tagi on asetettu lähettämään IQ-dataotoksia 6hz taa
 &\gamma_{s} \sim \mathcal{N}_{\text{katkaistu}} (\mu_{\gamma_s}, \sigma^2_s).
 \end{align}
 
-Jakaumat on kuvattu tarkemmin alaluvussa \ref{uskottavuusmallit}. Jokaisen XR-2-laitteen \emph{angler}-sovellus lisää dataan myös sekvenssinumeron, jonka perusteella samasta AT-2-tagin lähettämästä IQ-dataoksesta lasketut usean eri vastaanottimen laskemat tulokulmat voidaan yhdistää samaan IQ-dataotokseen. XR-2-laitteen lähettämä tulokulmadata on kuvattu alla.
+Jakaumat on kuvattu tarkemmin alaluvussa \ref{uskottavuusmallit}. Jokaisen XR-2-laitteen \emph{angler}-sovellus lisää dataan myös sekvenssinumeron, jonka perusteella samasta AT-2-tagin lähettämästä I/Q-dataoksesta lasketut usean eri vastaanottimen laskemat tulokulmat voidaan yhdistää samaan I/Q-dataotokseen. XR-2-laitteen lähettämä tulokulmadata on kuvattu alla.
 
 \def\arraystretch{1.25} 
 \begin{table}[H]
@@ -1110,7 +1099,7 @@ ts & havainnon aikaleima & \makecell[l]{2024-04-08 \\ 21:38:20.998+00}\\
 locator\_mac & XR-2-laitteen MAC-osoite & 2c:e3:10:00:07:a6
 \\
 asset\_tag\_mac & AT-2-tagin MAC-osoite & 2c:e3:10:00:63:89\\
-sequence\_nr & \makecell[l]{kulmadatan IQ-dataotokseen yhdistävä \\ juokseva numerointi} & 2066\\
+sequence\_nr & \makecell[l]{kulmadatan I/Q-dataotokseen yhdistävä \\ juokseva numerointi} & 2066\\
 azimuth\_location & \makecell[l]{atsimuuttikulman $\theta$ \\ jaukauman sijaintiparametri $\mu_{\theta}$ (rad)} & 0.39
 \\
 azimuth\_scale & \makecell[l]{atsimuuttikulman $\theta$ \\ jaukauman skaalaparametri $\kappa$} & 80.98
@@ -1215,11 +1204,11 @@ x_{\text{lon}} = f(x_m; B_{\text{lonlat}}, D_m) = \frac{x_{\text{m}}}{d_{\text{l
 y_{\text{lat}} = f(y_m; B_{\text{lonlat}}, D_m) = \frac{y_{\text{m}}}{d_{\text{lat}}} \times (\text{lat}_{\text{max}}-\text{lat}_{\text{min}}) + \text{lat}_{\text{min}}
 .\end{align}
 
-\noindent Empiirisessä esimerkissä jätetään takaisinmuunnos tekemättä, jotta koeympäristön sijaintia ei voi koordinaattien perusteella paikallistaa.
+\noindent Empiirisessä esimerkissä jätetään takaisinmuunnos tekemättä, jotta koeympäristön sijaintia ei voi paikallistaa sen koordinaattien perusteella.
 
 \subsection{Muunnettu data} \label{muunnettu-data-luku}
 
-Kun dataan on tehty yllä esitetyt konversiot ja metadata on liitetty jokaisen aika-askeleen \(k\) dataan, saadaan data lopulliseen, empiirisessä esimerkissä käytettävä muotoon, jossa jokaisen aika-askeleen kohdalla \(k\) on käytettävissä seuraava data:
+Kun dataan on tehty yllä esitetyt konversiot ja metadata on liitetty jokaisen aika-askeleen \(k\) dataan, saadaan data lopulliseen, empiirisessä esimerkissä käytettävään muotoon, jossa jokaisen aika-askeleen \(k\) kohdalla on käytettävissä seuraava data:
 
 \def\arraystretch{1.25} 
 \begin{table}[H]
@@ -1233,7 +1222,7 @@ ts & havainnon aikaleima & \makecell[l]{2024-04-08 \\ 21:38:20.998+00}\\
 locator\_mac & XR-2-laitteen MAC-osoite & 2c:e3:10:00:07:a6
 \\
 asset\_tag\_mac & AT-2-tagin MAC-osoite & 2c:e3:10:00:63:89\\
-sequence\_nr & \makecell[l]{kulmadatan IQ-dataotokseen yhdistävä \\ juokseva numerointi} & 2066\\
+sequence\_nr & \makecell[l]{kulmadatan I/Q-dataotokseen yhdistävä \\ juokseva numerointi} & 2066\\
 azimuth\_location\_mdf & \makecell[l]{atsimuuttikulman $\theta$ \\ jaukauman muunnettu sijaintiparametri \\ $\Phi$ (rad)} & 0.39
 \\
 azimuth\_scale & \makecell[l]{atsimuuttikulman $\theta$ \\ jaukauman skaalaparametri $\kappa$} & 80.98
@@ -1266,7 +1255,7 @@ x_{k+1}=f(x_k, \nu_k)=x_k+D_k \begin{bmatrix} \cos\psi_k \\ \sin\psi_k \end{bmat
 
 \noindent missä \(D_k\) on AT-2-tagin sekunnin aika-askeleen \(k \rightarrow k+1\) aikana kulkema matka ja \(\psi_k\) AT-2-tagin liikkeen suuntimakulma kyseisellä aika-askeleella. \(\nu_k\) on kohinaa, joka syntyy mittausvirheestä ja jolle voidaan olettaa \(\sim \mathcal{N}(\mu_x,\,\sigma_x^{2})\). Jos laite on paikallaan, yksinkertaistuu malli muotoon \(x_{k+1}=f(x_k)=\text{id}(x_k)=x_k\), missä \(\text{id}(x)\) on identiteettifunktio.
 
-Vastaavasti \(y_{k_{i,j}}=\{y_{k_{1,1}},\ldots,y_{k_{n_s,hz}}\}\) kuvaa AT-2-tagin ja XR-2-laitteiden välillä yhden sekuntin aika-askeleen aikana laskettuja kulmahavaintoja, missä \(i=1,\ldots,n_s\) käy läpi kaikki \(n_s\) XR-2-laitetta ja \(j=1,\ldots,hz\) kustakin laitteesta vastaanotetut kulmahavainnot. \(hz\) ilmaisee tässä AT-2-tagin lähetystaajuutta, joka koeasetelmassa on \(hz=6\). Näin ollen jokainen havainto koostuu (maksimissaan) \(6\times n_s\) kappaleesta kulmahavaintoja.
+Vastaavasti \(y_{k_{i,j}}=\{y_{k_{1,1}},\ldots,y_{k_{n_s,z}}\}\) kuvaa AT-2-tagin ja XR-2-laitteiden välillä yhden sekuntin aika-askeleen aikana laskettuja kulmahavaintoja, missä \(i=1,\ldots,n_s\) käy läpi kaikki \(n_s\) XR-2-laitetta ja \(j=1,\ldots,z\) kustakin laitteesta vastaanotetut kulmahavainnot. \(z\) ilmaisee tässä AT-2-tagin lähetystaajuutta, joka koeasetelmassa on \(z=6\). Näin ollen jokainen havainto koostuu (maksimissaan) \(6\times n_s\) kappaleesta kulmahavaintoja.
 
 Lisäksi tunnetaan XR-2-laitteisiin \(\{s^1,\ldots,s^{n_s}\}\) liittyvät leveys- ja pituuskoordinaatit \((\lambda, \phi)\), jotka on muutettu alaluvussa \ref{karttaprojektioista} esitetyllä interpolaatiolla metreiksi. Saadaan
 
@@ -1274,7 +1263,7 @@ Lisäksi tunnetaan XR-2-laitteisiin \(\{s^1,\ldots,s^{n_s}\}\) liittyvät leveys
 u=\begin{bmatrix} \lambda^1 & \phi^1 \\  \lambda^1 & \phi^1 \\  \vdots & \vdots \\ \lambda^{n_s} & \phi^{n_s} \end{bmatrix},
 \end{align}
 
-\noindent missä jokainen koordinaattipari on toistettu \(hz\) kertaa. Määritellään nyt havaintomalli
+\noindent missä jokainen koordinaattipari on toistettu \(z\) kertaa. Määritellään nyt havaintomalli
 
 \begin{align}\label{havaintomalli}
 y_{k_{i,j}}=h(x_k, u)+e_k=\text{atan2} \left( \begin{bmatrix}\phi^1-x_k^y\\ \phi^1-x_k^y\\ \vdots \\ \phi^{n_s}-x_k^y\end{bmatrix}, \begin{bmatrix}\lambda^1-x_k^x\\ \lambda^1-x_k^x\\ \vdots \\ \lambda^{n_s}-x_k^x\end{bmatrix} \right) +e_k,
@@ -1293,15 +1282,15 @@ Määrittelemätön \(\text{atan2}\)-tapaus, jossa \(x=0\) ja \(y=0\) on käytet
 Kumpikaan funktiosta \(h(\cdot)\) ja \(f(\cdot)\) ei ole lineaarinen, joten SIR-algoritmi on sopiva valinta ongelman ratkaisemiseksi. Koetuloksia arvioidaan ensisijaisesti paikannusvirheen avulla. Paikannusvirhe \(\epsilon_{\text{pos}_k}\) lasketaan jokaisen aika-askeleen \(k\) posteriorijakaumaestimaatista \(\hat{p}_k\) painotettuna keskiarvona
 
 \begin{align}
-\epsilon_{\text{pos}} = d\left( P, \sum_{i=1}^Nw^k_ix^i_k \right),
+\epsilon_{\text{pos}_k} = d\left( P_k, \sum_{i=1}^Nw^k_ix^i_k \right),
 \end{align}
 
-\noindent missä \(w_i^k\) on ajanketken \(k\) partikkelien normalisoitu paino ja \(d(x^i_k,y_k)\) partikkelien ja testilaitteen todellisen sijainnin \(P\) välisen etäisyyden algoritmilla \ref{testipolun-tihennys} laskeva funktio.
+\noindent missä \(w_i^k\) on ajanketken \(k\) partikkelien normalisoitu paino ja \(d(x^i_k,y_k)\) partikkelien ja testilaitteen todellisen sijainnin \(P_k\) välisen etäisyyden algoritmilla \ref{testipolun-tihennys} laskeva funktio.
 
 \hypertarget{uskottavuusmallit}{%
 \subsection{Uskottavuusmallit}\label{uskottavuusmallit}}
 
-Jokainen yhtä tulokulmaa vastaava \emph{angler}-sovelluksen tuottama havaintodatarivi pitää sisällään neljä parametrimuuttujaa, \texttt{azimuth\_location\_mdf}, \texttt{azimuth\_scale}, \texttt{elevation\_location} ja \texttt{elevation\_scale}. Koska \emph{angler}-sovellus on kirjoitettu varta vasten tuottamaan dataa hiukkassuodinpaikannusalgoritmia varten, ovat nämä valmiiksi hiukkassuotimen uskottavuusmallin parametreja.
+Jokainen yhtä tulokulmaa vastaava \emph{angler}-sovelluksen tuottama havaintodatarivi pitää sisällään neljä parametrimuuttujaa \texttt{azimuth\_location\_mdf}, \texttt{azimuth\_scale}, \texttt{elevation\_location} ja \texttt{elevation\_scale}. Koska \emph{angler}-sovellus on kirjoitettu varta vasten tuottamaan dataa hiukkassuodinpaikannusalgoritmia varten, ovat nämä valmiiksi hiukkassuotimen uskottavuusmallin parametreja.
 
 \emph{Angler}-sovelluksessa XR-2-laitteen ja AT-2-tagin välinen atsimuuttikulma simuloidaan von Mises -jakaumasta, jolloin muuttujat \texttt{azimuth\_location\_mdf} ja \texttt{azimuth\_scale} vastaavat tämän jakauman sijainti- ja skaalaparametreja \(\mu\) ja \(\kappa\). Näistä edellistä voidaan pitää itse atsimuuttikulman estimaattina. Määritellään siis jokaiselle tulokulmalle \(h\) sekä XR-2-laitteelle \(l\) seuraava atsimuuttikulman uskottavuusmalli:
 
@@ -1322,7 +1311,7 @@ L_{\gamma_{h,l}}(y_{h,l}|x_{h,l}; \mu_{h,l}, \sigma^2_{h,l}, a=0, b=\pi/2)=\frac
 Uskottavuusmallit (\ref{atsimuutti-uskottavuusmalli}) ja (\ref{korkeus-uskottavuusmalli}) kertomalla saadaan yhdistetty uskottavuusmalli hiukkassuotimen aika-askeleelle \(k\) sekä XR-2-laitteelle \(l\)
 
 \begin{align}\label{yhdistetty-uskottavuusmalli}
-L_{k,l}=\prod_{h=1}^{hz} L_{\theta_{h,l}} \times \prod_{h=1}^{hz} L_{\gamma_{h,l}},
+L_{k,l}=\prod_{h=1}^{z} L_{\theta_{h,l}} \times \prod_{h=1}^{z} L_{\gamma_{h,l}},
 \end{align}
 
 \noindent josta voidaan edelleen laskea jokaisen hiukkasen uskottavuus aika-askeleella \(k\) kertomalla XR-2-laitteita vastaavat uskottavuudet keskenään
@@ -1372,9 +1361,9 @@ Tämän jälkeen luodaan suuntavektori \(p\) tasajakaumasta
 \hypertarget{paikallaanolon-havaitseminen}{%
 \subsubsection{Paikallaanolon havaitseminen}\label{paikallaanolon-havaitseminen}}
 
-Virransäästyösyistä AT-2-tagi lähettää dataa ainoastaan liikkuessaan. Jos laite ei ole 10 sekunnin aikana havainnut IMU-yksikkönsä perusteella kiihtyvyyttä, lopettaa laite datan lähettämisen. Laite on tällöin valmiusmoodissa. Tätä tietoa voidaan hyödyntää poistamalla dynaamisesta mallista kohina, kun laitteen tiedetään olevan paikallaan. Jos paikannusalgoritmiin lisätään tarvittava 10 sekunnin viive, voidaan tätä viivettä hyödyntää paikallaanolon tehokkaampaan havaitsemiseen.
+Virransäästyösyistä AT-2-tagi lähettää dataa ainoastaan liikkuessaan. Jos laite ei ole 10 sekunnin aikana havainnut IMU-yksikkönsä perusteella kiihtyvyyttä, lopettaa laite datan lähettämisen. Laite on tällöin valmiusmoodissa. Tätä tietoa voidaan hyödyntää vaimentamalla dynaamisen mallin kohinaa, kun laitteen tiedetään olevan paikallaan. Jos paikannusalgoritmiin lisätään tarvittava 10 sekunnin viive, voidaan tätä viivettä hyödyntää paikallaanolon tehokkaampaan havaitsemiseen.
 
-Jos yksikään XR-2-laite ei ole havainnut tagia aika-askeleen \(k\) aikana, voimme olettaa laitteen olevan valmiusmoodissa ja siten myös paikoillaan. Huomattavaa on kuitenkin, ettei päinvastainen päde. Paikoillaan oleva laite ei välttämättä ole valmisumoodissa, sillä valmiusmoodiin siirtyminen kestää 10 sekuntia. Tähän tietoon perustuen voidaan havaita paikallaanolo ja vaimentaa dynaamista mallia algoritmin \ref{paikallaanoloalgo} avulla. Algoritmi ajetaan jokaisella aika-askeleella \(k\) ennen hiukkasten siirtoa dynaamisen mallin avulla.
+Jos yksikään XR-2-laite ei ole havainnut tagia aika-askeleen \(k\) aikana, voimme olettaa laitteen olevan valmiusmoodissa ja siten myös paikoillaan. Huomattavaa on kuitenkin, ettei päinvastainen päde. Paikoillaan oleva laite ei välttämättä ole valmisumoodissa, sillä valmiusmoodiin siirtyminen kestää 10 sekuntia. Tähän tietoon perustuen voidaan havaita paikallaanolo jo ennen kuin laite lopettaa datan lähettämisen ja vaimentaa dynaamista mallia algoritmin \ref{paikallaanoloalgo} avulla. Algoritmi ajetaan jokaisella aika-askeleella \(k\) ennen hiukkasten siirtoa dynaamisen mallin avulla.
 
 \begin{algorithm}[H]
 \label{paikallaanoloalgo}
@@ -1396,7 +1385,7 @@ Jos yksikään XR-2-laite ei ole havainnut tagia aika-askeleen \(k\) aikana, voi
 
 Yllä esitetty algoritmi etsii ensin ensimmäisen aika-askeleen, jonka aikana ei ole tallennettu lainkaan kulmahavaintoja ja asettaa muuttujan \(m\) arvon vastaamaan tätä aika-askelta. Jos algoritmi löytää useita peräkkäisiä aika-askeleita, joiden aikana ei ole tallennettu lainkaan kulmahavaintoija, valitsee se näistä suurimman. Koska koeasetelmassa AT-2-laitteen valmiustila aktivoituu 10 sekunnin kohdalla, valitaan \(L=10\).
 
-Jos paikallaanolon havaitsemisalgoritmin nojalla dynaamista mallia päädytään vaimentamaan (so. \(m>0\)), asetetaan dynaamisen mallin keskihajonta-arvo \(q_{\text{vaimennettu}}=\frac{q}{10}\). Dynaamista mallia ei siis täysin poisteta käytöstä, jotta paikannusalgoritmi pystyy tehokkaammin hyödyntämään myös vaimennettujen aika-askeleiden dataa. Näin sijaintiestimaatti konvergoi mahdollisimman lähelle todellista sijaintia, johon tagi on pysähtynyt.
+Jos paikallaanolon havaitsemisalgoritmin nojalla dynaamista mallia päädytään vaimentamaan (so. \(m>0\)), asetetaan dynaamisen mallin keskihajonta-arvo \(q_{k}=\frac{q}{10}\). Dynaamista mallia ei siis täysin poisteta käytöstä, jotta paikannusalgoritmi pystyy tehokkaammin hyödyntämään myös vaimennettujen aika-askeleiden dataa. Näin sijaintiestimaatti konvergoi mahdollisimman lähelle todellista sijaintia, johon tagi on pysähtynyt.
 
 \hypertarget{karttasovitusalgoritmi}{%
 \subsubsection{Karttasovitusalgoritmi}\label{karttasovitusalgoritmi}}
@@ -1425,7 +1414,7 @@ Koska haluttu sisätilapaikannusalgoritmi on online-algoritmi ja käytössä ole
 
 \begin{align}
 &w_k = w_k^i \bar{w}^i_{k+1}, \hspace{0.5cm} \text{missä } \bar{w}^i_{k+1} = \frac{\sum_{j=1}^{N}w_{k}^j p(x_{k+1}^i|x_k^j)}{q(x_{k+1}^i|x_k^i,y_{k+1})}
-\end{align}
+.\end{align}
 
 Partikkelien siirtämiseen käytetty satunnaiskulkumalli ei ole siloittelualgoritmien kannalta optimaalinen, joten empiirisessä esimerkissä alla hyödynnetään koetarkoituksessa vain tätä yksinkertaista siloittelumallia.
 
@@ -1440,9 +1429,9 @@ Algoritmin priorijakaumana \(p_{x_0}\) käytetään kahta toisistaan riippumaton
 &p_{x_{0_{\text{lon}}}}\sim\mathcal{U}(\min{\phi},\max{\phi}).
 \end{align}
 
-\noindent Koska järjestelmän on tarkoitus toimia ainoastaan paikantimien muodostaman suorakaiteen sisäpuolella, ovat valitut jakaumien päätepisteet riittävät. Kummastakin jakaumasta otetaan \(\sqrt{N}\) otosta, jolloin \(N\) partikkelia \(x^i_0\) saadaan näiden otosten permutaatioina. Alaluvussa \ref{uudelleenotantamenetelman-valinta} määritellyn signaali-kohinasuhteen (\ref{SNR}) voi todeta olevan hyvin matala, sillä koe-esimerkin dynaaminen malli (\ref{dynaaminen-malli-empiirinen}) noudattaa satunnaiskulkua ja on siten pelkkää kohinaa. Tämän perusteella WB-sisätilapaikannusalgoritmi käyttää ehdotusjakaumanaan tilavektorin ehdollista prioria \(p(x_k|x_{k-1})\). Hiukkasten määrän \(N\) sekä muiden suunnitteluparametrien valinnasta kts. alaluku \ref{parametrien-valinta} alla.
+\noindent Koska järjestelmän on tarkoitus toimia ainoastaan paikantimien muodostaman suorakaiteen sisäpuolella, ovat valitut jakaumien päätepisteet riittävät. Kummastakin jakaumasta tehdään \(\sqrt{N}\) otosta, jolloin \(N\) partikkelia \(x^i_0\) saadaan näiden otosten permutaatioina. Alaluvussa \ref{uudelleenotantamenetelman-valinta} määritellyn signaali-kohinasuhteen (\ref{SNR}) voi todeta olevan hyvin matala, sillä koe-esimerkin dynaaminen malli (\ref{dynaaminen-malli-empiirinen}) noudattaa satunnaiskulkua ja on siten pelkkää kohinaa. Tämän perusteella WB-sisätilapaikannusalgoritmi käyttää ehdotusjakaumanaan tilavektorin ehdollista prioria \(p(x_k|x_{k-1})\). Hiukkasten määrän \(N\) sekä muiden suunnitteluparametrien valinnasta kts. alaluku \ref{parametrien-valinta} alla.
 
-Koska esitetty priorijakauma \(p_{x_0}\) on epäinformatiivinen ja monimutkainen koeympäristö aiheuttaa monin paikoin heijastuksia, on mahdollista, että ensimmäisten aika-askeleiden aikana algoritmi tuottaa huonoja sijaintiestimaatteja. Tästä syystä algoritmia ajettaessa suoritetaan ensimmäisellä \(b=3\) aika-askeleella sisäänajo, jonka aikana karttasovitusta ei käytetä ja jonka aikana kohina-arvona käytetään arvoa \(q_{\text{burn\_in}}=q\times10\). Myöskään sijaintiestimaatteja ei sisäänajoaika-askeleilla luoda. Sisäänajon jälkeen sijaintiestimaatit \(\hat{x}_{1:b}\) korvataan ensimmäisellä sisäänajon jälkeisellä sijaintiestimaatilla \(\hat{x}_{b+1}\).
+Koska esitetty priorijakauma \(p_{x_0}\) on epäinformatiivinen ja monimutkainen koeympäristö aiheuttaa monin paikoin heijastuksia, on mahdollista, että ensimmäisten aika-askeleiden aikana algoritmi tuottaa huonoja sijaintiestimaatteja. Tästä syystä algoritmia ajettaessa suoritetaan ensimmäisellä \(b=3\) aika-askeleella sisäänajo, jonka aikana karttasovitusta ei käytetä ja jonka aikana kohina-arvona käytetään arvoa \(q_{k}=q\times10\). Myöskään sijaintiestimaatteja ei sisäänajoaika-askeleilla luoda. Sisäänajon jälkeen sijaintiestimaatit \(\hat{x}_{1:b}\) korvataan ensimmäisellä sisäänajon jälkeisellä sijaintiestimaatilla \(\hat{x}_{b+1}\).
 
 Algoritmin tuottamien estimaattien varianssi estimoidaan käyttäen ALVar-varianssiestimaattia. Käytännössä tämä tarkoittaa varianssin estimointia käyttäen OD-varianssiestimaattia (\ref{OD-varianssi}) niin, että viiveparametri \(\lambda\) valitaan mukautuvasti käyttäen yhtälöä (\ref{ALVar-lambda}). Koska empiirisessä esimerkissä estimoitavia ulottuvuuksia on kaksi, leveys- ja pituuskoordinaatit, lasketaan varianssi kummallekin näistä erikseen. Saadaan pituuskoordinaattien varianssiestimaatti \(\hat{\sigma}^2_{k_x}\) ja leveyskoordinaattien varianssiestimaatti \(\hat{\sigma}^2_{k_y}\).
 
@@ -1472,7 +1461,7 @@ Lasketaan lisäksi kovarianssiestimaatti
 \label{wb-positioning}
 \DontPrintSemicolon
 \SetAlgoShortEnd
-\KwResult{Tagin sijaintiestimaatti $\hat{x}$ kullekin aika-askeleelle $k=1,\ldots,T$;}
+\KwResult{Tagin sijaintiestimaatti $\hat{x}$ kullekin aika-askeleelle $k=1,\ldots,T$, näitä vastaavat varianssiestimaatit $\hat{\sigma}_k^2$.;}
 \KwData{Taulukossa \ref{tab:muunnettu-data} esitetty data $y_k$ kullekin aika-askeleelle $k=1,\ldots,T$\, alaluvussa \ref{karttasovitusalgoritmi} esitetty polygonimetadata. Taulukossa \ref{tab:wb-parametrit} esitetyt parametrit.;}
 \Begin{
   \Begin{Luodaan priorijakauma $p_{x_0}$ otantana jakaumista (\ref{priorijakauma}), asetetaan painot $w_0=1/N$.;}
@@ -1925,19 +1914,19 @@ Liite sisältää tutkielman tulososioon liittyvät karttapolut. Kukin kartta k�
 \section*{Vaihe 1}\label{vaihe-1}}
 \addcontentsline{toc}{section}{Vaihe 1}
 
-\begin{center}\includegraphics{output/figures/unnamed-chunk-127-1} \includegraphics{output/figures/unnamed-chunk-127-2} \includegraphics{output/figures/unnamed-chunk-127-3} \includegraphics{output/figures/unnamed-chunk-127-4} \includegraphics{output/figures/unnamed-chunk-127-5} \includegraphics{output/figures/unnamed-chunk-127-6} \includegraphics{output/figures/unnamed-chunk-127-7} \includegraphics{output/figures/unnamed-chunk-127-8} \includegraphics{output/figures/unnamed-chunk-127-9} \includegraphics{output/figures/unnamed-chunk-127-10} \includegraphics{output/figures/unnamed-chunk-127-11} \includegraphics{output/figures/unnamed-chunk-127-12} \end{center}
+\begin{center}\includegraphics{output/figures/unnamed-chunk-1-1} \includegraphics{output/figures/unnamed-chunk-1-2} \includegraphics{output/figures/unnamed-chunk-1-3} \includegraphics{output/figures/unnamed-chunk-1-4} \includegraphics{output/figures/unnamed-chunk-1-5} \includegraphics{output/figures/unnamed-chunk-1-6} \includegraphics{output/figures/unnamed-chunk-1-7} \includegraphics{output/figures/unnamed-chunk-1-8} \includegraphics{output/figures/unnamed-chunk-1-9} \includegraphics{output/figures/unnamed-chunk-1-10} \includegraphics{output/figures/unnamed-chunk-1-11} \includegraphics{output/figures/unnamed-chunk-1-12} \end{center}
 
 \hypertarget{vaihe-2}{%
 \section*{Vaihe 2}\label{vaihe-2}}
 \addcontentsline{toc}{section}{Vaihe 2}
 
-\begin{center}\includegraphics{output/figures/unnamed-chunk-128-1} \includegraphics{output/figures/unnamed-chunk-128-2} \includegraphics{output/figures/unnamed-chunk-128-3} \includegraphics{output/figures/unnamed-chunk-128-4} \includegraphics{output/figures/unnamed-chunk-128-5} \includegraphics{output/figures/unnamed-chunk-128-6} \includegraphics{output/figures/unnamed-chunk-128-7} \includegraphics{output/figures/unnamed-chunk-128-8} \includegraphics{output/figures/unnamed-chunk-128-9} \includegraphics{output/figures/unnamed-chunk-128-10} \includegraphics{output/figures/unnamed-chunk-128-11} \includegraphics{output/figures/unnamed-chunk-128-12} \includegraphics{output/figures/unnamed-chunk-128-13} \includegraphics{output/figures/unnamed-chunk-128-14} \includegraphics{output/figures/unnamed-chunk-128-15} \includegraphics{output/figures/unnamed-chunk-128-16} \end{center}
+\begin{center}\includegraphics{output/figures/unnamed-chunk-2-1} \includegraphics{output/figures/unnamed-chunk-2-2} \includegraphics{output/figures/unnamed-chunk-2-3} \includegraphics{output/figures/unnamed-chunk-2-4} \includegraphics{output/figures/unnamed-chunk-2-5} \includegraphics{output/figures/unnamed-chunk-2-6} \includegraphics{output/figures/unnamed-chunk-2-7} \includegraphics{output/figures/unnamed-chunk-2-8} \includegraphics{output/figures/unnamed-chunk-2-9} \includegraphics{output/figures/unnamed-chunk-2-10} \includegraphics{output/figures/unnamed-chunk-2-11} \includegraphics{output/figures/unnamed-chunk-2-12} \includegraphics{output/figures/unnamed-chunk-2-13} \includegraphics{output/figures/unnamed-chunk-2-14} \includegraphics{output/figures/unnamed-chunk-2-15} \includegraphics{output/figures/unnamed-chunk-2-16} \end{center}
 
 \hypertarget{vaihe-3}{%
 \section*{Vaihe 3}\label{vaihe-3}}
 \addcontentsline{toc}{section}{Vaihe 3}
 
-\begin{center}\includegraphics{output/figures/unnamed-chunk-129-1} \includegraphics{output/figures/unnamed-chunk-129-2} \includegraphics{output/figures/unnamed-chunk-129-3} \includegraphics{output/figures/unnamed-chunk-129-4} \includegraphics{output/figures/unnamed-chunk-129-5} \includegraphics{output/figures/unnamed-chunk-129-6} \includegraphics{output/figures/unnamed-chunk-129-7} \includegraphics{output/figures/unnamed-chunk-129-8} \end{center}
+\begin{center}\includegraphics{output/figures/unnamed-chunk-3-1} \includegraphics{output/figures/unnamed-chunk-3-2} \includegraphics{output/figures/unnamed-chunk-3-3} \includegraphics{output/figures/unnamed-chunk-3-4} \includegraphics{output/figures/unnamed-chunk-3-5} \includegraphics{output/figures/unnamed-chunk-3-6} \includegraphics{output/figures/unnamed-chunk-3-7} \includegraphics{output/figures/unnamed-chunk-3-8} \end{center}
 
   \bibliography{packages.bib,lahteet.bib}
 
