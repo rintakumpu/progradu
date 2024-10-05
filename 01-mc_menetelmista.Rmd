@@ -10,7 +10,7 @@ Bayesilaisessa päättelyssä ollaan yleisesti kiinnostuttu laskemaan johonkin p
 \mathbb{E}[g(x)|y_{1:k}]=\int g(x)p(x|y_{1:k})dx,
 \end{align}
 
-\noindent missä $g$ on tila-avaruuden mielivaltainen funktio ja $p(x|y_{1:t})$ on havaintoihin $\{y_1,\ldots,y_k\}$ liittyvä $x$:n posterioritiheysjakauma. Odotusarvo on laskettavissa suljetussa muodossa vain harvoissa tapauksissa, suodinongelman kohdalla silloin, kun kyseessä on lineaarinen ja Gaussinen malli. Odotusarvoa voidaan kuitenkin approksimoida niin sanoituilla Monte Carlo -menetelmillä. Menetelmien perusperiaate on tehdä riippumattomia otoksia estimoitavasta jakaumasta ja laskea haluttu odotusarvo otosten avulla. Jos tehdään $N$ otosta jakaumasta $x^i\sim p(x|y_{1:t})$, missä $i=\{1,\ldots,N\}$ saadaan näiden otosten avulla laskettua odotusarvon estimaatti
+\noindent missä $g$ on tila-avaruuden mielivaltainen funktio ja $p(x|y_{1:k})$ on havaintoihin $\{y_1,\ldots,y_k\}$ liittyvä $x$:n posterioritiheysjakauma. Odotusarvo on laskettavissa suljetussa muodossa vain harvoissa tapauksissa, suodinongelman kohdalla silloin, kun kyseessä on lineaarinen ja Gaussinen malli. Odotusarvoa voidaan kuitenkin approksimoida niin sanoituilla Monte Carlo -menetelmillä. Menetelmien perusperiaate on tehdä riippumattomia otoksia estimoitavasta jakaumasta ja laskea haluttu odotusarvo otosten avulla. Jos tehdään $N$ otosta jakaumasta $x^i\sim p(x|y_{1:k})$, missä $i=\{1,\ldots,N\}$ saadaan näiden otosten avulla laskettua odotusarvon estimaatti
 
 \begin{align}
 \mathbb{E}[g(x)|y_{1:k}]\simeq\frac{1}{N}\sum_{i=1}^N g(x^i).
