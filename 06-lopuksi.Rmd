@@ -6,9 +6,9 @@ Tutkielmassa on lisäksi esitetty WB-sisätilapaikannusalgoritmi, joka toteuttaa
 
 Algoritmia ja järjestelmää voitaisiin mahdollisesti edelleen parantaa esimerkiksi käyttämällä tagia, jonka kiihtyvyysmittarin tuottama data olisi AT-2-tagia luotettavampaa. Kiihtyvyyssataa voitaisiin hyödyntää esimerkiksi informatiivisen liikemallin luomisessa. 
 
-Koe-esimerkin perusteella tutkielmassa käsitelty ALVar-varianssi estimoi hyvin jakaumaestimaatin varianssia. ALVar-varianssiestimaattia voitaisiin edelleen hyödyntää esimerkiksi adaptiivisen viipeen siloittimen toteuttamisessa. Vastaavasti KALMAN-SUODIN.
+Koe-esimerkin perusteella tutkielmassa käsitelty ALVar-varianssi estimoi hyvin jakaumaestimaatin varianssia. ALVar-varianssiestimaattia voitaisiin edelleen hyödyntää esimerkiksi adaptiivisen viipeen siloittimen toteuttamisessa. Vastaavasti KALMAN-SILOITIN.
 
-Varianssiestimaattia olisi mahdollista hyödyntää WB-sisätilapaikannusalgoritmin dynaamisen mallin kohinaparametrin $q$ säätämisessä niin, että kohinaa lisättäisiin tai vähennettäisiin varianssiestimaatin perusteella. Tämä voitaisiin toteuttaa esimerkiksi käyttämällä lähtökohtaisesti pienempää $q$-arvoa ja lisäämällä siihen keskihajonnan estimaatti, jota on painotettu suunnitteluparametrilla $\alpha$, ts. ennen dynaamisen mallin sovitusta päivtettäisiin kohinaparametri $q_k = q_k+\alpha\sqrt{\hat{\sigma}^2_{k-1}}$.
+Varianssiestimaattia olisi mahdollista hyödyntää myös WB-sisätilapaikannusalgoritmin dynaamisen mallin kohinaparametrin $q$ säätämisessä niin, että kohinaa lisättäisiin tai vähennettäisiin varianssiestimaatin perusteella. Tämä voitaisiin toteuttaa esimerkiksi käyttämällä lähtökohtaisesti pienempää $q$-arvoa ja lisäämällä siihen keskihajonnan estimaatti, jota on painotettu suunnitteluparametrilla $\alpha$, ts. ennen dynaamisen mallin sovitusta päivtettäisiin kohinaparametri $q_k = q_k+\alpha\sqrt{\hat{\sigma}^2_{k-1}}$.
 
 Varianssiestimaattia voisi hyödyntää myös hiukkasten lukumäärän $N$ adaptiivisessa valinnassa niin, että matala varianssi vähentää estimoinnissa käytettävien hiukkasten määrää. Tällaista varianssiin perustuvaa hiukkasmäärän muuttamista ehdottavat muun muassa Lee ja Whiteley (2018) [@Lee-2018]. Hiukkasten määrään muuttamista  XXX Vastaavasti voisi parantaa myös arvioimalla konvergenssia esimerkiksi ***. 
 
@@ -18,4 +18,4 @@ Liitteenä olevia polkuja tarkastelemalla puolestaan huomataan, että nyt toteut
 
 Ongelma voitaisiin ratkaista myös käyttämällä ekskluusiopolygonien ohella ns. pehmeitä rajoitteita (kts. esim. TODO), jolloin ekskluusiopolygonien ympärille luotaisiin rajoitevyöhyke, jolle osuvat hiukkaset saisivat rangaistuksen riippuen siitä, kuinka lähellä itse ekskluusiopolygonin reunaa ne ovat. Rangaistusarvon luomisessa voitaisiin käyttää esimerkiksi eksponentiaalista tai kvadraattista hajoamista.
 
-Kokeen tuloksia voisi puolestaan myös Vastaavasti parametrien vaikutusta voisi tarkastella sensitiivisyysanalyysin avulla.
+Algoritmin optimaalisia suunnitteluparametreja etsivän kokeen voisi myös toteuttaa käytetyn yksinkertaisen ruudukkohaun sijaan  esimerkiksi geneettisillä algoritmeilla, Bayesilaisella optimoinnilla tai sensitiivisyysanalyysilla, olettaen, että parametrit ovat toisistaan riippumattomia.
