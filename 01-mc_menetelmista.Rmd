@@ -16,11 +16,11 @@ Bayesilaisessa päättelyssä ollaan yleisesti kiinnostuttu laskemaan johonkin p
 \mathbb{E}[g(x)|y_{1:k}]\simeq\frac{1}{N}\sum_{i=1}^N g(x^i).
 \end{align}
 
-Monte Carlo -estimaatti konvergoi keskeisen raja-arvolauseen nojalla ja sen estimointivirheen voidaan osoittaa olevan luokkaa $\mathcal{O}(\frac{1}{\sqrt{N}})$ riippumatta tilamuuttujan $x$ dimensiosta. Hiukassuotimet hyödyntävät Monte Carlo -estimointia sekventiaalisesti, jolloin estimaatti lasketaan rekursiivisesti kullekin aika-askeleelle $k=\{1,\ldots, T\}$. Tähän palataan luvuissa \@ref(hiukkassuotimet) ja \@ref(paikannusesimerkki).
+Kun otokset ovat riippumattomia ja samoin jakautuneita, konvergoi Monte Carlo -estimaatti keskeisen raja-arvolauseen nojalla ja sen estimointivirheen voidaan osoittaa olevan luokkaa $\mathcal{O}(\frac{1}{\sqrt{N}})$ riippumatta tilamuuttujan $x$ dimensiosta. Hiukassuotimet hyödyntävät Monte Carlo -estimointia sekventiaalisesti, jolloin estimaatti lasketaan rekursiivisesti kullekin aika-askeleelle $k=\{1,\ldots, T\}$. Tähän palataan luvuissa \@ref(hiukkassuotimet) ja \@ref(paikannusesimerkki).
 
 \subsection{Tärkeytysotanta}
 
-Tilanteessa, jossa Monte Carlo -otoksia ei voida tehdä suoraan jakaumasta $p$, voidaan hyödyntää jakaumaa $p$ approksimoivaa tärkeytys- tai ehdotusjakaumaa $q(x|y_{1:k})$ sekä ns. tärkeytysotantaa. Oletetaan, että tunnetaan priorijakauma $p(x)$ ja on olemassa havaintomalli $p(y_{1:k}|x)$ sekä valittu ehdotusjakauma $q(x|y_{1:k})$, josta voidaan tehdä otoksia. Ehdotusjakaumalta edellytetään lisäksi, että sen kantaja on suurempi tai yhtä suuri kuin jakauman $p(x|y_{1:k})$ ja että se saa nollasta poikkeavia arvoja kaikkialla missä $p(x|y_{1:k})$ saa nollasta poikkeavia arvoja. Kirjoitetaan halutun posteriorijakauman odotusarvo integraalina 
+Tilanteessa, jossa Monte Carlo -otoksia ei voida tehdä suoraan jakaumasta $p$, voidaan hyödyntää jakaumaa $p$ approksimoivaa tärkeytys- tai ehdotusjakaumaa $q(x|y_{1:k})$ sekä ns. tärkeytysotantaa. Oletetaan, että tunnetaan priorijakauma $p(x)$ ja on olemassa havaintomalli $p(y_{1:k}|x)$ sekä valittu ehdotusjakauma $q(x|y_{1:k})$, josta voidaan tehdä otoksia. Ehdotusjakaumalta edellytetään lisäksi, että sen kantaja on suurempi tai yhtä suuri kuin jakauman $p(x|y_{1:k})$ ja että se saa nollasta poikkeavia arvoja kaikkialla missä $p(x|y_{1:k})$ saa nollasta poikkeavia arvoja. Ehdotusjakauman on myös hyvä olla mahdollisimman lähellä posteriorijakaumaa $p$. Kirjoitetaan halutun posteriorijakauman odotusarvo integraalina 
 
 \begin{align}
 \int g(x)p(x|y_{1:k})dx=\int g(x)\frac{p(x|y_{1:k})}{q(x|y_{1:k})}q(x|y_{1:k})dx,
@@ -40,7 +40,7 @@ Muodostetaan näin odotusarvo
 \hat{p}(x|y_{1:k})=\sum_{i=1}^{N}w^i \delta(x-x^i),
 \end{align}
 
-\noindent missä $\delta(x)$ on Diracin deltafunktio.
+\noindent missä $\delta(x)$ on Diracin deltafunktio. Diracin deltafunktio kuvaa sitä, että otokset ovat diskreettejä ja kullakin otoksella on oma painonsa (eli otos muodostaa "piikin" posteriorijakaumaan).
 
 \begin{algorithm}[H]
 \label{tarkeytysotanta-algo}

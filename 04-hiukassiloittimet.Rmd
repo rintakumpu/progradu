@@ -89,7 +89,7 @@ Uudelleenpainottavassa hiukkassiloittimessa (tunnetaan myös nimellä marginaali
 \caption{Uudelleenpainottava hiukkassiloitin}
 \end{algorithm}
 
-Halutun siloitinjakauma estimaatti aika-askeleella $k$ saadaan painotettuna keskiarvona $p(x_k|y_{1:T}) \approx \sum_i w_{k|t}^i \delta (x_k-x_k^i)$. Algoritmin aikakompleksisuus on $\mathcal{O}(N^2)$.
+Halutun siloitinjakauma estimaatti aika-askeleella $k$ saadaan painotettuna keskiarvona $p(x_k|y_{1:T}) \approx \sum_i w_{k|t}^i \delta (x_k-x_k^i)$. Algoritmin aikakompleksisuus on $\mathcal{O}(N^2)$, minkä vuoksi uudelleenpainottava hiukkassiloitin on usein SIR-siloitinta tehokkaampi ratkaisu. 
 
 \section{Online-algoritmit}
 

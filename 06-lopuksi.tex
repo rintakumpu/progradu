@@ -1,0 +1,221 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\usepackage{booktabs}
+\usepackage[T1]{fontenc}
+\usepackage{color}
+\usepackage{xspace}
+\usepackage{tikz-cd}
+\usepackage{mathtools}
+\usepackage{mathrsfs}
+\usepackage{comment}
+\usepackage{commath}
+\usepackage{pict2e}
+\usepackage{float}
+\usepackage{array, makecell}
+\usepackage{amsthm}														% 
+\usepackage{amsmath}
+%\usepackage[tagpdf]{axessibility} 
+\usepackage[ruled,vlined,shortend]{algorithm2e} 
+\usepackage{graphicx}
+\usepackage{multicol}
+\usepackage{gensymb}
+%\usepackage[a-3b]{pdfx}
+\graphicspath{ {./images/} }
+\usetikzlibrary{shapes.geometric,arrows}
+\def\TikZ{Ti\emph{k}Z\ }
+\renewcommand{\algorithmcfname}{Algoritmi}
+\usepackage{babel}
+  \addto{\captionsfinnish}{\renewcommand{\bibname}{Lähteet}}
+\usepackage{geometry}
+\usepackage{afterpage}
+\geometry{
+    a4paper,
+    total={150mm,237mm},
+    left=30mm,
+    top=30mm,
+    }
+\usepackage[numbers]{natbib}
+\newcommand{\tekija}{{Lasse Rintakumpu}}
+\newcommand{\titteli}{{}} 
+\newcommand{\otsikko}{{Hiukkassuodin- ja hiukkassiloitinalgoritmit sekä niiden soveltaminen AoA-menetelmään perustuvassa Bluetooth-sisätilapaikannuksessa}} 
+\newcommand{\tutkielma}{{Pro gradu }}
+\newcommand{\aika}{{Lokakuu 2024}} 
+\newcommand{\paaaine}{{Tilastotiede}} 
+\newcommand{\ohjaaja}{{Ohjaajan titteli (Prof./Dos./FT) ja nimi }} %
+\newcommand{\tarkastaja}{{Toisen tarkastajan titteli (Prof./Dos./FT) ja nimi}} 
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\usepackage[]{natbib}
+\bibliographystyle{plainnat}
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+
+\pagenumbering{roman}
+\pagestyle{empty}
+
+\begin{center}
+\includegraphics[width=10cm]{UTU_logo_FI}
+\end{center}
+
+\vspace{3.0cm}
+\begin{center}\large
+{\sc \otsikko} 
+\end{center}
+
+\vspace{0.5cm}
+\begin{center}
+\titteli \tekija
+\end{center}
+
+\vspace{0.5cm}
+\begin{center}
+\tutkielma -tutkielma\\
+\aika
+\end{center}
+
+\vspace{2.5cm}
+\begin{center}
+\begin{tabular}{l}
+Tarkastajat:\\
+\ohjaaja \\
+\tarkastaja
+\end{tabular}
+\end{center}
+
+\vspace{2.5cm}
+\begin{center}
+MATEMATIIKAN JA TILASTOTIETEEN LAITOS
+\end{center}
+
+\newpage\null
+
+\vspace{22cm}
+
+\noindent Turun yliopiston laatujärjestelmän mukaisesti tämän julkaisun alkuperäisyys on tarkastettu Turnitin OriginalityCheck-järjestelmällä
+
+\cleardoublepage
+
+\noindent
+TURUN YLIOPISTO \newline
+Matematiikan ja tilastotieteen laitos\newline
+
+\noindent \textsc{\tekija}: \otsikko \newline
+\tutkielma-tutkielma, 81 s. \newline
+\paaaine \newline
+\aika
+\par\noindent{\rule{\textwidth}{.2mm}} \newline
+
+
+\vspace{4mm}\noindent Tutkielmassa esitetään hiukkassuodin- ja hiukkassiloitinalgoritmien teoria Bayesilaisessa tilastotieteellisessä viitekehyksessä. Lisäksi tutkielmassa käsitellään lyhyesti hiukkassuotimien varianssin estimointia.
+
+\vspace{4mm}\noindent Empiirisenä esimerkkinä tutkielmassa tarkastellaan hiukkassuodin- ja hiukkassiloitinalgoritmien käyttöä AoA-teknologiaan perustuvassa Bluetooth-sisätilapaikannusratkaisussa.
+
+\vspace{4mm}\noindent Asiasanat: SMC-menetelmät, Monte Carlo -menetelmät, sekventiaalinen Monte Carlo, suodinongelma, hiukkassuodin, hiukkassiloitin, SIR-algoritmi, sisätilapaikannus, BLE, AoA, triangulaatio, Bayesilainen päättely
+
+\cleardoublepage
+
+\cleardoublepage
+
+\pagestyle{plain} 
+\pagenumbering{arabic} 
+
+{
+\setcounter{tocdepth}{3}
+\tableofcontents
+}
+\hypertarget{lopuksi}{%
+\section{Lopuksi}\label{lopuksi}}
+
+Tässä tutkielmassa on esitetty pääpiirteittäin hiukkassuodin- ja hiukkassiloitinalgoritmien teoria Bayesilaisessa tilastotieteellisessä viitekehyksessä. Tutkielmassa on lisäksi käyty läpi uudelleenotantaa efektiivisen otoskoon perusteella hyödyntävä SIR-suodinalgoritmi sekä käsitelty algoritmin varianssin estimointia. Tutkielmassa on myös esitetty SIR-algoritmin parametrien valintaan, suorituskykyyn sekä konvergenssiin liittyviä tuloksia.
+
+Tutkielmassa on lisäksi esitetty WB-sisätilapaikannusalgoritmi, joka toteuttaa SIR-algoritmin, estimoi jakaumaestimaatin varianssin ja hyödyntää sisätilapaikannuksen karttasovitusalgoritmia. Tutkielmassa on lopuksi tarkasteltu miten eri suunnitteluparametrien valinnat vaikuttavat algoritmin suorituskykyyn kattavan, todelliseen ongelmaan ja dataan perustuvan paikannuskokeen avulla.
+
+Algoritmia ja järjestelmää voitaisiin mahdollisesti edelleen parantaa esimerkiksi käyttämällä tagia, jonka kiihtyvyysmittarin tuottama data olisi AT-2-tagia luotettavampaa. Kiihtyvyyssataa voitaisiin hyödyntää esimerkiksi informatiivisen liikemallin luomisessa.
+
+Koe-esimerkin perusteella tutkielmassa käsitelty ALVar-varianssi estimoi hyvin jakaumaestimaatin varianssia. ALVar-varianssiestimaattia voitaisiin edelleen hyödyntää esimerkiksi adaptiivisen viipeen siloittimen toteuttamisessa. Vastaavasti KALMAN-SUODIN.
+
+Varianssiestimaattia olisi mahdollista hyödyntää WB-sisätilapaikannusalgoritmin dynaamisen mallin kohinaparametrin \(q\) säätämisessä niin, että kohinaa lisättäisiin tai vähennettäisiin varianssiestimaatin perusteella. Tämä voitaisiin toteuttaa esimerkiksi käyttämällä lähtökohtaisesti pienempää \(q\)-arvoa ja lisäämällä siihen keskihajonnan estimaatti, jota on painotettu suunnitteluparametrilla \(\alpha\), ts. ennen dynaamisen mallin sovitusta päivtettäisiin kohinaparametri \(q_k = q_k+\alpha\sqrt{\hat{\sigma}^2_{k-1}}\).
+
+Varianssiestimaattia voisi hyödyntää myös hiukkasten lukumäärän \(N\) adaptiivisessa valinnassa niin, että matala varianssi vähentää estimoinnissa käytettävien hiukkasten määrää. Tällaista varianssiin perustuvaa hiukkasmäärän muuttamista ehdottavat muun muassa Lee ja Whiteley (2018) \citep{Lee-2018}. Hiukkasten määrään muuttamista XXX Vastaavasti voisi parantaa myös arvioimalla konvergenssia esimerkiksi ***.
+
+Algoritmin suorituskykyä voitaisiin mahdollisesti myös parantaa käyttämällä RSSI-kynnysarvon sijaan tai ohella esimerkiksi menetelmää, jossa datasta poistettaisiin kullakin aika-askeleella ne kulmahavainnot, jotka poikkeavat kulmahavaintojen suuntakonsensuksesta. Jättämällä osa havainnoista uskottavuusfunktioiden ulkopuolelle nopeuttaisi algoritmin laskentaa, mutta saattaisi parantaa myös algoritmin tarkkuutta.
+
+Liitteenä olevia polkuja tarkastelemalla puolestaan huomataan, että nyt toteutetun algoritmin sijantiestimaatilla on taipumus jäädä osassa testiympäristöä jälkeen itse tagin sijainnista. Tätä ongelmaa voitaisiin mahdollisesti lieventää käyttämällä mm. Yi Chenging \&al.~artikkelissa ``Improved Particle Filter Algorithm for Multi-Target Detection and Tracking'' (2024) \citep{Cheng-2024} esittämää menetelmää, jossa partikkelit jaetaan ns. seurantahiukkasiin sekä etsintähiukkasiin, joista ainoastaan edellisiä käytetään sijaintiestimaatin luomisessa ja jälkimmäisten annetaan liikkua suuremmilla kohina-arvoilla. Näin mahdollistetaan satunnaiskulkumallilla laajempi signaaliavaruuden tutkinta ja nopeampi ongelmatilanteista toipuminen ilman, että sijaintiestimaatit kärsivät liikemalliin lisätystä kohinasta.
+
+Ongelma voitaisiin ratkaista myös käyttämällä JOLLOIN. Kokeen tuloksia voisi puolestaan myös Vastaavasti parametrien vaikutusta voisi tarkastella sensitiivisyysanalyysin avulla.
+
+\end{document}

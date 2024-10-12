@@ -84,7 +84,7 @@ Ilman uudelleenotantaa on mahdollista, että algoritmi alkaa kärsiä SIS-algori
 N_{eff}= \frac{N}{1+c_\nu^2(w^i_{k|k})} = \frac{N}{1+\frac{\text{Var}(w^i_{k|k})}{(\mathbb{E}[w^i_{k|k}])^2}} =\frac{N}{1+N^2\text{Var}(w^i_{k|k})}.
 \end{align}
 
-Näin laskettu efektiivinen otoskoko maksimoituu ($N_{eff}=N$), kun kaikille painoille pätee $w^i_{k|k}=1/N$ ja minimoituu ($N_{eff}=1$), kun $w^i_{k|k}=1$ todennäköisyydellä $1/N$ ja $w^i_{k|k}=0$ todennäköisyydellä $(N-1)/N$. Normalisoitujen painojen avulla saadaan efektiiviselle otoskoolle aika-askeleella $k$ laskennallinen approksimaatio
+Näin laskettu efektiivinen otoskoko kuvaa sitä, kuinka tasaisesti painot jakautuvat partikkeleille. Efektiivinen otoskoko maksimoituu ($N_{eff}=N$), kun kaikille painoille pätee $w^i_{k|k}=1/N$ ja minimoituu ($N_{eff}=1$), kun $w^i_{k|k}=1$ todennäköisyydellä $1/N$ ja $w^i_{k|k}=0$ todennäköisyydellä $(N-1)/N$. Normalisoitujen painojen avulla saadaan efektiiviselle otoskoolle aika-askeleella $k$ laskennallinen approksimaatio
 
 \begin{align}\label{N-hat-eff}
 \hat{N}_{eff}=\frac{1}{\sum_{i=1}^N(w^i_{k|k})^2}.
@@ -190,7 +190,7 @@ w_{k+1|k}^i=\frac{\sum_{j=1}^{N}w_{k|k}^jp(x_{k+1}^i|x_k^j)}{q(x_{k+1}^i|x_k^i,y
 
 \subsection{Aikakompleksisuus}
 
-Algoritmin perusmuodon aikakompleksisuus on $\mathcal{O}(N)$. Uudelleenotantamenetelmän tai ehdotusjakauman valinta ei suoraan vaikuta aikakompleksisuuteen. Sen sijaan marginalisointi tärkeytyspainolla (\ref{marginaalitarkeytys}) lisää algoritmin aikakompleksisuutta $\mathcal{O}(N)\rightarrow\mathcal{O}(N^2)$, koska jokaisen partikkelin kohdalla painot lasketaan jokaisen tila-aika-avaruuspolun yli. On selvää, että erityisesti isoilla otoskoon $N$ arvoilla ei yllä esitetty marginalisointi enää ole mielekästä. 
+Algoritmin perusmuodon aikakompleksisuus on $\mathcal{O}(N)$. Uudelleenotantamenetelmän tai ehdotusjakauman valinta ei suoraan vaikuta aikakompleksisuuteen. Sen sijaan marginalisointi tärkeytyspainolla (\ref{marginaalitarkeytys}) lisää algoritmin aikakompleksisuutta $\mathcal{O}(N)\rightarrow\mathcal{O}(N^2)$, koska jokaisen partikkelin kohdalla painot lasketaan jokaisen tila-aika-avaruuspolun yli. On selvää, että erityisesti isoilla otoskoon $N$ arvoilla ei yllä esitetty marginalisointi enää ole mielekästä, erityisesti reaaliaikaisissa sovellutuksissa. 
 
 Tällaisia tilanteita varten algoritmista on olemassa $\mathcal{O}(N\text{log}(N))$-versioita, jotka perustuvat esimerkiksi N:n kappaleen oppimiseen (*N-body learning*). Näiden algoritmien käsittely jää tämän tutkielman ulkopuolelle, mutta katsauksen algoritmeista ovat esittäneet esimerkiksi Klaas \&al. artikkelissa "Toward Practical $N^2$ Monte Carlo: the Marginal Particle Filter" (2005) [@klaas-2005].
 

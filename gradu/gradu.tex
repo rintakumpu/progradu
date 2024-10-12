@@ -426,11 +426,11 @@ Bayesilaisessa päättelyssä ollaan yleisesti kiinnostuttu laskemaan johonkin p
 \mathbb{E}[g(x)|y_{1:k}]\simeq\frac{1}{N}\sum_{i=1}^N g(x^i).
 \end{align}
 
-Monte Carlo -estimaatti konvergoi keskeisen raja-arvolauseen nojalla ja sen estimointivirheen voidaan osoittaa olevan luokkaa \(\mathcal{O}(\frac{1}{\sqrt{N}})\) riippumatta tilamuuttujan \(x\) dimensiosta. Hiukassuotimet hyödyntävät Monte Carlo -estimointia sekventiaalisesti, jolloin estimaatti lasketaan rekursiivisesti kullekin aika-askeleelle \(k=\{1,\ldots, T\}\). Tähän palataan luvuissa \ref{hiukkassuotimet} ja \ref{paikannusesimerkki}.
+Kun otokset ovat riippumattomia ja samoin jakautuneita, konvergoi Monte Carlo -estimaatti keskeisen raja-arvolauseen nojalla ja sen estimointivirheen voidaan osoittaa olevan luokkaa \(\mathcal{O}(\frac{1}{\sqrt{N}})\) riippumatta tilamuuttujan \(x\) dimensiosta. Hiukassuotimet hyödyntävät Monte Carlo -estimointia sekventiaalisesti, jolloin estimaatti lasketaan rekursiivisesti kullekin aika-askeleelle \(k=\{1,\ldots, T\}\). Tähän palataan luvuissa \ref{hiukkassuotimet} ja \ref{paikannusesimerkki}.
 
 \subsection{Tärkeytysotanta}
 
-Tilanteessa, jossa Monte Carlo -otoksia ei voida tehdä suoraan jakaumasta \(p\), voidaan hyödyntää jakaumaa \(p\) approksimoivaa tärkeytys- tai ehdotusjakaumaa \(q(x|y_{1:k})\) sekä ns. tärkeytysotantaa. Oletetaan, että tunnetaan priorijakauma \(p(x)\) ja on olemassa havaintomalli \(p(y_{1:k}|x)\) sekä valittu ehdotusjakauma \(q(x|y_{1:k})\), josta voidaan tehdä otoksia. Ehdotusjakaumalta edellytetään lisäksi, että sen kantaja on suurempi tai yhtä suuri kuin jakauman \(p(x|y_{1:k})\) ja että se saa nollasta poikkeavia arvoja kaikkialla missä \(p(x|y_{1:k})\) saa nollasta poikkeavia arvoja. Kirjoitetaan halutun posteriorijakauman odotusarvo integraalina
+Tilanteessa, jossa Monte Carlo -otoksia ei voida tehdä suoraan jakaumasta \(p\), voidaan hyödyntää jakaumaa \(p\) approksimoivaa tärkeytys- tai ehdotusjakaumaa \(q(x|y_{1:k})\) sekä ns. tärkeytysotantaa. Oletetaan, että tunnetaan priorijakauma \(p(x)\) ja on olemassa havaintomalli \(p(y_{1:k}|x)\) sekä valittu ehdotusjakauma \(q(x|y_{1:k})\), josta voidaan tehdä otoksia. Ehdotusjakaumalta edellytetään lisäksi, että sen kantaja on suurempi tai yhtä suuri kuin jakauman \(p(x|y_{1:k})\) ja että se saa nollasta poikkeavia arvoja kaikkialla missä \(p(x|y_{1:k})\) saa nollasta poikkeavia arvoja. Ehdotusjakauman on myös hyvä olla mahdollisimman lähellä posteriorijakaumaa \(p\). Kirjoitetaan halutun posteriorijakauman odotusarvo integraalina
 
 \begin{align}
 \int g(x)p(x|y_{1:k})dx=\int g(x)\frac{p(x|y_{1:k})}{q(x|y_{1:k})}q(x|y_{1:k})dx,
@@ -450,7 +450,7 @@ Muodostetaan näin odotusarvo
 \hat{p}(x|y_{1:k})=\sum_{i=1}^{N}w^i \delta(x-x^i),
 \end{align}
 
-\noindent missä \(\delta(x)\) on Diracin deltafunktio.
+\noindent missä \(\delta(x)\) on Diracin deltafunktio. Diracin deltafunktio kuvaa sitä, että otokset ovat diskreettejä ja kullakin otoksella on oma painonsa (eli otos muodostaa ``piikin'' posteriorijakaumaan).
 
 \begin{algorithm}[H]
 \label{tarkeytysotanta-algo}
@@ -633,7 +633,7 @@ Ilman uudelleenotantaa on mahdollista, että algoritmi alkaa kärsiä SIS-algori
 N_{eff}= \frac{N}{1+c_\nu^2(w^i_{k|k})} = \frac{N}{1+\frac{\text{Var}(w^i_{k|k})}{(\mathbb{E}[w^i_{k|k}])^2}} =\frac{N}{1+N^2\text{Var}(w^i_{k|k})}.
 \end{align}
 
-Näin laskettu efektiivinen otoskoko maksimoituu (\(N_{eff}=N\)), kun kaikille painoille pätee \(w^i_{k|k}=1/N\) ja minimoituu (\(N_{eff}=1\)), kun \(w^i_{k|k}=1\) todennäköisyydellä \(1/N\) ja \(w^i_{k|k}=0\) todennäköisyydellä \((N-1)/N\). Normalisoitujen painojen avulla saadaan efektiiviselle otoskoolle aika-askeleella \(k\) laskennallinen approksimaatio
+Näin laskettu efektiivinen otoskoko kuvaa sitä, kuinka tasaisesti painot jakautuvat partikkeleille. Efektiivinen otoskoko maksimoituu (\(N_{eff}=N\)), kun kaikille painoille pätee \(w^i_{k|k}=1/N\) ja minimoituu (\(N_{eff}=1\)), kun \(w^i_{k|k}=1\) todennäköisyydellä \(1/N\) ja \(w^i_{k|k}=0\) todennäköisyydellä \((N-1)/N\). Normalisoitujen painojen avulla saadaan efektiiviselle otoskoolle aika-askeleella \(k\) laskennallinen approksimaatio
 
 \begin{align}\label{N-hat-eff}
 \hat{N}_{eff}=\frac{1}{\sum_{i=1}^N(w^i_{k|k})^2}.
@@ -739,7 +739,7 @@ w_{k+1|k}^i=\frac{\sum_{j=1}^{N}w_{k|k}^jp(x_{k+1}^i|x_k^j)}{q(x_{k+1}^i|x_k^i,y
 
 \subsection{Aikakompleksisuus}
 
-Algoritmin perusmuodon aikakompleksisuus on \(\mathcal{O}(N)\). Uudelleenotantamenetelmän tai ehdotusjakauman valinta ei suoraan vaikuta aikakompleksisuuteen. Sen sijaan marginalisointi tärkeytyspainolla (\ref{marginaalitarkeytys}) lisää algoritmin aikakompleksisuutta \(\mathcal{O}(N)\rightarrow\mathcal{O}(N^2)\), koska jokaisen partikkelin kohdalla painot lasketaan jokaisen tila-aika-avaruuspolun yli. On selvää, että erityisesti isoilla otoskoon \(N\) arvoilla ei yllä esitetty marginalisointi enää ole mielekästä.
+Algoritmin perusmuodon aikakompleksisuus on \(\mathcal{O}(N)\). Uudelleenotantamenetelmän tai ehdotusjakauman valinta ei suoraan vaikuta aikakompleksisuuteen. Sen sijaan marginalisointi tärkeytyspainolla (\ref{marginaalitarkeytys}) lisää algoritmin aikakompleksisuutta \(\mathcal{O}(N)\rightarrow\mathcal{O}(N^2)\), koska jokaisen partikkelin kohdalla painot lasketaan jokaisen tila-aika-avaruuspolun yli. On selvää, että erityisesti isoilla otoskoon \(N\) arvoilla ei yllä esitetty marginalisointi enää ole mielekästä, erityisesti reaaliaikaisissa sovellutuksissa.
 
 Tällaisia tilanteita varten algoritmista on olemassa \(\mathcal{O}(N\text{log}(N))\)-versioita, jotka perustuvat esimerkiksi N:n kappaleen oppimiseen (\emph{N-body learning}). Näiden algoritmien käsittely jää tämän tutkielman ulkopuolelle, mutta katsauksen algoritmeista ovat esittäneet esimerkiksi Klaas \&al.~artikkelissa ``Toward Practical \(N^2\) Monte Carlo: the Marginal Particle Filter'' (2005) \citep{klaas-2005}.
 
@@ -939,7 +939,7 @@ Uudelleenpainottavassa hiukkassiloittimessa (tunnetaan myös nimellä marginaali
 \caption{Uudelleenpainottava hiukkassiloitin}
 \end{algorithm}
 
-Halutun siloitinjakauma estimaatti aika-askeleella \(k\) saadaan painotettuna keskiarvona \(p(x_k|y_{1:T}) \approx \sum_i w_{k|t}^i \delta (x_k-x_k^i)\). Algoritmin aikakompleksisuus on \(\mathcal{O}(N^2)\).
+Halutun siloitinjakauma estimaatti aika-askeleella \(k\) saadaan painotettuna keskiarvona \(p(x_k|y_{1:T}) \approx \sum_i w_{k|t}^i \delta (x_k-x_k^i)\). Algoritmin aikakompleksisuus on \(\mathcal{O}(N^2)\), minkä vuoksi uudelleenpainottava hiukkassiloitin on usein SIR-siloitinta tehokkaampi ratkaisu.
 
 \section{Online-algoritmit}
 
@@ -1018,7 +1018,7 @@ Sisätilapaikannus tarkoittaa teknisiä ratkaisuja ja menetelmiä, joilla paikan
 
 Optisessa paikannuksessa hyödynnetään kameroita tai muita optisia sensoreita, kuten esimerkiksi Lidar-valotutkia halutun kohteen sijainnin määrittämiseen. Magneettikenttiin perustuvat paikannusratkaisut hyödyntävät rakennusten sisäisten metallirakenteiden maapallon magneettikenttään luomia paikallisia muutoksia. Näitä muutoksia voidaan käyttää vertailutietona paikannuksessa, mittaamalla ympäröivän magneettikentän vahvuutta ja vertaamalla sitä ennalta tallennettuihin karttoihin. Ultraäänipohjainen paikannus puolestaan hyödyntää ääniaaltojen kulkuaikaa lähettimen ja vastaanottimien välillä.
 
-Yleinen teknologiavalinta sisätilapaikannuksessa ovat erilaiset Bluetooth-standardiin tai muuhun radioteknologiaan (kuten esimerkiksi millimetriaaltoihin) perustuvat ratkaisut. Näistä suurin osa hyödyntää lähettimen ja vastaanottimen/vastaanottimien välisiä radiosignaaleja laitteiden välisen etäisyyden tai kulman mittaamiseen. Radioteknologiaan perustuvilla järjestelmillä voidaan kotuullisin kustannuksin saavuttaa sovellutuksissa jopa senttimetritason paikannustarkkuus. Radioteknologiaan perustuvat järjestelmät ovat myös yksityisyyden näkökulmasta yksinkertaisempia toteuttaa kuin esimerkiksi kameroiden avulla tapahtuvaan paikannukseen perustuvat järjestelmät.
+Yleinen teknologiavalinta sisätilapaikannuksessa ovat erilaiset Bluetooth-standardiin tai muuhun radioteknologiaan (kuten esimerkiksi millimetriaaltoihin) perustuvat ratkaisut. Näistä suurin osa hyödyntää lähettimen ja vastaanottimen/vastaanottimien välisiä radiosignaaleja laitteiden välisen etäisyyden tai kulman mittaamiseen. Radioteknologiaan perustuvilla järjestelmillä voidaan kotuullisin kustannuksin saavuttaa hyvä tasapaino paikannustarkkuuden ja energiankulutuksen välillä. Radioteknologiaan perustuvat järjestelmät ovat myös yksityisyyden näkökulmasta yksinkertaisempia toteuttaa kuin esimerkiksi kameroiden avulla tapahtuvaan paikannukseen perustuvat järjestelmät.
 
 \section{Teknologian kuvaus}
 
@@ -1076,7 +1076,7 @@ Jos IMU-dataa hyödynnetään, tuottaa kalibraatioalgoritmi jokaiselle XR-2-lait
 
 \section{Datan kuvaus} \label{datan-kuvaus}
 
-Koeasetelmaa varten AT-2-tagi on asetettu lähettämään I/Q-dataotoksia 6hz taajuudella, joka vastaa järjestelmän tuotantokäyttöä. Parempi sijaintitarkkuus saavutettaisiin korkeammalla taajuudella, mutta käytännön sovellutuksissa ei tagien akun kesto salli 6hz korkeampaa lähetystaajuutta.
+Koeasetelmaa varten AT-2-tagi on asetettu lähettämään I/Q-dataotoksia 6hz taajuudella, joka vastaa järjestelmän tuotantokäyttöä. Parempi sijaintitarkkuus saavutettaisiin korkeammalla taajuudella, mutta käytännön sovellutuksissa ei tagien haluttu akun kesto salli 6hz korkeampaa lähetystaajuutta.
 
 \emph{Angler}-sovellus koostaa jokaisesta tagin lähettämästä dataotoksesta \(s\) atsimuutti- eli suuntimakulman \(\theta_s\) ja korkeuskulman \(\gamma_s\), jotka noudattavat suuntimakulman osalta von Mises -jakaumaa ja korkeuskulman osalta katkaistua normaalijakaumaa:
 
@@ -1416,7 +1416,7 @@ Koska haluttu sisätilapaikannusalgoritmi on online-algoritmi ja käytössä ole
 &w_k = w_k^i \bar{w}^i_{k+1}, \hspace{0.5cm} \text{missä } \bar{w}^i_{k+1} = \frac{\sum_{j=1}^{N}w_{k}^j p(x_{k+1}^i|x_k^j)}{q(x_{k+1}^i|x_k^i,y_{k+1})}
 .\end{align}
 
-Partikkelien siirtämiseen käytetty satunnaiskulkumalli ei ole siloittelualgoritmien kannalta optimaalinen, joten empiirisessä esimerkissä alla hyödynnetään koetarkoituksessa vain tätä yksinkertaista siloittelumallia.
+Empiirisessä esimerkissä alla hyödynnetään koetarkoituksessa vain tätä yksinkertaista siloittelumallia.
 
 \subsection{WB-sisätilapaikannusalgoritmi}
 
@@ -1431,7 +1431,7 @@ Algoritmin priorijakaumana \(p_{x_0}\) käytetään kahta toisistaan riippumaton
 
 \noindent Koska järjestelmän on tarkoitus toimia ainoastaan paikantimien muodostaman suorakaiteen sisäpuolella, ovat valitut jakaumien päätepisteet riittävät. Kummastakin jakaumasta tehdään \(\sqrt{N}\) otosta, jolloin \(N\) partikkelia \(x^i_0\) saadaan näiden otosten permutaatioina. Alaluvussa \ref{uudelleenotantamenetelman-valinta} määritellyn signaali-kohinasuhteen (\ref{SNR}) voi todeta olevan hyvin matala, sillä koe-esimerkin dynaaminen malli (\ref{dynaaminen-malli-empiirinen}) noudattaa satunnaiskulkua ja on siten pelkkää kohinaa. Tämän perusteella WB-sisätilapaikannusalgoritmi käyttää ehdotusjakaumanaan tilavektorin ehdollista prioria \(p(x_k|x_{k-1})\). Hiukkasten määrän \(N\) sekä muiden suunnitteluparametrien valinnasta kts. alaluku \ref{parametrien-valinta} alla.
 
-Koska esitetty priorijakauma \(p_{x_0}\) on epäinformatiivinen ja monimutkainen koeympäristö aiheuttaa monin paikoin heijastuksia, on mahdollista, että ensimmäisten aika-askeleiden aikana algoritmi tuottaa huonoja sijaintiestimaatteja. Tästä syystä algoritmia ajettaessa suoritetaan ensimmäisellä \(b=3\) aika-askeleella sisäänajo, jonka aikana karttasovitusta ei käytetä ja jonka aikana kohina-arvona käytetään arvoa \(q_{k}=q\times10\). Myöskään sijaintiestimaatteja ei sisäänajoaika-askeleilla luoda. Sisäänajon jälkeen sijaintiestimaatit \(\hat{x}_{1:b}\) korvataan ensimmäisellä sisäänajon jälkeisellä sijaintiestimaatilla \(\hat{x}_{b+1}\).
+Koska esitetty priorijakauma \(p_{x_0}\) on epäinformatiivinen ja monimutkainen koeympäristö aiheuttaa monin paikoin heijastuksia, on mahdollista, että ensimmäisten aika-askeleiden aikana algoritmi tuottaa huonoja sijaintiestimaatteja. Tästä syystä algoritmia ajettaessa suoritetaan ensimmäisellä \(b=3\) aika-askeleella sisäänajo, jonka aikana karttasovitusta ei käytetä ja jonka aikana kohina-arvona käytetään arvoa \(q_{k}=q\times10\). Myöskään sijaintiestimaatteja ei sisäänajoaika-askeleilla luoda. Sisäänajon jälkeen sijaintiestimaatit \(\hat{x}_{1:b}\) korvataan ensimmäisellä sisäänajon jälkeisellä sijaintiestimaatilla \(\hat{x}_{b+1}\). Näin estetään mahdollisia huonoja alkuarvoja vaikuttamasta pitkälle tuleviin sijaintiestimaatteihin.
 
 Algoritmin tuottamien estimaattien varianssi estimoidaan käyttäen ALVar-varianssiestimaattia. Käytännössä tämä tarkoittaa varianssin estimointia käyttäen OD-varianssiestimaattia (\ref{OD-varianssi}) niin, että viiveparametri \(\lambda\) valitaan mukautuvasti käyttäen yhtälöä (\ref{ALVar-lambda}). Koska empiirisessä esimerkissä estimoitavia ulottuvuuksia on kaksi, leveys- ja pituuskoordinaatit, lasketaan varianssi kummallekin näistä erikseen. Saadaan pituuskoordinaattien varianssiestimaatti \(\hat{\sigma}^2_{k_x}\) ja leveyskoordinaattien varianssiestimaatti \(\hat{\sigma}^2_{k_y}\).
 
@@ -1453,7 +1453,7 @@ Lasketaan lisäksi kovarianssiestimaatti
 \hat{\sigma}_k = \norm{ \hat{\mathbf{\Sigma}}_k } = \sqrt{ \text{tr}\left(\hat{\mathbf{\Sigma}}_k * \hat{\mathbf{\Sigma}}_k\right)}
 ,\end{align}
 
-\noindent jolloin saadaan jokaiselle aika-askeleelle yksi skalaariarvoinen varianssiestimaatti.
+\noindent jolloin saadaan jokaiselle aika-askeleelle yksi skalaariarvoinen varianssiestimaatti. Tässä käytetään Frobeniuksen normia, koska se tarjoaa yksinkertaisen ja intuitiivisen tavan yhdistää (ko)variannsiarvot yhdeksi skalaariarvoiseksi estimaatiksi.
 
 \afterpage{ 
 \clearpage
@@ -1871,7 +1871,7 @@ rssi\_threshold & -90\\
 \end{tabular}
 \end{table}
 
-Tulosten perusteella voidaan todeta, että WB-sisätilapaikannusalgoritmi tuottaa halutun paikannusvirheen. Algoritmin testaamisessa on käytetty todelliseen liiketilaan luotua testiasetelemaa, joka vastaa hyvin järjestelmän todellista käyttötarkoitusta ja kattaa useita erilaisia radioympäristöjä. Tämän perusteella voidaan algoritmin myös olettaa yleistyvän hyvin monimutkaisiin sisätilaympäristöihin. Taulukossa \ref{tab:tulokset-total} on esitetty ToTal-triangulaatioalgoritmilla \ref{total} luoduista sijaintiestimaateista laskettujen paikannusvirheiden tunnuslukuja.
+Tulosten perusteella voidaan todeta, että WB-sisätilapaikannusalgoritmi tuottaa halutun paikannusvirheen. Algoritmin testaamisessa on käytetty todelliseen liiketilaan luotua testiasetelemaa, joka vastaa hyvin järjestelmän todellista käyttötarkoitusta ja kattaa useita erilaisia radioympäristöjä. Tämän perusteella voidaan algoritmin myös olettaa yleistyvän hyvin muihin monimutkaisiin sisätilaympäristöihin. Taulukossa \ref{tab:tulokset-total} on esitetty ToTal-triangulaatioalgoritmilla \ref{total} luoduista sijaintiestimaateista laskettujen paikannusvirheiden tunnuslukuja.
 
 \begin{table}
 
@@ -1895,16 +1895,28 @@ Triangulaatioon verrattuna WB-sisätilapaikannusalgoritmi tuottaa huomattavasti 
 \label{fig:total-karttapolku}
 \end{figure}
 
-Algoritmia ja järjestelmää voitaisiin mahdollisesti edelleen parantaa esimerkiksi käyttämällä tagia, jonka kiihtyvyysmittarin tuottama data olisi AT-2-tagia luotettavampaa. Kiihtyvyyssataa voitaisiin hyödyntää esimerkiksi informatiivisen liikemallin luomisessa. Tällöin olisi myös mielekkäämpää toteuttaa varianssiestimaattiin perustuva adaptiivisen viipeen suodin osana paikannusalgoritmia. Lisäksi datan valinta voitaisiin suorittaa esimerkiksi niin, että datasta poistettaisiin kullakin aika-askeleella ne kulmahavainnot, jotka poikkeavat kulmahavaintojen suuntakonsensuksesta.
-
-Liitteenä olevia polkuja tarkastelemalla huomataan, että nyt toteutetun algoritmin sijantiestimaatilla on taipumus jäädä osassa testiympäristöä jälkeen itse tagin sijainnista. Tätä ongelmaa voitaisiin mahdollisesti lieventää käyttämällä mm. Yi Chenging \&al.~artikkelissa ``Improved Particle Filter Algorithm for Multi-Target Detection and Tracking'' (2024) \citep{Cheng-2024} esittämää menetelmää, jossa partikkelit jaetaan ns. seurantahiukkasiin sekä etsintähiukkasiin, joista ainoastaan edellisiä käytetään sijaintiestimaatin luomisessa ja jälkimmäisten annetaan liikkua suuremmilla kohina-arvoilla. Näin mahdollistetaan satunnaiskulkumallilla laajempi signaaliavaruuden tutkinta ja nopeampi ongelmatilanteista toipuminen ilman, että sijaintiestimaatit kärsivät liikemalliin lisätystä kohinasta.
-
 \hypertarget{lopuksi}{%
 \chapter{Lopuksi}\label{lopuksi}}
 
 Tässä tutkielmassa on esitetty pääpiirteittäin hiukkassuodin- ja hiukkassiloitinalgoritmien teoria Bayesilaisessa tilastotieteellisessä viitekehyksessä. Tutkielmassa on lisäksi käyty läpi uudelleenotantaa efektiivisen otoskoon perusteella hyödyntävä SIR-suodinalgoritmi sekä käsitelty algoritmin varianssin estimointia. Tutkielmassa on myös esitetty SIR-algoritmin parametrien valintaan, suorituskykyyn sekä konvergenssiin liittyviä tuloksia.
 
 Tutkielmassa on lisäksi esitetty WB-sisätilapaikannusalgoritmi, joka toteuttaa SIR-algoritmin, estimoi jakaumaestimaatin varianssin ja hyödyntää sisätilapaikannuksen karttasovitusalgoritmia. Tutkielmassa on lopuksi tarkasteltu miten eri suunnitteluparametrien valinnat vaikuttavat algoritmin suorituskykyyn kattavan, todelliseen ongelmaan ja dataan perustuvan paikannuskokeen avulla.
+
+Algoritmia ja järjestelmää voitaisiin mahdollisesti edelleen parantaa esimerkiksi käyttämällä tagia, jonka kiihtyvyysmittarin tuottama data olisi AT-2-tagia luotettavampaa. Kiihtyvyyssataa voitaisiin hyödyntää esimerkiksi informatiivisen liikemallin luomisessa.
+
+Koe-esimerkin perusteella tutkielmassa käsitelty ALVar-varianssi estimoi hyvin jakaumaestimaatin varianssia. ALVar-varianssiestimaattia voitaisiin edelleen hyödyntää esimerkiksi adaptiivisen viipeen siloittimen toteuttamisessa. Vastaavasti KALMAN-SUODIN.
+
+Varianssiestimaattia olisi mahdollista hyödyntää WB-sisätilapaikannusalgoritmin dynaamisen mallin kohinaparametrin \(q\) säätämisessä niin, että kohinaa lisättäisiin tai vähennettäisiin varianssiestimaatin perusteella. Tämä voitaisiin toteuttaa esimerkiksi käyttämällä lähtökohtaisesti pienempää \(q\)-arvoa ja lisäämällä siihen keskihajonnan estimaatti, jota on painotettu suunnitteluparametrilla \(\alpha\), ts. ennen dynaamisen mallin sovitusta päivtettäisiin kohinaparametri \(q_k = q_k+\alpha\sqrt{\hat{\sigma}^2_{k-1}}\).
+
+Varianssiestimaattia voisi hyödyntää myös hiukkasten lukumäärän \(N\) adaptiivisessa valinnassa niin, että matala varianssi vähentää estimoinnissa käytettävien hiukkasten määrää. Tällaista varianssiin perustuvaa hiukkasmäärän muuttamista ehdottavat muun muassa Lee ja Whiteley (2018) \citep{Lee-2018}. Hiukkasten määrään muuttamista XXX Vastaavasti voisi parantaa myös arvioimalla konvergenssia esimerkiksi ***.
+
+Algoritmin suorituskykyä voitaisiin mahdollisesti myös parantaa käyttämällä RSSI-kynnysarvon sijaan tai ohella esimerkiksi menetelmää, jossa datasta poistettaisiin kullakin aika-askeleella ne kulmahavainnot, jotka poikkeavat kulmahavaintojen suuntakonsensuksesta. Jättämällä osa havainnoista uskottavuusfunktioiden ulkopuolelle nopeuttaisi algoritmin laskentaa, mutta saattaisi parantaa myös algoritmin tarkkuutta.
+
+Liitteenä olevia polkuja tarkastelemalla puolestaan huomataan, että nyt toteutetun algoritmin sijantiestimaatilla on taipumus jäädä osassa testiympäristöä jälkeen itse tagin sijainnista. Tätä ongelmaa voitaisiin mahdollisesti lieventää käyttämällä mm. Yi Chenging \&al.~artikkelissa ``Improved Particle Filter Algorithm for Multi-Target Detection and Tracking'' (2024) \citep{Cheng-2024} esittämää menetelmää, jossa partikkelit jaetaan ns. seurantahiukkasiin sekä etsintähiukkasiin, joista ainoastaan edellisiä käytetään sijaintiestimaatin luomisessa ja jälkimmäisten annetaan liikkua suuremmilla kohina-arvoilla. Näin mahdollistetaan satunnaiskulkumallilla laajempi signaaliavaruuden tutkinta ja nopeampi ongelmatilanteista toipuminen ilman, että sijaintiestimaatit kärsivät liikemalliin lisätystä kohinasta.
+
+Ongelma voitaisiin ratkaista myös käyttämällä ekskluusiopolygonien ohella ns. pehmeitä rajoitteita (kts. esim. TODO), jolloin ekskluusiopolygonien ympärille luotaisiin rajoitevyöhyke, jolle osuvat hiukkaset saisivat rangaistuksen riippuen siitä, kuinka lähellä itse ekskluusiopolygonin reunaa ne ovat. Rangaistusarvon luomisessa voitaisiin käyttää esimerkiksi eksponentiaalista tai kvadraattista hajoamista.
+
+Kokeen tuloksia voisi puolestaan myös Vastaavasti parametrien vaikutusta voisi tarkastella sensitiivisyysanalyysin avulla.
 
 \hypertarget{liite-a---karttapolut}{%
 \chapter*{Liite A - Karttapolut}\label{liite-a---karttapolut}}
