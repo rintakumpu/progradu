@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.5.26)  12 OCT 2024 21:18
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.5.26)  15 OCT 2024 16:19
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1132,45 +1132,75 @@ goritmien teoria Bayesilaisessa
 \openout5 = `06-lopuksi.toc'.
 
 
+Package natbib Warning: Citation `Xu-2006' on page 1 undefined on input line 21
+1.
+
+
+Underfull \hbox (badness 2486) in paragraph at lines 211--212
+\T1/lmr/m/n/10 (+20) mallin kohinaparametrin $\OML/lmm/m/it/10 q$ \T1/lmr/m/n/1
+0 (+20) s‰‰t‰misess‰ niin, ett‰ kohinaa lis‰tt‰isiin tai v‰hennett‰isiin
+ []
+
+
+Overfull \hbox (13.76309pt too wide) in paragraph at lines 211--212
+\T1/lmr/m/n/10 (-20) pienemp‰‰ $\OML/lmm/m/it/10 q$\T1/lmr/m/n/10 (-20) -arvoa 
+ja lis‰‰m‰ll‰ siihen keskihajonnan estimaatti, jota on painotettu suunnittelupa
+rametrilla
+ []
+
+
 Package natbib Warning: Citation `Lee-2018' on page 1 undefined on input line 2
 13.
+
+
+Package natbib Warning: Citation `Elvira-2017' on page 1 undefined on input lin
+e 213.
+
+
+Package natbib Warning: Citation `Boquet-2024' on page 1 undefined on input lin
+e 215.
 
 
 Package natbib Warning: Citation `Cheng-2024' on page 1 undefined on input line
  217.
 
 
-Package natbib Warning: There were undefined citations.
+Package natbib Warning: Citation `Liu-2019' on page 1 undefined on input line 2
+19.
 
 [1
 
 
-] (./06-lopuksi.aux) ) 
+]
+
+Package natbib Warning: There were undefined citations.
+
+[2] (./06-lopuksi.aux) ) 
 Here is how much of TeX's memory you used:
- 29195 strings out of 478268
- 555597 string characters out of 5846347
- 880486 words of memory out of 5000000
+ 29200 strings out of 478268
+ 555647 string characters out of 5846347
+ 881486 words of memory out of 5000000
  46763 multiletter control sequences out of 15000+600000
- 507770 words of font info for 98 fonts, out of 8000000 for 9000
+ 507947 words of font info for 100 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  98i,6n,94p,1007b,348s stack positions out of 10000i,1000n,20000p,200000b,200000s
-{/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/lm/lm
--mathsy.enc}{/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/
-usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}{/usr/local/
-texlive/2022/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/local/texlive/20
-22/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}</usr/local/texlive/2022/texmf-dist/
-fonts/type1/public/lm/lmbx10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type
-1/public/lm/lmbx12.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/l
-m/lmcsc10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmex10.
-pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmmi10.pfb></usr/
-local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmmi7.pfb></usr/local/texli
-ve/2022/texmf-dist/fonts/type1/public/lm/lmr10.pfb></usr/local/texlive/2022/tex
-mf-dist/fonts/type1/public/lm/lmr7.pfb></usr/local/texlive/2022/texmf-dist/font
-s/type1/public/lm/lmsy7.pfb>
-Output written on 06-lopuksi.pdf (4 pages, 234931 bytes).
+{/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/lm/
+lm-mathsy.enc}{/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}
+{/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}{/usr/loca
+l/texlive/2022/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/local/texlive/
+2022/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}</usr/local/texlive/2022/texmf-dis
+t/fonts/type1/public/lm/lmbx10.pfb></usr/local/texlive/2022/texmf-dist/fonts/ty
+pe1/public/lm/lmbx12.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public
+/lm/lmcsc10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmex1
+0.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmmi10.pfb></us
+r/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmmi7.pfb></usr/local/tex
+live/2022/texmf-dist/fonts/type1/public/lm/lmr10.pfb></usr/local/texlive/2022/t
+exmf-dist/fonts/type1/public/lm/lmr7.pfb></usr/local/texlive/2022/texmf-dist/fo
+nts/type1/public/lm/lmsy7.pfb>
+Output written on 06-lopuksi.pdf (5 pages, 236686 bytes).
 PDF statistics:
- 92 PDF objects out of 1000 (max. 8388607)
- 65 compressed objects within 1 object stream
- 8 named destinations out of 1000 (max. 500000)
+ 96 PDF objects out of 1000 (max. 8388607)
+ 68 compressed objects within 1 object stream
+ 9 named destinations out of 1000 (max. 500000)
  26650 words of extra memory for PDF output out of 29859 (max. 10000000)
 

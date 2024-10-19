@@ -518,7 +518,7 @@ Koska algoritmin tuottamat uskottavuudet ja painot ovat pieniä, on laskentatark
 
 Paikannusvirheen laskemisessa on etäisyysfunktiona  käytetty `raster`-kirjaston `pointDistance()`-funktiota. Algoritmissa \ref{testipolun-tihennys} kuvattu testipolun tihennys on tehty ennen algoritmin ajoa ja tihennettyä testipolkua käytetään algoritmin syötteenä. Tihennys on tehty `smoothr`-kirjaston `smooth_densify()`-funktiolla. Ohjelmakoodissa on korostettu tiiviyden sijaan luettavuutta ja koodi on kommentoitu kattavasti. 
 
-\noindent Algoritmien R-koodi löytyy osoitteesta https://github.com/rintakumpu/progradu/analyysi/R/pf_positioning.R.
+\noindent Algoritmien R-koodi löytyy osoitteesta https://github.com/rintakumpu/progradu_public/analyysi/R/pf_positioning.R.
 
 \section{Empiirinen esimerkki} \label{empiirinen-esimerkki}
 
@@ -553,7 +553,7 @@ Havaintoja kerättiin yhteensä $n_{obs}=12379$ kappaletta ja ne kattoivat $T=43
 \label{fig:xr2_installed}
 \end{figure}
 
-Koeympäristön pohjapiirustus on esitetty kuvassa \ref{fig:testipolku}. Piirustuksessa XR-2-paikantimet on kuvattu punaisilla ympyröillä ja kuljettu testipolku on merkitty violetilla janalla. Piirustus luotiin käyttäen `ggplot2`-kirjastoa ja se löytyy RDS-muotoon tallennettuna osoitteesta \newline https://github.com/rintakumpu/progradu/analyysi/R/data/sitemap.RDS.
+Koeympäristön pohjapiirustus on esitetty kuvassa \ref{fig:testipolku}. Piirustuksessa XR-2-paikantimet on kuvattu punaisilla ympyröillä ja kuljettu testipolku on merkitty violetilla janalla. Piirustus luotiin käyttäen `ggplot2`-kirjastoa ja se löytyy RDS-muotoon tallennettuna osoitteesta \newline https://github.com/rintakumpu/progradu_public/analyysi/R/data/sitemap.RDS.
 
 \begin{figure}[H]
 \centering
@@ -564,7 +564,7 @@ Koeympäristön pohjapiirustus on esitetty kuvassa \ref{fig:testipolku}. Piirust
 
 \noindent Dataa kerättäessä AT-2-tagi kiinnitettiin ostoskärryyn 1.2 metrin korkeudelle (kts. kuvat \ref{fig:at2_cart} ja \ref{fig:at2_cart2}) ja testipolku käveltiin mahdollisimman tasaisella nopeudella. Data kerättiin aikaan, jolloin testiympäristön käyttöaste oli alhainen. Tällä minimoitiin radiosignaalien tielle osuvien ihmisten vaikutus signaaleihin. Testipolku suunniteltiin niin, että se kattoi vaihtelevia radioympäristöjä. Tällä minimoitiin yksittäisen sijaintiestimatiin radioympäristön vaikutus paikannusvirheeseen.
 
-Kerätty tulokulmadata löytyy osoitteesta\newline https://github.com/rintakumpu/progradu/analyysi/data/y.csv. Pohjapiirustus- ja polkudata löytyvät osoitteista\newline https://github.com/rintakumpu/progradu/analyysi/data/exclusion_polygons.csv (ekskluusiopolygonit),\newline https://github.com/rintakumpu/progradu/analyysi/data/inclusion_polygons.csv (lattiapolygoni) ja\newline https://github.com/rintakumpu/progradu/analyysi/data/test_path.csv (testipolku). Datassa koordinaatit on valmiiksi interpoloitu metreiksi, jotta testiympäristön sijaintia ei voi paikallistaa koordinaattien perusteella. Interpolointiin käytetty ohjelmakoodi löytyy osoitteesta \newline https://github.com/rintakumpu/progradu/analyysi/R/interpolate_coordinates.R . Osoitteesta\newline https://github.com/rintakumpu/progradu/analyysi/analyysi.Rmd löytyy itse analyysikoodin sisältävä R Markdown -muistikirja.
+Kerätty tulokulmadata löytyy osoitteesta\newline https://github.com/rintakumpu/progradu_public/analyysi/data/y.csv. Pohjapiirustus- ja polkudata löytyvät osoitteista\newline https://github.com/rintakumpu/progradu_public/analyysi/data/exclusion_polygons.csv (ekskluusiopolygonit),\newline https://github.com/rintakumpu/progradu_public/analyysi/data/inclusion_polygons.csv (lattiapolygoni) ja\newline https://github.com/rintakumpu/progradu_public/analyysi/data/test_path.csv (testipolku). Datassa koordinaatit on valmiiksi interpoloitu metreiksi, jotta testiympäristön sijaintia ei voi paikallistaa koordinaattien perusteella. Interpolointiin käytetty ohjelmakoodi löytyy osoitteesta \newline https://github.com/rintakumpu/progradu_public/analyysi/R/interpolate_coordinates.R . Osoitteesta\newline https://github.com/rintakumpu/progradu_public/analyysi/analyysi.Rmd löytyy itse analyysikoodin sisältävä R Markdown -muistikirja.
 
 \newpage
 
@@ -594,7 +594,7 @@ Toisessa vaiheessa valittiin ensimmäisen vaiheen tulosten perusteella parhaimma
 
 Viimeisessä vaiheessa valittiin edellisten vaihdeiden tulosten perusteella parhaimman paikannusvirheen suhteessa suoritusaikaan ja varianssiin tuottavat parametrit testattujen joukosta ja testattiin datan valinnassa käytettävää signaalin vahvuuden kynnysarvoa *rssi_threshold* $={-100,-90,-80}$ sekä prediktiivistä siloitinta *smoothing* $={T,F}$ eli kuutta eri suunnitteluparametrikombinaatiota.
 
-Tulosten vertailukohtana käytettiin Pierlot \&al. artikkelissa "A New Three Object Triangulation Algorithm Based on the Power Center of Three Circles" (2011) esittämää ToTal-triangulaatioalgoritmia [@Pierlot-2011]. Triangulaatio-algoritmia ei käsitellä tässä tarkemmin, mutta se on esitetty algoritmissa $\ref{total}$. Algoritmia varten valittiin kullakin aika-askeleella $k$ ne kolme XR-2-laitetta ja kulmahavaintoa, joiden RSSI-arvo oli korkein. Käytetty algoritmin toteutus löytyy osoitteesta \newline  https://github.com/rintakumpu/progradu/analyysi/R/total.R.
+Tulosten vertailukohtana käytettiin Pierlot \&al. artikkelissa "A New Three Object Triangulation Algorithm Based on the Power Center of Three Circles" (2011) esittämää ToTal-triangulaatioalgoritmia [@Pierlot-2011]. Triangulaatio-algoritmia ei käsitellä tässä tarkemmin, mutta se on esitetty algoritmissa $\ref{total}$. Algoritmia varten valittiin kullakin aika-askeleella $k$ ne kolme XR-2-laitetta ja kulmahavaintoa, joiden RSSI-arvo oli korkein. Käytetty algoritmin toteutus löytyy osoitteesta \newline  https://github.com/rintakumpu/progradu_public/analyysi/R/total.R.
 
 Paikannusalgoritmi ajettiin RStudion versiossa 2023.09.0+463 R-ohjelmointikielen versiolla 4.2.0. Tietokoneena käytettiin vuoden 2021 mallia olevaa MacBook Pro -kannettavaa, jossa oli Apple M1 Pro -prosessori sekä 32 gigatavua LPDDR5-muistia. Suoritusnopeuden mittaamiseen käytettiin `Sys.time()`-funktiota.
 
@@ -754,7 +754,7 @@ grid.arrange(p1,p2,p3,p4, ncol=1)
 
 Tuloksista huomataan, ettei siloittelun käyttäminen paranna paikannusvirhettä. Tämä on odotettua, koska liikemallina on käytetty satunnaiskulkua. Liitteenä olevista karttapoluista kuitenkin huomataan, että siloittelu tuottaa odotetusti sileämpiä polkuja, mikä saattaa olla käytännössä haluttu ominaisuus. Sen sijaan signaalin vahvuuden kynnysarvon nostaminen arvoon *rssi_threshold* $=-90$ parantaa hieman paikannustarkkuutta. Kynnysarvon käyttö myös nopeuttaa algoritmin ajoaikaa, sillä kynnysarvoa käytettäessä uskottavuusfunktio (\ref{lopullinen-uskottavuusmalli}) lasketaan pienemmällä määrällä kulmadataa. Valitaan näin kolmannen vaiheen tulosten perusteella parametrit *smoothing=F* ja *rssi_threshold*=$-90$. 
 
-Taulukossa \ref{tab:tulokset-final} on esitetty yhteenvetona kaikkien koevaiheiden tulosten perusteella valitut suunnitteluparametrit. Täydet eri koevaiheiden tulokset löytyvät csv-muodossa osoitteista \newline https://github.com/rintakumpu/progradu/blob/main/analyysi/data/tulokset_vaihe1_ci.csv (vaihe 1) \newline https://github.com/rintakumpu/progradu/blob/main/analyysi/data/tulokset_vaihe2_ci.csv (vaihe 2) ja \newline https://github.com/rintakumpu/progradu/blob/main/analyysi/data/tulokset_vaihe3_ci.csv (vaihe 3). Kansio https://github.com/rintakumpu/progradu/blob/main/analyysi/data/ sisältää lisäksi RDS-muotoon tallennettuna kaikkien ajojen tulokset.
+Taulukossa \ref{tab:tulokset-final} on esitetty yhteenvetona kaikkien koevaiheiden tulosten perusteella valitut suunnitteluparametrit. Täydet eri koevaiheiden tulokset löytyvät csv-muodossa osoitteista \newline https://github.com/rintakumpu/progradu_public/blob/main/analyysi/data/tulokset_vaihe1_ci.csv (vaihe 1) \newline https://github.com/rintakumpu/progradu_public/blob/main/analyysi/data/tulokset_vaihe2_ci.csv (vaihe 2) ja \newline https://github.com/rintakumpu/progradu_public/blob/main/analyysi/data/tulokset_vaihe3_ci.csv (vaihe 3). Kansio https://github.com/rintakumpu/progradu_public/blob/main/analyysi/data/ sisältää lisäksi RDS-muotoon tallennettuna kaikkien ajojen tulokset.
 
 ```{r tulokset-final, tidy=FALSE}
 tulokset_final <- as.data.frame(matrix(ncol=2,nrow=0))
