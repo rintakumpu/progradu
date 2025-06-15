@@ -298,4 +298,4 @@ ii) Henok-indeksit $E^i_{m-1,k}$ ovat ehtyneet ja on olemassa $\lambda^\prime \i
 
 Nyt indeksi $\lambda_{k+1}$ voidaan valita rekursiivisesti niin, että se tuottaa suurimman varianssiestimaatin, joka on kuitenkin rajoitettu ylhäältä arvoon $\lambda_k+1$. Tämä indeksi ei ole koskaan ehtynyt, joten se on myös parhaan varianssiestimaatin tuottava valinta.
 
-Esitettyjä varianssiestimaatteja voidaan hyödyntää paitsi algoritmien ja parametrivalintojen vertailussa myös mukautuvan viipeen hiukkassiloittimen viipeen valinnassa (kts. luku \@ref(hiukkassiloittimet)). Varianssiestimaatti lasketaan myös luvun \@ref(paikannusesimerkki) empiirisessä esimerkissä.
+Esitettyjä varianssiestimaatteja voidaan hyödyntää hiukkassuodinalgoritmien ja algoritmien parametrivalintojen vertailussa. Varianssiestimaatti lasketaan myös luvun \@ref(paikannusesimerkki) empiirisessä esimerkissä.

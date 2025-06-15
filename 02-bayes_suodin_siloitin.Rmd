@@ -1,6 +1,6 @@
 \section{Bayesilainen suodin} \label{bayesilainen-suodin}
 
-Suodinongelmassa ollaan kiinnostuttu tilavektorin posteriorijakauman $p(x_k|y_{1:k})$ estimoinnista. Tässä alaluvussa käydään läpi yleinen rekursiivinen, Bayesilainen posteriorijakauman laskenta. Tällaista suodinongelman ratkaisua kutsutaan myös Bayesilaiseksi suotimeksi. Koska epälineaarisessa, ei-normaalijakautuneessa tilanteessa rekursiota ei voida laskea analyyttisesti, pitää estimoinnissa käyttää numeerisia menetelmiä. Hiukkassuotimissa tämä tarkoittaa jakauman sekventiaalista Monte Carlo -approksimointia ja sen käytännön toteutus esitetään luvun \@ref(paikannusesimerkki) algoritmissa. Molemmat esitykset noudattavat Gustafssonia (2010) [@gustafsson-2010]. 
+Suodinongelmassa ollaan kiinnostuneita tilavektorin posteriorijakauman $p(x_k|y_{1:k})$ estimoinnista. Tässä alaluvussa käydään läpi yleinen rekursiivinen, Bayesilainen posteriorijakauman laskenta. Tällaista suodinongelman ratkaisua kutsutaan myös Bayesilaiseksi suotimeksi. Koska epälineaarisessa, ei-normaalijakautuneessa tilanteessa kyseistä rekursiota ei voida laskea analyyttisesti, pitää estimoinnissa käyttää numeerisia menetelmiä. Hiukkassuotimissa tämä tarkoittaa jakauman sekventiaalista Monte Carlo -approksimointia ja sen käytännön toteutus esitetään luvun \@ref(paikannusesimerkki) algoritmissa. Molemmat esitykset noudattavat Gustafssonia (2010) [@gustafsson-2010]. 
 
 Bayesilainen ratkaisu tilavektorin posteriorijakauman estimaatille $\hat{p}(x_k|y_{1:k})$ saadaan seuraavalla rekursiolla (käydään läpi jokaisella aika-askeleella $k=\{1,\ldots,T\}$). Lasketaan ensin
 
@@ -54,17 +54,24 @@ Tässä alaluvussa käsitellään lyhyesti Kalman-suotimen yhteyttä hiukkassuot
 \label{kf}
 \DontPrintSemicolon
 \SetAlgoShortEnd
-\KwResult{Posteriorijakauman $p(x_{1:k}|y_{1:k})$ estimaatti.\;}
-\KwData{Havainnot $y_k$. Priorijakauman $x_0$ keskiarvovektori $m_0$ ja kovarianssimatriisi $\mathbf{P}_0$.\;}
+\KwResult{Posteriorijakauman $p(x_{1:k} \mid y_{1:k})$ estimaatti.}
+\KwData{Havainnot $y_k$. Priorijakauman $x_0$ keskiarvo $m_0$ ja kovarianssimatriisi $\mathbf{P}_0$.}
 \Begin{
-  \For{$k=\{1,2,\ldots,T\}$}{
-    \Begin{Ennusteaskel. \newline $m_k^*= \mathbf{A}_{k-1}m_{k-1}$\;}
-    \If{$k < t$}{\Begin{Päivitysaskel. \newline $v_k = y_k - \mathbf{H}_k m_k^*$
-    \newline $\mathbf{S}_k = \mathbf{H}_k \mathbf{P}_k^* \mathbf{H}_k^\top + \mathbf{R}_k$
-    \newline\ $\mathbf{K}_k = \mathbf{P}_k^* \mathbf{H}_k^\top \mathbf{S}_k^{-1}$
-    \newline\ $m_k = m_k^* \mathbf{K}_k v_k$
-    \newline\ $\mathbf{P}_k = \mathbf{P}_k^* - \mathbf{K}_k \mathbf{S}_k \mathbf{K}_k^\top$;}}
-  }  
+  \For{$k=1,2,\ldots,T$}{
+    \Begin{
+      \textbf{Ennusteaskel:}\;
+      $m_k^* = \mathbf{A}_{k-1}\,m_{k-1}$\;
+      $\mathbf{P}_k^* = \mathbf{A}_{k-1}\,\mathbf{P}_{k-1}\,\mathbf{A}_{k-1}^\top + \mathbf{Q}_{k-1}$
+    }
+    \Begin{
+      \textbf{Päivitysaskel:}\;
+      $v_k = y_k - \mathbf{H}_k\,m_k^*$\;
+      $\mathbf{S}_k = \mathbf{H}_k\,\mathbf{P}_k^*\,\mathbf{H}_k^\top + \mathbf{R}_k$\;
+      $\mathbf{K}_k = \mathbf{P}_k^*\,\mathbf{H}_k^\top\,\mathbf{S}_k^{-1}$\;
+      $m_k = m_k^* + \mathbf{K}_k\,v_k$\;
+      $\mathbf{P}_k = \mathbf{P}_k^* - \mathbf{K}_k\,\mathbf{S}_k\,\mathbf{K}_k^\top$
+    }
+  }
 }
 \caption{Kalman-suodin}
 \end{algorithm}

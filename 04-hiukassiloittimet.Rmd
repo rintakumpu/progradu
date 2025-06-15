@@ -136,7 +136,7 @@ Yksinkertaisin versio siloittimesta on esitetty algoritmissa \ref{mukautuva-silo
 \sigma^2_{s|k} = \sum_{i=1}^N \frac{w_k^i}{\Omega_k}\left\{\tilde{x}_{s|k} - \sum_{j=1}^N \frac{w_k^j}{\Omega_k}\tilde{x}_{s|k} \right\}^2
 \end{align}
 
-\noindent pysyy tietyn valitun rajan $\epsilon$ yläpuolella, missä $\tilde{x}_{s|k}$ on kyseiselle viipeellä laskettu marginaalisiloitinjakauman painovektori (kts. algoritmi \ref{rwps}). Kun tämä ehto ei enää täyty, käytetään suurimmalle kriteerin $\sigma^2_{s|k} < \epsilon$ täyttämälle viipeelle laskettuja painoja siloitinjakauman estimointiin kaikilla $k^\prime \ge k$. Varianssin estimoinnista kts. alaluku \@ref(varianssin-estimointi).
+\noindent pysyy tietyn valitun rajan $\epsilon$ yläpuolella, missä $\tilde{x}_{s|k}$ on kyseiselle viipeellä laskettu marginaalisiloitinjakauman painovektori (kts. algoritmi \ref{rwps}). Kun tämä ehto ei enää täyty, käytetään suurimmalle kriteerin $\sigma^2_{s|k} < \epsilon$ täyttämälle viipeelle laskettuja painoja siloitinjakauman estimointiin kaikilla $k^\prime \ge k$.
 
 \begin{algorithm}[H]
 \label{mukautuva-siloitin}
@@ -155,4 +155,4 @@ Yksinkertaisin versio siloittimesta on esitetty algoritmissa \ref{mukautuva-silo
 \caption{Mukautuvan viipeen siloitin}
 \end{algorithm}
 
-Myös tähän siloittimeen liittyy suunnitteluparametrien valinta. Vaikka itse viivettä $L$ ei valita, pitää parametri $\epsilon$ valita. Pienempi $\epsilon$ tuottaa suurempia viipeitä ja täten parempia estimaatteja, mutta on myös laskennallisesti sekä muistin käytöltään raskaampi. Alenlöv ja Olsson ehdottavat $\epsilon$-arvoja väliltä $(.5, 10^{-3})$.
+Myös tähän siloittimeen liittyy suunnitteluparametrien valinta. Vaikka itse viivettä $L$ ei valita, pitää parametri $\epsilon$ valita. Pienempi $\epsilon$ tuottaa suurempia viipeitä ja täten parempia estimaatteja, mutta on myös laskennallisesti sekä muistin käytöltään raskaampi. Alenlöv ja Olsson ehdottavat $\epsilon$-arvoja väliltä $(10^{-3}, 0.5)$.

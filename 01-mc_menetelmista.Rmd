@@ -1,22 +1,22 @@
 \section{Monte Carlo -menetelmistä}
 
-Tässä alaluvussa kuvataan lyhyesti hiukassuotimissa käytettävien Monte Carlo -menetelmien perusperiaate todennäköisyysjakauman estimoinnissa. Lisäksi esitetään tärkeytysotanta-algoritmi (*importance sampling*), jonka tarkoituksena on estimoida harhattomasti jakaumaa $p(x|y_{1:k})$, josta emme voi suoraan tehdä otoksia, mutta jota voimme approksimoida toisella jakaumalla $q$. Esitykset noudattavat Särkkää (2013) [@sarkka-2013].
+Tässä alaluvussa kuvataan lyhyesti hiukkassuotimissa käytettävien Monte Carlo -menetelmien perusperiaate todennäköisyysjakauman estimoinnissa. Lisäksi esitetään tärkeytysotanta-algoritmi (*importance sampling*), jonka tarkoituksena on estimoida harhattomasti jakaumaa $p(x|y_{1:k})$, josta emme voi suoraan tehdä otoksia, mutta jota voimme approksimoida toisella jakaumalla $q$. Esitykset noudattavat Särkkää (2013) [@sarkka-2013].
 
 \subsection{Monte Carlo -approksimaatio}
 
-Bayesilaisessa päättelyssä ollaan yleisesti kiinnostuttu laskemaan johonkin posterioritiheysjakaumaan $p$ liittyvää odotusarvoa
+Bayesilaisessa päättelyssä ollaan yleisesti kiinnostuneita laskemaan johonkin posterioritiheysjakaumaan $p$ liittyvää odotusarvoa
 
 \begin{align}
 \mathbb{E}[g(x)|y_{1:k}]=\int g(x)p(x|y_{1:k})dx,
 \end{align}
 
-\noindent missä $g$ on tila-avaruuden mielivaltainen funktio ja $p(x|y_{1:k})$ on havaintoihin $\{y_1,\ldots,y_k\}$ liittyvä $x$:n posterioritiheysjakauma. Odotusarvo on laskettavissa suljetussa muodossa vain harvoissa tapauksissa, suodinongelman kohdalla silloin, kun kyseessä on lineaarinen ja Gaussinen malli. Odotusarvoa voidaan kuitenkin approksimoida niin sanoituilla Monte Carlo -menetelmillä. Menetelmien perusperiaate on tehdä riippumattomia otoksia estimoitavasta jakaumasta ja laskea haluttu odotusarvo otosten avulla. Jos tehdään $N$ otosta jakaumasta $x^i\sim p(x|y_{1:k})$, missä $i=\{1,\ldots,N\}$ saadaan näiden otosten avulla laskettua odotusarvon estimaatti
+\noindent missä $g$ on tila-avaruuden mielivaltainen funktio ja $p(x|y_{1:k})$ on havaintoihin $\{y_1,\ldots,y_k\}$ liittyvä $x$:n posterioritiheysjakauma. Odotusarvo on laskettavissa suljetussa muodossa vain harvoissa tapauksissa, suodinongelman kohdalla silloin, kun kyseessä on lineaarinen ja Gaussinen malli. Odotusarvoa voidaan kuitenkin approksimoida niin sanotuilla Monte Carlo -menetelmillä. Menetelmien perusperiaate on tehdä riippumattomia otoksia estimoitavasta jakaumasta ja laskea haluttu odotusarvo otosten avulla. Jos tehdään $N$ otosta jakaumasta $x^i\sim p(x|y_{1:k})$, missä $i=\{1,\ldots,N\}$ saadaan näiden otosten avulla laskettua odotusarvon estimaatti
 
 \begin{align}
 \mathbb{E}[g(x)|y_{1:k}]\simeq\frac{1}{N}\sum_{i=1}^N g(x^i).
 \end{align}
 
-Kun otokset ovat riippumattomia ja samoin jakautuneita, konvergoi Monte Carlo -estimaatti keskeisen raja-arvolauseen nojalla ja sen estimointivirheen voidaan osoittaa olevan luokkaa $\mathcal{O}(\frac{1}{\sqrt{N}})$ riippumatta tilamuuttujan $x$ dimensiosta. Hiukassuotimet hyödyntävät Monte Carlo -estimointia sekventiaalisesti, jolloin estimaatti lasketaan rekursiivisesti kullekin aika-askeleelle $k=\{1,\ldots, T\}$. Tähän palataan luvuissa \@ref(hiukkassuotimet) ja \@ref(paikannusesimerkki).
+Kun otokset ovat riippumattomia ja samoin jakautuneita, konvergoi Monte Carlo -estimaatti keskeisen raja-arvolauseen nojalla ja sen estimointivirheen voidaan osoittaa olevan luokkaa $\mathcal{O}(\frac{1}{\sqrt{N}})$ riippumatta tilamuuttujan $x$ dimensiosta. Hiukkassuotimet hyödyntävät Monte Carlo -estimointia sekventiaalisesti, jolloin estimaatti lasketaan rekursiivisesti kullekin aika-askeleelle $k=\{1,\ldots, T\}$. Tähän palataan luvuissa \@ref(hiukkassuotimet) ja \@ref(paikannusesimerkki).
 
 \subsection{Tärkeytysotanta}
 
@@ -47,10 +47,24 @@ Muodostetaan näin odotusarvo
 \DontPrintSemicolon
 \Begin{
   \For{$i=1,2,\ldots,N$}{
-    \Begin{Otetaan $N$ otosta ehdotusjakaumasta $x^i \sim q(x|y_{1:k}).$}
-    \Begin{Lasketaan normalisoimattomat painot $w_*^i= p(y_{1:k}|x^i)p(x^i)/q(x^i|y_{1:k}).$ \newline ja normalisoidut painot $w^i=w_*^i/\sum_{j=1}^Nw_*^j$.}
-    \Begin{Estimoidaan $p$ laskemalla tiheydelle approksimaatio $\mathbb{E}[g(x)|y_{1:k}]\simeq\sum_{i=1}^Nw^ig(x^i)$.}
-    } 
-  }  
-\caption{Tärkeytysotanta}
+    \Begin{Otetaan otos $x^i \sim q\bigl(x \mid y_{1:k}\bigr)$.}
+    \Begin{Lasketaan normalisoimattomat painot 
+    \[
+      w_*^i \;=\; 
+      \frac{p\bigl(y_{1:k}\mid x^i\bigr)\,p(x^i)}{q\bigl(x^i \mid y_{1:k}\bigr)},
+    \]
+    ja normalisoidut painot 
+    \[
+      w^i \;=\; 
+      \frac{w_*^i}{\sum_{j=1}^N w_*^j}.
+    \]}
+    \Begin{Estimoidaan $p$ laskemalla 
+    \[
+      \mathbb{E}[g(x)\mid y_{1:k}]
+      \;\simeq\;
+      \sum_{i=1}^N w^i\,g(x^i).
+    \]}
+  }
+}
+\caption{Tärkeytysotanta (importance sampling)}
 \end{algorithm}

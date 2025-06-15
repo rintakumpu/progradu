@@ -122,7 +122,7 @@
 \fi
 \usepackage[]{natbib}
 \bibliographystyle{plainnat}
-\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\usepackage{bookmark}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same}
 \hypersetup{
@@ -218,7 +218,7 @@ Matematiikan ja tilastotieteen laitos\newline
 
 \chapter{Johdanto}
 
-Hiukkassuotimet ovat joukko Monte Carlo -algoritmeja, joiden avulla voidaan ratkaista ns. suodinongelma, kun ongelma on epälineaarinen ja/tai ongelmaan liittyvä kohina ei noudata normaalijakaumaa. Hiukkassuotimille on lukuisia sovellutuksia esimerkiksi Bayesilaisessa tilastotieteessä, fysiikassa ja robotiikassa.
+Hiukkassuotimet ovat joukko Monte Carlo -algoritmeja, joiden avulla voidaan ratkaista niin kutsuttu suodinongelma, kun ongelma on epälineaarinen ja/tai ongelmaan liittyvä kohina ei noudata normaalijakaumaa. Hiukkassuotimille on lukuisia sovelluksia esimerkiksi Bayesilaisessa tilastotieteessä, fysiikassa ja robotiikassa.
 
 Tämän tutkielman tavoitteena on esittää pääpiirteittään hiukkassuotimien sekä näihin läheisesti liittyvien hiukkassiloittimien teoria. Lisäksi tutkielmassa käsitellään joitakin menetelmäperheeseen kuuluvia algoritmeja ja sovelletaan näitä sisätilapaikannuksessa.
 
@@ -351,7 +351,7 @@ y_1  & y_2  & y_3  & \ldots & \makebox[\widthof{$ \text{havainnot}$}]{$\text{hav
 \end{tikzcd}
 \end{equation}
 
-Tässä tutkielmassa keskitytään erityisesti epälineaarisen, ns. Markovin piilomallin posteriorijakauman Bayesilaiseen ratkaisuun. Ongelmassa tiedetään, miten havaitut muuttujat \(y_k\) kytkeytyvät ``piilossa oleviin'' tilamuuttujiin \(x_k\) sekä osataan sanoa jotain tilamuuttujien todennäköisyyksistä. Oletetaan myös, että piilossa oleville tiloille \(X_k\) pätee Markov-ominaisuus, jolloin kutakin hetkeä seuraava tila \(x_{k+1}\) riippuu menneistä tiloista \(x_{1:k-1}\) ainoastaan tilan \(x_k\) välityksellä. Lisäksi havaittu tila \(y_k\) riippuu tiloista \(x_{k}\) ainoastaan jonkin \(x_k\):n funktion kautta. Kun aika-avaruus on diskreetti ja aika-askeleella \(k=\{1,\ldots,T\}\) piilossa olevan prosessin tilaa merkitään \(x_k\) ja havaittua prosessia \(y_k\), saadaan ongelma kuvattua malleilla
+Tässä tutkielmassa keskitytään erityisesti epälineaarisen, niin kutsutun Markovin piilomallin posteriorijakauman Bayesilaiseen ratkaisuun. Ongelmassa tiedetään, miten havaitut muuttujat \(y_k\) kytkeytyvät ``piilossa oleviin'' tilamuuttujiin \(x_k\) sekä osataan sanoa jotain tilamuuttujien todennäköisyyksistä. Oletetaan myös, että piilossa oleville tiloille \(X_k\) pätee Markov-ominaisuus, jolloin kutakin hetkeä seuraava tila \(x_{k+1}\) riippuu menneistä tiloista \(x_{1:k-1}\) ainoastaan tilan \(x_k\) välityksellä. Lisäksi havaittu tila \(y_k\) riippuu tiloista \(x_{k}\) ainoastaan jonkin \(x_k\):n funktion kautta. Kun aika-avaruus on diskreetti ja aika-askeleella \(k=\{1,\ldots,T\}\) piilossa olevan prosessin tilaa merkitään \(x_k\) ja havaittua prosessia \(y_k\), saadaan ongelma kuvattua malleilla
 
 \begin{align}
 &\label{malli-1} x_{k+1} = f(x_k, \nu_k),\\
@@ -369,7 +369,7 @@ Mallit voidaan esittää myös yleisemmässä jakaumamuodossa
 
 \noindent Tutkielman teoriaosassa käytetään ensisijaisesti yhtälöiden (\ref{malli-3}) ja (\ref{malli-4}) muotoilua. Empiirisessä osassa palataan yhtälöiden (\ref{malli-1}) ja (\ref{malli-2}) muotoiluun.
 
-Suodinongelmaa lähellä on myös ns. siloitteluongelma (\emph{smoothing problem}), jossa ollaan kiinnostuneita prosessin \(x_k\) posteriorijakaumasta \(p(x_k|y_k)\) jokaisella aika-askeleella \(\{1,\ldots,k\}\), ei ainoastaan tietyllä aika-askeleella \(k\). Hiukkassuodinalgoritmit näyttävät ratkaisevan siloitteluongelman ilmaiseksi, mutta tähän liittyy kuitenkin joidenkin mallien kohdalla mahdollista epätarkkuutta, joten tarvittaessa tasoitusongelma pitää ratkaista erikseen. Tähän ongelmaan palataan tutkielman luvussa 3. Kuva \ref{fig:suodin_vs_siloitin} selittää suodin- ja siloitteluongelmien eron. Kuva mukailee Särkkää (2013) \citep{sarkka-2013}.
+Suodinongelmaa lähellä on myös niin kutsuttu siloitteluongelma (\emph{smoothing problem}), jossa ollaan kiinnostuneita prosessin \(x_k\) posteriorijakaumasta \(p(x_k|y_k)\) jokaisella aika-askeleella \(\{1,\ldots,k\}\), ei ainoastaan tietyllä aika-askeleella \(k\). Hiukkassuodinalgoritmit näyttävät ratkaisevan siloitteluongelman ilmaiseksi, mutta tähän liittyy kuitenkin joidenkin mallien kohdalla mahdollista epätarkkuutta, joten tarvittaessa tasoitusongelma pitää ratkaista erikseen. Tähän ongelmaan palataan tutkielman luvussa 3. Kuva \ref{fig:suodin_vs_siloitin} selittää suodin- ja siloitteluongelmien eron. Kuva mukailee Särkkää (2013) \citep{sarkka-2013}.
 
 \begin{figure}[H]
 \centering
@@ -410,23 +410,23 @@ Sekventiaalisissa Monte Carlo -menetelmissä stokastisen prosessin posteriorijak
 
 \section{Monte Carlo -menetelmistä}
 
-Tässä alaluvussa kuvataan lyhyesti hiukassuotimissa käytettävien Monte Carlo -menetelmien perusperiaate todennäköisyysjakauman estimoinnissa. Lisäksi esitetään tärkeytysotanta-algoritmi (\emph{importance sampling}), jonka tarkoituksena on estimoida harhattomasti jakaumaa \(p(x|y_{1:k})\), josta emme voi suoraan tehdä otoksia, mutta jota voimme approksimoida toisella jakaumalla \(q\). Esitykset noudattavat Särkkää (2013) \citep{sarkka-2013}.
+Tässä alaluvussa kuvataan lyhyesti hiukkassuotimissa käytettävien Monte Carlo -menetelmien perusperiaate todennäköisyysjakauman estimoinnissa. Lisäksi esitetään tärkeytysotanta-algoritmi (\emph{importance sampling}), jonka tarkoituksena on estimoida harhattomasti jakaumaa \(p(x|y_{1:k})\), josta emme voi suoraan tehdä otoksia, mutta jota voimme approksimoida toisella jakaumalla \(q\). Esitykset noudattavat Särkkää (2013) \citep{sarkka-2013}.
 
 \subsection{Monte Carlo -approksimaatio}
 
-Bayesilaisessa päättelyssä ollaan yleisesti kiinnostuttu laskemaan johonkin posterioritiheysjakaumaan \(p\) liittyvää odotusarvoa
+Bayesilaisessa päättelyssä ollaan yleisesti kiinnostuneita laskemaan johonkin posterioritiheysjakaumaan \(p\) liittyvää odotusarvoa
 
 \begin{align}
 \mathbb{E}[g(x)|y_{1:k}]=\int g(x)p(x|y_{1:k})dx,
 \end{align}
 
-\noindent missä \(g\) on tila-avaruuden mielivaltainen funktio ja \(p(x|y_{1:k})\) on havaintoihin \(\{y_1,\ldots,y_k\}\) liittyvä \(x\):n posterioritiheysjakauma. Odotusarvo on laskettavissa suljetussa muodossa vain harvoissa tapauksissa, suodinongelman kohdalla silloin, kun kyseessä on lineaarinen ja Gaussinen malli. Odotusarvoa voidaan kuitenkin approksimoida niin sanoituilla Monte Carlo -menetelmillä. Menetelmien perusperiaate on tehdä riippumattomia otoksia estimoitavasta jakaumasta ja laskea haluttu odotusarvo otosten avulla. Jos tehdään \(N\) otosta jakaumasta \(x^i\sim p(x|y_{1:k})\), missä \(i=\{1,\ldots,N\}\) saadaan näiden otosten avulla laskettua odotusarvon estimaatti
+\noindent missä \(g\) on tila-avaruuden mielivaltainen funktio ja \(p(x|y_{1:k})\) on havaintoihin \(\{y_1,\ldots,y_k\}\) liittyvä \(x\):n posterioritiheysjakauma. Odotusarvo on laskettavissa suljetussa muodossa vain harvoissa tapauksissa, suodinongelman kohdalla silloin, kun kyseessä on lineaarinen ja Gaussinen malli. Odotusarvoa voidaan kuitenkin approksimoida niin sanotuilla Monte Carlo -menetelmillä. Menetelmien perusperiaate on tehdä riippumattomia otoksia estimoitavasta jakaumasta ja laskea haluttu odotusarvo otosten avulla. Jos tehdään \(N\) otosta jakaumasta \(x^i\sim p(x|y_{1:k})\), missä \(i=\{1,\ldots,N\}\) saadaan näiden otosten avulla laskettua odotusarvon estimaatti
 
 \begin{align}
 \mathbb{E}[g(x)|y_{1:k}]\simeq\frac{1}{N}\sum_{i=1}^N g(x^i).
 \end{align}
 
-Kun otokset ovat riippumattomia ja samoin jakautuneita, konvergoi Monte Carlo -estimaatti keskeisen raja-arvolauseen nojalla ja sen estimointivirheen voidaan osoittaa olevan luokkaa \(\mathcal{O}(\frac{1}{\sqrt{N}})\) riippumatta tilamuuttujan \(x\) dimensiosta. Hiukassuotimet hyödyntävät Monte Carlo -estimointia sekventiaalisesti, jolloin estimaatti lasketaan rekursiivisesti kullekin aika-askeleelle \(k=\{1,\ldots, T\}\). Tähän palataan luvuissa \ref{hiukkassuotimet} ja \ref{paikannusesimerkki}.
+Kun otokset ovat riippumattomia ja samoin jakautuneita, konvergoi Monte Carlo -estimaatti keskeisen raja-arvolauseen nojalla ja sen estimointivirheen voidaan osoittaa olevan luokkaa \(\mathcal{O}(\frac{1}{\sqrt{N}})\) riippumatta tilamuuttujan \(x\) dimensiosta. Hiukkassuotimet hyödyntävät Monte Carlo -estimointia sekventiaalisesti, jolloin estimaatti lasketaan rekursiivisesti kullekin aika-askeleelle \(k=\{1,\ldots, T\}\). Tähän palataan luvuissa \ref{hiukkassuotimet} ja \ref{paikannusesimerkki}.
 
 \subsection{Tärkeytysotanta}
 
@@ -457,17 +457,31 @@ Muodostetaan näin odotusarvo
 \DontPrintSemicolon
 \Begin{
   \For{$i=1,2,\ldots,N$}{
-    \Begin{Otetaan $N$ otosta ehdotusjakaumasta $x^i \sim q(x|y_{1:k}).$}
-    \Begin{Lasketaan normalisoimattomat painot $w_*^i= p(y_{1:k}|x^i)p(x^i)/q(x^i|y_{1:k}).$ \newline ja normalisoidut painot $w^i=w_*^i/\sum_{j=1}^Nw_*^j$.}
-    \Begin{Estimoidaan $p$ laskemalla tiheydelle approksimaatio $\mathbb{E}[g(x)|y_{1:k}]\simeq\sum_{i=1}^Nw^ig(x^i)$.}
-    } 
-  }  
-\caption{Tärkeytysotanta}
+    \Begin{Otetaan otos $x^i \sim q\bigl(x \mid y_{1:k}\bigr)$.}
+    \Begin{Lasketaan normalisoimattomat painot 
+    \[
+      w_*^i \;=\; 
+      \frac{p\bigl(y_{1:k}\mid x^i\bigr)\,p(x^i)}{q\bigl(x^i \mid y_{1:k}\bigr)},
+    \]
+    ja normalisoidut painot 
+    \[
+      w^i \;=\; 
+      \frac{w_*^i}{\sum_{j=1}^N w_*^j}.
+    \]}
+    \Begin{Estimoidaan $p$ laskemalla 
+    \[
+      \mathbb{E}[g(x)\mid y_{1:k}]
+      \;\simeq\;
+      \sum_{i=1}^N w^i\,g(x^i).
+    \]}
+  }
+}
+\caption{Tärkeytysotanta (importance sampling)}
 \end{algorithm}
 
 \section{Bayesilainen suodin} \label{bayesilainen-suodin}
 
-Suodinongelmassa ollaan kiinnostuttu tilavektorin posteriorijakauman \(p(x_k|y_{1:k})\) estimoinnista. Tässä alaluvussa käydään läpi yleinen rekursiivinen, Bayesilainen posteriorijakauman laskenta. Tällaista suodinongelman ratkaisua kutsutaan myös Bayesilaiseksi suotimeksi. Koska epälineaarisessa, ei-normaalijakautuneessa tilanteessa rekursiota ei voida laskea analyyttisesti, pitää estimoinnissa käyttää numeerisia menetelmiä. Hiukkassuotimissa tämä tarkoittaa jakauman sekventiaalista Monte Carlo -approksimointia ja sen käytännön toteutus esitetään luvun \ref{paikannusesimerkki} algoritmissa. Molemmat esitykset noudattavat Gustafssonia (2010) \citep{gustafsson-2010}.
+Suodinongelmassa ollaan kiinnostuneita tilavektorin posteriorijakauman \(p(x_k|y_{1:k})\) estimoinnista. Tässä alaluvussa käydään läpi yleinen rekursiivinen, Bayesilainen posteriorijakauman laskenta. Tällaista suodinongelman ratkaisua kutsutaan myös Bayesilaiseksi suotimeksi. Koska epälineaarisessa, ei-normaalijakautuneessa tilanteessa kyseistä rekursiota ei voida laskea analyyttisesti, pitää estimoinnissa käyttää numeerisia menetelmiä. Hiukkassuotimissa tämä tarkoittaa jakauman sekventiaalista Monte Carlo -approksimointia ja sen käytännön toteutus esitetään luvun \ref{paikannusesimerkki} algoritmissa. Molemmat esitykset noudattavat Gustafssonia (2010) \citep{gustafsson-2010}.
 
 Bayesilainen ratkaisu tilavektorin posteriorijakauman estimaatille \(\hat{p}(x_k|y_{1:k})\) saadaan seuraavalla rekursiolla (käydään läpi jokaisella aika-askeleella \(k=\{1,\ldots,T\}\)). Lasketaan ensin
 
@@ -521,17 +535,24 @@ Tässä alaluvussa käsitellään lyhyesti Kalman-suotimen yhteyttä hiukkassuot
 \label{kf}
 \DontPrintSemicolon
 \SetAlgoShortEnd
-\KwResult{Posteriorijakauman $p(x_{1:k}|y_{1:k})$ estimaatti.\;}
-\KwData{Havainnot $y_k$. Priorijakauman $x_0$ keskiarvovektori $m_0$ ja kovarianssimatriisi $\mathbf{P}_0$.\;}
+\KwResult{Posteriorijakauman $p(x_{1:k} \mid y_{1:k})$ estimaatti.}
+\KwData{Havainnot $y_k$. Priorijakauman $x_0$ keskiarvo $m_0$ ja kovarianssimatriisi $\mathbf{P}_0$.}
 \Begin{
-  \For{$k=\{1,2,\ldots,T\}$}{
-    \Begin{Ennusteaskel. \newline $m_k^*= \mathbf{A}_{k-1}m_{k-1}$\;}
-    \If{$k < t$}{\Begin{Päivitysaskel. \newline $v_k = y_k - \mathbf{H}_k m_k^*$
-    \newline $\mathbf{S}_k = \mathbf{H}_k \mathbf{P}_k^* \mathbf{H}_k^\top + \mathbf{R}_k$
-    \newline\ $\mathbf{K}_k = \mathbf{P}_k^* \mathbf{H}_k^\top \mathbf{S}_k^{-1}$
-    \newline\ $m_k = m_k^* \mathbf{K}_k v_k$
-    \newline\ $\mathbf{P}_k = \mathbf{P}_k^* - \mathbf{K}_k \mathbf{S}_k \mathbf{K}_k^\top$;}}
-  }  
+  \For{$k=1,2,\ldots,T$}{
+    \Begin{
+      \textbf{Ennusteaskel:}\;
+      $m_k^* = \mathbf{A}_{k-1}\,m_{k-1}$\;
+      $\mathbf{P}_k^* = \mathbf{A}_{k-1}\,\mathbf{P}_{k-1}\,\mathbf{A}_{k-1}^\top + \mathbf{Q}_{k-1}$
+    }
+    \Begin{
+      \textbf{Päivitysaskel:}\;
+      $v_k = y_k - \mathbf{H}_k\,m_k^*$\;
+      $\mathbf{S}_k = \mathbf{H}_k\,\mathbf{P}_k^*\,\mathbf{H}_k^\top + \mathbf{R}_k$\;
+      $\mathbf{K}_k = \mathbf{P}_k^*\,\mathbf{H}_k^\top\,\mathbf{S}_k^{-1}$\;
+      $m_k = m_k^* + \mathbf{K}_k\,v_k$\;
+      $\mathbf{P}_k = \mathbf{P}_k^* - \mathbf{K}_k\,\mathbf{S}_k\,\mathbf{K}_k^\top$
+    }
+  }
 }
 \caption{Kalman-suodin}
 \end{algorithm}
@@ -846,7 +867,7 @@ ii) Henok-indeksit \(E^i_{m-1,k}\) ovat ehtyneet ja on olemassa \(\lambda^\prime
 
 Nyt indeksi \(\lambda_{k+1}\) voidaan valita rekursiivisesti niin, että se tuottaa suurimman varianssiestimaatin, joka on kuitenkin rajoitettu ylhäältä arvoon \(\lambda_k+1\). Tämä indeksi ei ole koskaan ehtynyt, joten se on myös parhaan varianssiestimaatin tuottava valinta.
 
-Esitettyjä varianssiestimaatteja voidaan hyödyntää paitsi algoritmien ja parametrivalintojen vertailussa myös mukautuvan viipeen hiukkassiloittimen viipeen valinnassa (kts. luku \ref{hiukkassiloittimet}). Varianssiestimaatti lasketaan myös luvun \ref{paikannusesimerkki} empiirisessä esimerkissä.
+Esitettyjä varianssiestimaatteja voidaan hyödyntää hiukkassuodinalgoritmien ja algoritmien parametrivalintojen vertailussa. Varianssiestimaatti lasketaan myös luvun \ref{paikannusesimerkki} empiirisessä esimerkissä.
 
 \chapter{Hiukkassilottimet} \label{hiukkassiloittimet}
 
@@ -986,7 +1007,7 @@ Yksinkertaisin versio siloittimesta on esitetty algoritmissa \ref{mukautuva-silo
 \sigma^2_{s|k} = \sum_{i=1}^N \frac{w_k^i}{\Omega_k}\left\{\tilde{x}_{s|k} - \sum_{j=1}^N \frac{w_k^j}{\Omega_k}\tilde{x}_{s|k} \right\}^2
 \end{align}
 
-\noindent pysyy tietyn valitun rajan \(\epsilon\) yläpuolella, missä \(\tilde{x}_{s|k}\) on kyseiselle viipeellä laskettu marginaalisiloitinjakauman painovektori (kts. algoritmi \ref{rwps}). Kun tämä ehto ei enää täyty, käytetään suurimmalle kriteerin \(\sigma^2_{s|k} < \epsilon\) täyttämälle viipeelle laskettuja painoja siloitinjakauman estimointiin kaikilla \(k^\prime \ge k\). Varianssin estimoinnista kts. alaluku \ref{varianssin-estimointi}.
+\noindent pysyy tietyn valitun rajan \(\epsilon\) yläpuolella, missä \(\tilde{x}_{s|k}\) on kyseiselle viipeellä laskettu marginaalisiloitinjakauman painovektori (kts. algoritmi \ref{rwps}). Kun tämä ehto ei enää täyty, käytetään suurimmalle kriteerin \(\sigma^2_{s|k} < \epsilon\) täyttämälle viipeelle laskettuja painoja siloitinjakauman estimointiin kaikilla \(k^\prime \ge k\).
 
 \begin{algorithm}[H]
 \label{mukautuva-siloitin}
@@ -1005,12 +1026,12 @@ Yksinkertaisin versio siloittimesta on esitetty algoritmissa \ref{mukautuva-silo
 \caption{Mukautuvan viipeen siloitin}
 \end{algorithm}
 
-Myös tähän siloittimeen liittyy suunnitteluparametrien valinta. Vaikka itse viivettä \(L\) ei valita, pitää parametri \(\epsilon\) valita. Pienempi \(\epsilon\) tuottaa suurempia viipeitä ja täten parempia estimaatteja, mutta on myös laskennallisesti sekä muistin käytöltään raskaampi. Alenlöv ja Olsson ehdottavat \(\epsilon\)-arvoja väliltä \((.5, 10^{-3})\).
+Myös tähän siloittimeen liittyy suunnitteluparametrien valinta. Vaikka itse viivettä \(L\) ei valita, pitää parametri \(\epsilon\) valita. Pienempi \(\epsilon\) tuottaa suurempia viipeitä ja täten parempia estimaatteja, mutta on myös laskennallisesti sekä muistin käytöltään raskaampi. Alenlöv ja Olsson ehdottavat \(\epsilon\)-arvoja väliltä \((10^{-3}, 0.5)\).
 
 \addtocontents{toc}{\protect\newpage}
 \chapter{Hiukkassuodin ja -siloitin sisätilapaikannuksessa} \label{paikannusesimerkki}
 
-Sisätilapaikannus tarkoittaa nimensä mukaisesti ihmisten tai esineiden automaattista paikantamista sisätiloissa. Koska GPS-järjestelmät toimivat sisätiloissa huonosti tai eivät lainkaan, tarvitaan rakennusympäristöihin muita paikannusratkaisuja. Tässä luvussa käydään läpi sisätilapaikannuksen yleisiä periaatteita sekä joitakin ehdotettuja ratkaisuja. Tämän jälkeen keskitytään Walkbase-ohjelmistoyrityksen sisätilapaikannusteknologian tarpeisiin kehitettyyn hiukkassuodinalgoritmiin, jonka tarkkuutta ja tehokkuutta testataan koeympäristössä.
+Sisätilapaikannuksella tarkoitetaan ihmisten tai esineiden automaattista paikantamista sisätiloissa. Koska GPS-järjestelmät toimivat sisätiloissa huonosti tai eivät lainkaan, tarvitaan rakennusympäristöihin muita paikannusratkaisuja. Tässä luvussa käydään läpi sisätilapaikannuksen yleisiä periaatteita sekä joitakin ehdotettuja ratkaisuja. Tämän jälkeen keskitytään Walkbase-ohjelmistoyrityksen sisätilapaikannusteknologian tarpeisiin kehitettyyn hiukkassuodinalgoritmiin, jonka tarkkuutta ja tehokkuutta testataan koeympäristössä.
 
 \section{Sisätilapaikannuksesta}
 
@@ -1024,7 +1045,7 @@ Yleinen teknologiavalinta sisätilapaikannuksessa ovat erilaiset Bluetooth-stand
 
 Turkulainen teknologia- ja analytiikkayritys Walkbase käyttää Bluetooth/BLE-sisätilapaikannusta asiakkaiden käyttäytymistä koskevan datan keräämiseen erityisesti ruokakaupoissa sekä tavarataloissa. Tyypillisessä asennusskenaariossa lähettimet (tagit) kiinnitetään liikkeen ostoskärryihin ja paikantimet kiinnitetään liiketilan kattoripustuksiin.
 
-Walkbase on kehittänyt sisätilapaikannukseen oman laitteisto- ja ohjelmistoratkaisunsa, jonka tavoitteena on tarjota kaikissa ympäristöissä alle metrin paikannustarkkuus. Koska tagit kiinnitetään tunnetulle korkeudelle ostoskärryihin, riittää paikannustarkkuutta laskettaessa tarkastella ainoastaan leveys- ja pituusasteita. Kun tagin todellinen sijainti \(P_k=(P_{\text{lon}_k}, P_{\text{lat}_k})\) tiedetään diskreetillä aika-askeleella \(k\), voidaan sijaintiestimaatin \(\hat{x}_k=(\hat{x}_{\text{lon}_k}, \hat{x}_{\text{lat}_k})\) paikannusvirhe \(\epsilon_{\text{pos}_k}\) laskea
+Walkbase on kehittänyt sisätilapaikannukseen oman laitteisto- ja ohjelmistoratkaisun, jonka tavoitteena on saavuttaa alle metrin paikannustarkkuus kaikenlaisissa rakennusympäristöissä. Koska tagit kiinnitetään tunnetulle korkeudelle ostoskärryihin, riittää paikannustarkkuutta laskettaessa tarkastella ainoastaan leveys- ja pituusasteita. Kun tagin todellinen sijainti \(P_k=(P_{\text{lon}_k}, P_{\text{lat}_k})\) tiedetään diskreetillä aika-askeleella \(k\), voidaan sijaintiestimaatin \(\hat{x}_k=(\hat{x}_{\text{lon}_k}, \hat{x}_{\text{lat}_k})\) paikannusvirhe \(\epsilon_{\text{pos}_k}\) laskea
 
 \begin{align}\label{paikannusvirhe}
 \epsilon_{\text{pos}_k} = d(P_k,\hat{x}_k) = \sqrt{(P_{\text{lon}_k}-\hat{x}_{\text{lon}_k})^2+(P_{\text{lat}_k}-\hat{x}_{\text{lat}_k})^2}
@@ -1036,7 +1057,7 @@ Walkbasen paikannusratkaisu koostuu kolmesta eri laitteistokomponentista, AT-2-B
 
 AT-2 on Bluetooth 5.1 (BLE) -strandardin mukainen lähetin-vastaanotin, joka toimii 2.4Ghz taajuusalueella. Walkbasen suunnitteleman laitteen PCB-kehäantenni kykenee lähettämään GFSK-moduloitua dataa 2Mbps nopeudella. Laite saa virtansa yhdestä CR-2477-paristosta. XR-2.1 on Bluetooth 5.1 (BLE) -strandardin mukainen lähetin-vastaanotin, joka toimii 2.4Ghz taajuusalueella. Walkbasen suunnitteleman laitteen 16 antennista koostuva antenniryhmä kykenee lähettämään GFSK-moduloitua dataa 2Mbps nopeudella. Laite saa virtansa ethernet-lähiverkosta 802.3af-standardin mukaisesti. Laitteen vaatima laskenta tapahtuu Raspberry Pi Compute Module 4 -piirilevytietokoneella. Lisäksi laite sisältää inertiamittausyksikön, jota voidaan käyttää asennetun laitteen kallistumis- ja nyökkäämiskulman (\emph{roll} ja \emph{pitch}) arviomiseen.
 
-OSCU-laskentayksikkönä käytetään Ubuntu-käyttöjärjestelmällä toimivaa, paikannusjärjestelmää varten rakennettua tietokonetta. Koska OSCU-laskentayksikön laskentateho on rajallista, on paikannusalgoritmin aikakompleksisuus yksi käytettävän algoritmin ydinkriteereistä.
+OSCU-laskentayksikkönä käytetään Ubuntu-käyttöjärjestelmällä toimivaa, paikannusjärjestelmää varten rakennettua tietokonetta. Koska OSCU-laskentayksikön laskentateho on rajallinen, paikannusalgoritmin aikakompleksisuus on yksi sen tärkeimmistä valintakriteereistä.
 
 Tarvittavasta laskennasta vastaava ohjelmistojärjestelmä koostuu neljästä ohjelmistokomponentista. C-ohjelmointikielellä toteutettu \emph{angler} laskee AT-2-tagin lähettämän I/Q-datan perusteella signaalien tulokulman, Go-ohjelmointikielellä toteutettu \emph{moonraker} lähettää tulokulmadatan paikallisverkon yli OSCU-laskentayksikölle, jossa Go-ohjelmointikielellä toteutettu \emph{launchpad} luo siitä sijaintidataa, jonka se lähettää edelleen palvelinkeskuksen taustajärjestelmään.
 
@@ -1053,7 +1074,7 @@ Tässä luvussa keskitytään \emph{launchpad}-sovelluksen hyödyntämään paik
 
 \subsection{AoA-menetelmistä} \label{aoa}
 
-Riippuen käytetystä teknologiasta ja teknologian tuottamasta datasta, voidaan sisätilapaikannuksessa soveltaa lukuisia eri paikannustekniikkoja ja -algoritmeja. Oguntalaa (2018) \citep{oguntala-2018} mukailevassa kaaviossa \ref{fig:paikannusmenetelmat} on esitetty pääpiirteittäin sisätilapaikannusmenetelmät käytetyn datan (kaaviossa oikealla) mukaan jaoteltuna.
+Käytetystä teknologiasta ja sen tuottamasta datasta riippuen sisätilapaikannuksessa voidaan soveltaa lukuisia eri paikannustekniikoita ja -algoritmeja. Oguntalaa (2018) \citep{oguntala-2018} mukailevassa kaaviossa \ref{fig:paikannusmenetelmat} on esitetty pääpiirteittäin sisätilapaikannusmenetelmät käytetyn datan (kaaviossa oikealla) mukaan jaoteltuna.
 
 \begin{figure}[H]
 \centering
@@ -1076,7 +1097,7 @@ Jos IMU-dataa hyödynnetään, tuottaa kalibraatioalgoritmi jokaiselle XR-2-lait
 
 \section{Datan kuvaus} \label{datan-kuvaus}
 
-Koeasetelmaa varten AT-2-tagi on asetettu lähettämään I/Q-dataotoksia 6hz taajuudella, joka vastaa järjestelmän tuotantokäyttöä. Parempi sijaintitarkkuus saavutettaisiin korkeammalla taajuudella, mutta käytännön sovellutuksissa ei tagien haluttu akun kesto salli 6hz korkeampaa lähetystaajuutta.
+Koeasetelmaa varten AT-2-tagi on asetettu lähettämään I/Q-dataotoksia 6 Hz taajuudella, joka vastaa järjestelmän tuotantokäyttöä. Parempi sijaintitarkkuus olisi saavutettavissa suuremmalla lähetystaajuudella, mutta tagien akun kesto ei salli 6 Hz korkeampaa taajuutta käytännön sovelluksissa.
 
 \emph{Angler}-sovellus koostaa jokaisesta tagin lähettämästä dataotoksesta \(s\) atsimuutti- eli suuntimakulman \(\theta_s\) ja korkeuskulman \(\gamma_s\), jotka noudattavat suuntimakulman osalta von Mises -jakaumaa ja korkeuskulman osalta katkaistua normaalijakaumaa:
 
@@ -1147,7 +1168,7 @@ Atsimuuttikulma \(\theta\) lasketaan aina vastaanottimen tietyltä sivulta, jote
 
 Lisäksi saatavilla on PostGIS-muotoon tallennettua polygonidataa, joka kuvaa koeympäristön pohjapiirrustusta sekä koeympäristössä esiintyviä liikkumisen estäviä kohteita, kuten hyllyjä tai pöytiä. Näitä hyödynnetään alaluvun \ref{karttasovitusalgoritmi} karttasovitusalgoritmissa.
 
-Havaintomuuttujien ohella koetilanteesta on tallennettu testipolku, jota pitkin AT-2-tagia liikutetaan koetilanteessa. Testipolkudata pitää sisällään karttaan piirretyn janan pääte- ja sisäpisteet. Tallennettu sijainti perustuu koeympäristön lattiaan pohjapiirrustusten sekä laser-mittausten avulla tehtyihin merkintöihin. Näin saadut testimuuttujat on kuvattu taulukossa (\ref{tab:testimuuttujat}).
+Havaintomuuttujien ohella koetilanteesta on tallennettu testipolku, jota pitkin AT-2-tagia liikutetaan koetilanteessa. Testipolkudata pitää sisällään karttaan piirretyn janan pääte- ja sisäpisteet. Tallennettu sijainti perustuu koeympäristön lattiaan pohjapiirrustusten sekä lasermittausten avulla tehtyihin merkintöihin. Näin saadut testimuuttujat on kuvattu taulukossa (\ref{tab:testimuuttujat}).
 
 \def\arraystretch{1.25} 
 \begin{table}[H]
@@ -1164,7 +1185,7 @@ path\_lon & polkupisteen sijainti (pituuspiiri) & 22.29493 \\
 \label{tab:testimuuttujat}
 \end{table}
 
-\noindent Alaluvussa \ref{karttasovitusalgoritmi} kuvatulla interpolaatiolla metreiksi muutettuja testimuuttujia käytetään paikannusalgoritmien paikannusvirheen laskemisessa. Koska koeasetelmassa (kts. alaluku \ref{koeasetelma}) ei laitteen sijaintia tallenneta dataa kerättäessä, käytetään paikannusvirhettä laskettaessa janojen päätepisteiden joukosta tiivistettyä joukkoa. Paikannusvirheen laskenta on kuvattu algoritmissa \ref{testipolun-tihennys}.
+\noindent Alaluvussa \ref{karttasovitusalgoritmi} kuvatulla interpolaatiolla metreiksi muutettuja testimuuttujia käytetään paikannusalgoritmien paikannusvirheen laskemisessa. Koska koeasetelmassa (kts. alaluku \ref{koeasetelma}) laitteen sijaintia ei tallenneta datankeruun yhteydessä, paikannusvirheen laskennassa käytetään janojen päätepisteiden joukosta tiivistettyä joukkoa. Paikannusvirheen laskenta on kuvattu algoritmissa \ref{testipolun-tihennys}.
 
 \begin{algorithm}[H]
 \label{testipolun-tihennys}
@@ -1204,7 +1225,7 @@ x_{\text{lon}} = f(x_m; B_{\text{lonlat}}, D_m) = \frac{x_{\text{m}}}{d_{\text{l
 y_{\text{lat}} = f(y_m; B_{\text{lonlat}}, D_m) = \frac{y_{\text{m}}}{d_{\text{lat}}} \times (\text{lat}_{\text{max}}-\text{lat}_{\text{min}}) + \text{lat}_{\text{min}}
 .\end{align}
 
-\noindent Empiirisessä esimerkissä jätetään takaisinmuunnos tekemättä, jotta koeympäristön sijaintia ei voi paikallistaa sen koordinaattien perusteella.
+\noindent Empiirisessä esimerkissä jätetään takaisinmuunnos tekemättä, jotta koeympäristön sijaintia ei voi paikantaa sen koordinaattien perusteella.
 
 \subsection{Muunnettu data} \label{muunnettu-data-luku}
 
@@ -1247,7 +1268,7 @@ height & vastaanottimen korkeus (m) & 2.22 \\
 
 \subsection{Ongelman kuvaus} \label{ongelman-kuvaus}
 
-Tarkoituksena on estimoida liikkuvan AT-2-tagin sijaintia. Merkitään estimoitavaa tilasarjaa \(x_{1:k}=\{x_1,\ldots,x_k\}\), missä sijainnit on estimoitu sekunnin tarkkuudella. Lisäksi merkitään \(x_0\) testilaitteen lähtösijaintia. Jokainen tilasarjan havainto koostuu suuntimakulmasta sekä pituus- että leveyskoordinaateista \((x_k^x, x_k^y)\). Määritellään tilalle liikkuvan AT-2-tagin kulkua kuvaava vektorisuunnistukseen (\emph{dead reckoning}) perustuva dynaaminen malli (\ref{tilamalli-liikkuva})
+Tavoitteena on estimoida liikkuvan AT-2-tagin sijaintia. Merkitään estimoitavaa tilasarjaa \(x_{1:k}=\{x_1,\ldots,x_k\}\), missä sijainnit on estimoitu sekunnin tarkkuudella. Lisäksi merkitään \(x_0\) testilaitteen lähtösijaintia. Jokainen tilasarjan havainto koostuu suuntimakulmasta sekä pituus- että leveyskoordinaateista \((x_k^x, x_k^y)\). Määritellään tilalle liikkuvan AT-2-tagin kulkua kuvaava vektorisuunnistukseen (\emph{dead reckoning}) perustuva dynaaminen malli (\ref{tilamalli-liikkuva})
 
 \begin{align}\label{tilamalli-liikkuva}
 x_{k+1}=f(x_k, \nu_k)=x_k+D_k \begin{bmatrix} \cos\psi_k \\ \sin\psi_k \end{bmatrix}+\nu_k,
@@ -1287,10 +1308,9 @@ Kumpikaan funktiosta \(h(\cdot)\) ja \(f(\cdot)\) ei ole lineaarinen, joten SIR-
 
 \noindent missä \(w_i^k\) on ajanketken \(k\) partikkelien normalisoitu paino ja \(d(x^i_k,y_k)\) partikkelien ja testilaitteen todellisen sijainnin \(P_k\) välisen etäisyyden algoritmilla \ref{testipolun-tihennys} laskeva funktio.
 
-\hypertarget{uskottavuusmallit}{%
-\subsection{Uskottavuusmallit}\label{uskottavuusmallit}}
+\subsection{Uskottavuusmallit}\label{uskottavuusmallit}
 
-Jokainen yhtä tulokulmaa vastaava \emph{angler}-sovelluksen tuottama havaintodatarivi pitää sisällään neljä parametrimuuttujaa \texttt{azimuth\_location\_mdf}, \texttt{azimuth\_scale}, \texttt{elevation\_location} ja \texttt{elevation\_scale}. Koska \emph{angler}-sovellus on kirjoitettu varta vasten tuottamaan dataa hiukkassuodinpaikannusalgoritmia varten, ovat nämä valmiiksi hiukkassuotimen uskottavuusmallin parametreja.
+Jokainen yhtä tulokulmaa vastaava \emph{angler}-sovelluksen tuottama havaintodatarivi pitää sisällään neljä parametrimuuttujaa \texttt{azimuth\_location\_mdf}, \texttt{azimuth\_scale}, \texttt{elevation\_location} ja \texttt{elevation\_scale}. Koska \emph{angler}-sovellus on kehitetty erityisesti tuottamaan dataa hiukkassuodinpaikannusalgoritmia varten, ovat nämä valmiiksi hiukkassuotimen uskottavuusmallin parametreja.
 
 \emph{Angler}-sovelluksessa XR-2-laitteen ja AT-2-tagin välinen atsimuuttikulma simuloidaan von Mises -jakaumasta, jolloin muuttujat \texttt{azimuth\_location\_mdf} ja \texttt{azimuth\_scale} vastaavat tämän jakauman sijainti- ja skaalaparametreja \(\mu\) ja \(\kappa\). Näistä edellistä voidaan pitää itse atsimuuttikulman estimaattina. Määritellään siis jokaiselle tulokulmalle \(h\) sekä XR-2-laitteelle \(l\) seuraava atsimuuttikulman uskottavuusmalli:
 
@@ -1322,15 +1342,13 @@ L_{k}=\prod_l^{n_s} L_{{k,l}}.
 
 Koska yllä esitettyjen mallien uskottavuudet ovat käytännössä erittäin pieniä, käytetään numeerisista syistä itse algoritmissa logaritmoituja uskottavuusmalleja, jolloin \(l_{k,l} = \sum\text{log}(L_{\theta_{k_l}}) + \sum\text{log}(L_{\gamma_{k_l}})\) ja \(l_k = \sum_l^{n_s} l_{k,l}\).
 
-\hypertarget{datan-valinta}{%
-\subsection{Datan valinta}\label{datan-valinta}}
+\subsection{Datan valinta}\label{datan-valinta}
 
 Koska Walkbasen paikannusjärjestelmä toimii monimutkaisessa, heijastuksia sisältävässä radioympäristössä, suoritetaan jokaisella aika-askeleella \(k\) vielä ylimääräinen datan valinta. Valinnan tarkoituksena on jättää mahdollisia heijastuksia sisältävät tai muuten selkeästi virheelliset tulokulmat paikannusdatan ulkopuolelle.
 
-Yksinkertaisin tapa valita käytettävät kulmat on asettaa alaraja signaalin vahvuudelle, jolloin ainoastaan tiettyä kynnys-dBm-arvoa suuremman signaalin vahvuuden omaavat tulokulmat valitaan paikannukseen. Datan valinta suoritetaan kunkin aika-askeleen alussa ja tyypillisiä kynnysarvoja ovat esimerkiksi \(-100\)dBm, \(-90\)dBm ja \(-80\)dBm. Jos kynnysarvo ei ole käytössä, käytetään ohjelmakoodissa arvoa \(-120\)dBm, joka jättää kaikki tulokulmat dataan. Datan valintaan palataan parametrien valinnan yhteydessä alaluvussa \ref{parametrien-valinta}.
+Yksinkertaisin tapa valita paikannuksessa käytettävät kulmat on asettaa alaraja signaalin vahvuudelle, jolloin ainoastaan tiettyä kynnys-dBm-arvoa suuremman signaalin vahvuuden omaavat tulokulmat valitaan paikannukseen. Datan valinta suoritetaan kunkin aika-askeleen alussa ja tyypillisiä kynnysarvoja ovat esimerkiksi \(-100\)dBm, \(-90\)dBm ja \(-80\)dBm. Jos kynnysarvo ei ole käytössä, käytetään ohjelmakoodissa arvoa \(-120\)dBm, joka jättää kaikki tulokulmat dataan. Datan valintaan palataan parametrien valinnan yhteydessä alaluvussa \ref{parametrien-valinta}.
 
-\hypertarget{dynaaminen-malli}{%
-\subsection{Dynaaminen malli}\label{dynaaminen-malli}}
+\subsection{Dynaaminen malli}\label{dynaaminen-malli}
 
 Dynaamisen mallin tehtävänä on liikuttaa hiukkasia aika-askeleiden \(k\) ja \(k+1\) välillä. Dynaaminen malli perustuu vektorisuunnistusmalliin (\ref{tilamalli-liikkuva}). Vastaavaa mallia hyödyntää muun muassa Solin (2016) \citep{Solin-2016}. Koska AT-2-tagi ei kuitenkaan lähetä nopeus- tai suuntadataa, asetetaan vektorisuunnistusmallin nopeutta ilmaiseva skalaarimuuttuja \(D_k=0\), jolloin malli yksinkertaistuu satunnaiskävelymalliksi
 
@@ -1358,8 +1376,7 @@ Tämän jälkeen luodaan suuntavektori \(p\) tasajakaumasta
 
 \noindent missä vektorin ensimmäinen elementti vastaa sijaintien leveysasteiden kohinaa ja toinen elementti pituusasteiden kohinaa.
 
-\hypertarget{paikallaanolon-havaitseminen}{%
-\subsubsection{Paikallaanolon havaitseminen}\label{paikallaanolon-havaitseminen}}
+\subsubsection{Paikallaanolon havaitseminen}\label{paikallaanolon-havaitseminen}
 
 Virransäästyösyistä AT-2-tagi lähettää dataa ainoastaan liikkuessaan. Jos laite ei ole 10 sekunnin aikana havainnut IMU-yksikkönsä perusteella kiihtyvyyttä, lopettaa laite datan lähettämisen. Laite on tällöin valmiusmoodissa. Tätä tietoa voidaan hyödyntää vaimentamalla dynaamisen mallin kohinaa, kun laitteen tiedetään olevan paikallaan. Jos paikannusalgoritmiin lisätään tarvittava 10 sekunnin viive, voidaan tätä viivettä hyödyntää paikallaanolon tehokkaampaan havaitsemiseen.
 
@@ -1387,8 +1404,7 @@ Yllä esitetty algoritmi etsii ensin ensimmäisen aika-askeleen, jonka aikana ei
 
 Jos paikallaanolon havaitsemisalgoritmin nojalla dynaamista mallia päädytään vaimentamaan (so. \(m>0\)), asetetaan dynaamisen mallin keskihajonta-arvo \(q_{k}=\frac{q}{10}\). Dynaamista mallia ei siis täysin poisteta käytöstä, jotta paikannusalgoritmi pystyy tehokkaammin hyödyntämään myös vaimennettujen aika-askeleiden dataa. Näin sijaintiestimaatti konvergoi mahdollisimman lähelle todellista sijaintia, johon tagi on pysähtynyt.
 
-\hypertarget{karttasovitusalgoritmi}{%
-\subsubsection{Karttasovitusalgoritmi}\label{karttasovitusalgoritmi}}
+\subsubsection{Karttasovitusalgoritmi}\label{karttasovitusalgoritmi}
 
 Dynaamista mallia sovellettaessa voimme myös höydyntää saatavilla olevaa sisätilan karttadataa. Määritellään kaksi polygonityyppiä, lattiapolygoni \(F\) sekä estepolygonit \(E=\{E_1,\ldots,E_n\}\). Lattiapolygoni määrittää alueen, jonka sisällä hiukkassuodinalgoritmien hiukkasten pitää pysyä. Vastaavasti estepolygonien joukko määrittää lattiapolygonin sisällä alueet, joiden sisälle hiukkassuodinalgoritmin hiukkaset eivät voi siirtyä ja joiden läpi tagi ei voi kulkea. Käytännössä estepolygonit kuvaavat tilan seiniä sekä tiedossa olevia esteitä, kuten hyllyjä ja pöytiä.
 
@@ -1422,7 +1438,7 @@ Empiirisessä esimerkissä alla hyödynnetään koetarkoituksessa vain tätä yk
 
 Alla esitetään luvun 3 SIR-algoritmiin (\ref{sir}) sekä aiemmin tässä luvussa esitettyihin algoritmeihin perustuva WB-sisätilapaikannusalgoritmi kokonaisuudessaan. Luettavuuden parantamiseksi algoritmi on jaettu kahteen osaan niin, että algoritmin runko kuvataan algoritmissa \ref{wb-positioning} ja sijaintiestimaatin luominen algoritmissa \ref{wb-positioning2}.
 
-Algoritmin priorijakaumana \(p_{x_0}\) käytetään kahta toisistaan riippumatonta otosta tasajakaumista, joista toinen vastaa leveys- ja toinen pituusasteita. Jakaumien alkupisteet valitaan niin, että ne vastaavat pienimpiä paikantimien leveys- ja pituusasteista. Vastaavasti päätepisteet valitaan niin, että ne vastaavat suurimpia paikantimien leveys- ja pituusasteita.
+Algoritmin priorijakaumana \(p_{x_0}\) käytetään kahta toisistaan riippumatonta tasajakaumaa, joista toinen vastaa leveys- ja toinen pituusasteita. Jakaumien alkupisteet valitaan niin, että ne vastaavat pienimpiä paikantimien leveys- ja pituusasteista. Vastaavasti päätepisteet valitaan niin, että ne vastaavat suurimpia paikantimien leveys- ja pituusasteita.
 
 \begin{align} \label{priorijakauma}
 &p_{x_{0_{\text{lat}}}}\sim\mathcal{U}(\min{\lambda},\max{\lambda}),\\
@@ -1431,9 +1447,9 @@ Algoritmin priorijakaumana \(p_{x_0}\) käytetään kahta toisistaan riippumaton
 
 \noindent Koska järjestelmän on tarkoitus toimia ainoastaan paikantimien muodostaman suorakaiteen sisäpuolella, ovat valitut jakaumien päätepisteet riittävät. Kummastakin jakaumasta tehdään \(\sqrt{N}\) otosta, jolloin \(N\) partikkelia \(x^i_0\) saadaan näiden otosten permutaatioina. Alaluvussa \ref{uudelleenotantamenetelman-valinta} määritellyn signaali-kohinasuhteen (\ref{SNR}) voi todeta olevan hyvin matala, sillä koe-esimerkin dynaaminen malli (\ref{dynaaminen-malli-empiirinen}) noudattaa satunnaiskulkua ja on siten pelkkää kohinaa. Tämän perusteella WB-sisätilapaikannusalgoritmi käyttää ehdotusjakaumanaan tilavektorin ehdollista prioria \(p(x_k|x_{k-1})\). Hiukkasten määrän \(N\) sekä muiden suunnitteluparametrien valinnasta kts. alaluku \ref{parametrien-valinta} alla.
 
-Koska esitetty priorijakauma \(p_{x_0}\) on epäinformatiivinen ja monimutkainen koeympäristö aiheuttaa monin paikoin heijastuksia, on mahdollista, että ensimmäisten aika-askeleiden aikana algoritmi tuottaa huonoja sijaintiestimaatteja. Tästä syystä algoritmia ajettaessa suoritetaan ensimmäisellä \(b=3\) aika-askeleella sisäänajo, jonka aikana karttasovitusta ei käytetä ja jonka aikana kohina-arvona käytetään arvoa \(q_{k}=q\times10\). Myöskään sijaintiestimaatteja ei sisäänajoaika-askeleilla luoda. Sisäänajon jälkeen sijaintiestimaatit \(\hat{x}_{1:b}\) korvataan ensimmäisellä sisäänajon jälkeisellä sijaintiestimaatilla \(\hat{x}_{b+1}\). Näin estetään mahdollisia huonoja alkuarvoja vaikuttamasta pitkälle tuleviin sijaintiestimaatteihin.
+Koska esitetty priorijakauma \(p_{x_0}\) on epäinformatiivinen ja monimutkainen koeympäristö aiheuttaa monin paikoin heijastuksia, on mahdollista, että ensimmäisten aika-askeleiden aikana algoritmi tuottaa huonoja sijaintiestimaatteja. Tästä syystä algoritmia ajettaessa suoritetaan ensimmäisellä \(b=3\) aika-askeleella sisäänajo, jolloin karttasovitusta ei käytetä ja kohina-arvona on \(q_{k}=q\times10\). Myöskään sijaintiestimaatteja ei sisäänajoaika-askeleilla luoda. Sisäänajon jälkeen sijaintiestimaatit \(\hat{x}_{1:b}\) korvataan ensimmäisellä sisäänajon jälkeisellä sijaintiestimaatilla \(\hat{x}_{b+1}\). Näin estetään mahdollisia huonoja alkuarvoja vaikuttamasta pitkälle tuleviin sijaintiestimaatteihin.
 
-Algoritmin tuottamien estimaattien varianssi estimoidaan käyttäen ALVar-varianssiestimaattia. Käytännössä tämä tarkoittaa varianssin estimointia käyttäen OD-varianssiestimaattia (\ref{OD-varianssi}) niin, että viiveparametri \(\lambda\) valitaan mukautuvasti käyttäen yhtälöä (\ref{ALVar-lambda}). Koska empiirisessä esimerkissä estimoitavia ulottuvuuksia on kaksi, leveys- ja pituuskoordinaatit, lasketaan varianssi kummallekin näistä erikseen. Saadaan pituuskoordinaattien varianssiestimaatti \(\hat{\sigma}^2_{k_x}\) ja leveyskoordinaattien varianssiestimaatti \(\hat{\sigma}^2_{k_y}\).
+Algoritmin tuottamien estimaattien varianssi estimoidaan käyttäen ALVar-varianssiestimaattia. Käytännössä tämä tarkoittaa varianssin estimointia käyttäen OD-varianssiestimaattia (\ref{OD-varianssi}) niin, että viiveparametri \(\lambda\) valitaan mukautuvasti käyttäen yhtälöä (\ref{ALVar-lambda}). Koska empiirisessä esimerkissä estimoidaan kahta ulottuvuutta (leveys- ja pituuskoordinaatteja), varianssi lasketaan kummallekin erikseen. Saadaan pituuskoordinaattien varianssiestimaatti \(\hat{\sigma}^2_{k_x}\) ja leveyskoordinaattien varianssiestimaatti \(\hat{\sigma}^2_{k_y}\).
 
 Lasketaan lisäksi kovarianssiestimaatti
 
@@ -1535,7 +1551,7 @@ Koska algoritmin tuottamat uskottavuudet ja painot ovat pieniä, on laskentatark
 
 Paikannusvirheen laskemisessa on etäisyysfunktiona käytetty \texttt{raster}-kirjaston \texttt{pointDistance()}-funktiota. Algoritmissa \ref{testipolun-tihennys} kuvattu testipolun tihennys on tehty ennen algoritmin ajoa ja tihennettyä testipolkua käytetään algoritmin syötteenä. Tihennys on tehty \texttt{smoothr}-kirjaston \texttt{smooth\_densify()}-funktiolla. Ohjelmakoodissa on korostettu tiiviyden sijaan luettavuutta ja koodi on kommentoitu kattavasti.
 
-\noindent Algoritmien R-koodi löytyy osoitteesta \url{https://github.com/rintakumpu/progradu_public/analyysi/R/pf_positioning.R}.
+\noindent Algoritmien R-koodi löytyy osoitteesta \url{https://github.com/rintakumpu/progradu-public/tree/main/analyysi/R/pf_positioning.R}.
 
 \section{Empiirinen esimerkki} \label{empiirinen-esimerkki}
 
@@ -1570,7 +1586,7 @@ Havaintoja kerättiin yhteensä \(n_{obs}=12379\) kappaletta ja ne kattoivat \(T
 \label{fig:xr2_installed}
 \end{figure}
 
-Koeympäristön pohjapiirustus on esitetty kuvassa \ref{fig:testipolku}. Piirustuksessa XR-2-paikantimet on kuvattu punaisilla ympyröillä ja kuljettu testipolku on merkitty violetilla janalla. Piirustus luotiin käyttäen \texttt{ggplot2}-kirjastoa ja se löytyy RDS-muotoon tallennettuna osoitteesta \newline \url{https://github.com/rintakumpu/progradu_public/analyysi/R/data/sitemap.RDS}.
+Koeympäristön pohjapiirustus on esitetty kuvassa \ref{fig:testipolku}. Piirustuksessa XR-2-paikantimet on kuvattu punaisilla ympyröillä ja kuljettu testipolku on merkitty violetilla janalla. Piirustus luotiin käyttäen \texttt{ggplot2}-kirjastoa ja se löytyy RDS-muotoon tallennettuna osoitteesta \newline \url{https://github.com/rintakumpu/progradu-public/tree/main/analyysi/R/data/sitemap.RDS}.
 
 \begin{figure}[H]
 \centering
@@ -1579,9 +1595,9 @@ Koeympäristön pohjapiirustus on esitetty kuvassa \ref{fig:testipolku}. Piirust
 \label{fig:testipolku}
 \end{figure}
 
-\noindent Dataa kerättäessä AT-2-tagi kiinnitettiin ostoskärryyn 1.2 metrin korkeudelle (kts. kuvat \ref{fig:at2_cart} ja \ref{fig:at2_cart2}) ja testipolku käveltiin mahdollisimman tasaisella nopeudella. Data kerättiin aikaan, jolloin testiympäristön käyttöaste oli alhainen. Tällä minimoitiin radiosignaalien tielle osuvien ihmisten vaikutus signaaleihin. Testipolku suunniteltiin niin, että se kattoi vaihtelevia radioympäristöjä. Tällä minimoitiin yksittäisen sijaintiestimatiin radioympäristön vaikutus paikannusvirheeseen.
+\noindent Dataa kerättäessä AT-2-tagi kiinnitettiin ostoskärryyn 1.2 metrin korkeudelle (kts. kuvat \ref{fig:at2_cart} ja \ref{fig:at2_cart2}) ja testipolku käveltiin mahdollisimman tasaisella nopeudella. Data kerättiin aikaan, jolloin testiympäristön käyttöaste oli alhainen. Tällä minimoitiin radiosignaalien tielle osuvien ihmisten vaikutus signaaleihin. Testipolku suunniteltiin kattamaan mahdollisimman erilaisia radioympäristöjä. Tällä minimoitiin yksittäisen sijaintiestimatiin radioympäristön vaikutus paikannusvirheeseen.
 
-Kerätty tulokulmadata löytyy osoitteesta\newline \url{https://github.com/rintakumpu/progradu_public/analyysi/data/y.csv}. Pohjapiirustus- ja polkudata löytyvät osoitteista\newline \url{https://github.com/rintakumpu/progradu_public/analyysi/data/exclusion_polygons.csv} (ekskluusiopolygonit),\newline \url{https://github.com/rintakumpu/progradu_public/analyysi/data/inclusion_polygons.csv} (lattiapolygoni) ja\newline \url{https://github.com/rintakumpu/progradu_public/analyysi/data/test_path.csv} (testipolku). Datassa koordinaatit on valmiiksi interpoloitu metreiksi, jotta testiympäristön sijaintia ei voi paikallistaa koordinaattien perusteella. Interpolointiin käytetty ohjelmakoodi löytyy osoitteesta \newline \url{https://github.com/rintakumpu/progradu_public/analyysi/R/interpolate_coordinates.R} . Osoitteesta\newline \url{https://github.com/rintakumpu/progradu_public/analyysi/analyysi.Rmd} löytyy itse analyysikoodin sisältävä R Markdown -muistikirja.
+Kerätty tulokulmadata löytyy osoitteesta\newline \url{https://github.com/rintakumpu/progradu-public/tree/main/analyysi/data/y.csv}. Pohjapiirustus- ja polkudata löytyvät osoitteista\newline \url{https://github.com/rintakumpu/progradu-public/tree/main/analyysi/data/exclusion_polygons.csv} (ekskluusiopolygonit),\newline \url{https://github.com/rintakumpu/progradu-public/tree/main/analyysi/data/inclusion_polygons.csv} (lattiapolygoni) ja\newline \url{https://github.com/rintakumpu/progradu-public/tree/main/analyysi/data/test_path.csv} (testipolku). Datassa koordinaatit on valmiiksi interpoloitu metreiksi, jotta testiympäristön sijaintia ei voi paikallistaa koordinaattien perusteella. Interpolointiin käytetty ohjelmakoodi löytyy osoitteesta \newline \url{https://github.com/rintakumpu/progradu-public/tree/main/analyysi/R/interpolate_coordinates.R} . Osoitteesta\newline \url{https://github.com/rintakumpu/progradu-public/tree/main/analyysi/analyysi.Rmd} löytyy itse analyysikoodin sisältävä R Markdown -muistikirja.
 
 \newpage
 
@@ -1603,7 +1619,7 @@ Kerätty tulokulmadata löytyy osoitteesta\newline \url{https://github.com/rinta
 
 \subsection{Parametrien valinta} \label{parametrien-valinta}
 
-Kokeessa oli tarkoituksena testata kunkin taulukossa \ref{tab:wb-parametrit} esitetyn parametrin vaikutusta algoritmin paikannusvirheeseen, ajoaikaan sekä varianssiin. Koska kaikkien parametrikombinaatioiden testaaminen ei ollut mahdollista (eikä mielekästä), suoritettiin kerättyyn dataan perustuva paikannus kolmessa vaiheessa. Kussakin vaiheessa paikannusalgoritmi ajettiin jokaisella vaiheeseen liittyvällä suunnitteluparametrikombinaatiolla \(r=30\) kertaa ja tulokset laskettiin näiden \(30\) ajon aritmeettisena keskiarvona.
+Tässä kokeessa testattiin kunkin taulukossa \ref{tab:wb-parametrit} esitetyn parametrin vaikutusta algoritmin paikannusvirheeseen, ajoaikaan sekä varianssiin. Koska kaikkien parametrikombinaatioiden testaaminen ei ollut mahdollista (eikä mielekästä), suoritettiin kerättyyn dataan perustuva paikannus kolmessa vaiheessa. Kussakin vaiheessa paikannusalgoritmi ajettiin jokaisella vaiheeseen liittyvällä suunnitteluparametrikombinaatiolla \(r=30\) kertaa ja tulokset laskettiin näiden \(30\) ajon aritmeettisena keskiarvona.
 
 Ensimmäisessä vaiheessa tarkasteltiin partikkelien määrän \(N={100,1000,10000}\) sekä uudelleenotannan kynnysarvon \(resampling={0,1/10,2/3,1}\) vaikutusta paikannuskeskivirheeseen. Karttasovitusalgoritmia ei käytetty, kuten ei myöskään prediktiivistä siloitinta eikä signaalin vahvuuden kynnysarvoa. Dynaamisen mallin kohina-arvo \(q=2\) pidettiin vakiona. Ensimmäisessä vaiheessa tarkasteltiin siis \(12\) eri suunnitteluparametrikombinaatiota.
 
@@ -1611,7 +1627,7 @@ Toisessa vaiheessa valittiin ensimmäisen vaiheen tulosten perusteella parhaimma
 
 Viimeisessä vaiheessa valittiin edellisten vaihdeiden tulosten perusteella parhaimman paikannusvirheen suhteessa suoritusaikaan ja varianssiin tuottavat parametrit testattujen joukosta ja testattiin datan valinnassa käytettävää signaalin vahvuuden kynnysarvoa \emph{rssi\_threshold} \(={-100,-90,-80}\) sekä prediktiivistä siloitinta \emph{smoothing} \(={T,F}\) eli kuutta eri suunnitteluparametrikombinaatiota.
 
-Tulosten vertailukohtana käytettiin Pierlot \&al.~artikkelissa ``A New Three Object Triangulation Algorithm Based on the Power Center of Three Circles'' (2011) esittämää ToTal-triangulaatioalgoritmia \citep{Pierlot-2011}. Triangulaatio-algoritmia ei käsitellä tässä tarkemmin, mutta se on esitetty algoritmissa \(\ref{total}\). Algoritmia varten valittiin kullakin aika-askeleella \(k\) ne kolme XR-2-laitetta ja kulmahavaintoa, joiden RSSI-arvo oli korkein. Käytetty algoritmin toteutus löytyy osoitteesta \newline  \url{https://github.com/rintakumpu/progradu_public/analyysi/R/total.R}.
+Tulosten vertailukohtana käytettiin Pierlot \&al.~artikkelissa ``A New Three Object Triangulation Algorithm Based on the Power Center of Three Circles'' (2011) esittämää ToTal-triangulaatioalgoritmia \citep{Pierlot-2011}. Triangulaatio-algoritmia ei käsitellä tässä tarkemmin, mutta se on esitetty algoritmissa \(\ref{total}\). Algoritmia varten valittiin kullakin aika-askeleella \(k\) ne kolme XR-2-laitetta ja kulmahavaintoa, joiden RSSI-arvo oli korkein. Käytetty algoritmin toteutus löytyy osoitteesta \newline  \url{https://github.com/rintakumpu/progradu-public/tree/main/analyysi/R/total.R}.
 
 Paikannusalgoritmi ajettiin RStudion versiossa 2023.09.0+463 R-ohjelmointikielen versiolla 4.2.0. Tietokoneena käytettiin vuoden 2021 mallia olevaa MacBook Pro -kannettavaa, jossa oli Apple M1 Pro -prosessori sekä 32 gigatavua LPDDR5-muistia. Suoritusnopeuden mittaamiseen käytettiin \texttt{Sys.time()}-funktiota.
 
@@ -1637,8 +1653,7 @@ $x_R=x_2+\frac{k^\prime_{31}(y^\prime_{12}-y^\prime_{23})}{D}\hspace{0.5cm}y_R=y
 \caption{ToTal (Three object Triangulation algorithm)}
 \end{algorithm}
 
-\hypertarget{tulokset}{%
-\subsection{Tulokset}\label{tulokset}}
+\subsection{Tulokset}\label{tulokset}
 
 Ensimmäisessä vaiheessa suoritettiin paikannus partikkelien määrällä \(N={100,1000,10000}\) sekä uudelleenotannan kynnysarvolla \(resampling={0,1/10,2/3,1}\). Kun kynnysarvo oli \(0\), uudelleenotantaa ei käytetty, jolloin SIR-algoritmin sijaan paikannus suoritettiin SIS-algoritmilla. Kun kynnysarvo oli \(1\), uudelleenotanta suoritettiin jokaisella aika-askeleella. Arvoilla \(1/10\) ja \(2/3\) käytettiin adaptiivista uudelleenotantaa. Tulokset on esitetty kuvassa \(\ref{fig:phase1-results}\) sekä taulukoissa \ref{tab:vaihe-1-tulokset} ja \ref{tab:vaihe-1-tulokset-varianssi}. Tulostaulukon sarake \(<1m\) kuvaa suurinta persentiiliä\(/100\), jolla saavutettiin haluttu metrin paikannusvirhe. Ajojen tulokset on esitetty karttapolkuina liitteen A alaluvussa \nameref{vaihe-1}.
 
@@ -1849,7 +1864,7 @@ rssi\_threshold & smoothing & Varianssi & MC-varianssi & Ajoaika (s)\\
 
 Tuloksista huomataan, ettei siloittelun käyttäminen paranna paikannusvirhettä. Tämä on odotettua, koska liikemallina on käytetty satunnaiskulkua. Liitteenä olevista karttapoluista kuitenkin huomataan, että siloittelu tuottaa odotetusti sileämpiä polkuja, mikä saattaa olla käytännössä haluttu ominaisuus. Sen sijaan signaalin vahvuuden kynnysarvon nostaminen arvoon \emph{rssi\_threshold} \(=-90\) parantaa hieman paikannustarkkuutta. Kynnysarvon käyttö myös nopeuttaa algoritmin ajoaikaa, sillä kynnysarvoa käytettäessä uskottavuusfunktio (\ref{lopullinen-uskottavuusmalli}) lasketaan pienemmällä määrällä kulmadataa. Valitaan näin kolmannen vaiheen tulosten perusteella parametrit \emph{smoothing=F} ja \emph{rssi\_threshold}=\(-90\).
 
-Taulukossa \ref{tab:tulokset-final} on esitetty yhteenvetona kaikkien koevaiheiden tulosten perusteella valitut suunnitteluparametrit. Täydet eri koevaiheiden tulokset löytyvät csv-muodossa osoitteista \newline \url{https://github.com/rintakumpu/progradu_public/blob/main/analyysi/data/tulokset_vaihe1_ci.csv} (vaihe 1) \newline \url{https://github.com/rintakumpu/progradu_public/blob/main/analyysi/data/tulokset_vaihe2_ci.csv} (vaihe 2) ja \newline \url{https://github.com/rintakumpu/progradu_public/blob/main/analyysi/data/tulokset_vaihe3_ci.csv} (vaihe 3). Kansio \url{https://github.com/rintakumpu/progradu_public/blob/main/analyysi/data/} sisältää lisäksi RDS-muotoon tallennettuna kaikkien ajojen tulokset.
+Taulukossa \ref{tab:tulokset-final} on esitetty yhteenvetona kaikkien koevaiheiden tulosten perusteella valitut suunnitteluparametrit. Täydet eri koevaiheiden tulokset löytyvät csv-muodossa osoitteista \newline \url{https://github.com/rintakumpu/progradu-public/tree/main/blob/main/analyysi/data/tulokset_vaihe1_ci.csv} (vaihe 1) \newline \url{https://github.com/rintakumpu/progradu-public/tree/main/blob/main/analyysi/data/tulokset_vaihe2_ci.csv} (vaihe 2) ja \newline \url{https://github.com/rintakumpu/progradu-public/tree/main/blob/main/analyysi/data/tulokset_vaihe3_ci.csv} (vaihe 3). Kansio \url{https://github.com/rintakumpu/progradu-public/tree/main/blob/main/analyysi/data/} sisältää lisäksi RDS-muotoon tallennettuna kaikkien ajojen tulokset.
 
 \begin{table}
 
@@ -1895,49 +1910,44 @@ Triangulaatioon verrattuna WB-sisätilapaikannusalgoritmi tuottaa huomattavasti 
 \label{fig:total-karttapolku}
 \end{figure}
 
-\hypertarget{lopuksi}{%
-\chapter{Lopuksi}\label{lopuksi}}
+\chapter{Lopuksi}\label{lopuksi}
 
-Tässä tutkielmassa on esitetty pääpiirteittäin hiukkassuodin- ja hiukkassiloitinalgoritmien teoria Bayesilaisessa tilastotieteellisessä viitekehyksessä. Tutkielmassa on lisäksi käyty läpi uudelleenotantaa efektiivisen otoskoon perusteella hyödyntävä SIR-suodinalgoritmi sekä käsitelty algoritmin varianssin estimointia. Tutkielmassa on myös esitetty SIR-algoritmin parametrien valintaan, suorituskykyyn sekä konvergenssiin liittyviä tuloksia.
+Tässä tutkielmassa on esitetty pääpiirteittäin hiukkassuodin- ja hiukkassiloitinalgoritmien teoria Bayesilaisessa tilastotieteellisessä viitekehyksessä. Lisäksi on käyty läpi uudelleenotantaa efektiivisen otoskoon perusteella hyödyntävä SIR-suodinalgoritmi sekä käsitelty algoritmin varianssin estimointia. Tutkielmassa on myös esitetty SIR-algoritmin parametrien valintaan, suorituskykyyn sekä konvergenssiin liittyviä tuloksia.
 
-Tutkielmassa on lisäksi esitetty WB-sisätilapaikannusalgoritmi, joka toteuttaa SIR-algoritmin, estimoi jakaumaestimaatin varianssin ja hyödyntää sisätilapaikannuksen karttasovitusalgoritmia. Tutkielmassa on lopuksi tarkasteltu miten eri suunnitteluparametrien valinnat vaikuttavat algoritmin suorituskykyyn kattavan, todelliseen ongelmaan ja dataan perustuvan paikannuskokeen avulla.
+Tutkielmassa on esitetty myös WB-sisätilapaikannusalgoritmi, joka toteuttaa SIR-algoritmin, estimoi jakaumaestimaatin varianssin ja hyödyntää sisätilapaikannuksen karttasovitusalgoritmia. Tutkielmassa on lopuksi tarkasteltu miten eri suunnitteluparametrien valinnat vaikuttavat algoritmin suorituskykyyn kattavan, todelliseen ongelmaan ja dataan perustuvan paikannuskokeen avulla.
 
-Koe-esimerkin perusteella tutkielmassa käsitelty ALVar-varianssi estimoi hyvin jakaumaestimaatin varianssia. ALVar-varianssiestimaattia voitaisiin edelleen hyödyntää esimerkiksi adaptiivisen viipeen siloittimen toteuttamisessa. Varianssiestimaattia olisi mahdollista hyödyntää myös WB-sisätilapaikannusalgoritmin dynaamisen mallin kohinaparametrin \(q\) säätämisessä niin, että kohinaa lisättäisiin tai vähennettäisiin varianssiestimaatin perusteella. Tämä voitaisiin toteuttaa esimerkiksi käyttämällä lähtökohtaisesti pienempää \(q\)-arvoa ja lisäämällä siihen keskihajonnan estimaatti, jota on painotettu suunnitteluparametrilla \(\alpha\), ts. ennen dynaamisen mallin sovittamista säädettäisiin kohinaparametri \(q_k = q+\alpha\sqrt{\hat{\sigma}^2_{k-1}}\). Vastaavaa mallia ovat käyttäneet esimerkiksi Xu ja Li (2006) \citep{Xu-2006}.
+Koe-esimerkin perusteella näyttää siltä, että tutkielmassa käsitelty ALVar-varianssiestimaatti heijastaa hyvin jakaumaestimaatin todellista varianssia. Sitä voisi edelleen hyödyntää esimerkiksi adaptiivisen viipeen siloittimen toteuttamisessa. Varianssiestimaattia voitaisiin käyttää myös WB-sisätilapaikannusalgoritmin dynaamisen mallin kohinaparametrin \(q\) säätämisessä niin, että kohinaa lisättäisiin tai vähennettäisiin varianssiestimaatin perusteella. Tämä voitaisiin toteuttaa esimerkiksi käyttämällä lähtökohtaisesti pienempää \(q\)-arvoa ja lisäämällä siihen keskihajonnan estimaatti, jota on painotettu suunnitteluparametrilla \(\alpha\), ts. ennen dynaamisen mallin sovittamista säädettäisiin kohinaparametri \(q_k = q+\alpha\sqrt{\hat{\sigma}^2_{k-1}}\). Vastaavaa mallia ovat käyttäneet esimerkiksi Xu ja Li (2006) \citep{Xu-2006}.
 
-Varianssiestimaattia voisi hyödyntää myös hiukkasten lukumäärän \(N\) adaptiivisessa valinnassa niin, että matala varianssi vähentäisi estimoinnissa käytettävien hiukkasten määrää. Tällaista varianssiin perustuvaa hiukkasmäärän muuttamista ehdottavat muun muassa Lee ja Whiteley (2018) \citep{Lee-2018}.
+Varianssiestimaattia voisi lisäksi käyttää hiukkasmäärän \(N\) adaptiiviseen valintaan: matala varianssi vähentäisi estimoinnissa käytettävien hiukkasten määrää. Tällaista varianssiin perustuvaa hiukkasmäärän muuttamista ehdottavat muun muassa Lee ja Whiteley (2018) \citep{Lee-2018}.
 
-Hiukkasten määrää voisi säätää myös arvioimalla hiukkassuotimen konvergenssia esimerkiksi Elviran \&al.~(2017) ehdottamalla menetelmällä \citep{Elvira-2017}. Hiukkasten määrän dynaamisella valinnalla saavutettaisiin todennäköisesti merkittäviä laskennallisia säästöjä, koska WB-sisätilapaikannusalgoritmia sovelletaan yksittäisessä kohteessa samanaikaisesti useiden satojen AT-2-tägien paikantamiseen.
+Hiukkasten määrää voisi säätää myös arvioimalla hiukkassuotimen konvergenssia esimerkiksi Elviran \&al.~(2017) esittämän menetelmän avulla \citep{Elvira-2017}. Hiukkasten määrän dynaamisella valinnalla saavutettaisiin todennäköisesti merkittäviä laskennallisia säästöjä, koska WB-sisätilapaikannusalgoritmia sovelletaan yksittäisessä kohteessa samanaikaisesti useiden satojen AT-2-tägien paikantamiseen.
 
 Algoritmin suorituskykyä voitaisiin mahdollisesti myös parantaa käyttämällä RSSI-kynnysarvon sijaan tai ohella esimerkiksi menetelmää, jossa datasta poistettaisiin kullakin aika-askeleella ne kulmahavainnot, jotka poikkeavat kulmahavaintojen suuntakonsensuksesta (kts. esim. Boquet \&al.~(2024) \citep{Boquet-2024}). Jättämällä osa havainnoista uskottavuusfunktioiden ulkopuolelle nopeuttaisi algoritmin laskentaa, mutta saattaisi parantaa myös algoritmin tarkkuutta.
 
-Liitteenä olevia polkuja tarkastelemalla huomataan, että nyt toteutetun algoritmin sijantiestimaatilla on taipumus jäädä osassa testiympäristöä jälkeen itse tagin sijainnista. Tätä ongelmaa voitaisiin mahdollisesti lieventää käyttämällä mm. Yi Chenging \&al.~artikkelissa ``Improved Particle Filter Algorithm for Multi-Target Detection and Tracking'' (2024) \citep{Cheng-2024} esittämää menetelmää, jossa partikkelit jaetaan ns. seurantahiukkasiin sekä etsintähiukkasiin, joista ainoastaan edellisiä käytetään sijaintiestimaatin luomisessa ja jälkimmäisten annetaan liikkua suuremmilla kohina-arvoilla. Näin mahdollistetaan satunnaiskulkumallilla laajempi signaaliavaruuden tutkinta ja nopeampi ongelmatilanteista toipuminen ilman, että sijaintiestimaatit kärsivät liikemalliin lisätystä kohinasta.
+Liitteenä olevista polkukuvista voidaan havaita, että nykyinen algoritmi jää välillä jälkeen itse tagin sijainnista. Tätä ongelmaa voitaisiin mahdollisesti lieventää käyttämällä mm. Yi Chenging \&al.~artikkelissa ``Improved Particle Filter Algorithm for Multi-Target Detection and Tracking'' (2024) \citep{Cheng-2024} esittämää menetelmää, jossa partikkelit jaetaan ns. seurantahiukkasiin sekä etsintähiukkasiin, joista ainoastaan edellisiä käytetään sijaintiestimaatin luomisessa ja jälkimmäisten annetaan liikkua suuremmilla kohina-arvoilla. Näin mahdollistetaan satunnaiskulkumallilla laajempi signaaliavaruuden tutkinta ja nopeampi ongelmatilanteista toipuminen ilman, että sijaintiestimaatit kärsivät liikemalliin lisätystä kohinasta.
 
 Jälkeenjäämisongelmaa voitaisiin lieventää myös käyttämällä ekskluusiopolygonien ohella ns. pehmeitä rajoitteita (kts. esim. Liu \&al.~(2019) \citep{Liu-2019}), jolloin ekskluusiopolygonien ympärille luotaisiin rajoitevyöhyke, jolle osuvat hiukkaset saisivat rangaistuksen riippuen siitä, kuinka lähellä itse ekskluusiopolygonin reunaa ne ovat. Rangaistusarvon luomisessa voitaisiin käyttää esimerkiksi eksponentiaalista tai kvadraattista hajoamista.
 
-Algoritmin optimaalisia suunnitteluparametreja etsivän kokeen voisi myös toteuttaa käytetyn yksinkertaisen ruudukkohaun sijaan esimerkiksi geneettisillä algoritmeilla, Bayesilaisella optimoinnilla tai sensitiivisyysanalyysilla, olettaen, että parametrit ovat toisistaan riippumattomia.
+Algoritmin optimaalisia suunnitteluparametreja etsivän kokeen voisi myös toteuttaa käyttäen geneettisiä algoritmeja, Bayesilaista optimointia tai sensitiivisyysanalyysia, olettaen, että parametrit ovat toisistaan riippumattomia.
 
 Algoritmia ja järjestelmää voitaisiin edelleen parantaa käyttämällä tagia, jonka kiihtyvyysmittarin tuottama data olisi AT-2-tagia luotettavampaa. Kiihtyvyyssataa voitaisiin hyödyntää esimerkiksi informatiivisen liikemallin luomisessa.
 
-\hypertarget{liite-a---karttapolut}{%
-\chapter*{Liite A - Karttapolut}\label{liite-a---karttapolut}}
+\chapter*{Liite A - Karttapolut}\label{liite-a---karttapolut}
 \addcontentsline{toc}{chapter}{Liite A - Karttapolut}
 
 Liite sisältää tutkielman tulososioon liittyvät karttapolut. Kukin kartta käsittää \(r=30\) ajoa kullakin suunnitteluparametrikombinaatiolla. Karttojen otsikossa on mainittu ainoastaan testatut suunnitteluparametrit, vakioarvoiset parametrit on esitetty luvussa \ref{tulokset}.
 
-\hypertarget{vaihe-1}{%
-\section*{Vaihe 1}\label{vaihe-1}}
+\section*{Vaihe 1}\label{vaihe-1}
 \addcontentsline{toc}{section}{Vaihe 1}
 
 \begin{center}\includegraphics{output/figures/unnamed-chunk-1-1} \includegraphics{output/figures/unnamed-chunk-1-2} \includegraphics{output/figures/unnamed-chunk-1-3} \includegraphics{output/figures/unnamed-chunk-1-4} \includegraphics{output/figures/unnamed-chunk-1-5} \includegraphics{output/figures/unnamed-chunk-1-6} \includegraphics{output/figures/unnamed-chunk-1-7} \includegraphics{output/figures/unnamed-chunk-1-8} \includegraphics{output/figures/unnamed-chunk-1-9} \includegraphics{output/figures/unnamed-chunk-1-10} \includegraphics{output/figures/unnamed-chunk-1-11} \includegraphics{output/figures/unnamed-chunk-1-12} \end{center}
 
-\hypertarget{vaihe-2}{%
-\section*{Vaihe 2}\label{vaihe-2}}
+\section*{Vaihe 2}\label{vaihe-2}
 \addcontentsline{toc}{section}{Vaihe 2}
 
 \begin{center}\includegraphics{output/figures/unnamed-chunk-2-1} \includegraphics{output/figures/unnamed-chunk-2-2} \includegraphics{output/figures/unnamed-chunk-2-3} \includegraphics{output/figures/unnamed-chunk-2-4} \includegraphics{output/figures/unnamed-chunk-2-5} \includegraphics{output/figures/unnamed-chunk-2-6} \includegraphics{output/figures/unnamed-chunk-2-7} \includegraphics{output/figures/unnamed-chunk-2-8} \includegraphics{output/figures/unnamed-chunk-2-9} \includegraphics{output/figures/unnamed-chunk-2-10} \includegraphics{output/figures/unnamed-chunk-2-11} \includegraphics{output/figures/unnamed-chunk-2-12} \includegraphics{output/figures/unnamed-chunk-2-13} \includegraphics{output/figures/unnamed-chunk-2-14} \includegraphics{output/figures/unnamed-chunk-2-15} \includegraphics{output/figures/unnamed-chunk-2-16} \end{center}
 
-\hypertarget{vaihe-3}{%
-\section*{Vaihe 3}\label{vaihe-3}}
+\section*{Vaihe 3}\label{vaihe-3}
 \addcontentsline{toc}{section}{Vaihe 3}
 
 \begin{center}\includegraphics{output/figures/unnamed-chunk-3-1} \includegraphics{output/figures/unnamed-chunk-3-2} \includegraphics{output/figures/unnamed-chunk-3-3} \includegraphics{output/figures/unnamed-chunk-3-4} \includegraphics{output/figures/unnamed-chunk-3-5} \includegraphics{output/figures/unnamed-chunk-3-6} \includegraphics{output/figures/unnamed-chunk-3-7} \includegraphics{output/figures/unnamed-chunk-3-8} \end{center}

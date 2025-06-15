@@ -32,6 +32,22 @@ library(knitr) # For creating PDF
 library(kableExtra)
 library(pander)
 library(bookdown)
+library(styler)
+library(fuzzyjoin)
+library(tidyverse)
+library(gridExtra)
+library(terra)
+library(raster)
+library(corrplot)
+library(galoRe)
+library(ggcorrplot)
+library(reticulate)
+library(keras3)
+library(pwr)
+library(libgeos)
+library(lme4)
+library(microbenchmark)
+library(ggpubr)
 
 # Automatically create a bib database for R packages
 knitr::write_bib(c(
@@ -41,7 +57,7 @@ knitr::write_bib(c(
 
 \chapter{Johdanto}
 
-Hiukkassuotimet ovat joukko Monte Carlo -algoritmeja, joiden avulla voidaan ratkaista ns. suodinongelma, kun ongelma on epälineaarinen ja/tai ongelmaan liittyvä kohina ei noudata normaalijakaumaa. Hiukkassuotimille on lukuisia sovellutuksia esimerkiksi Bayesilaisessa tilastotieteessä, fysiikassa ja robotiikassa.
+Hiukkassuotimet ovat joukko Monte Carlo -algoritmeja, joiden avulla voidaan ratkaista niin kutsuttu suodinongelma, kun ongelma on epälineaarinen ja/tai ongelmaan liittyvä kohina ei noudata normaalijakaumaa. Hiukkassuotimille on lukuisia sovelluksia esimerkiksi Bayesilaisessa tilastotieteessä, fysiikassa ja robotiikassa.
 
 Tämän tutkielman tavoitteena on esittää pääpiirteittään hiukkassuotimien sekä näihin läheisesti liittyvien hiukkassiloittimien teoria. Lisäksi tutkielmassa käsitellään joitakin menetelmäperheeseen kuuluvia algoritmeja ja sovelletaan näitä sisätilapaikannuksessa. 
 
@@ -158,7 +174,7 @@ y_1  & y_2  & y_3  & \ldots & \makebox[\widthof{$ \text{havainnot}$}]{$\text{hav
 \end{tikzcd}
 \end{equation}
 
-Tässä tutkielmassa keskitytään erityisesti epälineaarisen, ns. Markovin piilomallin posteriorijakauman Bayesilaiseen ratkaisuun.  Ongelmassa tiedetään, miten havaitut muuttujat $y_k$ kytkeytyvät "piilossa oleviin" tilamuuttujiin $x_k$ sekä osataan sanoa jotain tilamuuttujien todennäköisyyksistä. Oletetaan myös, että piilossa oleville tiloille $X_k$ pätee Markov-ominaisuus, jolloin kutakin hetkeä seuraava tila $x_{k+1}$ riippuu menneistä tiloista $x_{1:k-1}$ ainoastaan tilan $x_k$ välityksellä. Lisäksi havaittu tila $y_k$ riippuu tiloista $x_{k}$ ainoastaan jonkin $x_k$:n funktion kautta. Kun aika-avaruus on diskreetti ja aika-askeleella $k=\{1,\ldots,T\}$ piilossa olevan prosessin tilaa merkitään $x_k$ ja havaittua prosessia $y_k$, saadaan ongelma kuvattua malleilla
+Tässä tutkielmassa keskitytään erityisesti epälineaarisen, niin kutsutun Markovin piilomallin posteriorijakauman Bayesilaiseen ratkaisuun.  Ongelmassa tiedetään, miten havaitut muuttujat $y_k$ kytkeytyvät "piilossa oleviin" tilamuuttujiin $x_k$ sekä osataan sanoa jotain tilamuuttujien todennäköisyyksistä. Oletetaan myös, että piilossa oleville tiloille $X_k$ pätee Markov-ominaisuus, jolloin kutakin hetkeä seuraava tila $x_{k+1}$ riippuu menneistä tiloista $x_{1:k-1}$ ainoastaan tilan $x_k$ välityksellä. Lisäksi havaittu tila $y_k$ riippuu tiloista $x_{k}$ ainoastaan jonkin $x_k$:n funktion kautta. Kun aika-avaruus on diskreetti ja aika-askeleella $k=\{1,\ldots,T\}$ piilossa olevan prosessin tilaa merkitään $x_k$ ja havaittua prosessia $y_k$, saadaan ongelma kuvattua malleilla
 
 \begin{align}
 &\label{malli-1} x_{k+1} = f(x_k, \nu_k),\\
@@ -176,7 +192,7 @@ Mallit voidaan esittää myös yleisemmässä jakaumamuodossa
 
 \noindent Tutkielman teoriaosassa käytetään ensisijaisesti yhtälöiden (\ref{malli-3}) ja  (\ref{malli-4}) muotoilua. Empiirisessä osassa palataan yhtälöiden (\ref{malli-1}) ja (\ref{malli-2}) muotoiluun. 
 
-Suodinongelmaa lähellä on myös ns. siloitteluongelma (*smoothing problem*), jossa ollaan kiinnostuneita prosessin $x_k$ posteriorijakaumasta $p(x_k|y_k)$ jokaisella aika-askeleella $\{1,\ldots,k\}$, ei ainoastaan tietyllä aika-askeleella $k$. Hiukkassuodinalgoritmit näyttävät ratkaisevan siloitteluongelman ilmaiseksi, mutta tähän liittyy kuitenkin joidenkin mallien kohdalla mahdollista epätarkkuutta, joten tarvittaessa tasoitusongelma pitää ratkaista erikseen. Tähän ongelmaan palataan tutkielman luvussa 3. Kuva \ref{fig:suodin_vs_siloitin} selittää suodin- ja siloitteluongelmien eron. Kuva mukailee Särkkää (2013) [@sarkka-2013].
+Suodinongelmaa lähellä on myös niin kutsuttu siloitteluongelma (*smoothing problem*), jossa ollaan kiinnostuneita prosessin $x_k$ posteriorijakaumasta $p(x_k|y_k)$ jokaisella aika-askeleella $\{1,\ldots,k\}$, ei ainoastaan tietyllä aika-askeleella $k$. Hiukkassuodinalgoritmit näyttävät ratkaisevan siloitteluongelman ilmaiseksi, mutta tähän liittyy kuitenkin joidenkin mallien kohdalla mahdollista epätarkkuutta, joten tarvittaessa tasoitusongelma pitää ratkaista erikseen. Tähän ongelmaan palataan tutkielman luvussa 3. Kuva \ref{fig:suodin_vs_siloitin} selittää suodin- ja siloitteluongelmien eron. Kuva mukailee Särkkää (2013) [@sarkka-2013].
 
 \begin{figure}[H]
 \centering
